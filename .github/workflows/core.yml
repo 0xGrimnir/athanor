@@ -87,6 +87,7 @@ jobs:
           set -x
           rm -rf /tmp/res && mkdir -p /tmp/res/${{ github.sha }}/${{ runner.os }}
           cp -r pytest-*.txt bench-* env-lock-*.txt /tmp/res/${{ github.sha }}/${{ runner.os }}/ 2>/dev/null || true
+          if [ -f bench-dft-${{ runner.os }}/benchmark.json ]; then mkdir -p /tmp/res/latest/${{ runner.os }} && cp -r bench-dft-${{ runner.os }} /tmp/res/latest/${{ runner.os }}/; fi
           git config --global user.name "athanor-ci"
           git config --global user.email "ci@athanor.invalid"
           for i in 1 2 3 4 5; do

@@ -1,7 +1,8 @@
 """Correctness cross-checks against independent implementations.
 
-* GFN2-xTB: Athanor (tblite library + Athanor vibrational analysis) vs the xtb
-  program's own single point and numerical Hessian. Both implement GFN2-xTB.
+* GFN2-xTB: Athanor (GFN2 gradients + Athanor vibrational analysis) vs the xtb
+  program's own single point and numerical Hessian; and the tblite library vs
+  the xtb program as interchangeable backends.
 * DFT: Athanor's finite-difference Hessian from Psi4 gradients vs Psi4's own
   frequency analysis.
 * Vibrational analysis: vs ASE's independent implementation.
@@ -12,6 +13,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 
 import numpy as np
@@ -45,16 +47,16 @@ def _xtb_run(mol: Molecule, *args) -> tuple[str, str]:
 
 
 def _xtb_vibspectrum(d: str) -> np.ndarray:
-    """Turbomole-format $vibrational spectrum written by xtb:
-    mode  [symmetry]  wavenumber  IR-intensity  IR-sel  Raman-sel
+    """Turbomole-format $vibrational spectrum written by xtb 6.7:
+    mode  [symmetry]  wavenumber  IR-intensity  IR-selection
     The symmetry column is blank for translations/rotations, so the
-    wavenumber is read as the 4th field from the end."""
+    wavenumber is read as the 3rd field from the end."""
     freqs = []
-    for line in open(os.path.join(d, "vibspectrum")):
+    for line in open(os.path.join(d, "vibspectrum"), encoding="utf-8", errors="replace"):
         p = line.split()
-        if len(p) >= 5 and p[0].isdigit():
+        if len(p) >= 4 and p[0].isdigit():
             try:
-                freqs.append(float(p[-4]))
+                freqs.append(float(p[-3]))
             except ValueError:
                 pass
     return np.array([f for f in freqs if abs(f) > 1.0])
@@ -75,6 +77,27 @@ def test_gfn2_matches_xtb_program(smiles):
     mine = mine[np.abs(mine) > 1.0]
     assert len(mine) == len(theirs)
     np.testing.assert_allclose(mine, theirs, atol=3.0)  # cm-1; two independent GFN2 codes
+
+
+try:
+    import tblite.interface  # noqa: F401
+    HAS_TBLITE = sys.platform != "win32"  # conda-forge tblite crashes on Windows; see engines/xtb.py
+except Exception:
+    HAS_TBLITE = False
+
+
+@pytest.mark.skipif(not (HAS_XTB and HAS_TBLITE), reason="needs both tblite and the xtb program")
+@pytest.mark.parametrize("smiles", ["O", "C=O", "[NH4+]", "[O]", "c1ccccc1"])
+def test_gfn2_backends_agree(smiles):
+    """The tblite library and the xtb program are independent GFN2-xTB codes;
+    the app uses whichever runs on the platform, so they must agree."""
+    mol = Molecule.from_smiles(smiles)
+    a = get_engine("gfn2-xtb", backend="tblite").compute(mol)
+    b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
+    assert a.energy == pytest.approx(b.energy, abs=1e-6)
+    np.testing.assert_allclose(a.gradient, b.gradient, atol=1e-5)
+    np.testing.assert_allclose(a.dipole, b.dipole, atol=1e-3)
+    np.testing.assert_allclose(a.charges, b.charges, atol=1e-3)
 
 
 @pytest.mark.skipif(not HAS_PSI4, reason="Psi4 not installed")
