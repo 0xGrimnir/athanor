@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Athanor</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="bar">
+  <div class="mark">ATHA<b>NOR</b></div>
+  <nav class="tabs" id="tabs" aria-label="Modules">
+    <button type="button" class="tab" data-view="molecule" aria-pressed="true"><span class="k">01</span>Molecule</button>
+    <button type="button" class="tab" data-view="validation" aria-pressed="false"><span class="k">02</span>Validation</button>
+  </nav>
+  <div class="chips" id="engineChips">
+    <div class="chip" id="coreChip"><i class="dot wait"></i>Core <span id="coreState">starting</span></div>
+  </div>
+</header>
+
+<!-- ============================ MOLECULE ============================ -->
+<main class="view deck" id="view-molecule">
+  <section class="panel" aria-label="Structure and method">
+    <div class="sec">
+      <div class="label">Structure</div>
+      <form class="row" id="smilesForm" autocomplete="off">
+        <input id="smilesInput" class="field" type="text" spellcheck="false" placeholder="SMILES, e.g. CCO" aria-label="SMILES">
+        <button type="submit" class="btn">Build</button>
+      </form>
+      <div class="presets" id="presets"></div>
+      <label class="btn filebtn">Import XYZ / MOL / SDF<input id="fileInput" type="file" accept=".xyz,.mol,.sdf"></label>
+      <div class="row small">
+        <label class="mini">Charge <input id="chargeInput" class="field num" type="number" value="0" step="1"></label>
+        <label class="mini">Multiplicity <input id="multInput" class="field num" type="number" value="1" min="1" step="1"></label>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="label">Method</div>
+      <div class="seg" id="tierSeg" role="radiogroup" aria-label="Method tier">
+        <button type="button" data-tier="mmff94" role="radio" aria-checked="false">MMFF94<small>force field</small></button>
+        <button type="button" data-tier="gfn2-xtb" role="radio" aria-checked="true">GFN2-xTB<small>tight binding</small></button>
+        <button type="button" data-tier="dft" role="radio" aria-checked="false">DFT<small>Psi4</small></button>
+      </div>
+      <div class="row small" id="dftOpts" hidden>
+        <label class="mini">Functional
+          <select id="funcSel" class="field">
+            <option>B3LYP</option><option>PBE0</option><option value="wB97X-D">ωB97X-D</option><option value="HF">HF</option>
+          </select></label>
+        <label class="mini">Basis
+          <select id="basisSel" class="field">
+            <option>def2-SVP</option><option selected>def2-TZVP</option><option>cc-pVDZ</option><option>cc-pVTZ</option><option>aug-cc-pVTZ</option>
+          </select></label>
+      </div>
+      <p class="note" id="tierNote"></p>
+    </div>
+
+    <div class="sec">
+      <div class="label">Run</div>
+      <div class="runs">
+        <button type="button" class="btn act" id="btnOpt">Optimize geometry</button>
+        <button type="button" class="btn act" id="btnFreq">Frequencies &amp; IR</button>
+        <button type="button" class="btn act" id="btnProps">Properties</button>
+        <button type="button" class="btn warn" id="btnStop" hidden>Stop</button>
+      </div>
+    </div>
+
+    <div class="sec grow">
+      <div class="label">Jobs</div>
+      <ol class="jobs" id="jobs"></ol>
+    </div>
+  </section>
+
+  <section class="stage" id="stage" aria-label="3D structure">
+    <canvas id="gl" aria-label="Molecule view. Drag to rotate, scroll to zoom."></canvas>
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="ident">
+      <div class="name" id="molName">—</div>
+      <div class="formula" id="molFormula"></div>
+    </div>
+    <div class="badge" id="geomBadge" hidden></div>
+    <div class="viewopts">
+      <button type="button" class="btn sm" id="vCharges" aria-pressed="false">Charges</button>
+      <button type="button" class="btn sm" id="vLabels" aria-pressed="false">Labels</button>
+    </div>
+    <div class="spectrum" id="specWrap" hidden>
+      <div class="spechead"><span id="specTitle">IR spectrum</span><span class="note" id="specNote"></span></div>
+      <canvas id="spec" aria-label="Infrared spectrum; click a peak to animate that vibration"></canvas>
+    </div>
+    <div class="busy" id="busy" hidden><div class="spinner"></div><span id="busyText">Running…</span></div>
+  </section>
+
+  <section class="panel" aria-label="Results">
+    <div class="sec" id="resultsSec">
+      <div class="label">Results</div>
+      <div id="results"><p class="note">Build or import a molecule, choose a method, and run a calculation.</p></div>
+    </div>
+    <div class="sec" id="vibSec" hidden>
+      <div class="label">Vibrations</div>
+      <div class="vibhead"><span>cm⁻¹</span><span>IR km/mol</span><span>μ amu</span></div>
+      <div class="vibs" id="vibs"></div>
+      <p class="note" id="vibNote"></p>
+    </div>
+    <div class="sec" id="provSec" hidden>
+      <div class="label">Provenance</div>
+      <dl class="readout" id="prov"></dl>
+      <div class="row">
+        <button type="button" class="btn sm" id="btnCopyProv">Copy record</button>
+        <button type="button" class="btn sm" id="btnExportXyz">Copy XYZ</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================ VALIDATION ============================ -->
+<main class="view" id="view-validation" hidden>
+  <section class="panel wide" aria-label="Validation report">
+    <div class="sec">
+      <div class="label">How each number is validated</div>
+      <p class="lead">Every tier is checked two ways. <b>Correctness</b>: Athanor must reproduce the underlying engine's own reference results. <b>Accuracy</b>: each tier's errors against experimental data must be consistent with the method's published error statistics. These are the error bars shown next to results.</p>
+    </div>
+    <div id="validation"></div>
+  </section>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+
+<script src="vendor/three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -89,3 +89,8 @@ Desktop.ini
 .vscode/*
 !.vscode/extensions.json
 *.swp
+
+# app build outputs
+app/node_modules/
+app/src-tauri/target/
+app/src-tauri/resources/
