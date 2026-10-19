@@ -60,6 +60,17 @@ def m_engines(_):
     return out
 
 
+def m_gpu_status(_):
+    from .engines.pyscf_dft import gpu_available
+    ok, detail = gpu_available()
+    return {"available": ok, "detail": detail}
+
+
+def m_gpu_selftest(p):
+    from .gpu_selftest import run
+    return run(quick=bool(p.get("quick", False)))
+
+
 def m_build(p):
     return mol_to_json(Molecule.from_smiles(p["smiles"], name=p.get("name", p["smiles"])))
 
@@ -100,7 +111,7 @@ def m_validation(_):
 METHODS = {"ping": m_ping, "engines": m_engines, "build": m_build, "parse_xyz": m_parse_xyz,
            "parse_molblock": m_parse_molblock,
            "single_point": m_single_point, "optimize": m_optimize, "frequencies": m_frequencies,
-           "validation": m_validation}
+           "validation": m_validation, "gpu_status": m_gpu_status, "gpu_selftest": m_gpu_selftest}
 
 
 def handle(line: str) -> dict:

@@ -32,6 +32,11 @@ try:
 except Exception:
     HAS_PSI4 = False
 try:
+    import pyscf  # noqa: F401
+    HAS_PYSCF = True
+except Exception:
+    HAS_PYSCF = False
+try:
     import ase  # noqa: F401
     HAS_ASE = True
 except Exception:
@@ -120,6 +125,25 @@ def test_fd_hessian_matches_psi4_frequency_analysis():
     theirs = np.sort(np.array(wfn.frequencies().np))
     np.testing.assert_allclose(via_psi4_hessian, theirs, atol=0.5)
     np.testing.assert_allclose(mine, theirs, atol=2.0)
+
+
+@pytest.mark.skipif(not (HAS_PSI4 and HAS_PYSCF), reason="needs Psi4 and PySCF")
+def test_pyscf_dft_matches_psi4():
+    """The GPU tier runs PySCF's code path (via GPU4PySCF); on CPU it must
+    reproduce Psi4 at the same functional, basis and grid size. Residual
+    differences come from the two programs' grid partitioning schemes."""
+    mol = tasks.optimize(get_engine("gfn2-xtb"), Molecule.from_smiles("C=O"))["molecule"]
+    psi = get_engine("dft", functional="B3LYP", basis="def2-SVP", memory="1 GB",
+                     scf_convergence=1e-10, d_convergence=1e-10)
+    pys = get_engine("dft-pyscf", functional="B3LYP", basis="def2-SVP", density_fitting=False)
+    a, b = psi.compute(mol), pys.compute(mol)
+    assert a.energy == pytest.approx(b.energy, abs=2e-5)
+    np.testing.assert_allclose(a.gradient, b.gradient, atol=1e-4)
+    np.testing.assert_allclose(a.dipole, b.dipole, atol=1e-3)
+    # Harmonic frequencies at each program's own optimized geometry.
+    fa = tasks.frequencies(psi, tasks.optimize(psi, mol)["molecule"])["frequencies_cm1"]
+    fb = tasks.frequencies(pys, tasks.optimize(pys, mol)["molecule"])["frequencies_cm1"]
+    np.testing.assert_allclose(np.sort(fa), np.sort(fb), atol=1.5)
 
 
 class _AthanorASECalculator:

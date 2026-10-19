@@ -34,6 +34,23 @@ jobs:
       PYTHONUTF8: "1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Does this change affect DFT results?
+        id: dftscope
+        run: |
+          base="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" != "push" ] || [ -z "$base" ] || ! git cat-file -e "$base" 2>/dev/null; then
+            echo "run=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if git diff --name-only "$base" "${{ github.sha }}" | grep -qE '^core/(athanor_core/(engines/dft\.py|benchmark\.py|vibrations\.py|units\.py|tasks\.py|molecule\.py)|benchmarks/reference/|environment\.yml)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=DFT benchmark skipped::no DFT-relevant files changed since ${base::7}"
+          fi
+        shell: bash
 
       - uses: mamba-org/setup-micromamba@v2
         with:
@@ -50,10 +67,10 @@ jobs:
       - name: Install core
         run: pip install --no-deps -e core
 
-      - name: Independent GFN2-xTB implementation for cross-checks (tblite, PyPI wheel)
+      - name: Linux-only engines for cross-checks (tblite; PySCF, the GPU tier's CPU path)
         if: runner.os == 'Linux'
         run: |
-          pip install "tblite==0.7.0" cffi
+          pip install "tblite==0.7.0" cffi "pyscf==2.14.0"
           python -c "import numpy as np; from tblite.interface import Calculator; c=Calculator('GFN2-xTB', np.array([8,1,1]), np.array([[0,0,0.22],[0,1.43,-0.88],[0,-1.43,-0.88]])); c.set('verbosity',0); print('tblite water E', c.singlepoint().get('energy'))"
 
       - name: Unit, validation-suite and cross-check tests
@@ -69,7 +86,7 @@ jobs:
           test ${PIPESTATUS[0]} -eq 0
 
       - name: Benchmark (DFT, B3LYP)
-        if: runner.os == 'Linux' && (github.event_name == 'push' || inputs.dft_benchmark)
+        if: runner.os == 'Linux' && steps.dftscope.outputs.run == 'true' && (github.event_name == 'push' || inputs.dft_benchmark)
         working-directory: core
         env:
           OMP_NUM_THREADS: "4"

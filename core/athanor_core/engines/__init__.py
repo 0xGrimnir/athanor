@@ -13,6 +13,12 @@ def get_engine(tier: str, **kwargs) -> Engine:
     if tier == "dft":
         from .dft import Psi4DFT
         return Psi4DFT(**kwargs)
+    if tier == "dft-gpu":
+        from .pyscf_dft import PySCFDFT
+        return PySCFDFT(device="gpu", **kwargs)
+    if tier == "dft-pyscf":
+        from .pyscf_dft import PySCFDFT
+        return PySCFDFT(device="cpu", **kwargs)
     raise ValueError(f"unknown tier {tier!r}")
 
 
