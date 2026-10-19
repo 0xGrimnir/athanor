@@ -53,9 +53,11 @@ Remaining:
 - CRISPR guide design with published on-target and off-target scores
 - Mol* structures (PDB, AlphaFold), linking each genome position to its residue in 3D; AutoDock Vina docking
 
-## Later: optional heavy-compute pack
+## Heavy-compute pack
 
-- WSL2-based GPU DFT and whole-genome-scale mapping
+- GPU DFT (GPU4PySCF in WSL2), installed from inside the app and self-tested on the user's GPU (0.2.0)
+- Next: analytic GPU Hessians and IR intensities, so frequencies of large molecules do not need 6N gradients
+- With the genomics modules: native whole-genome mapping (minimap2, bwa-mem2, samtools) in the same distribution
 
 ## Afterward: open research problems
 

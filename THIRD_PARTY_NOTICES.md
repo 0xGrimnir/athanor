@@ -28,6 +28,11 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | xtb (Grimme lab) | GFN2-xTB engine | LGPL-3.0-or-later | Verified |
 | ASE | Independent vibrational-analysis cross-check | LGPL-2.1-or-later | Verified |
 | Psi4 | DFT and Hartree-Fock | LGPL-3.0 | To verify |
+| PySCF | DFT engine of the GPU tier (CPU path checked against Psi4 in CI) | Apache-2.0 | Verified |
+| GPU4PySCF (ByteDance) | GPU-accelerated DFT (optional compute pack) | Apache-2.0 | Verified |
+| CuPy | GPU arrays for GPU4PySCF (compute pack) | MIT | Verified |
+| NVIDIA CUDA runtime libraries (cuBLAS, cuSOLVER, cuSPARSE, cuFFT, cuRAND, NVRTC, cuTENSOR; PyPI wheels) | GPU math libraries (compute pack) | NVIDIA proprietary license; redistribution terms to verify before public release | To verify |
+| Ubuntu 24.04 base image | Root filesystem of the compute pack's WSL2 distribution | Various free licenses (Canonical) | To verify |
 | NumPy | Numerics | BSD-3-Clause (with bundled MIT, Zlib, 0BSD, CC0 parts) | Verified |
 | SciPy | Numerics | BSD-3-Clause | To verify |
 
@@ -60,6 +65,10 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | MMFF94 validation suite and parameter tables (T. A. Halgren) | MMFF94 correctness test; fitted-parameter coverage check | Distributed via CCL and RDKit (BSD-3-Clause) | Verified |
 | NIST CCCBDB (SRD 101), NIST Chemistry WebBook (SRD 69) | Experimental reference values for benchmarks | US government data | Verified |
 | Ensembl (release 110) | Gene coordinates and transcript models | No restrictions on use | To verify |
+
+## Compute pack note
+
+The optional GPU compute pack is a separate download that bundles NVIDIA's CUDA runtime libraries from PyPI. They are proprietary; NVIDIA's CUDA EULA lists these runtime components as redistributable with applications, but the exact terms must be checked against the current EULA before Athanor is released publicly.
 
 ## License compatibility note
 

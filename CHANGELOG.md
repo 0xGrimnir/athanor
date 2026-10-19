@@ -4,6 +4,10 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Added
+- Optional GPU compute pack: DFT on NVIDIA GPUs through GPU4PySCF, in a private WSL2 distribution the app installs, verifies and self-tests (GPU vs CPU) before offering the DFT·GPU tier.
+- PySCF DFT engine; CI checks its CPU path against Psi4.
+
 ## [0.1.0] - 2026-10-19
 
 ### Added
