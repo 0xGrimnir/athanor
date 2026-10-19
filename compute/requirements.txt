@@ -1,0 +1,9 @@
+# Athanor compute pack: GPU DFT (GPU4PySCF) inside a private WSL2 distribution.
+# Top-level pins; the full resolved set is recorded in the pack manifest.
+numpy<2.6
+scipy<1.18
+pyscf==2.14.0
+gpu4pyscf-cuda13x==1.8.1
+cupy-cuda13x[ctk]==14.2.0
+cutensor-cu13==2.8.1
+rdkit==2026.9.1

@@ -1,0 +1,84 @@
+name: compute-pack
+# Builds the optional GPU compute pack: a Linux root filesystem with GPU4PySCF
+# that the Windows app imports into WSL2. CI has no GPU, so this checks the
+# CPU path and packaging; the GPU itself is verified by the self-test that
+# runs on the user's machine before the GPU tier is enabled.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Pack version to publish (integer, e.g. 1); empty = build and check only"
+        required: false
+        default: ""
+  push:
+    paths:
+      - "compute/**"
+      - ".github/workflows/compute.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space for the CUDA libraries
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h / | tail -1
+
+      - name: Build root filesystem image
+        run: docker build -t athanor-compute compute
+
+      - name: Check engines on CPU inside the image
+        run: |
+          out=$(docker run --rm -v "$PWD/core:/src/core:ro" -v "$PWD/compute:/src/compute:ro" \
+                 -e PYTHONPATH=/src/core athanor-compute /opt/athanor/venv/bin/python /src/compute/ci_check.py)
+          echo "$out"
+          echo "::notice title=compute-pack check::$out"
+
+      - name: Export, compress and split
+        run: |
+          mkdir -p out
+          cid=$(docker create athanor-compute)
+          docker cp "$cid:/opt/athanor/lock.txt" out/lock.txt
+          docker export "$cid" | gzip -6 > out/athanor-compute.tar.gz
+          docker rm "$cid"
+          ( cd out && split -b 1900m -d -a 2 athanor-compute.tar.gz athanor-compute.tar.gz.part && rm athanor-compute.tar.gz )
+          python3 - <<'PY'
+          import hashlib, json, os
+          parts = sorted(p for p in os.listdir("out") if ".part" in p)
+          total = hashlib.sha256()
+          entries = []
+          for p in parts:
+              h = hashlib.sha256()
+              with open(f"out/{p}", "rb") as fh:
+                  for chunk in iter(lambda: fh.read(1 << 22), b""):
+                      h.update(chunk); total.update(chunk)
+              entries.append({"name": p, "size": os.path.getsize(f"out/{p}"), "sha256": h.hexdigest()})
+          manifest = {"format": 1, "distro": "AthanorCompute", "python": "/opt/athanor/venv/bin/python",
+                      "parts": entries, "sha256": total.hexdigest(),
+                      "size": sum(e["size"] for e in entries),
+                      "packages": open("out/lock.txt").read().split()}
+          json.dump(manifest, open("out/manifest.json", "w"), indent=1)
+          print(json.dumps({k: v for k, v in manifest.items() if k != "packages"}, indent=1))
+          PY
+          ls -la out
+          echo "::notice title=compute-pack size::$(du -ch out/*.part* | tail -1 | cut -f1) in $(ls out/*.part* | wc -l) part(s)"
+
+      - name: Publish to the release feed
+        if: inputs.version != ''
+        run: |
+          v="${{ inputs.version }}"
+          [[ "$v" =~ ^[0-9]+$ ]] || { echo "::error::pack version must be an integer"; exit 1; }
+          [ -n "$GH_TOKEN" ] || { echo "::error::RELEASES_TOKEN secret is not set"; exit 1; }
+          gh release create "compute-$v" out/manifest.json out/*.part* \
+            --repo 0xGrimnir/athanor-releases --latest=false \
+            --title "Athanor compute pack $v" \
+            --notes "Optional GPU compute pack (GPU4PySCF in WSL2). Installed from inside Athanor; not a standalone download. Built from ${GITHUB_SHA}."
+          echo "::notice title=published::compute-$v"
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
