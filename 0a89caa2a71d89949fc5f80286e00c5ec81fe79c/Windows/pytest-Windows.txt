@@ -1,6 +1,6 @@
 ...sssss.Windows fatal exception: access violation
 
-Current thread 0x00001b70 (most recent call first):
+Current thread 0x00000868 (most recent call first):
   File "C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\tblite\library.py", line 105 in handle_context_error
   File "C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\tblite\interface.py", line 660 in singlepoint
   File "C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\tblite\ase.py", line 376 in calculate
