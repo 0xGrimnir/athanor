@@ -1,0 +1,46 @@
+name: probe-tblite
+on:
+  push:
+    branches: [probe/tblite]
+permissions:
+  contents: read
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        tb: ["0.7.0", "0.6.0", "0.5.0"]
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: p
+          create-args: python=3.12 numpy tblite-python=${{ matrix.tb }} xtb
+          init-shell: bash
+      - name: Probe
+        run: |
+          micromamba list | grep -Ei 'tblite|xtb|libblas|openblas|mkl|gfortran|flang|libgcc|m2w64' > pk.txt || true
+          cat > t.py <<'PY'
+          import sys, numpy as np, faulthandler; faulthandler.enable()
+          from tblite.interface import Calculator
+          Z=np.array([8,1,1]); X=np.array([[0,0,0.22],[0,1.43,-0.88],[0,-1.43,-0.88]])
+          variant=sys.argv[1]
+          c=Calculator("GFN2-xTB",Z,X)
+          if variant!="plain": c.set("verbosity",0)
+          if variant=="full":
+              c.set("accuracy",1.0); c.set("max-iter",250); c.set("temperature",300*3.166811563e-6)
+          r=c.singlepoint(); print("E", r.get("energy"))
+          PY
+          : > out.txt
+          for v in plain quiet full; do
+            python t.py $v > o.txt 2>&1; rc=$?
+            echo "$v rc=$rc $(grep -E '^E |Error|error' o.txt | head -2 | tr '\n' ' ')" >> out.txt
+          done
+          printf '0 0 0.22 O\n' > /dev/null
+          printf '3\n\nO 0 0 0.1164\nH 0 0.7568 -0.4657\nH 0 -0.7568 -0.4657\n' > w.xyz
+          xtb w.xyz --grad > x.txt 2>&1; echo "xtbexe rc=$? $(grep -E 'TOTAL ENERGY' x.txt | head -1)" >> out.txt
+          cat out.txt pk.txt
+          echo "::notice title=tblite-${{ matrix.tb }}::$(paste -sd'|' out.txt) || $(paste -sd' ' pk.txt | cut -c1-600)"
