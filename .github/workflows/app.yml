@@ -48,10 +48,19 @@ jobs:
           python app/scripts/prepare_runtime.py --lock env-lock.txt --bench bench-fast/benchmark.json bench-dft/benchmark.json
 
       - name: Smoke-test the packed runtime (as the installed app runs it)
+        id: smoke
+        continue-on-error: true
         run: |
-          python app/scripts/smoke_runtime.py app/src-tauri/resources/runtime 2>&1 | tee smoke.txt
-          test ${PIPESTATUS[0]} -eq 0
-          echo "::notice title=runtime-smoke::$(grep -E 'SMOKE_OK|engines:|extracted' smoke.txt | tr '\n' ' ' | cut -c1-3000)"
+          set +e
+          python app/scripts/smoke_runtime.py app/src-tauri/resources/runtime > smoke.txt 2>&1
+          rc=$?
+          cat smoke.txt
+          if [ $rc -eq 0 ]; then
+            echo "::notice title=runtime-smoke::$(grep -E 'SMOKE_OK|engines:|extracted' smoke.txt | tr '\n' ' ' | cut -c1-3000)"
+          else
+            echo "::error title=runtime-smoke failed (exit $rc)::$(tail -c 3500 smoke.txt | tr '\n' '|')"
+          fi
+          exit $rc
 
       - uses: actions/setup-node@v4
         with:
@@ -68,6 +77,12 @@ jobs:
           npx tauri build 2>&1 | tail -40
           test ${PIPESTATUS[0]} -eq 0
           ls -la src-tauri/target/release/bundle/nsis
+
+      - name: Stop here if the runtime smoke test failed
+        if: steps.smoke.outcome != 'success'
+        run: |
+          echo "::error title=release withheld::installer built but not published, because the runtime smoke test failed"
+          exit 1
 
       - name: Publish release (draft for manual builds)
         run: |
