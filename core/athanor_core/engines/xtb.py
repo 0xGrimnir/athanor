@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -123,7 +124,7 @@ class GFN2xTB(Engine):
             if r.returncode != 0 or "normal termination" not in out:
                 tail = "\n".join(out.strip().splitlines()[-15:])
                 raise RuntimeError(f"xtb did not terminate normally (exit {r.returncode}):\n{tail}")
-            data = json.loads(Path(d, "xtbout.json").read_text())
+            data = _read_xtb_json(Path(d, "xtbout.json"))
             grad = _read_turbomole_gradient(Path(d, "gradient"), n)
         return EngineResult(
             energy=float(data["total energy"]),
@@ -132,6 +133,18 @@ class GFN2xTB(Engine):
             charges=np.array(data["partial charges"], dtype=float),
             charge_model="GFN2-xTB Mulliken-type charges",
         )
+
+
+def _read_xtb_json(path: Path) -> dict:
+    """xtbout.json as written by xtb 6.7. On Windows its "program call" entry
+    holds raw backslashes from the executable path, which is invalid JSON.
+    That entry's backslashes become forward slashes; any other stray backslash
+    is escaped while valid escape sequences are kept."""
+    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    lines = [l.replace("\\", "/") if l.lstrip().startswith('"program call"') else l for l in lines]
+    text = re.sub(r'\\(["\\/bfnrt]|u[0-9a-fA-F]{4})?',
+                  lambda m: m.group(0) if m.group(1) else "\\\\", "\n".join(lines))
+    return json.loads(text)
 
 
 def _read_turbomole_gradient(path: Path, n: int) -> np.ndarray:

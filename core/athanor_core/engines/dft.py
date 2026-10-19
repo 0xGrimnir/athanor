@@ -48,11 +48,9 @@ class Psi4DFT(Engine):
 
     def compute(self, mol: Molecule) -> EngineResult:
         import psi4
-        psi4.core.be_quiet()
+        quiet_psi4(psi4)
         psi4.set_memory(self.memory)
         psi4.set_num_threads(self.threads)
-        scratch = tempfile.mkdtemp(prefix="athanor-psi4-")
-        psi4.core.IOManager.shared_object().set_default_path(scratch)
         psi4.core.clean_options()
         psi4.set_options({
             "basis": self.basis,
@@ -84,7 +82,7 @@ class Psi4DFT(Engine):
         frame is returned with the Hessian (Eh/bohr^2)."""
         import psi4
         from .. import units
-        psi4.core.be_quiet()
+        quiet_psi4(psi4)
         psi4.set_memory(self.memory)
         psi4.set_num_threads(self.threads)
         psi4.core.clean_options()
@@ -110,3 +108,19 @@ class Psi4DFT(Engine):
         if len(eps) <= nocc:
             return {}
         return {"homo_eh": float(eps[nocc - 1]), "lumo_eh": float(eps[nocc])}
+
+
+_SCRATCH: str | None = None
+
+
+def quiet_psi4(psi4) -> None:
+    """Discard Psi4's text output and use one scratch folder per process.
+
+    ``psi4.core.be_quiet()`` opens the literal path /dev/null, which fails on
+    Windows, so the platform's null device is used instead."""
+    global _SCRATCH
+    psi4.core.set_output_file(os.devnull, False)
+    if _SCRATCH is None:
+        base = os.environ.get("PSI_SCRATCH") or None
+        _SCRATCH = tempfile.mkdtemp(prefix="athanor-psi4-", dir=base)
+    psi4.core.IOManager.shared_object().set_default_path(_SCRATCH)

@@ -21,6 +21,7 @@ import pytest
 
 from athanor_core import tasks, units
 from athanor_core.engines import get_engine
+from athanor_core.engines.dft import quiet_psi4
 from athanor_core.molecule import Molecule
 from athanor_core.vibrations import harmonic_analysis
 
@@ -109,7 +110,7 @@ def test_fd_hessian_matches_psi4_frequency_analysis():
     frame, hess = eng.hessian(mol)
     via_psi4_hessian = np.sort(harmonic_analysis(frame, hess).frequencies_cm1)
     # Psi4's own vibrational analysis on the same level of theory
-    psi4.core.be_quiet(); psi4.core.clean_options()
+    quiet_psi4(psi4); psi4.core.clean_options()
     psi4.set_options({"basis": "cc-pVDZ", "e_convergence": 1e-8, "d_convergence": 1e-8})
     geom = psi4.geometry("\n".join(["0 1"] + [f"{s} {x:.10f} {y:.10f} {z:.10f}" for s, (x, y, z) in zip(mol.symbols, mol.coords)] + ["units angstrom"]))
     e, wfn = psi4.frequency("b3lyp", molecule=geom, return_wfn=True, dertype=1)
