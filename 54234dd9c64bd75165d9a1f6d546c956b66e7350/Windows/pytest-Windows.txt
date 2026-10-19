@@ -1,0 +1,213 @@
+FFFsssssFF....                                                           [100%]
+================================== FAILURES ===================================
+______________________ test_gfn2_matches_xtb_program[O] _______________________
+tests\test_crosschecks.py:69: in test_gfn2_matches_xtb_program
+    mol = tasks.optimize(eng, Molecule.from_smiles(smiles))["molecule"]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in optimize
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_minimize.py:784: in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_lbfgsb_py.py:362: in _minimize_lbfgsb
+    sf = _prepare_scalar_function(fun, x0, jac=jac, args=args, epsilon=eps,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_optimize.py:310: in _prepare_scalar_function
+    sf = ScalarFunction(fun, x0, args, grad, hess,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:283: in __init__
+    self._update_fun()
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:362: in _update_fun
+    fx = self._wrapped_fun(self.x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\_lib\_util.py:544: in __call__
+    fx = self.f(np.copy(x), *self.args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in <lambda>
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+                             ^^^^^
+athanor_core\tasks.py:59: in fg
+    r = engine.compute(m)
+        ^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:126: in _compute_program
+    data = json.loads(Path(d, "xtbout.json").read_text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:354: in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E   json.decoder.JSONDecodeError: Invalid \escape: line 35 column 23 (char 1255)
+_____________________ test_gfn2_matches_xtb_program[C=O] ______________________
+tests\test_crosschecks.py:69: in test_gfn2_matches_xtb_program
+    mol = tasks.optimize(eng, Molecule.from_smiles(smiles))["molecule"]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in optimize
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_minimize.py:784: in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_lbfgsb_py.py:362: in _minimize_lbfgsb
+    sf = _prepare_scalar_function(fun, x0, jac=jac, args=args, epsilon=eps,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_optimize.py:310: in _prepare_scalar_function
+    sf = ScalarFunction(fun, x0, args, grad, hess,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:283: in __init__
+    self._update_fun()
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:362: in _update_fun
+    fx = self._wrapped_fun(self.x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\_lib\_util.py:544: in __call__
+    fx = self.f(np.copy(x), *self.args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in <lambda>
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+                             ^^^^^
+athanor_core\tasks.py:59: in fg
+    r = engine.compute(m)
+        ^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:126: in _compute_program
+    data = json.loads(Path(d, "xtbout.json").read_text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:354: in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E   json.decoder.JSONDecodeError: Invalid \escape: line 46 column 23 (char 1593)
+______________________ test_gfn2_matches_xtb_program[N] _______________________
+tests\test_crosschecks.py:69: in test_gfn2_matches_xtb_program
+    mol = tasks.optimize(eng, Molecule.from_smiles(smiles))["molecule"]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in optimize
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_minimize.py:784: in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_lbfgsb_py.py:362: in _minimize_lbfgsb
+    sf = _prepare_scalar_function(fun, x0, jac=jac, args=args, epsilon=eps,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_optimize.py:310: in _prepare_scalar_function
+    sf = ScalarFunction(fun, x0, args, grad, hess,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:283: in __init__
+    self._update_fun()
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:362: in _update_fun
+    fx = self._wrapped_fun(self.x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\_lib\_util.py:544: in __call__
+    fx = self.f(np.copy(x), *self.args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in <lambda>
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+                             ^^^^^
+athanor_core\tasks.py:59: in fg
+    r = engine.compute(m)
+        ^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:126: in _compute_program
+    data = json.loads(Path(d, "xtbout.json").read_text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:354: in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E   json.decoder.JSONDecodeError: Invalid \escape: line 40 column 23 (char 1471)
+_______________ test_fd_hessian_matches_psi4_frequency_analysis _______________
+tests\test_crosschecks.py:107: in test_fd_hessian_matches_psi4_frequency_analysis
+    mol = tasks.optimize(eng, Molecule.from_smiles("O"))["molecule"]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in optimize
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_minimize.py:784: in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_lbfgsb_py.py:362: in _minimize_lbfgsb
+    sf = _prepare_scalar_function(fun, x0, jac=jac, args=args, epsilon=eps,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_optimize.py:310: in _prepare_scalar_function
+    sf = ScalarFunction(fun, x0, args, grad, hess,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:283: in __init__
+    self._update_fun()
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:362: in _update_fun
+    fx = self._wrapped_fun(self.x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\_lib\_util.py:544: in __call__
+    fx = self.f(np.copy(x), *self.args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in <lambda>
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+                             ^^^^^
+athanor_core\tasks.py:59: in fg
+    r = engine.compute(m)
+        ^^^^^^^^^^^^^^^^^
+athanor_core\engines\dft.py:51: in compute
+    psi4.core.be_quiet()
+E   RuntimeError: 
+E   Fatal Error: PsiOutStream: Failed to open file /dev/null.
+E   Error occurred in file: C:/bld/psi4_1791822402240/work/psi4/src/psi4/libpsi4util/PsiOutStream.cc on line: 48
+__________________________ test_vibrations_match_ase __________________________
+tests\test_crosschecks.py:127: in test_vibrations_match_ase
+    mol = tasks.optimize(eng, Molecule.from_smiles("C=O"))["molecule"]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in optimize
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_minimize.py:784: in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_lbfgsb_py.py:362: in _minimize_lbfgsb
+    sf = _prepare_scalar_function(fun, x0, jac=jac, args=args, epsilon=eps,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_optimize.py:310: in _prepare_scalar_function
+    sf = ScalarFunction(fun, x0, args, grad, hess,
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:283: in __init__
+    self._update_fun()
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\optimize\_differentiable_functions.py:362: in _update_fun
+    fx = self._wrapped_fun(self.x)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\scipy\_lib\_util.py:544: in __call__
+    fx = self.f(np.copy(x), *self.args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\tasks.py:67: in <lambda>
+    res = minimize(lambda x: fg(x)[0], x0, jac=lambda x: fg(x)[1], method="L-BFGS-B",
+                             ^^^^^
+athanor_core\tasks.py:59: in fg
+    r = engine.compute(m)
+        ^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core\engines\xtb.py:126: in _compute_program
+    data = json.loads(Path(d, "xtbout.json").read_text())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:338: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\json\decoder.py:354: in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+E   json.decoder.JSONDecodeError: Invalid \escape: line 46 column 23 (char 1593)
+------------------------------ Captured log call ------------------------------
+WARNING  matplotlib.font_manager:font_manager.py:1249 Matplotlib is building the font cache; this may take a moment.
+=========================== short test summary info ===========================
+FAILED tests/test_crosschecks.py::test_gfn2_matches_xtb_program[O] - json.decoder.JSONDecodeError: Invalid \escape: line 35 column 23 (char 1255)
+FAILED tests/test_crosschecks.py::test_gfn2_matches_xtb_program[C=O] - json.decoder.JSONDecodeError: Invalid \escape: line 46 column 23 (char 1593)
+FAILED tests/test_crosschecks.py::test_gfn2_matches_xtb_program[N] - json.decoder.JSONDecodeError: Invalid \escape: line 40 column 23 (char 1471)
+FAILED tests/test_crosschecks.py::test_fd_hessian_matches_psi4_frequency_analysis - RuntimeError: 
+Fatal Error: PsiOutStream: Failed to open file /dev/null.
+Error occurred in file: C:/bld/psi4_1791822402240/work/psi4/src/psi4/libpsi4util/PsiOutStream.cc on line: 48
+FAILED tests/test_crosschecks.py::test_vibrations_match_ase - json.decoder.JSONDecodeError: Invalid \escape: line 46 column 23 (char 1593)
+SKIPPED [5] tests\test_crosschecks.py:89: needs both tblite and the xtb program
+5 failed, 4 passed, 5 skipped in 9.87s
