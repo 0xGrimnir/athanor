@@ -4,7 +4,7 @@
 //! (`runtime/env.tar.gz`, built with conda-pack) plus the `athanor_core`
 //! package (`runtime/core`). On first launch, or after an update that
 //! changes the engines, the archive is extracted into the user's local app
-//! data folder and relocated with conda-unpack. The core then runs as a child
+//! data folder and relocated by `runtime/unpack_env.py`. The core then runs as a child
 //! process speaking JSON-RPC over stdin/stdout: no network port is opened.
 
 use std::collections::HashMap;
@@ -162,7 +162,7 @@ pub fn launch_spec(app: &AppHandle, emit: &dyn Fn(Status)) -> Result<LaunchSpec,
         fs::create_dir_all(&env_dir).map_err(|e| format!("could not create {}: {e}", env_dir.display()))?;
         extract(&res.join("env.tar.gz"), &env_dir)?;
         emit(Status::new("preparing", "Relocating engine paths"));
-        unpack(&env_dir)?;
+        unpack(&env_dir, &res.join("unpack_env.py"))?;
         fs::write(&marker, env_id.as_bytes()).map_err(|e| e.to_string())?;
         // Remove environments left by previous versions.
         if let Ok(rd) = fs::read_dir(&envs) {
@@ -226,25 +226,22 @@ fn extract(archive: &Path, dest: &Path) -> Result<(), String> {
     Ok(())
 }
 
-fn unpack(env: &Path) -> Result<(), String> {
-    // conda-pack ships a relocation step that rewrites hard-coded prefixes.
-    let script = if cfg!(windows) { env.join("Scripts").join("conda-unpack-script.py") } else { env.join("bin").join("conda-unpack") };
-    let exe = env.join("Scripts").join("conda-unpack.exe");
-    let mut cmd = if cfg!(windows) && exe.exists() {
-        Command::new(&exe)
-    } else if script.exists() {
-        let mut c = Command::new(python_path(env));
-        c.arg(&script);
-        c
-    } else {
-        return Ok(()); // nothing to relocate
-    };
+fn unpack(env: &Path, unpacker: &Path) -> Result<(), String> {
+    // Rewrites the build machine's paths baked into the packed environment.
+    // unpack_env.py replaces conda-pack's conda-unpack, which fails on Windows
+    // by opening DLLs its own interpreter has loaded for writing.
+    let mut cmd = Command::new(python_path(env));
+    cmd.arg("-I").arg("-S").arg(unpacker).arg(env);
     cmd.envs(runtime_env(env, env, env));
     #[cfg(windows)]
     cmd.creation_flags(CREATE_NO_WINDOW);
-    let out = cmd.output().map_err(|e| format!("could not run conda-unpack: {e}"))?;
+    let out = cmd.output().map_err(|e| format!("could not run the relocation step: {e}"))?;
     if !out.status.success() {
-        return Err(format!("relocating the science engines failed: {}", String::from_utf8_lossy(&out.stderr)));
+        return Err(format!(
+            "relocating the science engines failed: {}{}",
+            String::from_utf8_lossy(&out.stdout),
+            String::from_utf8_lossy(&out.stderr)
+        ));
     }
     Ok(())
 }

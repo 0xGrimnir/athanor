@@ -1,6 +1,6 @@
 """Smoke-test a packed runtime exactly as the installed app launches it.
 
-Extracts env.tar.gz into a temporary folder, runs conda-unpack, then starts
+Extracts env.tar.gz into a temporary folder, relocates it with unpack_env.py, then starts
 `python -m athanor_core.server` with the same environment variables the Rust
 shell sets, and performs real calculations on every tier.
 Usage: python smoke_runtime.py <runtime_dir>
@@ -33,13 +33,12 @@ env["PATH"] = os.pathsep.join(str(p) for p in paths) + os.pathsep + os.environ.g
 env.update(CONDA_PREFIX=str(env_dir), PYTHONPATH=str(runtime / "core"), PYTHONNOUSERSITE="1",
            PYTHONUTF8="1", PSI_SCRATCH=str(work))
 
-unpack_exe = env_dir / "Scripts" / "conda-unpack.exe"
-unpack_py = env_dir / ("Scripts/conda-unpack-script.py" if win else "bin/conda-unpack")
-if win and unpack_exe.exists():
-    subprocess.run([str(unpack_exe)], env=env, check=True)
-elif unpack_py.exists():
-    subprocess.run([str(py), str(unpack_py)], env=env, check=True)
-print("conda-unpack done")
+# Same relocation step the installed app runs.
+r = subprocess.run([str(py), "-I", "-S", str(runtime / "unpack_env.py"), str(env_dir)], env=env,
+                   capture_output=True, text=True)
+print(r.stdout.strip(), r.stderr.strip())
+r.check_returncode()
+print("relocation done")
 
 proc = subprocess.Popen([str(py), "-m", "athanor_core.server"], cwd=str(work), env=env, text=True,
                         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=sys.stderr)

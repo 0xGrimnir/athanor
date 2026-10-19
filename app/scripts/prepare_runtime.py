@@ -28,7 +28,10 @@ def main():
 
     RUNTIME.mkdir(parents=True, exist_ok=True)
     lock = Path(a.lock).read_bytes()
-    env_id = hashlib.sha256(lock).hexdigest()[:16]
+    unpacker = (ROOT / "app" / "runtime" / "unpack_env.py").read_bytes()
+    shutil.copy2(ROOT / "app" / "runtime" / "unpack_env.py", RUNTIME / "unpack_env.py")
+    # A new environment or a new relocation step both force a fresh extraction.
+    env_id = hashlib.sha256(lock + b"\0" + unpacker).hexdigest()[:16]
     (RUNTIME / "env_id.txt").write_text(env_id)
 
     core_dst = RUNTIME / "core"
