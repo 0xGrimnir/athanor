@@ -1,0 +1,117 @@
+FFFFFFFF......                                                           [100%]
+=================================== FAILURES ===================================
+_______________________ test_gfn2_matches_xtb_program[O] _______________________
+tests/test_crosschecks.py:79: in test_gfn2_matches_xtb_program
+    np.testing.assert_allclose(mine, theirs, atol=3.0)  # cm-1; two independent GFN2 codes
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: 
+E   Not equal to tolerance rtol=1e-07, atol=3
+E   
+E   Mismatched elements: 3 / 3 (100%)
+E   Mismatch at indices:
+E    [0]: 1539.6089163718934 (ACTUAL), 6.66192 (DESIRED)
+E    [1]: 3643.2079547281446 (ACTUAL), 16.75131 (DESIRED)
+E    [2]: 3651.3675986791886 (ACTUAL), 133.54135 (DESIRED)
+E   Max absolute difference among violations: 3626.45664473
+E   Max relative difference among violations: 230.10588485
+E    ACTUAL: array([1539.608916, 3643.207955, 3651.367599])
+E    DESIRED: array([  6.66192,  16.75131, 133.54135])
+______________________ test_gfn2_matches_xtb_program[C=O] ______________________
+tests/test_crosschecks.py:78: in test_gfn2_matches_xtb_program
+    assert len(mine) == len(theirs)
+E   assert 6 == 5
+E    +  where 6 = len(array([1085.53134251, 1203.08308547, 1489.19974103, 1806.52141754,\n       2792.59369939, 2838.73096868]))
+E    +  and   5 = len(array([  1.33814,  26.48455,  68.41544, 116.1278 , 150.13312]))
+_______________________ test_gfn2_matches_xtb_program[N] _______________________
+tests/test_crosschecks.py:78: in test_gfn2_matches_xtb_program
+    assert len(mine) == len(theirs)
+E   assert 6 == 5
+E    +  where 6 = len(array([1160.75906701, 1593.34633217, 1593.40881971, 3425.37942322,\n       3477.32820713, 3477.48026263]))
+E    +  and   5 = len(array([  5.41437,   5.42015,  27.39003,  27.46227, 211.24779]))
+_________________________ test_gfn2_backends_agree[O] __________________________
+tests/test_crosschecks.py:96: in test_gfn2_backends_agree
+    b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:131: in _compute_program
+    dipole=np.array(data["dipole / a.u."], dtype=float),
+                    ^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'dipole / a.u.'
+________________________ test_gfn2_backends_agree[C=O] _________________________
+tests/test_crosschecks.py:96: in test_gfn2_backends_agree
+    b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:131: in _compute_program
+    dipole=np.array(data["dipole / a.u."], dtype=float),
+                    ^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'dipole / a.u.'
+_______________________ test_gfn2_backends_agree[[NH4+]] _______________________
+tests/test_crosschecks.py:96: in test_gfn2_backends_agree
+    b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:131: in _compute_program
+    dipole=np.array(data["dipole / a.u."], dtype=float),
+                    ^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'dipole / a.u.'
+________________________ test_gfn2_backends_agree[[O]] _________________________
+tests/test_crosschecks.py:96: in test_gfn2_backends_agree
+    b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:131: in _compute_program
+    dipole=np.array(data["dipole / a.u."], dtype=float),
+                    ^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'dipole / a.u.'
+______________________ test_gfn2_backends_agree[c1ccccc1] ______________________
+tests/test_crosschecks.py:96: in test_gfn2_backends_agree
+    b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:84: in compute
+    return self._compute_program(mol)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+athanor_core/engines/xtb.py:131: in _compute_program
+    dipole=np.array(data["dipole / a.u."], dtype=float),
+                    ^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'dipole / a.u.'
+=============================== warnings summary ===============================
+tests/test_crosschecks.py: 29 warnings
+  /home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/ase/atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    a.shape = (-1,) + shape
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_crosschecks.py::test_gfn2_matches_xtb_program[O] - AssertionError: 
+Not equal to tolerance rtol=1e-07, atol=3
+
+Mismatched elements: 3 / 3 (100%)
+Mismatch at indices:
+ [0]: 1539.6089163718934 (ACTUAL), 6.66192 (DESIRED)
+ [1]: 3643.2079547281446 (ACTUAL), 16.75131 (DESIRED)
+ [2]: 3651.3675986791886 (ACTUAL), 133.54135 (DESIRED)
+Max absolute difference among violations: 3626.45664473
+Max relative difference among violations: 230.10588485
+ ACTUAL: array([1539.608916, 3643.207955, 3651.367599])
+ DESIRED: array([  6.66192,  16.75131, 133.54135])
+FAILED tests/test_crosschecks.py::test_gfn2_matches_xtb_program[C=O] - assert 6 == 5
+ +  where 6 = len(array([1085.53134251, 1203.08308547, 1489.19974103, 1806.52141754,\n       2792.59369939, 2838.73096868]))
+ +  and   5 = len(array([  1.33814,  26.48455,  68.41544, 116.1278 , 150.13312]))
+FAILED tests/test_crosschecks.py::test_gfn2_matches_xtb_program[N] - assert 6 == 5
+ +  where 6 = len(array([1160.75906701, 1593.34633217, 1593.40881971, 3425.37942322,\n       3477.32820713, 3477.48026263]))
+ +  and   5 = len(array([  5.41437,   5.42015,  27.39003,  27.46227, 211.24779]))
+FAILED tests/test_crosschecks.py::test_gfn2_backends_agree[O] - KeyError: 'dipole / a.u.'
+FAILED tests/test_crosschecks.py::test_gfn2_backends_agree[C=O] - KeyError: 'dipole / a.u.'
+FAILED tests/test_crosschecks.py::test_gfn2_backends_agree[[NH4+]] - KeyError: 'dipole / a.u.'
+FAILED tests/test_crosschecks.py::test_gfn2_backends_agree[[O]] - KeyError: 'dipole / a.u.'
+FAILED tests/test_crosschecks.py::test_gfn2_backends_agree[c1ccccc1] - KeyError: 'dipole / a.u.'
+8 failed, 6 passed, 29 warnings in 53.58s
