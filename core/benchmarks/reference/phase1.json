@@ -1,0 +1,1229 @@
+{
+ "description": "Phase 1 chemistry benchmark: experimental reference values with sources, and published method error statistics used as comparators.",
+ "sources": {
+  "CCCBDB-R22": "NIST Computational Chemistry Comparison and Benchmark Database, Release 22 (May 2022), NIST Standard Reference Database 101. https://cccbdb.nist.gov",
+  "HoyBunker1979": "A. R. Hoy, P. R. Bunker, J. Mol. Spectrosc. 74, 1-8 (1979). DOI: 10.1016/0022-2852(79)90019-5",
+  "Shostak1991": "S. L. Shostak, W. L. Ebenstein, J. S. Muenter, J. Chem. Phys. 94, 5875 (1991). DOI: 10.1063/1.460471",
+  "Shimanouchi1972": "T. Shimanouchi, Tables of Molecular Vibrational Frequencies, Consolidated Volume I, NSRDS-NBS 39, National Bureau of Standards (1972). DOI: 10.6028/NBS.NSRDS.39. Retrieved via the NIST Chemistry WebBook (SRD 69).",
+  "NSRDS-NBS10": "R. D. Nelson, D. R. Lide, A. A. Maryott, Selected Values of Electric Dipole Moments for Molecules in the Gas Phase, NSRDS-NBS 10 (1967). As compiled in CCCBDB-R22.",
+  "NISTDiatomic": "NIST Diatomic Spectral Database, as compiled in CCCBDB-R22.",
+  "NISTtriatomic": "NIST Triatomic Spectral Database (SRD 117), as compiled in CCCBDB-R22.",
+  "Viswanathan1984": "CCCBDB key 1984Vis/Dyk:231-239 (H2S dipole), as compiled in CCCBDB-R22.",
+  "Janoschek2001": "R. Janoschek, Quantum chemical B3LYP/cc-pvqz computation of ground-state structures and properties of small molecules with atoms of Z <= 18 (IUPAC Technical Report), Pure Appl. Chem. 73, 1521-1553 (2001). DOI: 10.1351/pac200173091521",
+  "HaitHeadGordon2018": "D. Hait, M. Head-Gordon, How accurate is density functional theory at predicting dipole moments? An assessment using a new database of 200 benchmark values, J. Chem. Theory Comput. (2018). arXiv:1709.05075",
+  "CompositeIR2024": "Efficient Composite Infrared Spectroscopy: Combining the Doubly-Harmonic Approximation with Machine Learning Potentials, arXiv:2408.08174 (2024), Table S3 (MHG114 subset vs CCSD(T)/CBS).",
+  "Kouam2025": "Teguia Kouam et al., Comparative analysis of GFN methods in geometry optimization of small organic semiconductor molecules: A DFT benchmarking study, arXiv:2505.09606 (2025).",
+  "MMFF94-suite": "MMFF94 validation suite (T. A. Halgren), 761 molecules with reference energies; distributed via CCL (ccl.net/cca/data/MMFF94) and in RDKit's test data (Code/ForceField/MMFF/test_data)."
+ },
+ "comparators": {
+  "dft": {
+   "method": "B3LYP",
+   "bond_length_mad_angstrom": {
+    "value": 0.0125,
+    "n": 138,
+    "basis": "cc-pVQZ",
+    "set": "diatomic ground states vs experimental re",
+    "source": "Janoschek2001"
+   },
+   "frequency_scale_factor": {
+    "value": 0.967,
+    "sigma": 0.018,
+    "n_molecules": 289,
+    "n_frequencies": 3048,
+    "basis": "cc-pVTZ",
+    "fitted_to": "experimental fundamentals",
+    "source": "CCCBDB-R22"
+   },
+   "dipole_regularized_rms_percent": {
+    "value": 6.98,
+    "n": 152,
+    "basis": "aug-pc-4",
+    "reference": "CCSD(T)/CBS",
+    "source": "HaitHeadGordon2018"
+   }
+  },
+  "gfn2-xtb": {
+   "method": "GFN2-xTB",
+   "dipole_regularized_rms_percent": {
+    "value": 32.09,
+    "n": 114,
+    "reference": "CCSD(T)/CBS (MHG114)",
+    "source": "CompositeIR2024"
+   },
+   "bond_length_mad_angstrom": {
+    "value": 0.0117,
+    "reference": "B3LYP/6-31G(2df,p) (QM9 subset), not experiment",
+    "source": "Kouam2025"
+   }
+  },
+  "mmff94": {
+   "method": "MMFF94",
+   "validation_suite": {
+    "n": 761,
+    "quantity": "total energy (kcal/mol) at reference geometries",
+    "source": "MMFF94-suite"
+   }
+  }
+ },
+ "gates": {
+  "description": "A tier passes if (1) correctness tests reproduce the engine's own reference outputs, and (2) every accuracy statistic measured here is no worse than twice the published comparator. Factor 2 allows for different test sets and basis sets; it is a plausibility check that catches implementation errors, not a claim of accuracy beyond the literature.",
+  "comparator_factor": 2.0,
+  "dft_benchmark_level": {
+   "geometry": "B3LYP/cc-pVTZ",
+   "frequencies": "B3LYP/cc-pVTZ",
+   "dipoles": "B3LYP/aug-cc-pVTZ"
+  }
+ },
+ "geometries": [
+  {
+   "id": "H2",
+   "xyz": [
+    [
+     "H",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     0.74
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 0.741,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "[H][H]"
+  },
+  {
+   "id": "HF",
+   "xyz": [
+    [
+     "F",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     0.92
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 0.917,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "F"
+  },
+  {
+   "id": "HCl",
+   "xyz": [
+    [
+     "Cl",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     1.27
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 1.275,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "Cl"
+  },
+  {
+   "id": "N2",
+   "xyz": [
+    [
+     "N",
+     0,
+     0,
+     0
+    ],
+    [
+     "N",
+     0,
+     0,
+     1.1
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 1.098,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "N#N"
+  },
+  {
+   "id": "CO",
+   "xyz": [
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     0,
+     0,
+     1.13
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 1.128,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "[C-]#[O+]"
+  },
+  {
+   "id": "F2",
+   "xyz": [
+    [
+     "F",
+     0,
+     0,
+     0
+    ],
+    [
+     "F",
+     0,
+     0,
+     1.41
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 1.412,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "FF"
+  },
+  {
+   "id": "Cl2",
+   "xyz": [
+    [
+     "Cl",
+     0,
+     0,
+     0
+    ],
+    [
+     "Cl",
+     0,
+     0,
+     1.99
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 1.988,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "smiles": "ClCl"
+  },
+  {
+   "id": "H2O",
+   "smiles": "O",
+   "xyz": [
+    [
+     "O",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0.96,
+     0,
+     0
+    ],
+    [
+     "H",
+     -0.24,
+     0.93,
+     0
+    ]
+   ],
+   "params": [
+    {
+     "type": "bond",
+     "atoms": [
+      0,
+      1
+     ],
+     "value": 0.958,
+     "unc": 0.0005,
+     "kind": "re",
+     "source": "HoyBunker1979"
+    },
+    {
+     "type": "angle",
+     "atoms": [
+      1,
+      0,
+      2
+     ],
+     "value": 104.4776,
+     "unc": 0.0019,
+     "kind": "re",
+     "source": "HoyBunker1979"
+    }
+   ]
+  }
+ ],
+ "dipoles_debye": [
+  {
+   "id": "HF",
+   "xyz": [
+    [
+     "F",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     0.917
+    ]
+   ],
+   "value": 1.827,
+   "source": "NISTDiatomic"
+  },
+  {
+   "id": "HCl",
+   "xyz": [
+    [
+     "Cl",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     1.275
+    ]
+   ],
+   "value": 1.093,
+   "source": "NISTDiatomic"
+  },
+  {
+   "id": "HBr",
+   "xyz": [
+    [
+     "Br",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     1.414
+    ]
+   ],
+   "value": 0.827,
+   "source": "NISTDiatomic"
+  },
+  {
+   "id": "CO",
+   "xyz": [
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     0,
+     0,
+     1.128
+    ]
+   ],
+   "value": 0.112,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "CS",
+   "xyz": [
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "S",
+     0,
+     0,
+     1.535
+    ]
+   ],
+   "value": 1.958,
+   "source": "CCCBDB-R22",
+   "note": "CCCBDB key 1974Hel/Hel(II/6)"
+  },
+  {
+   "id": "SiO",
+   "xyz": [
+    [
+     "Si",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     0,
+     0,
+     1.51
+    ]
+   ],
+   "value": 3.088,
+   "source": "CCCBDB-R22",
+   "note": "CCCBDB key 1970Ray/Mue:3458-3461"
+  },
+  {
+   "id": "ClF",
+   "xyz": [
+    [
+     "Cl",
+     0,
+     0,
+     0
+    ],
+    [
+     "F",
+     0,
+     0,
+     1.628
+    ]
+   ],
+   "value": 0.88,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "LiH",
+   "xyz": [
+    [
+     "Li",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0,
+     0,
+     1.595
+    ]
+   ],
+   "value": 5.88,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "H2O",
+   "xyz": [
+    [
+     "O",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     0.958,
+     0,
+     0
+    ],
+    [
+     "H",
+     -0.24,
+     0.927,
+     0
+    ]
+   ],
+   "value": 1.857,
+   "source": "Shostak1991"
+  },
+  {
+   "id": "H2S",
+   "xyz": [
+    [
+     "S",
+     0,
+     0,
+     0
+    ],
+    [
+     "H",
+     1.336,
+     0,
+     0
+    ],
+    [
+     "H",
+     -0.031,
+     1.336,
+     0
+    ]
+   ],
+   "value": 0.977,
+   "source": "Viswanathan1984"
+  },
+  {
+   "id": "HCN",
+   "xyz": [
+    [
+     "H",
+     0,
+     0,
+     -1.066
+    ],
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "N",
+     0,
+     0,
+     1.153
+    ]
+   ],
+   "value": 2.98,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "HNC",
+   "xyz": [
+    [
+     "H",
+     0,
+     0,
+     -0.995
+    ],
+    [
+     "N",
+     0,
+     0,
+     0
+    ],
+    [
+     "C",
+     0,
+     0,
+     1.169
+    ]
+   ],
+   "value": 3.05,
+   "source": "NISTtriatomic"
+  },
+  {
+   "id": "N2O",
+   "xyz": [
+    [
+     "N",
+     0,
+     0,
+     -1.128
+    ],
+    [
+     "N",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     0,
+     0,
+     1.184
+    ]
+   ],
+   "value": 0.161,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "O3",
+   "xyz": [
+    [
+     "O",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     1.272,
+     0,
+     0
+    ],
+    [
+     "O",
+     -0.267,
+     1.244,
+     0
+    ]
+   ],
+   "value": 0.53,
+   "source": "NSRDS-NBS10",
+   "note": "strong multireference character; a known hard case"
+  },
+  {
+   "id": "FCN",
+   "xyz": [
+    [
+     "F",
+     0,
+     0,
+     -1.262
+    ],
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "N",
+     0,
+     0,
+     1.159
+    ]
+   ],
+   "value": 2.17,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "F2O",
+   "xyz": [
+    [
+     "O",
+     0,
+     0,
+     0
+    ],
+    [
+     "F",
+     1.405,
+     0,
+     0
+    ],
+    [
+     "F",
+     -0.249,
+     1.383,
+     0
+    ]
+   ],
+   "value": 0.297,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "HCP",
+   "xyz": [
+    [
+     "H",
+     0,
+     0,
+     -1.069
+    ],
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "P",
+     0,
+     0,
+     1.54
+    ]
+   ],
+   "value": 0.39,
+   "source": "NSRDS-NBS10"
+  },
+  {
+   "id": "HNO",
+   "xyz": [
+    [
+     "N",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     1.212,
+     0,
+     0
+    ],
+    [
+     "H",
+     -0.269,
+     1.025,
+     0
+    ]
+   ],
+   "value": 1.67,
+   "source": "NISTtriatomic"
+  },
+  {
+   "id": "CO2",
+   "xyz": [
+    [
+     "O",
+     0,
+     0,
+     -1.16
+    ],
+    [
+     "C",
+     0,
+     0,
+     0
+    ],
+    [
+     "O",
+     0,
+     0,
+     1.16
+    ]
+   ],
+   "value": 0.0,
+   "source": "NSRDS-NBS10",
+   "note": "symmetry control"
+  },
+  {
+   "id": "N2",
+   "xyz": [
+    [
+     "N",
+     0,
+     0,
+     0
+    ],
+    [
+     "N",
+     0,
+     0,
+     1.098
+    ]
+   ],
+   "value": 0.0,
+   "source": "NSRDS-NBS10",
+   "note": "symmetry control"
+  }
+ ],
+ "frequencies": {
+  "description": "Experimental vibrational fundamentals (cm-1). Degenerate modes are listed once with their degeneracy. Phase is the phase of the observation; liquid or solution values carry a few cm-1 of medium shift.",
+  "molecules": [
+   {
+    "id": "H2O",
+    "smiles": "O",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 3657,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 1595,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 3756,
+      "deg": 1,
+      "sym": "b1",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "NH3",
+    "smiles": "N",
+    "source": "Shimanouchi1972",
+    "note": "v2 umbrella mode is strongly anharmonic (inversion tunnelling, 932.5/968.3 split)",
+    "modes": [
+     {
+      "v": 3337,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 950,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas",
+      "anharmonic": true
+     },
+     {
+      "v": 3444,
+      "deg": 2,
+      "sym": "e",
+      "phase": "gas"
+     },
+     {
+      "v": 1627,
+      "deg": 2,
+      "sym": "e",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "CH4",
+    "smiles": "C",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 2917,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 1534,
+      "deg": 2,
+      "sym": "e",
+      "phase": "gas"
+     },
+     {
+      "v": 3019,
+      "deg": 3,
+      "sym": "f2",
+      "phase": "gas"
+     },
+     {
+      "v": 1306,
+      "deg": 3,
+      "sym": "f2",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "HCN",
+    "smiles": "C#N",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 3311,
+      "deg": 1,
+      "sym": "sigma+",
+      "phase": "gas"
+     },
+     {
+      "v": 712,
+      "deg": 2,
+      "sym": "pi",
+      "phase": "gas"
+     },
+     {
+      "v": 2097,
+      "deg": 1,
+      "sym": "sigma+",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "H2CO",
+    "smiles": "C=O",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 2783,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 1746,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 1500,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 2843,
+      "deg": 1,
+      "sym": "b1",
+      "phase": "gas"
+     },
+     {
+      "v": 1249,
+      "deg": 1,
+      "sym": "b1",
+      "phase": "gas"
+     },
+     {
+      "v": 1167,
+      "deg": 1,
+      "sym": "b2",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "C2H4",
+    "smiles": "C=C",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 3026,
+      "deg": 1,
+      "sym": "ag",
+      "phase": "gas"
+     },
+     {
+      "v": 1623,
+      "deg": 1,
+      "sym": "ag",
+      "phase": "gas"
+     },
+     {
+      "v": 1342,
+      "deg": 1,
+      "sym": "ag",
+      "phase": "gas"
+     },
+     {
+      "v": 1023,
+      "deg": 1,
+      "sym": "au",
+      "phase": "inactive"
+     },
+     {
+      "v": 3103,
+      "deg": 1,
+      "sym": "b1g",
+      "phase": "gas"
+     },
+     {
+      "v": 1236,
+      "deg": 1,
+      "sym": "b1g",
+      "phase": "liquid"
+     },
+     {
+      "v": 949,
+      "deg": 1,
+      "sym": "b1u",
+      "phase": "gas"
+     },
+     {
+      "v": 943,
+      "deg": 1,
+      "sym": "b2g",
+      "phase": "liquid"
+     },
+     {
+      "v": 3106,
+      "deg": 1,
+      "sym": "b2u",
+      "phase": "gas"
+     },
+     {
+      "v": 826,
+      "deg": 1,
+      "sym": "b2u",
+      "phase": "gas"
+     },
+     {
+      "v": 2989,
+      "deg": 1,
+      "sym": "b3u",
+      "phase": "gas"
+     },
+     {
+      "v": 1444,
+      "deg": 1,
+      "sym": "b3u",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "C2H2",
+    "smiles": "C#C",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 3374,
+      "deg": 1,
+      "sym": "sigma_g+",
+      "phase": "gas"
+     },
+     {
+      "v": 1974,
+      "deg": 1,
+      "sym": "sigma_g+",
+      "phase": "gas"
+     },
+     {
+      "v": 3289,
+      "deg": 1,
+      "sym": "sigma_u+",
+      "phase": "gas"
+     },
+     {
+      "v": 612,
+      "deg": 2,
+      "sym": "pi_g",
+      "phase": "gas"
+     },
+     {
+      "v": 730,
+      "deg": 2,
+      "sym": "pi_u",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "H2S",
+    "smiles": "S",
+    "source": "Shimanouchi1972",
+    "modes": [
+     {
+      "v": 2615,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 1183,
+      "deg": 1,
+      "sym": "a1",
+      "phase": "gas"
+     },
+     {
+      "v": 2626,
+      "deg": 1,
+      "sym": "b1",
+      "phase": "gas"
+     }
+    ]
+   },
+   {
+    "id": "C6H6",
+    "smiles": "c1ccccc1",
+    "source": "Shimanouchi1972",
+    "note": "many modes observed only in liquid or solution",
+    "modes": [
+     {
+      "v": 3062,
+      "deg": 1,
+      "sym": "a1g",
+      "phase": "liquid"
+     },
+     {
+      "v": 992,
+      "deg": 1,
+      "sym": "a1g",
+      "phase": "liquid"
+     },
+     {
+      "v": 1326,
+      "deg": 1,
+      "sym": "a2g",
+      "phase": "liquid"
+     },
+     {
+      "v": 673,
+      "deg": 1,
+      "sym": "a2u",
+      "phase": "gas"
+     },
+     {
+      "v": 3068,
+      "deg": 1,
+      "sym": "b1u",
+      "phase": "solution"
+     },
+     {
+      "v": 1010,
+      "deg": 1,
+      "sym": "b1u",
+      "phase": "solution"
+     },
+     {
+      "v": 995,
+      "deg": 1,
+      "sym": "b2g",
+      "phase": "estimated"
+     },
+     {
+      "v": 703,
+      "deg": 1,
+      "sym": "b2g",
+      "phase": "estimated"
+     },
+     {
+      "v": 1310,
+      "deg": 1,
+      "sym": "b2u",
+      "phase": "liquid"
+     },
+     {
+      "v": 1150,
+      "deg": 1,
+      "sym": "b2u",
+      "phase": "liquid"
+     },
+     {
+      "v": 849,
+      "deg": 2,
+      "sym": "e1g",
+      "phase": "liquid"
+     },
+     {
+      "v": 3063,
+      "deg": 2,
+      "sym": "e1u",
+      "phase": "liquid"
+     },
+     {
+      "v": 1486,
+      "deg": 2,
+      "sym": "e1u",
+      "phase": "gas"
+     },
+     {
+      "v": 1038,
+      "deg": 2,
+      "sym": "e1u",
+      "phase": "gas"
+     },
+     {
+      "v": 3047,
+      "deg": 2,
+      "sym": "e2g",
+      "phase": "liquid"
+     },
+     {
+      "v": 1596,
+      "deg": 2,
+      "sym": "e2g",
+      "phase": "liquid"
+     },
+     {
+      "v": 1178,
+      "deg": 2,
+      "sym": "e2g",
+      "phase": "liquid"
+     },
+     {
+      "v": 606,
+      "deg": 2,
+      "sym": "e2g",
+      "phase": "liquid"
+     },
+     {
+      "v": 975,
+      "deg": 2,
+      "sym": "e2u",
+      "phase": "liquid"
+     },
+     {
+      "v": 410,
+      "deg": 2,
+      "sym": "e2u",
+      "phase": "solution"
+     }
+    ]
+   }
+  ]
+ }
+}

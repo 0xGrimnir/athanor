@@ -1,0 +1,99 @@
+name: core
+on:
+  push:
+    paths:
+      - "core/**"
+      - ".github/workflows/core.yml"
+  workflow_dispatch:
+    inputs:
+      dft_benchmark:
+        description: "Run the full DFT benchmark (slow)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: core-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      OMP_NUM_THREADS: "1"
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: core/environment.yml
+          init-shell: bash
+          cache-environment: true
+
+      - name: Record environment
+        run: |
+          micromamba list --explicit --md5 > env-lock-${{ runner.os }}.txt
+          python -c "import rdkit, psi4, scipy, numpy; from tblite.library import get_version; print('rdkit', rdkit.__version__, 'psi4', psi4.__version__, 'tblite', get_version())"
+          xtb --version | grep -i "xtb version" || true
+
+      - name: Install core
+        run: pip install --no-deps -e core
+
+      - name: Unit, validation-suite and cross-check tests
+        working-directory: core
+        run: |
+          python -m pytest -q -rs 2>&1 | tee ../pytest-${{ runner.os }}.txt
+          test ${PIPESTATUS[0]} -eq 0
+
+      - name: Benchmark (MMFF94, GFN2-xTB)
+        working-directory: core
+        run: |
+          python -m athanor_core.benchmark --tiers mmff94,gfn2-xtb --out ../bench-fast-${{ runner.os }} | tee ../bench-fast-${{ runner.os }}.md
+          test ${PIPESTATUS[0]} -eq 0
+
+      - name: Benchmark (DFT, B3LYP)
+        if: runner.os == 'Linux' && (github.event_name == 'push' || inputs.dft_benchmark)
+        working-directory: core
+        env:
+          OMP_NUM_THREADS: "4"
+        run: |
+          python -m athanor_core.benchmark --tiers dft --out ../bench-dft-${{ runner.os }} | tee ../bench-dft-${{ runner.os }}.md
+          test ${PIPESTATUS[0]} -eq 0
+
+      - name: Report
+        if: always()
+        run: |
+          for f in pytest-${{ runner.os }}.txt bench-fast-${{ runner.os }}.md bench-dft-${{ runner.os }}.md; do
+            [ -f "$f" ] || continue
+            cat "$f" >> "$GITHUB_STEP_SUMMARY"
+            msg=$(grep -E "passed|failed|PASS|FAIL|\*\*" "$f" | head -40 | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"}{print}')
+            echo "::notice title=${f}::${msg}"
+          done
+
+      - name: Publish results to ci-results branch
+        if: always()
+        run: |
+          set -x
+          rm -rf /tmp/res && mkdir -p /tmp/res/${{ github.sha }}/${{ runner.os }}
+          cp -r pytest-*.txt bench-* env-lock-*.txt /tmp/res/${{ github.sha }}/${{ runner.os }}/ 2>/dev/null || true
+          git config user.name "athanor-ci"
+          git config user.email "ci@athanor.invalid"
+          for i in 1 2 3 4 5; do
+            rm -rf /tmp/ci && git clone --depth 1 --branch ci-results "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" /tmp/ci 2>/dev/null \
+              || (mkdir -p /tmp/ci && cd /tmp/ci && git init -q -b ci-results && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}")
+            cp -r /tmp/res/* /tmp/ci/
+            cd /tmp/ci && git add -A && git commit -q -m "CI results ${{ github.sha }} ${{ runner.os }}" || true
+            if git push -q origin ci-results; then break; fi
+            cd - >/dev/null; sleep $((i*7))
+          done

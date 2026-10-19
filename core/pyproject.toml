@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "athanor-core"
+version = "0.1.0.dev0"
+description = "Athanor science core: tiered computational chemistry with provenance"
+requires-python = ">=3.11"
+dependencies = ["numpy", "scipy", "rdkit"]
+
+[project.optional-dependencies]
+xtb = ["tblite"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["athanor_core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "psi4: requires Psi4 (runs in CI)",
+  "slow: benchmark-scale runs",
+]

@@ -1,0 +1,15 @@
+# Science core environment (conda-forge). Used by CI and bundled into the
+# Windows installer. Versions are pinned by the lockfile generated in CI.
+name: athanor-core
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - rdkit
+  - tblite-python
+  - xtb
+  - psi4
+  - ase
+  - pytest
