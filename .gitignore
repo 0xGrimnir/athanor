@@ -1,0 +1,91 @@
+# ===== Personal genetic data: never commit =====
+# Consumer DNA raw files and reports (23andMe, AncestryDNA, MyHeritage, Promethease, etc.)
+*promethease*
+*Promethease*
+genome_*.txt
+*AncestryDNA*
+*ancestrydna*
+*MyHeritage*
+*23andme*
+*23andMe*
+*.vcf
+*.vcf.gz
+*.bcf
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.bam
+*.bai
+*.cram
+*.crai
+user-data/
+my-data/
+# Synthetic or public test fixtures are allowed:
+!tests/fixtures/**
+!benchmarks/data/**
+
+# ===== Secrets and signing keys =====
+.env
+.env.*
+*.key
+*.key.pub
+*.pem
+*.pfx
+*.p12
+.tauri/
+signing/
+
+# ===== Rust / Tauri =====
+target/
+src-tauri/target/
+src-tauri/gen/
+src-tauri/WixTools/
+
+# ===== Node / frontend =====
+node_modules/
+dist/
+.vite/
+.cache/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+*.spec
+
+# ===== Science engine scratch and caches =====
+scratch/
+runs/
+*.chk
+*.fchk
+*.tmp
+xtbrestart
+xtbopt.*
+charges
+wbo
+psi.*.clean
+timer.dat
+data/cache/
+data/downloads/
+
+# ===== OS / editors =====
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
