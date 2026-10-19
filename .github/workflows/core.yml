@@ -53,7 +53,7 @@ jobs:
       - name: Unit, validation-suite and cross-check tests
         working-directory: core
         run: |
-          python -m pytest -q -rs 2>&1 | tee ../pytest-${{ runner.os }}.txt
+          python -m pytest -q -rfEs --tb=short 2>&1 | tee ../pytest-${{ runner.os }}.txt
           test ${PIPESTATUS[0]} -eq 0
 
       - name: Benchmark (MMFF94, GFN2-xTB)
@@ -77,7 +77,7 @@ jobs:
           for f in pytest-${{ runner.os }}.txt bench-fast-${{ runner.os }}.md bench-dft-${{ runner.os }}.md; do
             [ -f "$f" ] || continue
             cat "$f" >> "$GITHUB_STEP_SUMMARY"
-            msg=$(grep -E "passed|failed|PASS|FAIL|\*\*" "$f" | head -40 | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"}{print}')
+            msg=$(tail -n 60 "$f" | cut -c1-240 | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"}{print}')
             echo "::notice title=${f}::${msg}"
           done
 
@@ -87,8 +87,8 @@ jobs:
           set -x
           rm -rf /tmp/res && mkdir -p /tmp/res/${{ github.sha }}/${{ runner.os }}
           cp -r pytest-*.txt bench-* env-lock-*.txt /tmp/res/${{ github.sha }}/${{ runner.os }}/ 2>/dev/null || true
-          git config user.name "athanor-ci"
-          git config user.email "ci@athanor.invalid"
+          git config --global user.name "athanor-ci"
+          git config --global user.email "ci@athanor.invalid"
           for i in 1 2 3 4 5; do
             rm -rf /tmp/ci && git clone --depth 1 --branch ci-results "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" /tmp/ci 2>/dev/null \
               || (mkdir -p /tmp/ci && cd /tmp/ci && git init -q -b ci-results && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}")
