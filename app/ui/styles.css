@@ -95,10 +95,11 @@ select.field { appearance: none; cursor: pointer;
 .presets { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
 .presets .btn { font-size: 12.5px; padding: 6px 8px; }
 .runs { display: flex; flex-direction: column; gap: 5px; }
-.seg { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr); border: 1px solid var(--line); }
+.seg button[hidden] { display: none; }
 .seg button { background: none; border: 0; border-right: 1px solid var(--line); padding: 8px 4px; cursor: pointer;
   font-family: var(--f-display); font-weight: 600; font-size: 12px; color: var(--dim); display: flex; flex-direction: column; gap: 2px; align-items: center; }
-.seg button:last-child { border-right: 0; }
+.seg button:last-child, .seg button:has(+ button[hidden]:last-child) { border-right: 0; }
 .seg button small { font-family: var(--f-body); font-weight: 400; font-size: 10px; letter-spacing: .04em; color: var(--faint-solid); }
 .seg button[aria-checked="true"] { background: var(--arc-dim); color: var(--arc); }
 .seg button[aria-checked="true"] small { color: var(--arc); opacity: .7; }
@@ -181,3 +182,8 @@ td.n { font-family: var(--f-data); text-align: right; font-variant-numeric: tabu
 .btn.update { margin-left: auto; border-color: var(--arc); color: var(--arc); }
 .btn.update[hidden] { display: none; }
 .btn.update:not([hidden]) + .chips { margin-left: 0; }
+.btn.gpu { margin-left: auto; }
+.btn.gpu[hidden] { display: none; }
+.btn.update:not([hidden]) + .btn.gpu { margin-left: 0; }
+.btn.gpu:not([hidden]) + .chips { margin-left: 0; }
+.btn.gpu.ok { border-color: rgba(82,240,176,.5); color: var(--ok); }

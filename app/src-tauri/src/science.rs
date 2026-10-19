@@ -37,9 +37,19 @@ impl Status {
 
 #[derive(Clone)]
 pub struct LaunchSpec {
-    pub python: PathBuf,
+    /// Program and arguments that start `athanor_core.server` speaking JSON-RPC on stdio.
+    pub program: PathBuf,
+    pub args: Vec<String>,
     pub env: HashMap<String, String>,
     pub cwd: PathBuf,
+    /// Extra command run after killing the child (e.g. stop the process inside WSL).
+    pub stop: Option<(PathBuf, Vec<String>)>,
+}
+
+impl LaunchSpec {
+    pub fn python(python: PathBuf, env: HashMap<String, String>, cwd: PathBuf) -> Self {
+        LaunchSpec { program: python, args: vec!["-m".into(), "athanor_core.server".into()], env, cwd, stop: None }
+    }
 }
 
 struct Io {
@@ -60,8 +70,8 @@ impl CoreHandle {
     }
 
     pub fn start(&self, spec: LaunchSpec) -> Result<(), String> {
-        let mut cmd = Command::new(&spec.python);
-        cmd.args(["-m", "athanor_core.server"])
+        let mut cmd = Command::new(&spec.program);
+        cmd.args(&spec.args)
             .current_dir(&spec.cwd)
             .envs(&spec.env)
             .stdin(Stdio::piped())
@@ -114,11 +124,27 @@ impl CoreHandle {
         }
     }
 
+    fn run_stop_hook(&self) {
+        let hook = self.spec.lock().unwrap().as_ref().and_then(|s| s.stop.clone());
+        if let Some((prog, args)) = hook {
+            let mut cmd = Command::new(prog);
+            cmd.args(args).stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
+            #[cfg(windows)]
+            cmd.creation_flags(CREATE_NO_WINDOW);
+            let _ = cmd.status();
+        }
+    }
+
+    pub fn is_running(&self) -> bool {
+        self.io.lock().map(|g| g.is_some()).unwrap_or(false)
+    }
+
     pub fn restart(&self) -> Result<(), String> {
         if let Some(mut c) = self.child.lock().unwrap().take() {
             let _ = c.kill();
             let _ = c.wait();
         }
+        self.run_stop_hook();
         // Any in-flight call now sees EOF and releases the io lock.
         let spec = self.spec.lock().unwrap().clone().ok_or("science core was never started")?;
         *self.io.lock().unwrap() = None;
@@ -126,9 +152,19 @@ impl CoreHandle {
     }
 
     pub fn shutdown(&self) {
-        if let Some(mut c) = self.child.lock().unwrap().take() {
+        let had_child = if let Some(mut c) = self.child.lock().unwrap().take() {
             let _ = c.kill();
             let _ = c.wait();
+            true
+        } else {
+            false
+        };
+        if had_child {
+            self.run_stop_hook();
+        }
+        // An in-flight call holds the lock until it sees EOF; it clears itself then.
+        if let Ok(mut g) = self.io.try_lock() {
+            *g = None;
         }
     }
 }
@@ -143,7 +179,7 @@ pub fn launch_spec(app: &AppHandle, emit: &dyn Fn(Status)) -> Result<LaunchSpec,
         let mut env = HashMap::new();
         env.insert("PYTHONPATH".into(), core_dir.to_string_lossy().into_owned());
         env.insert("PYTHONUTF8".into(), "1".into());
-        return Ok(LaunchSpec { python: py.into(), env, cwd: core_dir });
+        return Ok(LaunchSpec::python(py.into(), env, core_dir));
     }
 
     let res = app.path().resource_dir().map_err(|e| e.to_string())?.join("runtime");
@@ -177,7 +213,7 @@ pub fn launch_spec(app: &AppHandle, emit: &dyn Fn(Status)) -> Result<LaunchSpec,
     let core_dir = res.join("core");
     let scratch = data.join("scratch");
     let _ = fs::create_dir_all(&scratch);
-    Ok(LaunchSpec { python: python_path(&env_dir), env: runtime_env(&env_dir, &core_dir, &scratch), cwd: scratch })
+    Ok(LaunchSpec::python(python_path(&env_dir), runtime_env(&env_dir, &core_dir, &scratch), scratch))
 }
 
 fn python_path(env: &Path) -> PathBuf {

@@ -14,6 +14,7 @@
     <button type="button" class="tab" data-view="validation" aria-pressed="false"><span class="k">02</span>Validation</button>
   </nav>
   <button type="button" class="btn update" id="updateBtn" hidden></button>
+  <button type="button" class="btn gpu" id="gpuBtn" hidden></button>
   <div class="chips" id="engineChips">
     <div class="chip" id="coreChip"><i class="dot wait"></i>Core <span id="coreState">starting</span></div>
   </div>
@@ -42,6 +43,7 @@
         <button type="button" data-tier="mmff94" role="radio" aria-checked="false">MMFF94<small>force field</small></button>
         <button type="button" data-tier="gfn2-xtb" role="radio" aria-checked="true">GFN2-xTB<small>tight binding</small></button>
         <button type="button" data-tier="dft" role="radio" aria-checked="false">DFT<small>Psi4</small></button>
+        <button type="button" data-tier="dft-gpu" role="radio" aria-checked="false" hidden>DFT·GPU<small>GPU4PySCF</small></button>
       </div>
       <div class="row small" id="dftOpts" hidden>
         <label class="mini">Functional

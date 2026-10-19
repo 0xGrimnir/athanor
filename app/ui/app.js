@@ -45,19 +45,21 @@ const TIER_NOTES = {
   "mmff94": "Classical force field (Halgren 1996). Fast geometries for organic molecules. No electrons: dipoles are point-charge estimates and are not validated. Molecules outside MMFF94's fitted parameters are declined.",
   "gfn2-xtb": "Semi-empirical tight binding (Bannwarth, Ehlert & Grimme 2019). Electronic structure in seconds; known to be weaker for dipoles of small molecules containing heavier atoms.",
   "dft": "Kohn-Sham DFT via Psi4. Most accurate tier here; cost grows roughly with the cube of system size. Frequencies need many gradients: expect minutes for small molecules.",
+  "dft-gpu": "Kohn-Sham DFT on your NVIDIA GPU via GPU4PySCF, with density fitting (RI-J/K, def2-universal-jkfit). Same functionals and basis sets as the DFT tier; the RI approximation shifts absolute energies by about 10⁻⁵ Eh and does not change geometries or frequencies meaningfully. Verified on this machine by the GPU self-test.",
 };
+const isDft = (t) => t === "dft" || t === "dft-gpu";
 
 function methodKey() {
-  if (S.tier !== "dft") return S.tier;
-  return `dft:${$("funcSel").value}/${$("basisSel").value}`;
+  if (!isDft(S.tier)) return S.tier;
+  return `${S.tier}:${$("funcSel").value}/${$("basisSel").value}`;
 }
 function methodLabel() {
   if (S.tier === "mmff94") return "MMFF94";
   if (S.tier === "gfn2-xtb") return "GFN2-xTB";
-  return `${$("funcSel").selectedOptions[0].textContent}/${$("basisSel").value}`;
+  return `${$("funcSel").selectedOptions[0].textContent}/${$("basisSel").value}${S.tier === "dft-gpu" ? " (GPU, RI)" : ""}`;
 }
 function engineOptions() {
-  if (S.tier !== "dft") return {};
+  if (!isDft(S.tier)) return {};
   return { functional: $("funcSel").value, basis: $("basisSel").value };
 }
 
@@ -389,11 +391,11 @@ function dipoleErrorText() {
   const c = S.validation && S.validation.comparators;
   if (!c) return "";
   if (S.tier === "mmff94") return `<div class="warnbox">MMFF94 dipoles are classical point-charge estimates and are not validated against experiment.</div>`;
-  const pub = S.tier === "dft" ? c.dft.dipole_regularized_rms_percent : c["gfn2-xtb"].dipole_regularized_rms_percent;
+  const pub = isDft(S.tier) ? c.dft.dipole_regularized_rms_percent : c["gfn2-xtb"].dipole_regularized_rms_percent;
   let measured = "";
   const b = S.bench && S.bench.tiers && S.bench.tiers[S.tier] && S.bench.tiers[S.tier].dipoles;
   if (b && b.regularized_rms_percent != null) measured = ` · Athanor benchmark vs experiment: ${b.regularized_rms_percent.toFixed(1)}% (n=${b.n})`;
-  const basisNote = S.tier === "dft" ? ` (${c.dft.method}/${pub.basis})` : "";
+  const basisNote = isDft(S.tier) ? ` (${c.dft.method}/${pub.basis})` : "";
   return `<span class="errbar">typical error ±${pub.value}%${basisNote} vs ${pub.reference}${measured}</span>`;
 }
 
@@ -435,10 +437,10 @@ function renderVibrations() {
   // spectrum: scale only when a literature factor exists for exactly this level of theory
   let freqs = r.frequencies_cm1.slice(), note = "harmonic, unscaled";
   const c = S.validation && S.validation.comparators && S.validation.comparators.dft;
-  if (S.tier === "dft" && c && $("funcSel").value === c.method && $("basisSel").value === c.frequency_scale_factor.basis) {
+  if (isDft(S.tier) && c && $("funcSel").value === c.method && $("basisSel").value === c.frequency_scale_factor.basis) {
     const sf = c.frequency_scale_factor.value; freqs = freqs.map((f) => f * sf);
     note = `scaled ×${sf} (CCCBDB, ${c.method}/${c.frequency_scale_factor.basis}, σ ${c.frequency_scale_factor.sigma})`;
-  } else if (S.tier === "dft") note = "harmonic, unscaled: no literature scale factor for this exact level; harmonic frequencies typically exceed experimental fundamentals by a few percent";
+  } else if (isDft(S.tier)) note = "harmonic, unscaled: no literature scale factor for this exact level; harmonic frequencies typically exceed experimental fundamentals by a few percent";
   else if (S.tier === "gfn2-xtb") {
     const b = S.bench && S.bench.tiers && S.bench.tiers["gfn2-xtb"] && S.bench.tiers["gfn2-xtb"].frequencies;
     note = "GFN2-xTB harmonic, unscaled" + (b ? ` · Athanor benchmark MAD ${b.gas_phase_harmonic_modes.raw.mad.toFixed(0)} cm⁻¹ vs experiment` : "");
@@ -512,7 +514,11 @@ function renderValidation() {
 function setTier(t) {
   S.tier = t;
   document.querySelectorAll("#tierSeg button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.tier === t)));
-  $("dftOpts").hidden = t !== "dft";
+  $("dftOpts").hidden = !isDft(t);
+  // ωB97X-D's dispersion term is defined differently in PySCF; offer it on Psi4 only.
+  const wb = $("funcSel").querySelector('option[value="wB97X-D"]');
+  wb.disabled = t === "dft-gpu";
+  if (wb.disabled && $("funcSel").value === "wB97X-D") $("funcSel").value = "B3LYP";
   $("tierNote").textContent = TIER_NOTES[t];
 }
 
@@ -575,6 +581,64 @@ async function checkForUpdate() {
   };
 }
 
+// Optional GPU compute pack (GPU4PySCF inside a private WSL2 distribution).
+function renderCompute(st) {
+  const btn = $("gpuBtn");
+  S.compute = st;
+  const labels = {
+    "off": "Enable GPU compute", "failed": "GPU: retry", "needs-restart": "GPU: restart Windows",
+    "downloading": st.progress != null ? `GPU: downloading ${Math.floor(100 * st.progress)}%` : "GPU: downloading",
+    "installing": "GPU: installing", "testing": "GPU: self-test", "ready": "GPU ready",
+  };
+  if (st.stage === "unsupported" || !labels[st.stage]) { btn.hidden = true; return; }
+  btn.hidden = false;
+  btn.textContent = labels[st.stage];
+  btn.title = [st.message, st.gpu ? `Detected: ${st.gpu}` : ""].filter(Boolean).join("\n");
+  btn.disabled = ["downloading", "installing", "testing"].includes(st.stage);
+  btn.classList.toggle("ok", st.stage === "ready");
+  const tierBtn = document.querySelector('#tierSeg [data-tier="dft-gpu"]');
+  tierBtn.hidden = st.stage !== "ready";
+  if (st.stage !== "ready" && S.tier === "dft-gpu") setTier("dft");
+}
+
+function selftestSummary(rep) {
+  if (!rep) return "";
+  if (rep.error) return rep.error;
+  return (rep.cases || []).map((c) =>
+    `${c.molecule} (${c.atoms} atoms, ${c.method}): ΔE ${c.differences.energy_hartree.toExponential(1)} Eh, ` +
+    `max Δgradient ${c.differences.gradient_hartree_per_bohr.toExponential(1)} Eh/bohr; ` +
+    `GPU ${c.seconds_gpu} s vs CPU ${c.seconds_cpu} s (${c.speedup}×) ${c.passed ? "PASS" : "FAIL"}`).join(" · ");
+}
+
+async function initCompute() {
+  if (!TAURI || !TAURI.core) return;
+  let last = "";
+  TAURI.event.listen("compute-status", (e) => {
+    const st = e.payload || {};
+    renderCompute(st);
+    if (st.message && st.message !== last && st.stage !== "downloading") { log(st.message, st.stage === "failed"); last = st.message; }
+    if ((st.stage === "ready" || st.stage === "failed") && st.selftest) log(`GPU self-test: ${selftestSummary(st.selftest)}`, st.stage === "failed");
+  });
+  renderCompute(await TAURI.core.invoke("compute_status"));
+  $("gpuBtn").onclick = async () => {
+    const st = S.compute || {};
+    if (st.stage === "ready") {
+      alert(`GPU compute is ready.\n\n${st.gpu || ""}\n\nSelf-test: ${selftestSummary(st.selftest)}`);
+      return;
+    }
+    if (st.stage === "needs-restart") { alert(st.message); return; }
+    const ok = confirm(
+      "Enable GPU compute?\n\n" +
+      "• Uses WSL2. If it is not enabled yet, Windows will ask for administrator approval, and may need a restart.\n" +
+      "• Downloads the compute pack (about 2–3 GB) from the Athanor release feed and checks every part's SHA-256.\n" +
+      "• Runs a self-test on your GPU (GPU vs CPU on the same molecules) before the GPU tier is offered.\n\n" +
+      "You can keep working while it installs.");
+    if (!ok) return;
+    try { await TAURI.core.invoke("compute_enable"); }
+    catch (e) { log(`GPU compute: ${e}`, true); }
+  };
+}
+
 async function boot() {
   wire(); setTier("gfn2-xtb"); setBusy(false);
   try { S.bench = await (await fetch("data/benchmark.json")).json(); } catch { S.bench = null; }
@@ -602,6 +666,7 @@ async function boot() {
     S.validation = await rpc("validation");
     log("Science core ready");
     checkForUpdate();
+    initCompute().catch((e) => log(`GPU compute status unavailable: ${e}`, true));
     await build("CCO", "Ethanol");
   } catch (e) {
     $("coreState").textContent = "error"; $("coreChip").querySelector(".dot").className = "dot bad";
