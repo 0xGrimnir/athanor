@@ -550,6 +550,31 @@ function wire() {
   };
 }
 
+// Signed in-app updates (Tauri updater). The check is a single request to the
+// public release feed; nothing about the user or their work is sent.
+async function checkForUpdate() {
+  if (!TAURI || !TAURI.core) return;
+  let info = null;
+  try { info = await TAURI.core.invoke("update_check"); }
+  catch (e) { log(`Update check failed: ${e}`); return; }
+  if (!info) return;
+  const btn = $("updateBtn");
+  btn.textContent = `Update to ${info.version}`;
+  btn.title = info.notes || "";
+  btn.hidden = false;
+  log(`Athanor ${info.version} is available (you have ${info.current}).`);
+  btn.onclick = async () => {
+    if (!confirm(`Install Athanor ${info.version} and restart? Running calculations will stop.`)) return;
+    btn.disabled = true; btn.textContent = "Downloading update";
+    if (TAURI.event) TAURI.event.listen("update-progress", (e) => {
+      const [got, total] = e.payload || [];
+      if (total) btn.textContent = `Downloading update ${Math.floor((100 * got) / total)}%`;
+    });
+    try { await TAURI.core.invoke("update_install"); }
+    catch (e) { btn.disabled = false; btn.textContent = `Update to ${info.version}`; log(`Update failed: ${e}`, true); }
+  };
+}
+
 async function boot() {
   wire(); setTier("gfn2-xtb"); setBusy(false);
   try { S.bench = await (await fetch("data/benchmark.json")).json(); } catch { S.bench = null; }
@@ -576,6 +601,7 @@ async function boot() {
     if (!eng.dft.available) { document.querySelector('#tierSeg [data-tier="dft"]').disabled = true; }
     S.validation = await rpc("validation");
     log("Science core ready");
+    checkForUpdate();
     await build("CCO", "Ethanol");
   } catch (e) {
     $("coreState").textContent = "error"; $("coreChip").querySelector(".dot").className = "dot bad";

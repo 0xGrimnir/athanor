@@ -76,13 +76,44 @@ jobs:
         with:
           workspaces: app/src-tauri
 
+      - name: Version and signing
+        id: ver
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            v="${GITHUB_REF#refs/tags/v}"
+            python - "$v" <<'PY'
+          import json, sys
+          p = "app/src-tauri/tauri.conf.json"
+          c = json.load(open(p)); c["version"] = sys.argv[1]
+          json.dump(c, open(p, "w"), indent=2)
+          PY
+            [ -n "$SIGNING_KEY" ] || { echo "::error title=release blocked::TAURI_SIGNING_PRIVATE_KEY secret is not set"; exit 1; }
+            [ -n "$RELEASES_TOKEN" ] || { echo "::error title=release blocked::RELEASES_TOKEN secret is not set"; exit 1; }
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -n "$SIGNING_KEY" ]; then echo "signed=true" >> "$GITHUB_OUTPUT"; else echo "signed=false" >> "$GITHUB_OUTPUT"; fi
+          echo "::notice title=version::$(python -c "import json;print(json.load(open('app/src-tauri/tauri.conf.json'))['version'])") signed=$([ -n "$SIGNING_KEY" ] && echo yes || echo no)"
+        env:
+          SIGNING_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+
       - name: Build installer
         working-directory: app
         run: |
           npm ci --no-audit --no-fund || npm install --no-audit --no-fund
-          npx tauri build 2>&1 | tail -40
+          extra=()
+          if [ "${{ steps.ver.outputs.signed }}" != "true" ]; then
+            # Without the signing key the updater artifacts cannot be produced.
+            extra=(--config '{"bundle":{"createUpdaterArtifacts":false}}')
+          fi
+          npx tauri build "${extra[@]}" 2>&1 | tail -40
           test ${PIPESTATUS[0]} -eq 0
           ls -la src-tauri/target/release/bundle/nsis
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ""
 
       - name: Stop here if the runtime smoke test failed
         if: steps.smoke.outcome != 'success'
@@ -90,16 +121,36 @@ jobs:
           echo "::error title=release withheld::installer built but not published, because the runtime smoke test failed"
           exit 1
 
-      - name: Publish release (draft for manual builds)
+      - name: Publish
         run: |
-          exe=$(ls app/src-tauri/target/release/bundle/nsis/*.exe | head -1)
-          size=$(du -h "$exe" | cut -f1)
-          echo "::notice title=installer::$(basename "$exe") ($size)"
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            tag="${GITHUB_REF#refs/tags/}"
-            gh release create "$tag" "$exe" --title "Athanor $tag" --notes-file RELEASE_NOTES.md --prerelease || gh release upload "$tag" "$exe" --clobber
+          dir=app/src-tauri/target/release/bundle/nsis
+          exe=$(ls $dir/*-setup.exe | head -1)
+          name=$(basename "$exe")
+          echo "::notice title=installer::$name ($(du -h "$exe" | cut -f1))"
+          if [ "${{ steps.ver.outputs.release }}" = "true" ]; then
+            tag="${GITHUB_REF#refs/tags/}"; v="${tag#v}"
+            python - "$v" "$tag" "$exe" <<'PY'
+          import json, sys, datetime, os
+          v, tag, exe = sys.argv[1:]
+          sig = open(exe + ".sig").read().strip()
+          name = os.path.basename(exe)
+          feed = {
+              "version": v,
+              "notes": open("RELEASE_NOTES.md", encoding="utf-8").read(),
+              "pub_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "platforms": {"windows-x86_64": {
+                  "signature": sig,
+                  "url": f"https://github.com/0xGrimnir/athanor-releases/releases/download/{tag}/{name}"}},
+          }
+          json.dump(feed, open("latest.json", "w"), indent=2)
+          PY
+            GH_TOKEN="$RELEASES_TOKEN" gh release create "$tag" "$exe" "$exe.sig" latest.json \
+              --repo 0xGrimnir/athanor-releases --title "Athanor $tag" --notes-file RELEASE_NOTES.md --latest
+            echo "::notice title=published::$tag on 0xGrimnir/athanor-releases"
           else
-            gh release create "build-${GITHUB_RUN_NUMBER}" "$exe" --title "Athanor test build ${GITHUB_RUN_NUMBER}" --notes "Manual build from ${GITHUB_SHA}" --draft
+            GH_TOKEN="$GITHUB_TOKEN_" gh release create "build-${GITHUB_RUN_NUMBER}" "$exe" \
+              --title "Athanor test build ${GITHUB_RUN_NUMBER}" --notes "Manual build from ${GITHUB_SHA}" --draft
           fi
         env:
-          GH_TOKEN: ${{ github.token }}
+          RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          GITHUB_TOKEN_: ${{ github.token }}

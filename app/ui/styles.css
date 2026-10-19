@@ -177,3 +177,7 @@ td.n { font-family: var(--f-data); text-align: right; font-variant-numeric: tabu
 
 @media (max-width: 1100px) { .deck { grid-template-columns: 250px minmax(0,1fr) 290px; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.btn.update { margin-left: auto; border-color: var(--arc); color: var(--arc); }
+.btn.update[hidden] { display: none; }
+.btn.update:not([hidden]) + .chips { margin-left: 0; }

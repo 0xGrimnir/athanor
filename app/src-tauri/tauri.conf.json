@@ -24,7 +24,9 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "publisher": "Tyler Lee Jones",
     "copyright": "Copyright (c) 2026 Tyler Lee Jones",
     "category": "Education",
@@ -42,6 +44,18 @@
     "windows": {
       "nsis": {
         "installMode": "currentUser"
+      }
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxNkY2OTAwM0Q0NjFENDUKUldSRkhVWTlBR2x2WVlWOHQ3SjdpYkM1R0F5SE9JQzFxTVQ4b0tGUUMydzhuYTZ3bHpSYnZoSGIK",
+      "endpoints": [
+        "https://github.com/0xGrimnir/athanor-releases/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
       }
     }
   }
