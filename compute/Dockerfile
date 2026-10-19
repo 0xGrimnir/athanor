@@ -1,7 +1,7 @@
 # Root filesystem of the Athanor compute pack, exported and imported into WSL2.
 FROM ubuntu:24.04
 RUN apt-get update \
- && apt-get install -y --no-install-recommends python3 python3-venv ca-certificates \
+ && apt-get install -y --no-install-recommends python3 python3-venv ca-certificates procps \
  && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt /opt/athanor/requirements.txt
 RUN python3 -m venv /opt/athanor/venv \

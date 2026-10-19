@@ -331,8 +331,10 @@ fn wsl(args: &[&str]) -> Result<(bool, String), String> {
     Ok((out.status.success(), text.replace('\0', "").trim().to_string()))
 }
 
+/// The Store version of WSL (the one with `--version`) is what supports
+/// `--install --no-distribution` and WSL2 imports; the legacy inbox stub is not enough.
 fn wsl_ready() -> bool {
-    matches!(wsl(&["--status"]), Ok((true, _)))
+    matches!(wsl(&["--version"]), Ok((true, _)))
 }
 
 fn distro_exists() -> bool {
