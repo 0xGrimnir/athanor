@@ -117,4 +117,8 @@ def gpu_available() -> tuple[bool, str]:
         import gpu4pyscf  # noqa: F401
         return True, f"{name} (compute capability {props['major']}.{props['minor']})"
     except Exception as e:  # noqa: BLE001 - report any failure as unavailable
-        return False, f"{type(e).__name__}: {e}"
+        msg = f"{type(e).__name__}: {e}"
+        if "InsufficientDriver" in msg or "driver version is insufficient" in msg:
+            msg += (" -- the Windows NVIDIA driver is older than this pack's CUDA 13 runtime; "
+                    "update the NVIDIA driver (580 or newer) and run the self-test again")
+        return False, msg
