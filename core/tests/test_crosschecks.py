@@ -48,18 +48,21 @@ def _xtb_run(mol: Molecule, *args) -> tuple[str, str]:
 
 
 def _xtb_vibspectrum(d: str) -> np.ndarray:
-    """Turbomole-format $vibrational spectrum written by xtb 6.7:
-    mode  [symmetry]  wavenumber  IR-intensity  IR-selection
-    The symmetry column is blank for translations/rotations, so the
-    wavenumber is read as the 3rd field from the end."""
+    """Turbomole-format $vibrational spectrum written by xtb:
+    mode  [symmetry]  wavenumber  IR-intensity  selection-rule column(s)
+    The symmetry label is blank for translations/rotations and the number of
+    selection-rule columns varies between xtb versions, so the wavenumber is
+    the first numeric field after the mode index."""
     freqs = []
     for line in open(os.path.join(d, "vibspectrum"), encoding="utf-8", errors="replace"):
         p = line.split()
-        if len(p) >= 4 and p[0].isdigit():
-            try:
-                freqs.append(float(p[-3]))
-            except ValueError:
-                pass
+        if len(p) >= 3 and p[0].isdigit():
+            for tok in p[1:3]:
+                try:
+                    freqs.append(float(tok))
+                    break
+                except ValueError:
+                    continue
     return np.array([f for f in freqs if abs(f) > 1.0])
 
 

@@ -125,6 +125,10 @@ class GFN2xTB(Engine):
                 tail = "\n".join(out.strip().splitlines()[-15:])
                 raise RuntimeError(f"xtb did not terminate normally (exit {r.returncode}):\n{tail}")
             data = _read_xtb_json(Path(d, "xtbout.json"))
+            missing = {"total energy", "dipole / a.u.", "partial charges"} - data.keys()
+            if missing:
+                raise RuntimeError(f"xtb {data.get('xtb version', '?')} output lacks {sorted(missing)}; "
+                                   "Athanor needs xtb 6.7 or newer")
             grad = _read_turbomole_gradient(Path(d, "gradient"), n)
         return EngineResult(
             energy=float(data["total energy"]),

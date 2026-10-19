@@ -9,7 +9,7 @@ dependencies:
   - scipy
   - rdkit
   - tblite-python
-  - xtb
+  - xtb>=6.7.1        # older builds write different output formats; Windows uses the program as its GFN2 engine
   - psi4
   - ase
   - pytest
