@@ -9,7 +9,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tb: ["0.7.0", "0.6.0", "0.5.0"]
+        include:
+          - {tb: "0.7.0", py: "python=3.12"}
+          - {tb: "0.6.0", py: "python"}
+          - {tb: "0.5.0", py: "python"}
     runs-on: windows-latest
     defaults:
       run:
@@ -18,10 +21,11 @@ jobs:
       - uses: mamba-org/setup-micromamba@v2
         with:
           environment-name: p
-          create-args: python=3.12 numpy tblite-python=${{ matrix.tb }} xtb
+          create-args: ${{ matrix.py }} numpy tblite-python=${{ matrix.tb }} xtb
           init-shell: bash
       - name: Probe
         run: |
+          set +e
           micromamba list | grep -Ei 'tblite|xtb|libblas|openblas|mkl|gfortran|flang|libgcc|m2w64' > pk.txt || true
           cat > t.py <<'PY'
           import sys, numpy as np, faulthandler; faulthandler.enable()
