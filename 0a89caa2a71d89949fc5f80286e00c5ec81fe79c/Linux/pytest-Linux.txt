@@ -1,6 +1,6 @@
 Fatal Python error: Segmentation fault
 
-Current thread 0x00007fafeb6e4600 (most recent call first):
+Current thread 0x00007f5cde50e600 (most recent call first):
   File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/tblite/library.py", line 105 in handle_context_error
   File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/tblite/interface.py", line 660 in singlepoint
   File "/home/runner/work/athanor/athanor/core/athanor_core/engines/xtb.py", line 96 in _compute_tblite
