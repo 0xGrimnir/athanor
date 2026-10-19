@@ -3,6 +3,11 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      release:
+        description: "Publish a signed release with this version (e.g. 0.1.1); leave empty for a private test build"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -79,8 +84,12 @@ jobs:
       - name: Version and signing
         id: ver
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            v="${GITHUB_REF#refs/tags/v}"
+          v=""
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then v="${GITHUB_REF#refs/tags/v}"; fi
+          if [ -n "$INPUT_RELEASE" ]; then v="${INPUT_RELEASE#v}"; fi
+          if [ -n "$v" ]; then
+            [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "::error title=release blocked::'$v' is not a semantic version"; exit 1; }
+            echo "tag=v$v" >> "$GITHUB_OUTPUT"
             python - "$v" <<'PY'
           import json, sys
           p = "app/src-tauri/tauri.conf.json"
@@ -98,6 +107,7 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+          INPUT_RELEASE: ${{ inputs.release }}
 
       - name: Build installer
         working-directory: app
@@ -128,7 +138,7 @@ jobs:
           name=$(basename "$exe")
           echo "::notice title=installer::$name ($(du -h "$exe" | cut -f1))"
           if [ "${{ steps.ver.outputs.release }}" = "true" ]; then
-            tag="${GITHUB_REF#refs/tags/}"; v="${tag#v}"
+            tag="${{ steps.ver.outputs.tag }}"; v="${tag#v}"
             python - "$v" "$tag" "$exe" <<'PY'
           import json, sys, datetime, os
           v, tag, exe = sys.argv[1:]
@@ -147,6 +157,9 @@ jobs:
             GH_TOKEN="$RELEASES_TOKEN" gh release create "$tag" "$exe" "$exe.sig" latest.json \
               --repo 0xGrimnir/athanor-releases --title "Athanor $tag" --notes-file RELEASE_NOTES.md --latest
             echo "::notice title=published::$tag on 0xGrimnir/athanor-releases"
+            # Record the release in the source repo too.
+            git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+            git tag -a "$tag" -m "Athanor $tag" "$GITHUB_SHA" && git push -q origin "refs/tags/$tag" || echo "::warning::could not tag source repo"
           else
             GH_TOKEN="$GITHUB_TOKEN_" gh release create "build-${GITHUB_RUN_NUMBER}" "$exe" \
               --title "Athanor test build ${GITHUB_RUN_NUMBER}" --notes "Manual build from ${GITHUB_SHA}" --draft
