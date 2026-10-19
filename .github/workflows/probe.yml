@@ -3,6 +3,8 @@ on:
   push:
     branches: [probe/ci]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   probe:
     strategy:
@@ -22,10 +24,12 @@ jobs:
           init-shell: bash
       - name: Package availability on conda-forge
         run: |
+          : > avail.txt
           for p in rdkit xtb tblite tblite-python psi4 openmm openmmforcefields openff-toolkit pyscf libxc; do
             echo "=== $p ==="
-            micromamba search -c conda-forge "$p" --json 2>/dev/null | python -c "import json,sys;d=json.load(sys.stdin);r=d.get('result',{}).get('pkgs',[]);print('versions:',sorted({x['version'] for x in r})[-3:] if r else 'NONE')" || echo "search failed"
+            micromamba search -c conda-forge "$p" --json 2>/dev/null | python -c "import json,sys;d=json.load(sys.stdin);r=d.get('result',{}).get('pkgs',[]);print('versions:',sorted({x['version'] for x in r})[-3:] if r else 'NONE')" | sed "s/^/$p /" | tee -a avail.txt || echo "$p search failed" | tee -a avail.txt
           done
+          echo "::notice title=avail-${{ matrix.os }}::$(paste -sd'|' avail.txt)"
       - name: Install chemistry stack
         run: |
           micromamba install -y -c conda-forge rdkit xtb psi4 numpy scipy 2>&1 | tail -20
@@ -48,4 +52,6 @@ jobs:
               e=psi4.energy("scf/cc-pvdz"); out["psi4_scf_h2o"]=e
           except Exception as e: out["psi4_run"]="ERR "+repr(e)[:300]
           print("PROBE_RESULT", json.dumps(out))
+          open("probe.json","w").write(json.dumps(out))
+          print("::notice title=probe-%s::%s" % (__import__('os').environ.get('RUNNER_OS'), json.dumps(out)))
           PY
