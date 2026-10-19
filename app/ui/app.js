@@ -552,9 +552,21 @@ function wire() {
 async function boot() {
   wire(); setTier("gfn2-xtb"); setBusy(false);
   try { S.bench = await (await fetch("data/benchmark.json")).json(); } catch { S.bench = null; }
-  for (let i = 0; i < 120; i++) {
+  if (TAURI && TAURI.event) {
+    // First launch after install or update unpacks the science engines; show progress.
+    TAURI.event.listen("core-status", (e) => {
+      const st = e.payload || {};
+      $("coreState").textContent = st.stage || "";
+      if (st.stage === "preparing") setBusy(true, st.message);
+      if (st.stage === "error") { $("coreChip").querySelector(".dot").className = "dot bad"; log(st.message, true); setBusy(false); }
+      else if (st.message) log(st.message);
+    });
+  }
+  // Up to 15 minutes: the first launch extracts several hundred MB of engines.
+  for (let i = 0; i < 1800; i++) {
     try { await rpc("ping"); break; } catch { await new Promise((r) => setTimeout(r, 500)); }
   }
+  setBusy(false);
   try {
     const eng = await rpc("engines");
     $("coreState").textContent = "ready"; $("coreChip").querySelector(".dot").className = "dot ok";

@@ -1,0 +1,12 @@
+{
+  "name": "athanor",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "tauri": "tauri",
+    "dev:bridge": "python dev/bridge.py"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.3"
+  }
+}
