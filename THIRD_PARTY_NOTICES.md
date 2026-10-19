@@ -24,8 +24,8 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 |---|---|---|---|
 | RDKit | MMFF94 force field, cheminformatics | BSD-3-Clause | Verified |
 | OpenMM | Molecular dynamics (CUDA) | MIT, with LGPL parts | To verify |
-| tblite (Grimme lab) | GFN2-xTB engine (Linux/macOS) | LGPL-3.0-or-later | Verified |
-| xtb (Grimme lab) | GFN2-xTB engine on Windows; independent cross-check elsewhere | LGPL-3.0-or-later | Verified |
+| tblite (Grimme lab) | Independent GFN2-xTB implementation for CI cross-checks (not shipped) | LGPL-3.0-or-later | Verified |
+| xtb (Grimme lab) | GFN2-xTB engine | LGPL-3.0-or-later | Verified |
 | ASE | Independent vibrational-analysis cross-check | LGPL-2.1-or-later | Verified |
 | Psi4 | DFT and Hartree-Fock | LGPL-3.0 | To verify |
 | NumPy | Numerics | BSD-3-Clause (with bundled MIT, Zlib, 0BSD, CC0 parts) | Verified |

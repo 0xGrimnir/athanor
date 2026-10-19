@@ -85,7 +85,7 @@ def test_gfn2_matches_xtb_program(smiles):
 
 try:
     import tblite.interface  # noqa: F401
-    HAS_TBLITE = sys.platform != "win32"  # conda-forge tblite crashes on Windows; see engines/xtb.py
+    HAS_TBLITE = True  # CI installs the PyPI wheel on Linux; conda-forge builds crash (see engines/xtb.py)
 except Exception:
     HAS_TBLITE = False
 
@@ -94,7 +94,7 @@ except Exception:
 @pytest.mark.parametrize("smiles", ["O", "C=O", "[NH4+]", "[O]", "c1ccccc1"])
 def test_gfn2_backends_agree(smiles):
     """The tblite library and the xtb program are independent GFN2-xTB codes;
-    the app uses whichever runs on the platform, so they must agree."""
+    the app runs the xtb program, and tblite must reproduce it."""
     mol = Molecule.from_smiles(smiles)
     a = get_engine("gfn2-xtb", backend="tblite").compute(mol)
     b = get_engine("gfn2-xtb", backend="xtb-program").compute(mol)
@@ -122,16 +122,39 @@ def test_fd_hessian_matches_psi4_frequency_analysis():
     np.testing.assert_allclose(mine, theirs, atol=2.0)
 
 
-@pytest.mark.skipif(not HAS_ASE, reason="ASE not installed")
+class _AthanorASECalculator:
+    """Minimal ASE calculator around an Athanor engine, so ASE's own finite
+    differences and normal-mode analysis can be compared with Athanor's."""
+
+    def __new__(cls, engine, symbols, charge=0, multiplicity=1):
+        from ase.calculators.calculator import Calculator, all_changes
+        from ase.units import Bohr, Hartree
+
+        class _Calc(Calculator):
+            implemented_properties = ["energy", "forces", "dipole"]
+
+            def calculate(self, atoms=None, properties=("energy",), system_changes=all_changes):
+                super().calculate(atoms, properties, system_changes)
+                mol = Molecule(symbols=list(symbols), coords=self.atoms.positions.copy(),
+                               charge=charge, multiplicity=multiplicity)
+                r = engine.compute(mol)
+                self.results = {"energy": r.energy * Hartree,
+                                "forces": -np.asarray(r.gradient) * Hartree / Bohr,
+                                "dipole": np.asarray(r.dipole) * Bohr}
+
+        return _Calc()
+
+
+@pytest.mark.skipif(not (HAS_ASE and HAS_XTB), reason="needs ASE and the xtb program")
 def test_vibrations_match_ase():
+    """Same GFN2-xTB gradients and dipoles, independent vibrational analysis (ASE)."""
     from ase import Atoms
     from ase.vibrations import Infrared
-    from tblite.ase import TBLite
     eng = get_engine("gfn2-xtb")
     mol = tasks.optimize(eng, Molecule.from_smiles("C=O"))["molecule"]
     mine = tasks.frequencies(eng, mol)
     atoms = Atoms(mol.symbols, positions=mol.coords)
-    atoms.calc = TBLite(method="GFN2-xTB", verbosity=0)
+    atoms.calc = _AthanorASECalculator(eng, mol.symbols)
     cwd = os.getcwd(); d = tempfile.mkdtemp(); os.chdir(d)
     try:
         ir = Infrared(atoms, delta=0.005 * units.BOHR_TO_ANGSTROM, nfree=2)

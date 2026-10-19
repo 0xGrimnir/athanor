@@ -21,7 +21,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 
 | Module | What it does | Engines | State |
 |---|---|---|---|
-| **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb program / tblite) → DFT/HF (Psi4) | Phase 1, working |
+| **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4) | Phase 1, working |
 | **Ancient DNA Lab** | Simulate damaged ancient reads, map them, call a consensus with per-base uncertainty, quantify reference bias | Briggs et al. (2007) damage model, Bowtie2, samtools/bcftools | Phase 2 |
 | **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 3 |
 | **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 4 |
@@ -33,7 +33,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | Tier | Correctness check | Accuracy check against experiment |
 |---|---|---|
 | MMFF94 | Reproduces Halgren's MMFF94 validation suite (755 molecules to 1×10⁻⁴ kcal/mol) | Declines molecules outside MMFF94's fitted bond parameters |
-| GFN2-xTB | The tblite library and the xtb program agree; frequencies match xtb's own Hessian and ASE's vibrational analysis | Bond lengths, dipoles and IR fundamentals vs NIST data, compared with published GFN2-xTB statistics |
+| GFN2-xTB | The independent tblite library reproduces the xtb program; frequencies match xtb's own Hessian and ASE's vibrational analysis | Bond lengths, dipoles and IR fundamentals vs NIST data, compared with published GFN2-xTB statistics |
 | DFT | Matches Psi4's own frequency analysis | Same reference set at B3LYP/cc-pVTZ, compared with published B3LYP statistics (Janoschek 2001; CCCBDB scale factors; Hait & Head-Gordon 2018) |
 
 Reference values and sources: [`core/benchmarks/reference/phase1.json`](core/benchmarks/reference/phase1.json). Run locally with `python -m athanor_core.benchmark`.

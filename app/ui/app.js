@@ -482,7 +482,7 @@ function renderValidation() {
   const tiers = [
     ["mmff94", "MMFF94", "RDKit", ["Reproduces Halgren's MMFF94 validation suite: 755 molecules to within 1×10⁻⁴ kcal/mol; empirical-rule test molecules to within 0.01 kcal/mol.",
       "Declines molecules whose bonds fall outside MMFF94's fitted parameter table instead of using rule-based estimates."]],
-    ["gfn2-xtb", "GFN2-xTB", "xtb / tblite", ["Runs on the xtb program on Windows and the tblite library elsewhere; the two independent codes agree to 10⁻⁶ Eh on every build.",
+    ["gfn2-xtb", "GFN2-xTB", "xtb", ["Runs on the Grimme lab's xtb program; the independent tblite library reproduces its energies to 10⁻⁶ Eh on every build.",
       "Frequencies cross-checked against the xtb program's own Hessian (within 3 cm⁻¹).",
       "Vibrational analysis cross-checked against ASE's implementation (frequencies within 3 cm⁻¹, IR intensities within 5%)."]],
     ["dft", "DFT", "Psi4", ["Finite-difference Hessians cross-checked against Psi4's own frequency analysis on every build.",

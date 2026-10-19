@@ -7,13 +7,12 @@ J. Chem. Theory Comput. 15, 1652-1671 (2019). DOI: 10.1021/acs.jctc.8b01176
 
 Two interchangeable backends compute the same method:
 
-* ``tblite``: the tblite library, called in-process.
-* ``xtb-program``: the Grimme lab's ``xtb`` executable, run once per
+* ``xtb-program`` (default): the Grimme lab's ``xtb`` executable, run once per
   energy/gradient in a scratch folder.
-
-The conda-forge tblite build crashes with an access violation inside its
-first single point on Windows, so ``auto`` uses the xtb program there and
-tblite elsewhere. The CI cross-check holds the two backends to 1e-5 Eh.
+* ``tblite``: the tblite library, called in-process. Used as an independent
+  implementation in the CI cross-check (PyPI wheel). The conda-forge tblite
+  builds (0.6.0 on Linux and Windows, 0.7.0 on Windows) crash inside their
+  first single point, so they are not shipped.
 """
 from __future__ import annotations
 
@@ -39,7 +38,7 @@ def default_backend() -> str:
     forced = os.environ.get("ATHANOR_GFN2_BACKEND")
     if forced:
         return forced
-    return "xtb-program" if sys.platform == "win32" else "tblite"
+    return "xtb-program"
 
 
 class GFN2xTB(Engine):

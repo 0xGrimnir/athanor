@@ -44,11 +44,17 @@ jobs:
       - name: Record environment
         run: |
           micromamba list --explicit --md5 > env-lock-${{ runner.os }}.txt
-          python -c "import rdkit, psi4, scipy, numpy; from tblite.library import get_version; print('rdkit', rdkit.__version__, 'psi4', psi4.__version__, 'tblite', get_version())"
+          python -c "import rdkit, psi4, scipy, numpy; print('rdkit', rdkit.__version__, 'psi4', psi4.__version__)"
           xtb --version | grep -i "xtb version" || true
 
       - name: Install core
         run: pip install --no-deps -e core
+
+      - name: Independent GFN2-xTB implementation for cross-checks (tblite, PyPI wheel)
+        if: runner.os == 'Linux'
+        run: |
+          pip install "tblite==0.7.0" cffi
+          python -c "import numpy as np; from tblite.interface import Calculator; c=Calculator('GFN2-xTB', np.array([8,1,1]), np.array([[0,0,0.22],[0,1.43,-0.88],[0,-1.43,-0.88]])); c.set('verbosity',0); print('tblite water E', c.singlepoint().get('energy'))"
 
       - name: Unit, validation-suite and cross-check tests
         working-directory: core
