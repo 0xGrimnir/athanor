@@ -58,8 +58,14 @@ jobs:
           if [ $rc -eq 0 ]; then
             echo "::notice title=runtime-smoke::$(grep -E 'SMOKE_OK|engines:|extracted' smoke.txt | tr '\n' ' ' | cut -c1-3000)"
           else
-            echo "::error title=runtime-smoke failed (exit $rc)::$(tail -c 3500 smoke.txt | tr '\n' '|')"
+            msg=$(tail -c 3500 smoke.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+            echo "::error title=runtime-smoke failed (exit $rc)::$msg"
           fi
+          # full log on the results branch (job logs are not always reachable)
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/app/${GITHUB_SHA}" && cp smoke.txt "$d/app/${GITHUB_SHA}/smoke-${GITHUB_RUN_NUMBER}.txt" && \
+            (cd "$d" && git add -A && git commit -qm "app smoke log ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish smoke log"
           exit $rc
 
       - uses: actions/setup-node@v4
