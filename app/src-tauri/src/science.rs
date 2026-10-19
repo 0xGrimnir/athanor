@@ -198,7 +198,7 @@ pub fn launch_spec(app: &AppHandle, emit: &dyn Fn(Status)) -> Result<LaunchSpec,
         fs::create_dir_all(&env_dir).map_err(|e| format!("could not create {}: {e}", env_dir.display()))?;
         extract(&res.join("env.tar.gz"), &env_dir)?;
         emit(Status::new("preparing", "Relocating engine paths"));
-        unpack(&env_dir, &res.join("unpack_env.py"))?;
+        unpack(&env_dir, &res.join("unpack_env.py"), emit)?;
         fs::write(&marker, env_id.as_bytes()).map_err(|e| e.to_string())?;
         // Remove environments left by previous versions.
         if let Ok(rd) = fs::read_dir(&envs) {
@@ -262,22 +262,45 @@ fn extract(archive: &Path, dest: &Path) -> Result<(), String> {
     Ok(())
 }
 
-fn unpack(env: &Path, unpacker: &Path) -> Result<(), String> {
+fn unpack(env: &Path, unpacker: &Path, emit: &dyn Fn(Status)) -> Result<(), String> {
     // Rewrites the build machine's paths baked into the packed environment.
     // unpack_env.py replaces conda-pack's conda-unpack, which fails on Windows
-    // by opening DLLs its own interpreter has loaded for writing.
+    // by opening DLLs its own interpreter has loaded for writing. It prints
+    // "progress <done> <total>" lines, forwarded to the UI.
     let mut cmd = Command::new(python_path(env));
     cmd.arg("-I").arg("-S").arg(unpacker).arg(env);
-    cmd.envs(runtime_env(env, env, env));
+    cmd.envs(runtime_env(env, env, env)).stdout(Stdio::piped()).stderr(Stdio::piped()).stdin(Stdio::null());
     #[cfg(windows)]
     cmd.creation_flags(CREATE_NO_WINDOW);
-    let out = cmd.output().map_err(|e| format!("could not run the relocation step: {e}"))?;
-    if !out.status.success() {
-        return Err(format!(
-            "relocating the science engines failed: {}{}",
-            String::from_utf8_lossy(&out.stdout),
-            String::from_utf8_lossy(&out.stderr)
-        ));
+    let mut child = cmd.spawn().map_err(|e| format!("could not run the relocation step: {e}"))?;
+    let stderr = child.stderr.take();
+    let err_thread = std::thread::spawn(move || {
+        let mut text = String::new();
+        if let Some(mut e) = stderr {
+            let _ = std::io::Read::read_to_string(&mut e, &mut text);
+        }
+        text
+    });
+    let mut other = String::new();
+    if let Some(out) = child.stdout.take() {
+        for line in BufReader::new(out).lines().map_while(Result::ok) {
+            let mut it = line.split_whitespace();
+            if it.next() == Some("progress") {
+                let done: u64 = it.next().and_then(|x| x.parse().ok()).unwrap_or(0);
+                let total: u64 = it.next().and_then(|x| x.parse().ok()).unwrap_or(0);
+                if total > 0 {
+                    emit(Status::new("preparing", &format!("Relocating engine paths ({done} of {total} files)")));
+                }
+            } else {
+                other.push_str(&line);
+                other.push('\n');
+            }
+        }
+    }
+    let status = child.wait().map_err(|e| e.to_string())?;
+    let err = err_thread.join().unwrap_or_default();
+    if !status.success() {
+        return Err(format!("relocating the science engines failed: {other}{err}"));
     }
     Ok(())
 }

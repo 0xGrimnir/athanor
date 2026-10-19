@@ -4,6 +4,11 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-19
+
+### Changed
+- First-launch engine relocation skips files that cannot change on Windows, reads the rest in parallel, and shows a live file count.
+
 ## [0.2.0] - 2026-10-19
 
 ### Added

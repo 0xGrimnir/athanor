@@ -1,6 +1,6 @@
 [package]
 name = "athanor"
-version = "0.2.0"
+version = "0.2.1"
 description = "Athanor: a desktop science workbench"
 authors = ["Tyler Lee Jones"]
 edition = "2021"
