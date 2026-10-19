@@ -13,11 +13,12 @@ Done:
 - Accuracy benchmark against NIST reference geometries, dipoles and frequencies, gated at twice each method's published error
 - Molecule workbench UI: build/import, optimize, IR spectrum, animated normal modes, error bars, Validation view
 - Tauri 2 Windows shell and installer pipeline with a packed science runtime
+- Published installers (0.1.0, 0.2.0) with signed in-app updates from a public release feed
+- DFT benchmark passes all gates (B3LYP: bonds 0.0097 Å, dipoles 4.2%, frequencies 0.88%)
 
 Remaining:
-- First published installer (runtime smoke test on Windows being fixed)
-- Signed in-app updates (needs update hosting and a signing key)
 - MMFF94 accuracy set for organic molecules (currently water only)
+- Smaller updates (only changed parts instead of the full installer)
 - Molecular orbitals and electron-density views
 - Conformer search
 
@@ -55,7 +56,7 @@ Remaining:
 
 ## Heavy-compute pack
 
-- GPU DFT (GPU4PySCF in WSL2), installed from inside the app and self-tested on the user's GPU (0.2.0)
+- GPU DFT (GPU4PySCF in WSL2), installed from inside the app and self-tested on the user's GPU (0.2.0; awaiting the first run on real hardware)
 - Next: analytic GPU Hessians and IR intensities, so frequencies of large molecules do not need 6N gradients
 - With the genomics modules: native whole-genome mapping (minimap2, bwa-mem2, samtools) in the same distribution
 
