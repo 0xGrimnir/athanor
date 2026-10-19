@@ -1,0 +1,51 @@
+Fatal Python error: Segmentation fault
+
+Current thread 0x00007fafeb6e4600 (most recent call first):
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/tblite/library.py", line 105 in handle_context_error
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/tblite/interface.py", line 660 in singlepoint
+  File "/home/runner/work/athanor/athanor/core/athanor_core/engines/xtb.py", line 96 in _compute_tblite
+  File "/home/runner/work/athanor/athanor/core/athanor_core/engines/xtb.py", line 84 in compute
+  File "/home/runner/work/athanor/athanor/core/athanor_core/tasks.py", line 59 in fg
+  File "/home/runner/work/athanor/athanor/core/athanor_core/tasks.py", line 67 in <lambda>
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/scipy/_lib/_util.py", line 544 in __call__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/scipy/optimize/_differentiable_functions.py", line 362 in _update_fun
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/scipy/optimize/_differentiable_functions.py", line 283 in __init__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/scipy/optimize/_optimize.py", line 310 in _prepare_scalar_function
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/scipy/optimize/_lbfgsb_py.py", line 362 in _minimize_lbfgsb
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/scipy/optimize/_minimize.py", line 784 in minimize
+  File "/home/runner/work/athanor/athanor/core/athanor_core/tasks.py", line 67 in optimize
+  File "/home/runner/work/athanor/athanor/core/tests/test_crosschecks.py", line 73 in test_gfn2_matches_xtb_program
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_execution.py", line 147 in _multicall
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_manager.py", line 183 in _hookexec
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_caller.py", line 197 in __call__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_execution.py", line 147 in _multicall
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_manager.py", line 183 in _hookexec
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_caller.py", line 197 in __call__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_execution.py", line 147 in _multicall
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_manager.py", line 183 in _hookexec
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_caller.py", line 197 in __call__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_execution.py", line 147 in _multicall
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_manager.py", line 183 in _hookexec
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_caller.py", line 197 in __call__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/main.py", line 384 in _main
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_execution.py", line 147 in _multicall
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_manager.py", line 183 in _hookexec
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pluggy/_caller.py", line 197 in __call__
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/home/runner/micromamba/envs/athanor-core/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, _cyutility, scipy._cyutility, scipy._lib._ccallback_c, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg._batched_linalg, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._pcg64, numpy.random._generator, numpy.random._mt19937, numpy.random._philox, numpy.random._sfc64, numpy.random.mtrand, charset_normalizer.md, charset_normalizer.cd, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._internal_matfuncs, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg.cython_lapack, scipy.linalg._decomp_update, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpacklib, scipy.sparse.linalg._propack, scipy.optimize._group_columns, scipy._lib.messagestream, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._slsqplib, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy._lib._uarray._uarray, scipy.special._ufuncs_cxx, scipy.special._ellip_harm_2, scipy.special._special_ufuncs, scipy.special._gufuncs, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.spatial._ckdtree, scipy.spatial._hausdorff, scipy.spatial._distance_wrap, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial.transform._rotation_cy, scipy.spatial.transform._rigid_transform_cy, scipy.optimize._direct, rdkit.rdBase, rdkit.DataStructs.cDataStructs, rdkit.Chem.rdchem, rdkit.Geometry.rdGeometry, rdkit.Chem.rdinchi, rdkit.Chem.rdCIPLabeler, rdkit.Chem.rdmolfiles, rdkit.Chem.rdmolops, rdkit.Chem.rdMolInterchange, rdkit.Chem.rdCoordGen, rdkit.ForceField.rdForceField, rdkit.Chem.rdChemicalFeatures, rdkit.Chem.rdMolChemicalFeatures, rdkit.Chem.rdDistGeom, rdkit.Chem.rdChemReactions, rdkit.Chem.rdDepictor, rdkit.Chem.rdFingerprintGenerator, rdkit.Chem.rdForceFieldHelpers, rdkit.Chem.rdMolAlign, rdkit.Chem.rdMolDescriptors, rdkit.Chem.rdMolEnumerator, rdkit.Chem.rdMolTransforms, rdkit.Chem.rdPartialCharges, rdkit.Chem.rdqueries, rdkit.Chem.rdReducedGraphs, rdkit.Chem.rdShapeHelpers, rdkit.Chem.rdSLNParse, msgpack._cmsgpack, _cffi_backend (total: 90)
