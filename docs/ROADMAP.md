@@ -4,14 +4,27 @@ Each phase ships only after its benchmark suite reproduces published reference v
 
 ## Phase 1: Desktop shell and chemistry engine (in progress)
 
-- Tauri 2 shell, Windows installer, signed in-app updates, GitHub Actions release pipeline
-- Tiered chemistry:
-  - **MMFF94** (RDKit): geometry optimization, conformer search
-  - **GFN2-xTB**: partial charges, dipoles, Hessian-based vibrational frequencies and IR spectra
-  - **DFT/HF** (Psi4): molecular orbitals, electron density, accurate energies
-- Molecular dynamics via OpenMM on CUDA
-- Provenance record attached to every result
-- **Benchmark:** experimental geometries, dipoles and vibrational frequencies from the NIST CCCBDB reference set
+Done:
+- Tiered chemistry behind one interface, with a provenance record on every result:
+  - **MMFF94** (RDKit): geometry optimization; declines molecules outside its fitted parameters
+  - **GFN2-xTB** (xtb program): charges, dipoles, Hessian-based frequencies and IR spectra
+  - **DFT/HF** (Psi4): energies, gradients, dipoles, frequencies
+- Correctness checks on every build: Halgren's MMFF94 validation suite; tblite vs the xtb program; Psi4's and ASE's vibrational analyses
+- Accuracy benchmark against NIST reference geometries, dipoles and frequencies, gated at twice each method's published error
+- Molecule workbench UI: build/import, optimize, IR spectrum, animated normal modes, error bars, Validation view
+- Tauri 2 Windows shell and installer pipeline with a packed science runtime
+
+Remaining:
+- First published installer (runtime smoke test on Windows being fixed)
+- Signed in-app updates (needs update hosting and a signing key)
+- MMFF94 accuracy set for organic molecules (currently water only)
+- Molecular orbitals and electron-density views
+- Conformer search
+
+## Phase 1b: Molecular dynamics
+
+- OpenMM on CUDA, with force-field assignment and trajectory playback
+- **Benchmark:** published liquid densities and diffusion coefficients
 
 ## Phase 2: Ancient DNA Lab
 
