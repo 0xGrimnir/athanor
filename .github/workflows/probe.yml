@@ -1,0 +1,51 @@
+name: probe-env
+on:
+  push:
+    branches: [probe/ci]
+  workflow_dispatch:
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: probe
+          create-args: python=3.12
+          init-shell: bash
+      - name: Package availability on conda-forge
+        run: |
+          for p in rdkit xtb tblite tblite-python psi4 openmm openmmforcefields openff-toolkit pyscf libxc; do
+            echo "=== $p ==="
+            micromamba search -c conda-forge "$p" --json 2>/dev/null | python -c "import json,sys;d=json.load(sys.stdin);r=d.get('result',{}).get('pkgs',[]);print('versions:',sorted({x['version'] for x in r})[-3:] if r else 'NONE')" || echo "search failed"
+          done
+      - name: Install chemistry stack
+        run: |
+          micromamba install -y -c conda-forge rdkit xtb psi4 numpy scipy 2>&1 | tail -20
+      - name: Smoke test
+        run: |
+          python - <<'PY'
+          import importlib, subprocess, shutil, json
+          out={}
+          for m in ["rdkit","numpy","scipy","psi4"]:
+              try:
+                  mod=importlib.import_module(m); out[m]=getattr(mod,"__version__","ok")
+              except Exception as e: out[m]="ERR "+repr(e)[:200]
+          x=shutil.which("xtb"); out["xtb_bin"]=x
+          if x:
+              r=subprocess.run([x,"--version"],capture_output=True,text=True); out["xtb_version"]=(r.stdout+r.stderr).strip().splitlines()[-3:]
+          try:
+              import psi4
+              psi4.set_output_file("psi4.out", False); psi4.set_memory("1 GB")
+              h2o=psi4.geometry("O\nH 1 0.9572\nH 1 0.9572 2 104.52\nsymmetry c1")
+              e=psi4.energy("scf/cc-pvdz"); out["psi4_scf_h2o"]=e
+          except Exception as e: out["psi4_run"]="ERR "+repr(e)[:300]
+          print("PROBE_RESULT", json.dumps(out))
+          PY
