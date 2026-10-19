@@ -15,6 +15,8 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Mol* (molstar) | Protein structure viewer | MIT | Verified |
 | 3Dmol.js | Molecular viewer | BSD-3-Clause | Verified |
 | ideogram.js data | Cytogenetic bands and gene positions | CC0-1.0 | Verified |
+| Chakra Petch, JetBrains Mono, Saira Semi Condensed (via Fontsource) | Bundled interface fonts | OFL-1.1 | Verified |
+| conda-pack | Packs the science runtime into the installer | BSD-3-Clause | Verified |
 
 ## Chemistry engines
 
@@ -22,7 +24,9 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 |---|---|---|---|
 | RDKit | MMFF94 force field, cheminformatics | BSD-3-Clause | Verified |
 | OpenMM | Molecular dynamics (CUDA) | MIT, with LGPL parts | To verify |
-| xtb (Grimme lab) | GFN2-xTB semi-empirical quantum chemistry | LGPL-3.0 | To verify |
+| tblite (Grimme lab) | GFN2-xTB engine used by the app | LGPL-3.0-or-later | Verified |
+| xtb (Grimme lab) | Independent GFN2-xTB program used for cross-checks | LGPL-3.0 | To verify |
+| ASE | Independent vibrational-analysis cross-check | LGPL-2.1-or-later | Verified |
 | Psi4 | DFT and Hartree-Fock | LGPL-3.0 | To verify |
 | NumPy | Numerics | BSD-3-Clause (with bundled MIT, Zlib, 0BSD, CC0 parts) | Verified |
 | SciPy | Numerics | BSD-3-Clause | To verify |
@@ -52,7 +56,9 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Source | Use | Terms | Status |
 |---|---|---|---|
 | GenBank / NCBI | Mitochondrial genome sequences | Public, no general restrictions; some individual records may carry their own | To verify |
-| GetOrganelleDB | Curated mitochondrial sequence and gene-label database | GPL-3.0 | Verified |
+| GetOrganelleDB | Curated mitochondrial sequence and gene-label database (prototype only) | GPL-3.0 | Verified |
+| MMFF94 validation suite and parameter tables (T. A. Halgren) | MMFF94 correctness test; fitted-parameter coverage check | Distributed via CCL and RDKit (BSD-3-Clause) | Verified |
+| NIST CCCBDB (SRD 101), NIST Chemistry WebBook (SRD 69) | Experimental reference values for benchmarks | US government data | Verified |
 | Ensembl (release 110) | Gene coordinates and transcript models | No restrictions on use | To verify |
 
 ## License compatibility note

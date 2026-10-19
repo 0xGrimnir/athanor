@@ -5,6 +5,10 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 ## [Unreleased]
 
 ### Added
+- Science core (`core/athanor_core`): MMFF94, GFN2-xTB and DFT engines behind one interface; shared harmonic vibrational analysis with IR intensities; provenance on every result; JSON-RPC server.
+- Validation: MMFF94 validation suite, cross-checks against the xtb program, Psi4 and ASE, and a literature benchmark with published-statistics gates.
+- Desktop UI: molecule workbench (build/import, optimize, frequencies and IR, properties, animated normal modes, error bars, provenance) and a Validation view.
+- Windows shell (Tauri 2) with first-launch engine unpacking, and a release pipeline that smoke-tests the packed runtime before building the installer.
 - Repository setup: README, license, security policy, citation metadata, third-party notices and roadmap.
 - Browser prototype preserved in `prototype/` as the interface reference.
 
