@@ -35,10 +35,14 @@ jobs:
 
       - name: Check engines on CPU inside the image
         run: |
-          out=$(docker run --rm -v "$PWD/core:/src/core:ro" -v "$PWD/compute:/src/compute:ro" \
-                 -e PYTHONPATH=/src/core athanor-compute /opt/athanor/venv/bin/python /src/compute/ci_check.py)
-          echo "$out"
-          echo "::notice title=compute-pack check::$out"
+          set +e
+          docker run --rm -v "$PWD/core:/src/core:ro" -v "$PWD/compute:/src/compute:ro" \
+            -e PYTHONPATH=/src/core athanor-compute /opt/athanor/venv/bin/python /src/compute/ci_check.py > check.txt 2>&1
+          rc=$?
+          cat check.txt
+          msg=$(tail -c 3000 check.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=compute-pack check::$msg"; else echo "::error title=compute-pack check failed::$msg"; fi
+          exit $rc
 
       - name: Export, compress and split
         run: |
