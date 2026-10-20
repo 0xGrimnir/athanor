@@ -1,0 +1,59 @@
+stage: simulate (gargammel)
+stage: trim and merge (AdapterRemoval)
+stage: index NC_007596 (bwa)
+stage: map to NC_007596 (bwa aln)
+stage: map to NC_007596 (bwa samse)
+stage: sort NC_007596 (samtools)
+stage: index BAM NC_007596 (samtools)
+stage: flagstat NC_007596
+stage: damage on NC_007596 (mapDamage2)
+stage: consensus on NC_007596
+stage: align truth to NC_007596 (minimap2)
+stage: index NC_000934 (bwa)
+stage: map to NC_000934 (bwa aln)
+stage: map to NC_000934 (bwa samse)
+stage: sort NC_000934 (samtools)
+stage: index BAM NC_000934 (samtools)
+stage: flagstat NC_000934
+stage: damage on NC_000934 (mapDamage2)
+stage: consensus on NC_000934
+stage: align truth to NC_000934 (minimap2)
+stage: index NC_005129 (bwa)
+stage: map to NC_005129 (bwa aln)
+stage: map to NC_005129 (bwa samse)
+stage: sort NC_005129 (samtools)
+stage: index BAM NC_005129 (samtools)
+stage: flagstat NC_005129
+stage: damage on NC_005129 (mapDamage2)
+stage: consensus on NC_005129
+stage: align truth to NC_005129 (minimap2)
+tools: {"bwa": "Version: 0.7.19-r1273", "samtools": "samtools 1.24", "adapterremoval": "adapterremoval3 v3.0.2", "mapDamage": "2.2.2", "minimap2": "2.31-r1302", "gargammel": "gargammel (bioconda; see pack lock)"}
+simulated damage (v,l,d,s): [0.03, 0.4, 0.01, 0.3]
+[NC_007596] Mammuthus primigenius (woolly mammoth): mapped=3898 depth=10.2 covered=0.996 truth-ref divergence=0.0000 theta=0.0000 accuracy=1.00000 predicted_err=0.00000 observed_err=0.00000 ECE=0.00000 gaps=0 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0001, 'DeltaD': 0.0103, 'DeltaS': 0.6285, 'Lambda': 0.4083, 'Rho': 1.8146, 'LogLik': -137.9626}
+   5' C>T raw: [0.1773, 0.1182, 0.0712, 0.0455, 0.0471, 0.0211]  background: 0.0037
+[NC_000934] Loxodonta africana (African savanna elephant): mapped=3898 depth=7.2 covered=0.927 truth-ref divergence=0.0476 theta=0.0383 accuracy=0.99840 predicted_err=0.00077 observed_err=0.00160 ECE=0.00083 gaps=111 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.083, 'DeltaD': 0.0478, 'DeltaS': 0.5288, 'Lambda': 0.3996, 'Rho': 0.0453, 'LogLik': -362.9389}
+   errors: n=25 called-reference-where-truth-differs=24 within-10bp-of-indel=1 median-depth errors/all=1.0/8.0 mean-confidence-at-errors=0.8750
+      {'pos': 1161, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.788485517485742, 'dist_to_indel': 503}
+      {'pos': 2310, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 1, 'confidence': 0.9978480907625612, 'dist_to_indel': 638}
+      {'pos': 2925, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.8801961877540899, 'dist_to_indel': 1253}
+      {'pos': 5969, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 1, 'confidence': 0.9989376347937183, 'dist_to_indel': 748}
+      {'pos': 7440, 'call': 'G', 'truth': 'A', 'ref': 'G', 'depth': 1, 'confidence': 0.7717623241705738, 'dist_to_indel': 2219}
+      {'pos': 7884, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.5808193349740435, 'dist_to_indel': 1984}
+      {'pos': 8471, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.8801961877540899, 'dist_to_indel': 1397}
+      {'pos': 10207, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 2, 'confidence': 0.5958909519763392, 'dist_to_indel': 339}
+   5' C>T raw: [0.1596, 0.1388, 0.0907, 0.0861, 0.0776, 0.0456]  background: 0.0413
+[NC_005129] Elephas maximus (Asian elephant): mapped=3898 depth=7.4 covered=0.935 truth-ref divergence=0.0438 theta=0.0366 accuracy=0.99886 predicted_err=0.00058 observed_err=0.00114 ECE=0.00057 gaps=139 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.079, 'DeltaD': 0.0544, 'DeltaS': 0.5095, 'Lambda': 0.418, 'Rho': 0.0388, 'LogLik': -363.9452}
+   errors: n=18 called-reference-where-truth-differs=16 within-10bp-of-indel=1 median-depth errors/all=1.0/8.0 mean-confidence-at-errors=0.8064
+      {'pos': 4294, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.9272130037880517, 'dist_to_indel': 927}
+      {'pos': 4677, 'call': 'G', 'truth': 'A', 'ref': 'G', 'depth': 1, 'confidence': 0.5552518324311689, 'dist_to_indel': 544}
+      {'pos': 7428, 'call': 'G', 'truth': 'A', 'ref': 'G', 'depth': 1, 'confidence': 0.7579216563713242, 'dist_to_indel': 2207}
+      {'pos': 7884, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.5973536226367594, 'dist_to_indel': 1982}
+      {'pos': 10327, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 1, 'confidence': 0.9999979924987084, 'dist_to_indel': 461}
+      {'pos': 10345, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.5981351664133322, 'dist_to_indel': 479}
+      {'pos': 11281, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.5769440990544086, 'dist_to_indel': 1415}
+      {'pos': 11529, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 1, 'confidence': 0.997959462402316, 'dist_to_indel': 1663}
+   5' C>T raw: [0.1629, 0.1187, 0.0896, 0.0689, 0.0795, 0.0562]  background: 0.0447
+total 458 s
