@@ -152,6 +152,8 @@
         </select></label>
       <label class="mini">Present-day human contamination <span class="val" id="adnaContVal">0%</span><input id="adnaCont" type="range" min="0" max="20" step="1" value="0"></label>
       <label class="mini">Median fragment length <span class="val" id="adnaLenVal">40 bp</span><input id="adnaLen" type="range" min="30" max="80" step="1" value="40"></label>
+      <label class="mini">Mapping iterations <span class="val" id="adnaItVal">3</span><input id="adnaIt" type="range" min="1" max="5" step="1" value="3"></label>
+      <p class="note">Iterative mapping (Briggs et al. 2009) replaces confident consensus bases into the reference and re-maps, reducing reference bias against a relative's genome.</p>
       <p class="note">Runs in the Linux engines pack: gargammel → AdapterRemoval → BWA aln (ancient-DNA settings) → mapDamage2 → damage-aware consensus → scoring against the truth. Takes a few minutes.</p>
       <button type="button" class="btn primary" id="adnaRun">Simulate and reconstruct</button>
     </div>
@@ -161,6 +163,7 @@
     <div id="adnaEmpty" class="note">Choose a sample and references, then run. Requires the Linux engines (top bar).</div>
     <div id="adnaResults" hidden>
       <div class="sec"><div class="label">Reconstruction by reference</div><div id="adnaTable"></div></div>
+      <div class="sec"><div class="label">Reference bias across mapping iterations</div><div id="adnaIterTable"></div></div>
       <div class="sec"><div class="label">Damage recovered by mapDamage2 vs simulated</div><div id="adnaDamageTable"></div>
         <div class="plots"><canvas id="adnaDamagePlot" height="220"></canvas><canvas id="adnaCalPlot" height="220"></canvas></div></div>
       <div class="sec"><div class="label">Genome tracks</div>

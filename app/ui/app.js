@@ -570,6 +570,7 @@ function wire() {
   $("adnaCov").oninput = (e) => ($("adnaCovVal").textContent = `${e.target.value}×`);
   $("adnaCont").oninput = (e) => ($("adnaContVal").textContent = `${e.target.value}%`);
   $("adnaLen").oninput = (e) => ($("adnaLenVal").textContent = `${e.target.value} bp`);
+  $("adnaIt").oninput = (e) => ($("adnaItVal").textContent = e.target.value);
   $("btnProps").onclick = runProps;
   $("btnStop").onclick = async () => { log("Stopping: restarting the science core", true); await restartCore(); setBusy(false); };
   $("vCharges").onclick = () => { S.showCharges = !S.showCharges; $("vCharges").setAttribute("aria-pressed", S.showCharges); if (!S.last.charges && S.showCharges) log("Run Properties to compute partial charges"); V.applyColors(); };
@@ -717,6 +718,7 @@ function adnaParams() {
     damage: $("adnaDamage").value.split(",").map(Number),
     contamination: +$("adnaCont").value / 100,
     length_loc: Math.log(len), length_scale: 0.35,
+    iterations: +$("adnaIt").value,
   };
 }
 
@@ -756,12 +758,21 @@ function renderAdna() {
   $("adnaTable").innerHTML = `<table><thead><tr><th>Reference</th><th>True divergence</th><th>Estimated</th>
     <th>Mapped</th><th>Depth</th><th>Covered</th><th>Correct</th><th>Predicted error</th><th>Observed error</th><th>ECE</th></tr></thead><tbody>${rows}</tbody></table>
     <p class="note">"Predicted error" is what the posteriors claim; "observed" is measured against the true genome. ECE (expected calibration error) near 0 means the stated confidence can be trusted. Positions where the truth has an indel relative to the reference are not scored.</p>`;
+  const itRows = R.references.filter((r) => r.iterations && r.reference.accession !== R.simulation.endogenous.accession).flatMap((r) =>
+    r.iterations.map((h) => `<tr><td>${h.iteration === 1 ? escapeHtml(commonName(r.reference.organism)) : ""}</td><td class="n">${h.iteration}</td>
+      <td class="n">${(h.mapped_reads ?? 0).toLocaleString()}</td><td class="n">${pct(h.covered_fraction, 1)}</td><td class="n">${pct(h.accuracy, 3)}</td>
+      <td class="n">${pct(h.estimated_divergence_theta)}</td><td class="n">${pct(r.truth_vs_reference_divergence)}</td>
+      <td class="n">${pct(h.predicted_error, 3)} / ${pct(h.observed_error, 3)}</td></tr>`));
+  $("adnaIterTable").innerHTML = itRows.length ? `<table><thead><tr><th>Reference</th><th>Iteration</th><th>Mapped</th><th>Covered</th><th>Correct</th>
+    <th>Estimated divergence</th><th>True divergence</th><th>Predicted / observed error</th></tr></thead><tbody>${itRows.join("")}</tbody></table>
+    <p class="note">Reads carrying the sample's own bases map poorly to a relative's genome (reference bias). Each iteration recovers more of them, and the divergence estimate approaches the truth.</p>` : `<p class="note">Map against a relative's genome to see reference bias.</p>`;
   const sim = R.simulation.damage_briggs_v_l_d_s;
   const names = [["Nu", "ν nick frequency", sim[0]], ["Lambda", "λ overhang parameter", sim[1]], ["DeltaD", "δd double-stranded", sim[2]], ["DeltaS", "δs single-stranded", sim[3]]];
   const drows = names.map(([k, lab, v]) => `<tr><td>${lab}</td><td class="n">${v}</td>${R.references.map((r) => {
     const e = r.mapdamage_bayesian && r.mapdamage_bayesian[k];
     return `<td class="n">${e && e.Mean != null ? e.Mean.toFixed(4) : "—"}</td>`; }).join("")}</tr>`).join("");
-  $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(commonName(r.reference.organism))}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>`;
+  $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(commonName(r.reference.organism))}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>
+    <p class="note">mapDamage2 posterior means, estimated on the final (iterated) reference. δd and λ are recovered; δs comes out near 0.55 against gargammel's s = 0.3 on every reference including the sample's own, which points to the two programs defining that parameter differently. That is under investigation, so δs is reported but not used.</p>`;
   drawDamage(); drawCalibration(); drawTracks(); renderAdnaProv();
 }
 

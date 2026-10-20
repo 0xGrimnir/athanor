@@ -12,3 +12,5 @@ echo "== fragSim"; fragSim 2>&1 | head -60
 echo "== deamSim"; deamSim 2>&1 | head -60
 echo "== AdapterRemoval --help"; (AdapterRemoval --help || adapterremoval3 --help) 2>&1 | head -80
 echo "== mapDamage --help"; mapDamage --help 2>&1 | head -120
+echo "== licenses (conda package metadata)"
+for f in /opt/athanor/bio/conda-meta/*.json; do python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(d['name'],d['version'],'|',d.get('license','?'))" "$f"; done | grep -iE "^(gargammel|art|bwa|samtools|htslib|adapterremoval|mapdamage2|minimap2|r-base|perl|python) " 

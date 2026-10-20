@@ -196,7 +196,7 @@ def _diagnose(err_pos, calls, truth, ref, cons, indels) -> dict:
 def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("NC_007596", "NC_000934", "NC_005129"),
         coverage: float = 10.0, damage: tuple = (0.03, 0.4, 0.01, 0.3), contamination: float = 0.0,
         length_loc: float = 3.7, length_scale: float = 0.35, min_length: int = 25, read_length: int = 75,
-        mapdamage_stats: bool = True, min_mapq: int = 25, iterations: int = 1, on_step=None) -> dict:
+        mapdamage_stats: bool = True, min_mapq: int = 25, iterations: int = 3, on_step=None) -> dict:
     """Simulate ancient reads from ``endogenous`` and reconstruct it against each reference.
 
     damage = Briggs et al. (2007) parameters (nick frequency, overhang geometric

@@ -82,7 +82,7 @@ def m_adna_run(p):
     import os
     from .adna.pipeline import run
     allowed = {"endogenous", "references", "coverage", "damage", "contamination", "length_loc",
-               "length_scale", "min_length", "read_length", "mapdamage_stats", "min_mapq"}
+               "length_scale", "min_length", "read_length", "mapdamage_stats", "min_mapq", "iterations"}
     kw = {k: v for k, v in (p or {}).items() if k in allowed}
     if "references" in kw:
         kw["references"] = tuple(kw["references"])

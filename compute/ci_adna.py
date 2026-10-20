@@ -37,3 +37,37 @@ for r in res["references"]:
     print("   5' C>T raw:", [round(x, 4) for x in r["damage_profile"]["raw_5p_CtoT"][:6]],
           " background:", round(r["damage_profile"]["background_CtoT"], 4))
 print(f"total {time.time() - t0:.0f} s")
+
+# ---- validation gates -------------------------------------------------------
+# Principled checks on the simulated truth; each prints PASS/FAIL.
+fails = []
+
+def gate(name, ok, detail):
+    print(f"[{'PASS' if ok else 'FAIL'}] {name}: {detail}")
+    if not ok:
+        fails.append(name)
+
+v, lam, dd, ds = sim["damage_briggs_v_l_d_s"]
+endo = sim["endogenous"]["accession"]
+for r in res["references"]:
+    acc = r["reference"]["accession"]
+    b = r["mapdamage_bayesian"]
+    if acc == endo:
+        gate("self-reference accuracy >= 99.9%", r["accuracy"] >= 0.999, f"{r['accuracy']:.5f}")
+        gate("mapDamage recovers deltaD within 30%", abs(b["DeltaD"]["Mean"] - dd) <= 0.3 * dd, f"{b['DeltaD']['Mean']:.4f} vs {dd}")
+        gate("mapDamage recovers lambda within 20%", abs(b["Lambda"]["Mean"] - lam) <= 0.2 * lam, f"{b['Lambda']['Mean']:.4f} vs {lam}")
+        print(f"[INFO] mapDamage deltaS {b['DeltaS']['Mean']:.4f} vs gargammel s={ds}: parameterisations differ; reported, not gated")
+        continue
+    h = r["iterations"]
+    gate(f"{acc}: iterative mapping does not lose accuracy", h[-1]["accuracy"] >= h[0]["accuracy"],
+         f"{h[0]['accuracy']:.5f} -> {h[-1]['accuracy']:.5f}")
+    true_div = r["truth_vs_reference_divergence"]
+    gate(f"{acc}: iterative mapping moves divergence estimate toward the truth",
+         abs(h[-1]["estimated_divergence_theta"] - true_div) <= abs(h[0]["estimated_divergence_theta"] - true_div),
+         f"{h[0]['estimated_divergence_theta']:.4f} -> {h[-1]['estimated_divergence_theta']:.4f} (true {true_div:.4f})")
+    gate(f"{acc}: final consensus >= 99.9% correct", r["accuracy"] >= 0.999, f"{r['accuracy']:.5f}")
+    gate(f"{acc}: expected calibration error <= 0.002", r["calibration"]["expected_calibration_error"] <= 0.002,
+         f"{r['calibration']['expected_calibration_error']:.5f}")
+    gate(f"{acc}: mapDamage deltaD within 50% after iteration", abs(b["DeltaD"]["Mean"] - dd) <= 0.5 * dd,
+         f"{b['DeltaD']['Mean']:.4f} vs {dd}")
+sys.exit(1 if fails else 0)
