@@ -20,11 +20,12 @@ async fn core_call(
     method: String,
     params: Value,
 ) -> Result<Value, String> {
-    let gpu = params.get("tier").and_then(Value::as_str) == Some("dft-gpu");
-    let core = if gpu {
+    // The GPU tier and the ancient-DNA tools run in the Linux engines pack (WSL2).
+    let linux = params.get("tier").and_then(Value::as_str) == Some("dft-gpu") || method.starts_with("adna_");
+    let core = if linux {
         let c = compute.inner().core.clone();
         if !c.is_running() {
-            return Err("GPU compute is not ready; enable it from the GPU button".into());
+            return Err("The Linux engines are not running; install or start them from the Linux engines button".into());
         }
         c
     } else {

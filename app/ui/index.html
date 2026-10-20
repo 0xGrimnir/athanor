@@ -12,6 +12,7 @@
   <nav class="tabs" id="tabs" aria-label="Modules">
     <button type="button" class="tab" data-view="molecule" aria-pressed="true"><span class="k">01</span>Molecule</button>
     <button type="button" class="tab" data-view="validation" aria-pressed="false"><span class="k">02</span>Validation</button>
+    <button type="button" class="tab" data-view="adna" aria-pressed="false"><span class="k">03</span>Ancient DNA</button>
   </nav>
   <button type="button" class="btn update" id="updateBtn" hidden></button>
   <button type="button" class="btn gpu" id="gpuBtn" hidden></button>
@@ -124,6 +125,51 @@
       <p class="lead">Every tier is checked two ways. <b>Correctness</b>: Athanor must reproduce the underlying engine's own reference results. <b>Accuracy</b>: each tier's errors against experimental data must be consistent with the method's published error statistics. These are the error bars shown next to results.</p>
     </div>
     <div id="validation"></div>
+  </section>
+</main>
+
+<!-- ============================ ANCIENT DNA ============================ -->
+<main class="view deck" id="view-adna" hidden>
+  <section class="panel" aria-label="Simulation and references">
+    <div class="sec">
+      <div class="label">Sample</div>
+      <p class="note">Ancient reads are simulated from a real mitochondrial genome with gargammel, so the true sequence is known and every reconstructed base can be scored.</p>
+      <label class="mini">Endogenous genome<select id="adnaEndo" class="field"></select></label>
+    </div>
+    <div class="sec">
+      <div class="label">References to map against</div>
+      <div id="adnaRefs" class="checks"></div>
+    </div>
+    <div class="sec">
+      <div class="label">Simulation</div>
+      <label class="mini">Coverage <span class="val" id="adnaCovVal">10×</span><input id="adnaCov" type="range" min="1" max="30" step="1" value="10"></label>
+      <label class="mini">Damage (Briggs et al. 2007)
+        <select id="adnaDamage" class="field">
+          <option value="0.03,0.4,0.01,0.3" selected>Typical Pleistocene (ν 0.03, λ 0.4, δd 0.01, δs 0.3)</option>
+          <option value="0.03,0.25,0.005,0.15">Light</option>
+          <option value="0.05,0.5,0.02,0.6">Heavy</option>
+          <option value="0,0.4,0,0">None (control)</option>
+        </select></label>
+      <label class="mini">Present-day human contamination <span class="val" id="adnaContVal">0%</span><input id="adnaCont" type="range" min="0" max="20" step="1" value="0"></label>
+      <label class="mini">Median fragment length <span class="val" id="adnaLenVal">40 bp</span><input id="adnaLen" type="range" min="30" max="80" step="1" value="40"></label>
+      <p class="note">Runs in the Linux engines pack: gargammel → AdapterRemoval → BWA aln (ancient-DNA settings) → mapDamage2 → damage-aware consensus → scoring against the truth. Takes a few minutes.</p>
+      <button type="button" class="btn primary" id="adnaRun">Simulate and reconstruct</button>
+    </div>
+  </section>
+  <section class="panel center-scroll" aria-label="Ancient DNA results">
+    <div class="busy" id="adnaBusy" hidden><div class="spinner"></div><span id="adnaBusyText">Running…</span></div>
+    <div id="adnaEmpty" class="note">Choose a sample and references, then run. Requires the Linux engines (top bar).</div>
+    <div id="adnaResults" hidden>
+      <div class="sec"><div class="label">Reconstruction by reference</div><div id="adnaTable"></div></div>
+      <div class="sec"><div class="label">Damage recovered by mapDamage2 vs simulated</div><div id="adnaDamageTable"></div>
+        <div class="plots"><canvas id="adnaDamagePlot" height="220"></canvas><canvas id="adnaCalPlot" height="220"></canvas></div></div>
+      <div class="sec"><div class="label">Genome tracks</div>
+        <p class="note">Depth (area), consensus errors against the truth (red), low-confidence calls &lt;99% (amber), uncovered (grey).</p>
+        <div id="adnaTracks"></div></div>
+    </div>
+  </section>
+  <section class="panel" aria-label="Provenance">
+    <div class="sec"><div class="label">Provenance</div><div id="adnaProv" class="note">No run yet.</div></div>
   </section>
 </main>
 

@@ -347,6 +347,7 @@ function currentMolecule() {
 function progressText(d) {
   if (d.task === "optimize")
     return `${S.busyLabel}: step ${d.step} · E ${fmt(d.energy, 8)} Eh · max force ${d.max_force.toExponential(2)} (target ${d.target_max_force.toExponential(1)})`;
+  if (d.task === "adna") return `Ancient DNA: ${d.stage}`;
   if (d.task === "frequencies" && d.analytic) return `${S.busyLabel}: analytic Hessian and IR intensities (coupled-perturbed SCF)…`;
   if (d.task === "frequencies") return `${S.busyLabel}: Hessian gradient ${d.step} of ${d.total}`;
   return "";
@@ -565,6 +566,10 @@ function wire() {
   $("tierSeg").onclick = (e) => { const b = e.target.closest("button"); if (b) setTier(b.dataset.tier); };
   $("btnOpt").onclick = () => runOptimize().catch(() => {});
   $("btnFreq").onclick = runFrequencies;
+  $("adnaRun").onclick = () => runAdna();
+  $("adnaCov").oninput = (e) => ($("adnaCovVal").textContent = `${e.target.value}×`);
+  $("adnaCont").oninput = (e) => ($("adnaContVal").textContent = `${e.target.value}%`);
+  $("adnaLen").oninput = (e) => ($("adnaLenVal").textContent = `${e.target.value} bp`);
   $("btnProps").onclick = runProps;
   $("btnStop").onclick = async () => { log("Stopping: restarting the science core", true); await restartCore(); setBusy(false); };
   $("vCharges").onclick = () => { S.showCharges = !S.showCharges; $("vCharges").setAttribute("aria-pressed", S.showCharges); if (!S.last.charges && S.showCharges) log("Run Properties to compute partial charges"); V.applyColors(); };
@@ -586,9 +591,9 @@ function wire() {
   document.getElementById("tabs").onclick = (e) => {
     const b = e.target.closest(".tab"); if (!b) return;
     document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-pressed", String(t === b)));
-    $("view-molecule").hidden = b.dataset.view !== "molecule";
-    $("view-validation").hidden = b.dataset.view !== "validation";
+    for (const v of ["molecule", "validation", "adna"]) $(`view-${v}`).hidden = b.dataset.view !== v;
     if (b.dataset.view === "validation") renderValidation();
+    if (b.dataset.view === "adna") initAdna();
   };
 }
 
@@ -622,9 +627,10 @@ function renderCompute(st) {
   const btn = $("gpuBtn");
   S.compute = st;
   const labels = {
-    "off": "Enable GPU compute", "failed": "GPU: retry", "needs-restart": "GPU: restart Windows",
-    "downloading": st.progress != null ? `GPU: downloading ${Math.floor(100 * st.progress)}%` : "GPU: downloading",
-    "installing": "GPU: installing", "testing": "GPU: self-test", "ready": "GPU ready",
+    "off": "Install Linux engines", "failed": "Linux engines: retry", "needs-restart": "Linux engines: restart Windows",
+    "downloading": st.progress != null ? `Linux engines: downloading ${Math.floor(100 * st.progress)}%` : "Linux engines: downloading",
+    "installing": "Linux engines: installing", "testing": "Linux engines: self-test",
+    "ready": st.gpu_ok ? "Linux engines · GPU ready" : "Linux engines ready",
   };
   if (st.stage === "unsupported" || !labels[st.stage]) { btn.hidden = true; return; }
   btn.hidden = false;
@@ -633,8 +639,9 @@ function renderCompute(st) {
   btn.disabled = ["downloading", "installing", "testing"].includes(st.stage);
   btn.classList.toggle("ok", st.stage === "ready");
   const tierBtn = document.querySelector('#tierSeg [data-tier="dft-gpu"]');
-  tierBtn.hidden = st.stage !== "ready";
-  if (st.stage !== "ready" && S.tier === "dft-gpu") setTier("dft");
+  tierBtn.hidden = !(st.stage === "ready" && st.gpu_ok);
+  if (tierBtn.hidden && S.tier === "dft-gpu") setTier("dft");
+  if (!$("view-adna").hidden) initAdna();
 }
 
 function selftestSummary(rep) {
@@ -663,23 +670,166 @@ async function initCompute() {
   $("gpuBtn").onclick = async () => {
     const st = S.compute || {};
     if (st.stage === "ready") {
-      const again = confirm(`GPU compute is ready.\n\n${st.gpu || ""}\n\nSelf-test: ${selftestSummary(st.selftest)}\n\n` +
+      const again = confirm(`Linux engines are ready${st.gpu_ok ? ", including GPU DFT" : "; the GPU tier is off"}.\n\n${st.gpu || "No NVIDIA GPU detected"}\n\nGPU self-test: ${selftestSummary(st.selftest)}\n\n` +
         "Re-run the GPU self-test now? (A minute or two; nothing is downloaded.)");
       if (again) { try { await TAURI.core.invoke("compute_enable"); } catch (e) { log(`GPU compute: ${e}`, true); } }
       return;
     }
     if (st.stage === "needs-restart") { alert(st.message); return; }
     const retry = st.stage === "failed";
-    const ok = retry ? confirm("Retry GPU compute?\n\nIf the compute pack is already installed it is not downloaded again; Athanor re-runs the GPU self-test.") : confirm(
-      "Enable GPU compute?\n\n" +
+    const ok = retry ? confirm("Retry?\n\nIf the Linux engines pack is already installed it is not downloaded again; Athanor re-runs the GPU self-test.") : confirm(
+      "Install the Linux engines?\n\n" +
       "• Uses WSL2. If it is not enabled yet, Windows will ask for administrator approval, and may need a restart.\n" +
-      "• Downloads the compute pack (about 2–3 GB) from the Athanor release feed and checks every part's SHA-256.\n" +
-      "• Runs a self-test on your GPU (GPU vs CPU on the same molecules) before the GPU tier is offered.\n\n" +
+      "• Downloads the Linux engines pack (about 2.4 GB: GPU DFT and the ancient-DNA tools) from the Athanor release feed and checks every part's SHA-256.\n" +
+      "• Runs a self-test on your NVIDIA GPU (GPU vs CPU on the same molecules) before the GPU tier is offered; without a GPU the other Linux engines still work.\n\n" +
       "You can keep working while it installs.");
     if (!ok) return;
     try { await TAURI.core.invoke("compute_enable"); }
     catch (e) { log(`GPU compute: ${e}`, true); }
   };
+}
+
+// ------------------------------------------------------------------ Ancient DNA
+const A = { catalog: null, result: null, busy: false };
+
+async function initAdna() {
+  const linuxReady = S.compute && S.compute.stage === "ready";
+  $("adnaRun").disabled = !linuxReady || A.busy;
+  $("adnaEmpty").textContent = linuxReady
+    ? "Choose a sample and references, then run."
+    : "The Ancient DNA Lab runs in the Linux engines pack. Install or update it from the top bar first.";
+  if (!linuxReady || A.catalog) return;
+  try {
+    A.catalog = await rpc("adna_catalog", {});
+    const g = A.catalog.references.genomes;
+    $("adnaEndo").innerHTML = g.map((x) => `<option value="${x.accession}" ${x.accession === "NC_007596" ? "selected" : ""}>${escapeHtml(x.organism)} — ${x.version}</option>`).join("");
+    $("adnaRefs").innerHTML = g.map((x) => `<label><input type="checkbox" value="${x.accession}" ${["NC_007596", "NC_000934", "NC_005129"].includes(x.accession) ? "checked" : ""}>
+      <span>${escapeHtml(x.organism)}<small>${x.version} · ${x.length.toLocaleString()} bp</small></span></label>`).join("");
+  } catch (e) { $("adnaEmpty").textContent = `Could not reach the Linux engines: ${e.message || e}`; }
+}
+
+function adnaParams() {
+  const len = +$("adnaLen").value;
+  return {
+    endogenous: $("adnaEndo").value,
+    references: [...document.querySelectorAll("#adnaRefs input:checked")].map((i) => i.value),
+    coverage: +$("adnaCov").value,
+    damage: $("adnaDamage").value.split(",").map(Number),
+    contamination: +$("adnaCont").value / 100,
+    length_loc: Math.log(len), length_scale: 0.35,
+  };
+}
+
+async function runAdna() {
+  const p = adnaParams();
+  if (!p.references.length) { log("Choose at least one reference", true); return; }
+  A.busy = true; $("adnaRun").disabled = true; $("adnaBusy").hidden = false; $("adnaBusyText").textContent = "Starting…";
+  const job = addJob(`Ancient DNA · ${p.coverage}× · ${p.references.length} reference(s)`);
+  try {
+    A.result = await rpc("adna_run", p);
+    renderAdna(); job.done(`${A.result.references.length} reference(s)`);
+    const best = A.result.references.reduce((a, b) => (a.accuracy > b.accuracy ? a : b));
+    log(`Ancient DNA: best reconstruction ${(100 * best.accuracy).toFixed(3)}% correct against ${best.reference.organism}`);
+  } catch (e) { job.fail(String(e)); log(`Ancient DNA run failed: ${e.message || e}`, true); }
+  finally { A.busy = false; $("adnaRun").disabled = false; $("adnaBusy").hidden = true; }
+}
+
+const pct = (x, d = 2) => (x == null ? "—" : `${(100 * x).toFixed(d)}%`);
+function renderAdna() {
+  const R = A.result; if (!R) return;
+  $("adnaEmpty").hidden = true; $("adnaResults").hidden = false;
+  const rows = R.references.map((r) => {
+    const c = r.calibration;
+    return `<tr><td>${escapeHtml(r.reference.organism)}<br><small>${r.reference.version}</small></td>
+      <td class="n">${pct(r.truth_vs_reference_divergence)}</td><td class="n">${pct(r.estimated_divergence_theta)}</td>
+      <td class="n">${(r.mapped_reads ?? 0).toLocaleString()}</td><td class="n">${r.mean_depth.toFixed(1)}×</td>
+      <td class="n">${pct(r.covered_fraction, 1)}</td><td class="n">${pct(r.accuracy, 3)}</td>
+      <td class="n">${pct(c.predicted_error_rate, 3)}</td><td class="n">${pct(c.observed_error_rate, 3)}</td>
+      <td class="n">${c.expected_calibration_error.toFixed(4)}</td></tr>`;
+  }).join("");
+  $("adnaTable").innerHTML = `<table><thead><tr><th>Reference</th><th>Truth vs reference</th><th>Estimated divergence</th>
+    <th>Mapped reads</th><th>Depth</th><th>Covered</th><th>Consensus correct</th><th>Predicted error</th><th>Observed error</th><th>Calibration error</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="note">"Predicted error" is what the posteriors claim; "observed" is measured against the true genome. Calibration error near 0 means the stated confidence can be trusted. Positions where the truth has an indel relative to the reference are not scored.</p>`;
+  const sim = R.simulation.damage_briggs_v_l_d_s;
+  const names = [["Nu", "ν nick frequency", sim[0]], ["Lambda", "λ overhang parameter", sim[1]], ["DeltaD", "δd double-stranded", sim[2]], ["DeltaS", "δs single-stranded", sim[3]]];
+  const drows = names.map(([k, lab, v]) => `<tr><td>${lab}</td><td class="n">${v}</td>${R.references.map((r) => {
+    const e = r.mapdamage_bayesian && r.mapdamage_bayesian[k];
+    return `<td class="n">${e && e.Mean != null ? e.Mean.toFixed(4) : "—"}</td>`; }).join("")}</tr>`).join("");
+  $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(r.reference.organism.split(" (")[0])}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>`;
+  drawDamage(); drawCalibration(); drawTracks(); renderAdnaProv();
+}
+
+function plotFrame(cv) {
+  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight || 220;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+  g.font = "11px JetBrains Mono, monospace"; g.fillStyle = "#7f9fb3"; g.strokeStyle = "rgba(110,205,255,.25)";
+  return { g, w, h, l: 44, r: w - 10, t: 18, b: h - 26 };
+}
+const COLORS = ["#62d6ff", "#ffb34a", "#52f0b0", "#ff6a57"];
+
+function drawDamage() {
+  const { g, l, r, t, b } = plotFrame($("adnaDamagePlot"));
+  const refs = A.result.references, n = 25;
+  const ymax = Math.max(0.05, ...refs.flatMap((x) => [...x.damage_profile.raw_5p_CtoT.slice(0, n), ...x.damage_profile.raw_3p_GtoA.slice(0, n)]));
+  const X = (i) => l + (i / (n - 1)) * (r - l), Y = (v) => b - (v / ymax) * (b - t);
+  g.strokeRect(l, t, r - l, b - t); g.fillText("C→T from 5′ (solid), G→A from 3′ (dashed)", l, t - 5);
+  g.fillText(ymax.toFixed(2), 4, t + 8); g.fillText("0", 30, b); g.fillText("position from read end", l + 60, b + 18);
+  refs.forEach((x, k) => {
+    for (const [arr, dash] of [[x.damage_profile.raw_5p_CtoT, []], [x.damage_profile.raw_3p_GtoA, [5, 4]]]) {
+      g.setLineDash(dash); g.strokeStyle = COLORS[k % 4]; g.beginPath();
+      arr.slice(0, n).forEach((v, i) => (i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v)))); g.stroke();
+    }
+  });
+  g.setLineDash([]);
+}
+
+function drawCalibration() {
+  const { g, l, r, t, b } = plotFrame($("adnaCalPlot"));
+  const lo = -6, hi = 0, X = (e) => l + ((Math.log10(Math.max(e, 1e-6)) - lo) / (hi - lo)) * (r - l), Y = (e) => b - ((Math.log10(Math.max(e, 1e-6)) - lo) / (hi - lo)) * (b - t);
+  g.strokeRect(l, t, r - l, b - t); g.fillText("observed vs predicted error (log)", l, t - 5);
+  g.fillText("1e-6", 4, b); g.fillText("1", 30, t + 8); g.fillText("predicted error", l + 80, b + 18);
+  g.setLineDash([4, 4]); g.beginPath(); g.moveTo(X(1e-6), Y(1e-6)); g.lineTo(X(1), Y(1)); g.stroke(); g.setLineDash([]);
+  A.result.references.forEach((x, k) => {
+    g.fillStyle = COLORS[k % 4];
+    for (const bn of x.calibration.bins) {
+      if (bn.observed_error <= 0) continue;
+      const rad = Math.min(6, 2 + Math.log10(bn.n));
+      g.beginPath(); g.arc(X(bn.predicted_error), Y(bn.observed_error), rad, 0, 7); g.fill();
+    }
+  });
+}
+
+function drawTracks() {
+  const refs = A.result.references;
+  $("adnaTracks").innerHTML = refs.map((x, k) => `<div class="track"><div class="tl" style="color:${COLORS[k % 4]}">${escapeHtml(x.reference.organism)} · ${x.reference.version}</div><canvas id="trk${k}"></canvas></div>`).join("");
+  refs.forEach((x, k) => {
+    const cv = $(`trk${k}`), dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = 54;
+    cv.width = w * dpr; cv.height = h * dpr; const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const L = x.depth.length, maxd = Math.max(1, ...x.depth), bins = Math.max(1, Math.floor(w));
+    for (let p = 0; p < bins; p++) {
+      const s0 = Math.floor((p * L) / bins), s1 = Math.max(s0 + 1, Math.floor(((p + 1) * L) / bins));
+      let d = 0, low = 0, unc = 0;
+      for (let i = s0; i < s1; i++) { d += x.depth[i]; if (x.depth[i] === 0) unc++; else if (x.confidence[i] < 0.99) low++; }
+      d /= (s1 - s0);
+      g.fillStyle = unc === s1 - s0 ? "rgba(127,159,179,.35)" : "rgba(98,214,255,.45)";
+      const hh = unc === s1 - s0 ? h : (d / maxd) * (h - 6);
+      g.fillRect(p, h - hh, 1, hh);
+      if (low) { g.fillStyle = "#ffb34a"; g.fillRect(p, 0, 1, 4); }
+    }
+    g.fillStyle = "#ff6a57";
+    for (const pos of x.error_positions || []) g.fillRect(Math.floor((pos / L) * w), 6, 1.5, h - 6);
+  });
+}
+
+function renderAdnaProv() {
+  const R = A.result;
+  const tools = Object.entries(R.tools).map(([k, v]) => `<li><b>${escapeHtml(k)}</b>: ${escapeHtml(v)}</li>`).join("");
+  const refs = R.reference_catalog.genomes.map((g) => `<li>${escapeHtml(g.version)} — ${escapeHtml(g.organism)} (${g.length.toLocaleString()} bp, sha256 ${g.sha256.fa.slice(0, 12)}…)</li>`).join("");
+  const steps = R.steps.map((s) => `<li>${escapeHtml(s.step)} · ${s.seconds} s<br><code>${escapeHtml(s.command)}</code></li>`).join("");
+  $("adnaProv").innerHTML = `<p><b>Simulation</b>: ${escapeHtml(JSON.stringify(R.simulation))}</p>
+    <p><b>Tools</b></p><ul>${tools}</ul><p><b>Reference genomes</b> (${escapeHtml(R.reference_catalog.source)}, retrieved ${escapeHtml(R.reference_catalog.retrieved_utc)})</p><ul>${refs}</ul>
+    <p><b>Steps</b></p><ol>${steps}</ol>`;
 }
 
 async function boot() {
@@ -688,7 +838,8 @@ async function boot() {
   if (TAURI && TAURI.event) {
     // First launch after install or update unpacks the science engines; show progress.
     TAURI.event.listen("core-progress", (e) => {
-      const t = progressText(e.payload || {});
+      const d = e.payload || {}, t = progressText(d);
+      if (d.task === "adna") { if (A.busy) $("adnaBusyText").textContent = t; return; }
       if (t && S.busy) setBusy(true, t);
     });
     TAURI.event.listen("core-status", (e) => {

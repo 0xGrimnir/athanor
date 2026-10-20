@@ -71,6 +71,27 @@ def m_gpu_selftest(p):
     return run(quick=bool(p.get("quick", False)))
 
 
+def m_adna_catalog(_):
+    from .adna.pipeline import reference_catalog, tool_versions
+    return {"references": reference_catalog(), "tools": tool_versions()}
+
+
+def m_adna_run(p):
+    """Simulate ancient reads from a mitogenome and reconstruct it against references.
+    Runs only inside the Linux engines pack (the tools are Linux programs)."""
+    import os
+    from .adna.pipeline import run
+    allowed = {"endogenous", "references", "coverage", "damage", "contamination", "length_loc",
+               "length_scale", "min_length", "read_length", "mapdamage_stats", "min_mapq"}
+    kw = {k: v for k, v in (p or {}).items() if k in allowed}
+    if "references" in kw:
+        kw["references"] = tuple(kw["references"])
+    if "damage" in kw:
+        kw["damage"] = tuple(float(x) for x in kw["damage"])
+    work = os.path.join(os.path.expanduser("~"), "athanor-adna", "latest")
+    return run(work, on_step=_progress({"tier": "adna"}), **kw)
+
+
 def m_build(p):
     return mol_to_json(Molecule.from_smiles(p["smiles"], name=p.get("name", p["smiles"])))
 
@@ -127,7 +148,8 @@ def m_validation(_):
 METHODS = {"ping": m_ping, "engines": m_engines, "build": m_build, "parse_xyz": m_parse_xyz,
            "parse_molblock": m_parse_molblock,
            "single_point": m_single_point, "optimize": m_optimize, "frequencies": m_frequencies,
-           "validation": m_validation, "gpu_status": m_gpu_status, "gpu_selftest": m_gpu_selftest}
+           "validation": m_validation, "gpu_status": m_gpu_status, "gpu_selftest": m_gpu_selftest,
+           "adna_catalog": m_adna_catalog, "adna_run": m_adna_run}
 
 
 def handle(line: str) -> dict:

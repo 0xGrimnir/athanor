@@ -175,6 +175,7 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
             "truth_gap_positions": int(sum(t == "-" for t in tmap)),
             "unaligned_positions": int(sum(t is None for t in tmap)),
             "scored_sites": int(scorable.sum()), "accuracy": float(correct.mean()) if correct.size else None,
+            "error_positions": np.flatnonzero(scorable)[~correct].tolist(),
             "calibration": cal, "damage_profile": {k: (v.tolist() if hasattr(v, "tolist") else v) for k, v in prof.items()},
             "mapdamage_bayesian": bayes,
             "consensus": cons.call, "confidence": cons.confidence.round(6).tolist(), "depth": cons.depth.tolist(),

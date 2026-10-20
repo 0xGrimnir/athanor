@@ -33,7 +33,7 @@ use std::os::windows::process::CommandExt;
 const CREATE_NO_WINDOW: u32 = 0x0800_0000;
 
 /// Pack version this app build expects. Bump together with a new pack release.
-pub const PACK_VERSION: &str = "1";
+pub const PACK_VERSION: &str = "2";
 pub const DISTRO: &str = "AthanorCompute";
 const FEED: &str = "https://github.com/0xGrimnir/athanor-releases/releases/download";
 
@@ -45,6 +45,9 @@ pub struct ComputeStatus {
     pub progress: Option<f64>,
     pub gpu: Option<String>,
     pub selftest: Option<Value>,
+    /// The GPU tier is usable (self-test passed). The Linux engines (e.g. the
+    /// ancient-DNA tools) are usable whenever stage is "ready".
+    pub gpu_ok: bool,
 }
 
 #[derive(Deserialize)]
@@ -102,27 +105,31 @@ impl Compute {
     /// the pack is installed and its self-test passed.
     pub fn init(&self, app: &AppHandle) {
         if !cfg!(windows) {
-            self.set(app, ComputeStatus { stage: "unsupported".into(), message: "The GPU compute pack is available on Windows.".into(), ..Default::default() });
+            self.set(app, ComputeStatus { stage: "unsupported".into(), message: "The Linux engines pack is for Windows (WSL2).".into(), ..Default::default() });
             return;
         }
         let gpu = nvidia_gpu();
         let base = ComputeStatus { gpu: gpu.clone(), ..Default::default() };
         let installed = read_installed(app);
         match installed {
-            Some(inst) if inst.version == PACK_VERSION && distro_exists() && passed(&inst.selftest) => {
-                self.set(app, ComputeStatus { stage: "testing".into(), message: "Starting GPU core".into(), selftest: Some(inst.selftest.clone()), ..base });
+            Some(inst) if inst.version == PACK_VERSION && distro_exists() => {
+                let gpu_ok = passed(&inst.selftest);
+                self.set(app, ComputeStatus { stage: "testing".into(), message: "Starting Linux engines".into(),
+                                              selftest: Some(inst.selftest.clone()), gpu_ok, ..base });
                 match self.start_core(app, &inst.python) {
-                    Ok(()) => self.update(app, "ready", "GPU compute ready", None),
-                    Err(e) => self.update(app, "failed", &format!("GPU core did not start: {e}"), None),
+                    Ok(()) => self.update(app, "ready", if gpu_ok { "Linux engines and GPU compute ready" }
+                                                       else { "Linux engines ready; GPU tier off (self-test did not pass)" }, None),
+                    Err(e) => self.update(app, "failed", &format!("Linux engines did not start: {e}"), None),
                 }
             }
             Some(inst) if inst.version != PACK_VERSION => self.set(app, ComputeStatus {
-                stage: "off".into(), message: format!("A new compute pack ({PACK_VERSION}) is required by this version of Athanor."), ..base }),
-            Some(inst) if !passed(&inst.selftest) => self.set(app, ComputeStatus {
-                stage: "failed".into(), message: "The GPU self-test did not pass; the GPU tier is off.".into(), selftest: Some(inst.selftest), ..base }),
+                stage: "off".into(),
+                message: format!("This version of Athanor needs Linux engines pack {PACK_VERSION} (adds the ancient-DNA tools); click to install."),
+                ..base }),
             _ => self.set(app, ComputeStatus {
                 stage: "off".into(),
-                message: match &gpu { Some(g) => format!("GPU compute is not installed. Detected: {g}"), None => "No NVIDIA GPU driver detected.".into() },
+                message: match &gpu { Some(g) => format!("Linux engines are not installed. Detected GPU: {g}"),
+                                      None => "Linux engines are not installed. No NVIDIA GPU detected: the GPU tier will be unavailable, the other Linux engines work.".into() },
                 ..base }),
         }
     }
@@ -170,10 +177,7 @@ impl Compute {
 
     fn enable_inner(&self, app: &AppHandle) -> Result<(), String> {
         if !cfg!(windows) {
-            return Err("The GPU compute pack is available on Windows.".into());
-        }
-        if nvidia_gpu().is_none() {
-            return Err("No NVIDIA GPU driver detected. Install the current NVIDIA driver, then try again.".into());
+            return Err("The Linux engines pack is for Windows (WSL2).".into());
         }
         // 1. WSL2
         self.update(app, "installing", "Checking WSL2", None);
@@ -204,16 +208,16 @@ impl Compute {
         let mut st = self.status();
         st.selftest = Some(report.clone());
         st.progress = None;
-        if passed(&report) {
-            st.stage = "ready".into();
-            st.message = "GPU compute ready: self-test passed".into();
+        // The Linux engines stay up either way; only the GPU tier depends on the self-test.
+        st.gpu_ok = passed(&report);
+        st.stage = "ready".into();
+        st.message = if st.gpu_ok {
+            "Linux engines and GPU compute ready: self-test passed".into()
         } else {
-            self.core.shutdown();
-            st.stage = "failed".into();
-            st.message = report.get("error").and_then(Value::as_str)
-                .map(|e| format!("GPU self-test failed: {e}"))
-                .unwrap_or_else(|| "GPU self-test failed: GPU and CPU results disagree; the GPU tier stays off".into());
-        }
+            report.get("error").and_then(Value::as_str)
+                .map(|e| format!("Linux engines ready; GPU tier off: {e}"))
+                .unwrap_or_else(|| "Linux engines ready; GPU tier off: GPU and CPU results disagreed".into())
+        };
         self.set(app, st);
         Ok(())
     }
