@@ -1,0 +1,130 @@
+stage: simulate (gargammel)
+stage: trim and merge (AdapterRemoval)
+stage: align truth to NC_007596 (minimap2)
+stage: index NC_007596 iteration 1 (bwa)
+stage: map to NC_007596 iteration 1 (bwa aln)
+stage: map to NC_007596 iteration 1 (bwa samse)
+stage: sort NC_007596 iteration 1 (samtools)
+stage: index BAM NC_007596 iteration 1 (samtools)
+stage: flagstat NC_007596 iteration 1
+stage: damage on NC_007596 iteration 1 (mapDamage2)
+stage: consensus on NC_007596 iteration 1
+stage: index NC_007596 iteration 2 (bwa)
+stage: map to NC_007596 iteration 2 (bwa aln)
+stage: map to NC_007596 iteration 2 (bwa samse)
+stage: sort NC_007596 iteration 2 (samtools)
+stage: index BAM NC_007596 iteration 2 (samtools)
+stage: flagstat NC_007596 iteration 2
+stage: damage on NC_007596 iteration 2 (mapDamage2)
+stage: consensus on NC_007596 iteration 2
+stage: index NC_007596 iteration 3 (bwa)
+stage: map to NC_007596 iteration 3 (bwa aln)
+stage: map to NC_007596 iteration 3 (bwa samse)
+stage: sort NC_007596 iteration 3 (samtools)
+stage: index BAM NC_007596 iteration 3 (samtools)
+stage: flagstat NC_007596 iteration 3
+stage: damage on NC_007596 iteration 3 (mapDamage2)
+stage: consensus on NC_007596 iteration 3
+stage: align truth to NC_000934 (minimap2)
+stage: index NC_000934 iteration 1 (bwa)
+stage: map to NC_000934 iteration 1 (bwa aln)
+stage: map to NC_000934 iteration 1 (bwa samse)
+stage: sort NC_000934 iteration 1 (samtools)
+stage: index BAM NC_000934 iteration 1 (samtools)
+stage: flagstat NC_000934 iteration 1
+stage: damage on NC_000934 iteration 1 (mapDamage2)
+stage: consensus on NC_000934 iteration 1
+stage: index NC_000934 iteration 2 (bwa)
+stage: map to NC_000934 iteration 2 (bwa aln)
+stage: map to NC_000934 iteration 2 (bwa samse)
+stage: sort NC_000934 iteration 2 (samtools)
+stage: index BAM NC_000934 iteration 2 (samtools)
+stage: flagstat NC_000934 iteration 2
+stage: damage on NC_000934 iteration 2 (mapDamage2)
+stage: consensus on NC_000934 iteration 2
+stage: index NC_000934 iteration 3 (bwa)
+stage: map to NC_000934 iteration 3 (bwa aln)
+stage: map to NC_000934 iteration 3 (bwa samse)
+stage: sort NC_000934 iteration 3 (samtools)
+stage: index BAM NC_000934 iteration 3 (samtools)
+stage: flagstat NC_000934 iteration 3
+stage: damage on NC_000934 iteration 3 (mapDamage2)
+stage: consensus on NC_000934 iteration 3
+stage: align truth to NC_005129 (minimap2)
+stage: index NC_005129 iteration 1 (bwa)
+stage: map to NC_005129 iteration 1 (bwa aln)
+stage: map to NC_005129 iteration 1 (bwa samse)
+stage: sort NC_005129 iteration 1 (samtools)
+stage: index BAM NC_005129 iteration 1 (samtools)
+stage: flagstat NC_005129 iteration 1
+stage: damage on NC_005129 iteration 1 (mapDamage2)
+stage: consensus on NC_005129 iteration 1
+stage: index NC_005129 iteration 2 (bwa)
+stage: map to NC_005129 iteration 2 (bwa aln)
+stage: map to NC_005129 iteration 2 (bwa samse)
+stage: sort NC_005129 iteration 2 (samtools)
+stage: index BAM NC_005129 iteration 2 (samtools)
+stage: flagstat NC_005129 iteration 2
+stage: damage on NC_005129 iteration 2 (mapDamage2)
+stage: consensus on NC_005129 iteration 2
+stage: index NC_005129 iteration 3 (bwa)
+stage: map to NC_005129 iteration 3 (bwa aln)
+stage: map to NC_005129 iteration 3 (bwa samse)
+stage: sort NC_005129 iteration 3 (samtools)
+stage: index BAM NC_005129 iteration 3 (samtools)
+stage: flagstat NC_005129 iteration 3
+stage: damage on NC_005129 iteration 3 (mapDamage2)
+stage: consensus on NC_005129 iteration 3
+tools: {"bwa": "Version: 0.7.19-r1273", "samtools": "samtools 1.24", "adapterremoval": "adapterremoval3 v3.0.2", "mapDamage": "2.2.2", "minimap2": "2.31-r1302", "gargammel": "gargammel (bioconda; see pack lock)"}
+simulated damage (v,l,d,s): [0.03, 0.4, 0.01, 0.3]
+[NC_007596] Mammuthus primigenius (woolly mammoth): mapped=3892 depth=10.1 covered=0.995 truth-ref divergence=0.0000 theta=0.0000 accuracy=1.00000 predicted_err=0.00000 observed_err=0.00000 ECE=0.00000 gaps=0 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0001, 'DeltaD': 0.0095, 'DeltaS': 0.6236, 'Lambda': 0.4047, 'Rho': 15.1496, 'LogLik': -128.8564}
+   iteration 1: mapped=3892 covered=0.995 accuracy=1.00000 predicted=0.00000 observed=0.00000 ECE=0.00000 theta=0.0000
+   iteration 2: mapped=3892 covered=0.995 accuracy=1.00000 predicted=0.00000 observed=0.00000 ECE=0.00000 theta=0.0000
+   iteration 3: mapped=3892 covered=0.995 accuracy=1.00000 predicted=0.00000 observed=0.00000 ECE=0.00000 theta=0.0000
+   5' C>T raw: [0.1874, 0.143, 0.0712, 0.0461, 0.0305, 0.0254]  background: 0.0056
+[NC_000934] Loxodonta africana (African savanna elephant): mapped=3749 depth=9.7 covered=0.977 truth-ref divergence=0.0476 theta=0.0460 accuracy=0.99951 predicted_err=0.00010 observed_err=0.00049 ECE=0.00040 gaps=111 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0019, 'DeltaD': 0.0122, 'DeltaS': 0.6361, 'Lambda': 0.4067, 'Rho': 0.3192, 'LogLik': -230.0625}
+   iteration 1: mapped=2814 covered=0.933 accuracy=0.99866 predicted=0.00062 observed=0.00134 ECE=0.00077 theta=0.0392
+   iteration 2: mapped=3592 covered=0.968 accuracy=0.99914 predicted=0.00020 observed=0.00086 ECE=0.00066 theta=0.0443
+   iteration 3: mapped=3749 covered=0.977 accuracy=0.99951 predicted=0.00010 observed=0.00049 ECE=0.00040 theta=0.0460
+   errors: n=8 called-reference-where-truth-differs=7 within-10bp-of-indel=2 median-depth errors/all=1.0/10.0 mean-confidence-at-errors=0.8764
+      {'pos': 4717, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.8689870564311022, 'dist_to_indel': 243}
+      {'pos': 13059, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 1, 'confidence': 0.9977292027036525, 'dist_to_indel': 2363}
+      {'pos': 13087, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.622905323143177, 'dist_to_indel': 2335}
+      {'pos': 13090, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.5247811678393828, 'dist_to_indel': 2332}
+      {'pos': 16228, 'call': 'G', 'truth': 'A', 'ref': 'A', 'depth': 1, 'confidence': 0.9966182996140444, 'dist_to_indel': 2}
+      {'pos': 16234, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 1, 'confidence': 0.9999974522916537, 'dist_to_indel': 1}
+      {'pos': 16297, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 2, 'confidence': 0.9999999998644378, 'dist_to_indel': 38}
+      {'pos': 16299, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 2, 'confidence': 0.9999999480817201, 'dist_to_indel': 40}
+   5' C>T raw: [0.1911, 0.148, 0.0737, 0.0418, 0.0331, 0.0238]  background: 0.0066
+[NC_005129] Elephas maximus (Asian elephant): mapped=3825 depth=9.9 covered=0.979 truth-ref divergence=0.0438 theta=0.0429 accuracy=0.99927 predicted_err=0.00007 observed_err=0.00073 ECE=0.00079 gaps=139 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0014, 'DeltaD': 0.012, 'DeltaS': 0.6325, 'Lambda': 0.4059, 'Rho': 0.2511, 'LogLik': -194.9843}
+   iteration 1: mapped=2961 covered=0.943 accuracy=0.99905 predicted=0.00016 observed=0.00095 ECE=0.00079 theta=0.0374
+   iteration 2: mapped=3690 covered=0.974 accuracy=0.99909 predicted=0.00012 observed=0.00091 ECE=0.00080 theta=0.0423
+   iteration 3: mapped=3825 covered=0.979 accuracy=0.99927 predicted=0.00007 observed=0.00073 ECE=0.00079 theta=0.0429
+   errors: n=12 called-reference-where-truth-differs=5 within-10bp-of-indel=8 median-depth errors/all=2.5/10.0 mean-confidence-at-errors=0.9984
+      {'pos': 13057, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 7, 'confidence': 0.9999999999999987, 'dist_to_indel': 3127}
+      {'pos': 13058, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 7, 'confidence': 1.0, 'dist_to_indel': 3126}
+      {'pos': 13059, 'call': 'G', 'truth': 'C', 'ref': 'C', 'depth': 6, 'confidence': 1.0, 'dist_to_indel': 3125}
+      {'pos': 13060, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 6, 'confidence': 1.0, 'dist_to_indel': 3124}
+      {'pos': 16190, 'call': 'G', 'truth': 'A', 'ref': 'A', 'depth': 3, 'confidence': 0.9999999999871043, 'dist_to_indel': 6}
+      {'pos': 16191, 'call': 'T', 'truth': 'C', 'ref': 'C', 'depth': 2, 'confidence': 0.9999996947373783, 'dist_to_indel': 7}
+      {'pos': 16192, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 2, 'confidence': 0.99999440902206, 'dist_to_indel': 8}
+      {'pos': 16193, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 2, 'confidence': 0.999999999874958, 'dist_to_indel': 9}
+   5' C>T raw: [0.1905, 0.1417, 0.071, 0.0459, 0.0323, 0.026]  background: 0.007
+total 626 s
+[PASS] self-reference accuracy >= 99.9%: 1.00000
+[PASS] mapDamage recovers deltaD within 30%: 0.0095 vs 0.01
+[PASS] mapDamage recovers lambda within 20%: 0.4047 vs 0.4
+[INFO] mapDamage deltaS 0.6236 vs gargammel s=0.3: parameterisations differ; reported, not gated
+[PASS] NC_000934: iterative mapping does not lose accuracy: 0.99866 -> 0.99951
+[PASS] NC_000934: iterative mapping moves divergence estimate toward the truth: 0.0392 -> 0.0460 (true 0.0476)
+[PASS] NC_000934: final consensus >= 99.9% correct: 0.99951
+[PASS] NC_000934: expected calibration error <= 0.002: 0.00040
+[PASS] NC_000934: mapDamage deltaD within 50% after iteration: 0.0122 vs 0.01
+[PASS] NC_005129: iterative mapping does not lose accuracy: 0.99905 -> 0.99927
+[PASS] NC_005129: iterative mapping moves divergence estimate toward the truth: 0.0374 -> 0.0429 (true 0.0438)
+[PASS] NC_005129: final consensus >= 99.9% correct: 0.99927
+[PASS] NC_005129: expected calibration error <= 0.002: 0.00079
+[PASS] NC_005129: mapDamage deltaD within 50% after iteration: 0.0120 vs 0.01
