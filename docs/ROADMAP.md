@@ -56,7 +56,7 @@ Remaining:
 
 ## Heavy-compute pack
 
-- GPU DFT (GPU4PySCF in WSL2), installed from inside the app and self-tested on the user's GPU (0.2.0; awaiting the first run on real hardware)
+- GPU DFT (GPU4PySCF in WSL2), installed from inside the app and self-tested on the user's GPU (verified on an RTX 5080 in 0.2.3: GPU and CPU agree to 2×10⁻¹⁰ Eh on caffeine; 11.7× faster than CPU PySCF)
 - Next: analytic GPU Hessians and IR intensities, so frequencies of large molecules do not need 6N gradients
 - With the genomics modules: native whole-genome mapping (minimap2, bwa-mem2, samtools) in the same distribution
 

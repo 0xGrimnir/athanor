@@ -8,6 +8,7 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ### Fixed
 - GPU self-test failed with "NotImplementedType object is not callable": GPU4PySCF does not implement Mulliken analysis on GPU objects, so charges are now computed with PySCF's CPU routine from the GPU density on both paths (regression test added). The self-test also compares charges.
+- First GPU self-test on real hardware (RTX 5080, driver 610.88) passed: caffeine B3LYP/def2-SVP/RI, GPU vs CPU ΔE 2.2×10⁻¹⁰ Eh, max Δgradient 1.8×10⁻⁶ Eh/bohr, 6.1 s vs 71.3 s.
 - Retrying GPU compute no longer re-downloads an already installed compute pack, and self-test errors are reported instead of stopping the test.
 
 ## [0.2.2] - 2026-10-19
