@@ -336,12 +336,38 @@ function currentMolecule() {
 }
 
 // ------------------------------------------------------------------ jobs
+// Live progress from the science cores (optimizer steps, Hessian gradients).
+function progressText(d) {
+  if (d.task === "optimize")
+    return `${S.busyLabel}: step ${d.step} · E ${fmt(d.energy, 8)} Eh · max force ${d.max_force.toExponential(2)} (target ${d.target_max_force.toExponential(1)})`;
+  if (d.task === "frequencies") return `${S.busyLabel}: Hessian gradient ${d.step} of ${d.total}`;
+  return "";
+}
+
 async function runOptimize() {
   const label = methodLabel(), key = methodKey();
   const job = addJob(`Optimize · ${label}`);
+  S.busyLabel = label;
   setBusy(true, `Optimizing with ${label}…`);
   try {
-    const r = await rpc("optimize", { molecule: currentMolecule(), tier: S.tier, options: engineOptions() });
+    let molecule = currentMolecule(), pre = null;
+    // DFT from a rough starting structure needs many expensive steps; a GFN2-xTB
+    // pre-optimization (seconds) gets close first. Recorded in the provenance.
+    const fromRough = !(S.geomOrigin && S.geomOrigin.kind === "optimized");
+    if (isDft(S.tier) && $("preoptChk").checked && fromRough) {
+      S.busyLabel = "GFN2-xTB pre-optimization";
+      setBusy(true, "Pre-optimizing with GFN2-xTB…");
+      try {
+        const p0 = await rpc("optimize", { molecule, tier: "gfn2-xtb", options: {} });
+        molecule = { ...p0.molecule, name: S.mol.name };
+        pre = { method: "GFN2-xTB", engine: `${p0.provenance.engine} ${p0.provenance.engine_version}`,
+                steps: p0.steps, converged: p0.converged };
+        log(`GFN2-xTB pre-optimization: ${p0.steps} steps; starting ${label} from that geometry`);
+      } catch (e) { log(`GFN2-xTB pre-optimization failed (${e.message || e}); starting ${label} from the original geometry`, true); }
+      S.busyLabel = label;
+      setBusy(true, `Optimizing with ${label}…`);
+    }
+    const r = await rpc("optimize", { molecule, tier: S.tier, options: engineOptions(), pre_optimization: pre });
     const keep = S.mol.name;
     S.mol = { ...r.molecule, name: keep };
     S.geomOrigin = { kind: "optimized", key, label };
@@ -362,6 +388,7 @@ async function runFrequencies() {
   }
   const label = methodLabel();
   const job = addJob(`Frequencies · ${label}`);
+  S.busyLabel = label;
   setBusy(true, `Computing Hessian with ${label}…`);
   try {
     const r = await rpc("frequencies", { molecule: currentMolecule(), tier: S.tier, options: engineOptions() });
@@ -515,6 +542,7 @@ function setTier(t) {
   S.tier = t;
   document.querySelectorAll("#tierSeg button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.tier === t)));
   $("dftOpts").hidden = !isDft(t);
+  $("preoptChk").closest("label").hidden = !isDft(t);
   // ωB97X-D's dispersion term is defined differently in PySCF; offer it on Psi4 only.
   const wb = $("funcSel").querySelector('option[value="wB97X-D"]');
   wb.disabled = t === "dft-gpu";
@@ -645,6 +673,10 @@ async function boot() {
   try { S.bench = await (await fetch("data/benchmark.json")).json(); } catch { S.bench = null; }
   if (TAURI && TAURI.event) {
     // First launch after install or update unpacks the science engines; show progress.
+    TAURI.event.listen("core-progress", (e) => {
+      const t = progressText(e.payload || {});
+      if (t && S.busy) setBusy(true, t);
+    });
     TAURI.event.listen("core-status", (e) => {
       const st = e.payload || {};
       $("coreState").textContent = st.stage || "";

@@ -93,14 +93,30 @@ def m_single_point(p):
     return tasks.single_point(_engine(p), mol_from_json(p["molecule"]))
 
 
+_PROTO = None
+
+
+def _notify(method: str, params: dict) -> None:
+    """JSON-RPC notification (no id) on the protocol channel, e.g. progress."""
+    if _PROTO is not None:
+        _PROTO.write(json.dumps({"jsonrpc": "2.0", "method": method, "params": params}, default=float) + "\n")
+        _PROTO.flush()
+
+
+def _progress(p):
+    tier = p.get("tier")
+    return lambda d: _notify("progress", {**d, "tier": tier})
+
+
 def m_optimize(p):
-    r = tasks.optimize(_engine(p), mol_from_json(p["molecule"]))
+    r = tasks.optimize(_engine(p), mol_from_json(p["molecule"]), on_step=_progress(p),
+                       pre_optimization=p.get("pre_optimization"))
     r["molecule"] = mol_to_json(r["molecule"])
     return r
 
 
 def m_frequencies(p):
-    return tasks.frequencies(_engine(p), mol_from_json(p["molecule"]))
+    return tasks.frequencies(_engine(p), mol_from_json(p["molecule"]), on_step=_progress(p))
 
 
 def m_validation(_):
@@ -131,8 +147,9 @@ def handle(line: str) -> dict:
 
 
 def main():
+    global _PROTO
     # Engines print to stdout in places; keep the protocol channel clean.
-    proto = sys.stdout
+    proto = _PROTO = sys.stdout
     sys.stdout = sys.stderr
     proto.write(json.dumps({"jsonrpc": "2.0", "method": "ready", "params": {"version": __version__}}) + "\n")
     proto.flush()

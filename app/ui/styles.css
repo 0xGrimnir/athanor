@@ -187,3 +187,7 @@ td.n { font-family: var(--f-data); text-align: right; font-variant-numeric: tabu
 .btn.update:not([hidden]) + .btn.gpu { margin-left: 0; }
 .btn.gpu:not([hidden]) + .chips { margin-left: 0; }
 .btn.gpu.ok { border-color: rgba(82,240,176,.5); color: var(--ok); }
+#dftOpts { flex-wrap: wrap; }
+.mini.check { flex: 1 1 100%; flex-direction: row; align-items: center; gap: 6px; cursor: pointer; }
+.mini.check[hidden] { display: none; }
+.mini.check input { accent-color: var(--arc); margin: 0; }

@@ -51,9 +51,10 @@ def run(quick: bool = False) -> dict:
 
 def _case(name: str, smiles: str, xc: str, basis: str) -> dict:
     mol = Molecule.from_smiles(smiles, name=name)
+    PySCFDFT(xc, basis, device="gpu", density_fitting=True).compute(mol)  # warm-up: CUDA context, kernels
+    # Fresh instances, so neither run starts from a converged guess.
     gpu = PySCFDFT(xc, basis, device="gpu", density_fitting=True)
     cpu = PySCFDFT(xc, basis, device="cpu", density_fitting=True)
-    gpu.compute(mol)  # warm-up: CUDA context and kernel loading
     t0 = time.perf_counter(); rg = gpu.compute(mol); tg = time.perf_counter() - t0
     t0 = time.perf_counter(); rc = cpu.compute(mol); tc = time.perf_counter() - t0
     diff = {

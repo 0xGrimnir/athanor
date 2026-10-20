@@ -51,7 +51,10 @@ ids = iter(range(1, 1000))
 def call(method, params=None):
     proc.stdin.write(json.dumps({"jsonrpc": "2.0", "id": next(ids), "method": method, "params": params or {}}) + "\n")
     proc.stdin.flush()
-    resp = json.loads(proc.stdout.readline())
+    while True:  # skip notifications (progress) until the response with our id
+        resp = json.loads(proc.stdout.readline())
+        if "id" in resp:
+            break
     if "error" in resp:
         raise SystemExit(f"{method} failed: {resp['error']}")
     return resp["result"]

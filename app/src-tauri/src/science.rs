@@ -12,7 +12,7 @@ use std::fs;
 use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 use std::process::{Child, ChildStdin, ChildStdout, Command, Stdio};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 use serde::Serialize;
 use serde_json::{json, Value};
@@ -62,11 +62,12 @@ pub struct CoreHandle {
     io: Mutex<Option<Io>>,
     child: Mutex<Option<Child>>,
     spec: Mutex<Option<LaunchSpec>>,
+    notifier: Mutex<Option<Arc<dyn Fn(&str, &Value) + Send + Sync>>>,
 }
 
 impl CoreHandle {
     pub fn new() -> Self {
-        CoreHandle { io: Mutex::new(None), child: Mutex::new(None), spec: Mutex::new(None) }
+        CoreHandle { io: Mutex::new(None), child: Mutex::new(None), spec: Mutex::new(None), notifier: Mutex::new(None) }
     }
 
     pub fn start(&self, spec: LaunchSpec) -> Result<(), String> {
@@ -115,6 +116,14 @@ impl CoreHandle {
                 Err(_) => continue,
             };
             if msg.get("id").and_then(Value::as_u64) != Some(id) {
+                if msg.get("id").is_none() {
+                    if let Some(m) = msg.get("method").and_then(Value::as_str) {
+                        let n = self.notifier.lock().unwrap().clone();
+                        if let Some(f) = n {
+                            f(m, msg.get("params").unwrap_or(&Value::Null));
+                        }
+                    }
+                }
                 continue; // notification or stale response
             }
             if let Some(err) = msg.get("error") {
@@ -135,8 +144,16 @@ impl CoreHandle {
         }
     }
 
+    /// Whether a core process exists. Uses the child handle, never the I/O lock,
+    /// which an in-flight call holds for its whole duration (0.2.3 deadlocked
+    /// the Stop button by waiting on it).
     pub fn is_running(&self) -> bool {
-        self.io.lock().map(|g| g.is_some()).unwrap_or(false)
+        self.child.lock().map(|g| g.is_some()).unwrap_or(false)
+    }
+
+    /// Receives JSON-RPC notifications (e.g. progress) that arrive during calls.
+    pub fn set_notifier(&self, f: Arc<dyn Fn(&str, &Value) + Send + Sync>) {
+        *self.notifier.lock().unwrap() = Some(f);
     }
 
     pub fn restart(&self) -> Result<(), String> {

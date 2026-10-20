@@ -4,6 +4,17 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-10-20
+
+### Fixed
+- **Stop** hung while a GPU calculation was running: the "is the GPU core running" check waited on the lock the running calculation holds.
+- Geometry optimization now stops on Gaussian's actual default criteria (max/RMS force and max/RMS displacement); it previously kept iterating to about ten times tighter forces than the stated threshold.
+
+### Added
+- DFT optimizations start with a GFN2-xTB pre-optimization (on by default, recorded in the provenance). Ethanol at B3LYP/def2-SVP from an RDKit structure: 50 DFT steps before, 18 after.
+- Live progress for optimizations (step, energy, max force against the target) and frequency jobs (gradient n of N).
+- The PySCF/GPU tier reuses each step's converged density as the next step's initial guess.
+
 ## [0.2.3] - 2026-10-20
 
 ### Fixed

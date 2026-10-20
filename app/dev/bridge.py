@@ -45,10 +45,13 @@ class Core:
             rid = next(self.ids)
             self.proc.stdin.write(json.dumps({"jsonrpc": "2.0", "id": rid, "method": method, "params": params}) + "\n")
             self.proc.stdin.flush()
-            line = self.proc.stdout.readline()
-            if not line:
-                raise RuntimeError("science core exited")
-            return json.loads(line)
+            while True:  # skip notifications (e.g. progress) until our response
+                line = self.proc.stdout.readline()
+                if not line:
+                    raise RuntimeError("science core exited")
+                msg = json.loads(line)
+                if msg.get("id") == rid:
+                    return msg
 
 
 CORE = Core()

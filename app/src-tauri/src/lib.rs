@@ -127,6 +127,15 @@ pub fn run() {
             app.manage(core.clone());
             let compute = Arc::new(Compute::new());
             app.manage(compute.clone());
+            // Progress notifications from either core go to the UI.
+            for c in [core.clone(), compute.core.clone()] {
+                let h = app.handle().clone();
+                c.set_notifier(Arc::new(move |method: &str, params: &Value| {
+                    if method == "progress" {
+                        let _ = h.emit("core-progress", params);
+                    }
+                }));
+            }
             let chandle = app.handle().clone();
             std::thread::spawn(move || compute.init(&chandle));
             // Prepare the runtime (first launch unpacks the engines) and start the

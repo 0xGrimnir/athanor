@@ -45,6 +45,10 @@ class PySCFDFT(Engine):
         self.conv_tol = conv_tol
         self.max_memory_mb = max_memory_mb
         self.method = f"{functional}/{basis}" + ("/RI" if self.density_fitting else "")
+        # Converged density of the previous call, reused as the initial guess
+        # for the next geometry (same atoms, charge and spin). This changes
+        # only how fast the SCF converges, not what it converges to.
+        self._guess: tuple | None = None
 
     @property
     def tier(self) -> str:  # type: ignore[override]
@@ -89,12 +93,15 @@ class PySCFDFT(Engine):
 
     def compute(self, mol: Molecule) -> EngineResult:
         mf = self._scf(mol)
-        energy = float(mf.kernel())
+        key = (tuple(mol.symbols), mol.charge, mol.multiplicity)
+        dm0 = self._guess[1] if self._guess and self._guess[0] == key else None
+        energy = float(mf.kernel(dm0=dm0) if dm0 is not None else mf.kernel())
         if not mf.converged:
             raise RuntimeError(f"SCF did not converge in {mf.max_cycle} cycles")
         grad = _np(mf.nuc_grad_method().kernel())
         dip = _np(mf.dip_moment(unit="AU", verbose=0))  # about the coordinate origin
         charges = mulliken_charges(mf)
+        self._guess = (key, np.array(_np(mf.make_rdm1()), dtype=float))  # plain array: no stale MO tags
         mo_e = _np(mf.mo_energy)
         occ = _np(mf.mo_occ)
         extras = {}
