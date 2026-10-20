@@ -1,4 +1,5 @@
-Athanor 0.2.5: fast GPU frequencies and IR spectra.
+Athanor 0.3.0: the Ancient DNA Lab.
 
-- **Analytic second derivatives on the GPU.** Frequencies and IR intensities on the DFT-GPU tier come from one SCF plus the coupled-perturbed equations instead of 6N separate gradient calculations, so IR spectra of larger molecules take minutes instead of hours.
-- **Validated before use.** Click **GPU ready** and re-run the self-test: it now also compares the analytic Hessian and IR intensities with finite differences on your GPU. The fast path switches on only if they agree; otherwise frequencies keep using finite differences.
+- **New tab: Ancient DNA.** Simulate ancient reads from a real mitochondrial genome (woolly mammoth by default), map them to relatives' genomes (African and Asian elephants), and watch the reconstruction: damage patterns recovered by mapDamage2, a consensus where every base carries a probability, checked against the true sequence, and iterative mapping that removes most of the reference bias.
+- Uses the field's own tools: gargammel, AdapterRemoval, BWA, mapDamage2, minimap2.
+- **Requires Linux engines pack 2** (about 2.4 GB). Click **Install Linux engines** in the top bar after updating; it replaces the previous pack. No GPU is needed for the ancient-DNA tools.

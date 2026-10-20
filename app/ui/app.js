@@ -799,7 +799,7 @@ function drawDamage() {
     }
   });
   g.setLineDash([]);
-  refs.forEach((x, k) => { g.fillStyle = COLORS[k % 4]; g.fillText(commonName(x.reference.organism), r - 130, t + 14 + 13 * k); });
+  refs.forEach((x, k) => { g.fillStyle = COLORS[k % 4]; g.fillText(commonName(x.reference.organism).slice(0, 22), r - 150, t + 14 + 13 * k); });
 }
 
 function drawCalibration() {
@@ -815,7 +815,7 @@ function drawCalibration() {
       const rad = Math.min(6, 2 + Math.log10(bn.n));
       g.beginPath(); g.arc(X(bn.predicted_error), Y(bn.observed_error), rad, 0, 7); g.fill();
     }
-    g.fillText(commonName(x.reference.organism), r - 130, b - 10 - 13 * k);
+    g.fillText(commonName(x.reference.organism).slice(0, 22), r - 150, b - 10 - 13 * k);
   });
   g.fillStyle = "#7f9fb3"; g.fillText("above the diagonal = overconfident", l + 6, t + 14);
 }

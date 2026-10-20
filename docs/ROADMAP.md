@@ -27,7 +27,11 @@ Remaining:
 - OpenMM on CUDA, with force-field assignment and trajectory playback
 - **Benchmark:** published liquid densities and diffusion coefficients
 
-## Phase 2: Ancient DNA Lab
+## Phase 2: Ancient DNA Lab (working, 0.3.0)
+
+Done: gargammel simulation from real mitogenomes, AdapterRemoval merging, BWA aln with ancient-DNA settings, mapDamage2 damage estimation, damage-aware consensus with calibrated posteriors, iterative mapping against relatives' genomes, scoring against the truth, CI gates. Remaining: contamination estimation, user-supplied FASTQ/BAM input (real ancient data), more organisms.
+
+Original plan:
 
 - Read simulation modeled on gargammel (Renaud et al. 2017): empirical fragment lengths, the Briggs et al. (2007) damage model, Illumina-style sequencing errors, optional contamination
 - Mapping with Bowtie2 using ancient-DNA settings

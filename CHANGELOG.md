@@ -4,6 +4,15 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-20
+
+### Added
+- **Ancient DNA Lab** (new tab). Simulates ancient reads from a real mitogenome with gargammel (Briggs-model damage, log-normal fragment lengths, ART Illumina errors, optional present-day human contamination), merges pairs with AdapterRemoval, maps with BWA aln (ancient-DNA settings), estimates damage with mapDamage2, and calls a damage-aware consensus whose per-base posteriors are checked for calibration against the known truth. Iterative mapping against a relative's genome reduces reference bias. Every command and tool version is recorded; reference genomes come from NCBI with accession versions and SHA-256 hashes.
+- Woolly mammoth vs African and Asian elephant demo, with CI gates on damage recovery, reference-bias reduction, accuracy and calibration.
+
+### Changed
+- The optional pack is now the **Linux engines pack** (version 2, about 2.4 GB): it adds the ancient-DNA tools and installs without an NVIDIA GPU. A failed GPU self-test turns off only the GPU tier.
+
 ## [0.2.5] - 2026-10-20
 
 ### Added

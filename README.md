@@ -22,7 +22,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | Module | What it does | Engines | State |
 |---|---|---|---|
 | **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Phase 1, working |
-| **Ancient DNA Lab** | Simulate damaged ancient reads, map them, call a consensus with per-base uncertainty, quantify reference bias | Briggs et al. (2007) damage model, Bowtie2, samtools/bcftools | Phase 2 |
+| **Ancient DNA Lab** | Simulate damaged ancient reads from a real mitogenome, map them to relatives' genomes, estimate damage, call a damage-aware consensus with calibrated per-base posteriors, quantify and reduce reference bias by iterative mapping, and score every base against the known truth | gargammel, AdapterRemoval, BWA aln, mapDamage2, minimap2 (Linux engines pack) | Phase 2, working |
 | **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 3 |
 | **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 4 |
 | **Structure** | Protein structures, linking each genome position to its residue in 3D, docking | Mol*, AutoDock Vina | Phase 4 |
@@ -38,12 +38,25 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 
 Reference values and sources: [`core/benchmarks/reference/phase1.json`](core/benchmarks/reference/phase1.json). Run locally with `python -m athanor_core.benchmark`.
 
+## Validation (Ancient DNA Lab)
+
+Woolly mammoth mtDNA (NC_007596.2) simulated at 10× with Briggs damage (ν 0.03, λ 0.4, δd 0.01, δs 0.3), mapped to African (NC_000934.1) and Asian (NC_005129.2) elephant mitogenomes with three mapping iterations:
+
+| Check | Result |
+|---|---|
+| Damage recovery (mapDamage2) | δd 0.0089–0.0109 vs 0.01; λ 0.377–0.389 vs 0.4 (δs differs by parameterisation; reported, not used) |
+| Reference bias (African elephant) | mapped reads 2,795 → 3,763; divergence estimate 3.99% → 4.63% (true 4.76%) |
+| Consensus vs truth | 99.951% correct against either elephant reference |
+| Posterior calibration | expected calibration error 0.0004; residual overconfidence at single-read sites is reported |
+
+These run as gated checks in CI on every pack build (`compute/ci_adna.py`).
+
 ## Architecture
 
 - **Shell:** [Tauri 2](https://tauri.app). A native Windows app with a web-technology interface, shipped as a standard installer with signed in-app updates.
 - **Science core:** Python package [`core/athanor_core`](core/athanor_core). RDKit, the xtb program and Psi4 run natively on Windows; every result carries a provenance record. The shell talks to it over stdin/stdout (JSON-RPC); no network port is opened.
 - **Genomics engines:** WebAssembly builds from [biowasm](https://github.com/biowasm/biowasm) (samtools, bcftools, minimap2, Bowtie2, MAFFT and others) running inside the app. No Linux layer required.
-- **Optional GPU compute pack:** GPU4PySCF in a private WSL2 distribution that the app installs, verifies (SHA-256 per part) and self-tests against its CPU path before offering the DFT·GPU tier. Whole-genome-scale mapping joins it with the genomics modules.
+- **Optional Linux engines pack:** a private WSL2 distribution that the app installs and verifies (SHA-256 per part). It carries GPU4PySCF (self-tested against its CPU path before the DFT·GPU tier is offered) and the ancient-DNA tools (bioconda), plus reference genomes fetched from NCBI with recorded accession versions and hashes. No GPU is needed for the ancient-DNA tools.
 
 ## System requirements
 

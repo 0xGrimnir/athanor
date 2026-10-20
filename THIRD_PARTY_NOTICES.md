@@ -41,9 +41,15 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Component | Use | License | Status |
 |---|---|---|---|
 | biowasm / Aioli | Runs genomics tools as WebAssembly | MIT | Verified |
-| samtools, bcftools, htslib | Read and variant processing | MIT/Expat | To verify |
-| minimap2 | Sequence alignment | MIT | To verify |
-| Bowtie2 | Ancient-DNA read mapping | GPL-3.0 | To verify |
+| gargammel 1.1.4 (with fragSim, deamSim, adptSim) | Ancient-DNA read simulation (Linux engines pack) | GPL-3.0-only | Verified (conda metadata) |
+| ART 2016.06.05 | Illumina read simulation, used by gargammel | GPL-3.0-only | Verified (conda metadata) |
+| AdapterRemoval 3.0.2 | Adapter trimming and read merging | GPL-3.0-or-later | Verified (conda metadata) |
+| BWA 0.7.19 | Ancient-DNA read mapping (aln) | GPL-3.0-or-later | Verified (conda metadata) |
+| samtools 1.24, htslib 1.24 | BAM processing | MIT | Verified (conda metadata) |
+| mapDamage2 2.2.2 | Damage estimation (uses R 4.3.3, GPL-2.0-or-later) | MIT | Verified (conda metadata) |
+| minimap2 2.31 | Aligning the truth genome to references for scoring | MIT | Verified (conda metadata) |
+| pysam 0.24.1 | Reading BAM files in the science core | MIT | Verified (PyPI) |
+| Bowtie2 | Read mapping (planned) | GPL-3.0 | To verify |
 | wgsim | Read simulation | MIT | To verify |
 | bedtools | Interval operations | MIT | To verify |
 | MAFFT | Multiple sequence alignment | BSD | To verify |
@@ -64,6 +70,7 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | GetOrganelleDB | Curated mitochondrial sequence and gene-label database (prototype only) | GPL-3.0 | Verified |
 | MMFF94 validation suite and parameter tables (T. A. Halgren) | MMFF94 correctness test; fitted-parameter coverage check | Distributed via CCL and RDKit (BSD-3-Clause) | Verified |
 | NIST CCCBDB (SRD 101), NIST Chemistry WebBook (SRD 69) | Experimental reference values for benchmarks | US government data | Verified |
+| NCBI RefSeq mitogenomes NC_007596.2, NC_000934.1, NC_005129.2, NC_012920.1 | Ancient DNA Lab references (fetched at pack build; hashes in the pack manifest) | NCBI: no general restrictions; individual records may carry their own | Verified source |
 | Ensembl (release 110) | Gene coordinates and transcript models | No restrictions on use | To verify |
 
 ## Compute pack note
@@ -72,4 +79,4 @@ The optional GPU compute pack is a separate download that bundles NVIDIA's CUDA 
 
 ## License compatibility note
 
-Several engines are GPL-licensed (Bowtie2, FastTree, IQ-TREE, Primer3) and the curated mitochondrial data comes from GetOrganelleDB (GPL-3.0). While the repository is private and nothing is distributed, this has no effect. Before any public release, Athanor's own license and the way these components are bundled (as separate programs rather than linked libraries) must be reviewed together. This note is not legal advice.
+Several engines are GPL-licensed (gargammel, ART, AdapterRemoval and BWA in the Linux engines pack; Bowtie2, FastTree, IQ-TREE, Primer3 planned). In the pack they are unmodified separate programs, run as subprocesses and distributed with their conda package metadata and the curated mitochondrial data comes from GetOrganelleDB (GPL-3.0). While the repository is private and nothing is distributed, this has no effect. Before any public release, Athanor's own license and the way these components are bundled (as separate programs rather than linked libraries) must be reviewed together. This note is not legal advice.
