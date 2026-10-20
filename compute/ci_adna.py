@@ -23,6 +23,13 @@ for r in res["references"]:
           f"accuracy={r['accuracy']:.5f} predicted_err={c['predicted_error_rate']:.5f} observed_err={c['observed_error_rate']:.5f} "
           f"ECE={c['expected_calibration_error']:.5f} gaps={r['truth_gap_positions']} unaligned={r['unaligned_positions']}")
     print("   mapDamage Bayesian means:", est)
+    dg = r["error_diagnostics"]
+    if dg.get("n"):
+        print(f"   errors: n={dg['n']} called-reference-where-truth-differs={dg['called_reference_where_truth_differs']} "
+              f"within-10bp-of-indel={dg['within_10bp_of_truth_indel']} median-depth errors/all={dg['median_depth_at_errors']}/{dg['median_depth_overall']} "
+              f"mean-confidence-at-errors={dg['mean_confidence_at_errors']:.4f}")
+        for ex in dg["examples"][:8]:
+            print("     ", ex)
     print("   5' C>T raw:", [round(x, 4) for x in r["damage_profile"]["raw_5p_CtoT"][:6]],
           " background:", round(r["damage_profile"]["background_CtoT"], 4))
 print(f"total {time.time() - t0:.0f} s")

@@ -28,7 +28,7 @@ import numpy as np
 from .consensus import BASES, calibration, call_consensus
 from .damage import bayesian_estimates, damage_profiles
 from .pileup import observations_from_bam
-from .truth import truth_by_reference_position
+from .truth import indel_sites, truth_by_reference_position
 
 BIO = Path(os.environ.get("ATHANOR_BIO", "/opt/athanor/bio"))
 REFS = Path(os.environ.get("ATHANOR_REFS", "/opt/athanor/refs"))
@@ -82,6 +82,28 @@ def read_fasta(path: Path) -> tuple[str, str]:
     with opener(path, "rt") as fh:
         lines = fh.read().splitlines()
     return lines[0][1:].split()[0], "".join(l.strip() for l in lines[1:] if not l.startswith(">")).upper()
+
+
+def _diagnose(err_pos, calls, truth, ref, cons, indels) -> dict:
+    """Why are calls wrong? Reference bias shows up as wrong calls equal to the
+    reference base where the truth differs from it."""
+    if len(err_pos) == 0:
+        return {"n": 0}
+    ind = np.array(indels) if indels else np.array([-10**9])
+    dist = np.array([int(np.min(np.abs(ind - p))) for p in err_pos])
+    called_ref = calls[err_pos] == ref[err_pos]
+    truth_differs = truth[err_pos] != ref[err_pos]
+    return {
+        "n": int(len(err_pos)),
+        "called_reference_where_truth_differs": int((called_ref & truth_differs).sum()),
+        "within_10bp_of_truth_indel": int((dist <= 10).sum()),
+        "median_depth_at_errors": float(np.median(cons.depth[err_pos])),
+        "median_depth_overall": float(np.median(cons.depth[cons.depth > 0])) if (cons.depth > 0).any() else 0.0,
+        "mean_confidence_at_errors": float(cons.confidence[err_pos].mean()),
+        "examples": [{"pos": int(p), "call": str(calls[p]), "truth": str(truth[p]), "ref": str(ref[p]),
+                      "depth": int(cons.depth[p]), "confidence": float(cons.confidence[p]), "dist_to_indel": int(d)}
+                     for p, d in list(zip(err_pos, dist))[:15]],
+    }
 
 
 def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("NC_007596", "NC_000934", "NC_005129"),
@@ -176,6 +198,7 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
             "unaligned_positions": int(sum(t is None for t in tmap)),
             "scored_sites": int(scorable.sum()), "accuracy": float(correct.mean()) if correct.size else None,
             "error_positions": np.flatnonzero(scorable)[~correct].tolist(),
+            "error_diagnostics": _diagnose(np.flatnonzero(scorable)[~correct], calls, tb, ref_arr, cons, indel_sites(paf)),
             "calibration": cal, "damage_profile": {k: (v.tolist() if hasattr(v, "tolist") else v) for k, v in prof.items()},
             "mapdamage_bayesian": bayes,
             "consensus": cons.call, "confidence": cons.confidence.round(6).tolist(), "depth": cons.depth.tolist(),

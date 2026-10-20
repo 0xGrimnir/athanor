@@ -43,3 +43,30 @@ def truth_by_reference_position(paf_text: str, ref_len: int, truth_seq: str) -> 
                     out[t + k] = "-"
                 t += len(op) - 1
     return out
+
+
+def indel_sites(paf_text: str) -> list:
+    """Reference positions adjacent to an insertion or deletion of the truth
+    relative to the reference (from the same minimap2 alignment)."""
+    sites = []
+    for line in paf_text.splitlines():
+        f = line.split("\t")
+        if len(f) < 12 or f[4] != "+":
+            continue
+        tags = dict(t.split(":", 2)[0::2] for t in f[12:] if t.count(":") >= 2)
+        if tags.get("tp") not in (None, "P"):
+            continue
+        cs = next((t[5:] for t in f[12:] if t.startswith("cs:Z:")), None)
+        if cs is None:
+            continue
+        t = int(f[7])
+        for op in CS_OP.findall(cs):
+            if op[0] == ":":
+                t += int(op[1:])
+            elif op[0] == "*":
+                t += 1
+            elif op[0] == "+":
+                sites.append(t)
+            elif op[0] == "-":
+                sites.extend(range(t, t + len(op) - 1)); t += len(op) - 1
+    return sorted(set(sites))
