@@ -84,6 +84,14 @@ def read_fasta(path: Path) -> tuple[str, str]:
     return lines[0][1:].split()[0], "".join(l.strip() for l in lines[1:] if not l.startswith(">")).upper()
 
 
+def _flagstat(text: str, key: str):
+    """First count on the samtools flagstat line containing ``key``."""
+    for line in (text or "").splitlines():
+        if key in line:
+            return int(line.split()[0])
+    return None
+
+
 def _diagnose(err_pos, calls, truth, ref, cons, indels) -> dict:
     """Why are calls wrong? Reference bias shows up as wrong calls equal to the
     reference base where the truth differs from it."""
@@ -189,7 +197,7 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
         known = np.array([t is not None and t in BASES for t in tmap])
         results.append({
             "reference": cat[acc], "reference_id": ref_id, "length": len(ref_seq),
-            "mapped_reads": int(flag.split("\n")[0].split()[0]) if flag else None,
+            "total_reads": _flagstat(flag, " in total"), "mapped_reads": _flagstat(flag, " mapped ("),
             "flagstat": flag.strip(), "observations": len(obs),
             "mean_depth": float(cons.depth.mean()), "covered_fraction": float((cons.depth > 0).mean()),
             "truth_vs_reference_divergence": float((ref_arr[known] != tb[known]).mean()) if known.any() else None,

@@ -728,34 +728,40 @@ async function runAdna() {
   try {
     A.result = await rpc("adna_run", p);
     renderAdna(); job.done(`${A.result.references.length} reference(s)`);
-    const best = A.result.references.reduce((a, b) => (a.accuracy > b.accuracy ? a : b));
-    log(`Ancient DNA: best reconstruction ${(100 * best.accuracy).toFixed(3)}% correct against ${best.reference.organism}`);
+    const endo = A.result.simulation.endogenous.accession;
+    const others = A.result.references.filter((r) => r.reference.accession !== endo);
+    if (others.length) {
+      const best = others.reduce((a, b) => (a.accuracy > b.accuracy ? a : b));
+      log(`Ancient DNA: best reconstruction from a relative's genome ${(100 * best.accuracy).toFixed(3)}% correct (${commonName(best.reference.organism)})`);
+    } else log("Ancient DNA: reconstructed against the sample's own genome (control)");
   } catch (e) { job.fail(String(e)); log(`Ancient DNA run failed: ${e.message || e}`, true); }
   finally { A.busy = false; $("adnaRun").disabled = false; $("adnaBusy").hidden = true; }
 }
 
+const commonName = (org) => { const m = /\(([^)]+)\)/.exec(org); return m ? m[1].replace(/^./, (c) => c.toUpperCase()) : org; };
 const pct = (x, d = 2) => (x == null ? "—" : `${(100 * x).toFixed(d)}%`);
 function renderAdna() {
   const R = A.result; if (!R) return;
   $("adnaEmpty").hidden = true; $("adnaResults").hidden = false;
   const rows = R.references.map((r) => {
     const c = r.calibration;
-    return `<tr><td>${escapeHtml(r.reference.organism)}<br><small>${r.reference.version}</small></td>
+    const self = r.reference.accession === R.simulation.endogenous.accession;
+    return `<tr><td>${escapeHtml(commonName(r.reference.organism))}${self ? " <small>(control)</small>" : ""}<br><small>${r.reference.version}</small></td>
       <td class="n">${pct(r.truth_vs_reference_divergence)}</td><td class="n">${pct(r.estimated_divergence_theta)}</td>
-      <td class="n">${(r.mapped_reads ?? 0).toLocaleString()}</td><td class="n">${r.mean_depth.toFixed(1)}×</td>
+      <td class="n">${(r.mapped_reads ?? 0).toLocaleString()}${r.total_reads ? `<br><small>of ${r.total_reads.toLocaleString()}</small>` : ""}</td><td class="n">${r.mean_depth.toFixed(1)}×</td>
       <td class="n">${pct(r.covered_fraction, 1)}</td><td class="n">${pct(r.accuracy, 3)}</td>
       <td class="n">${pct(c.predicted_error_rate, 3)}</td><td class="n">${pct(c.observed_error_rate, 3)}</td>
       <td class="n">${c.expected_calibration_error.toFixed(4)}</td></tr>`;
   }).join("");
-  $("adnaTable").innerHTML = `<table><thead><tr><th>Reference</th><th>Truth vs reference</th><th>Estimated divergence</th>
-    <th>Mapped reads</th><th>Depth</th><th>Covered</th><th>Consensus correct</th><th>Predicted error</th><th>Observed error</th><th>Calibration error</th></tr></thead><tbody>${rows}</tbody></table>
-    <p class="note">"Predicted error" is what the posteriors claim; "observed" is measured against the true genome. Calibration error near 0 means the stated confidence can be trusted. Positions where the truth has an indel relative to the reference are not scored.</p>`;
+  $("adnaTable").innerHTML = `<table><thead><tr><th>Reference</th><th>True divergence</th><th>Estimated</th>
+    <th>Mapped</th><th>Depth</th><th>Covered</th><th>Correct</th><th>Predicted error</th><th>Observed error</th><th>ECE</th></tr></thead><tbody>${rows}</tbody></table>
+    <p class="note">"Predicted error" is what the posteriors claim; "observed" is measured against the true genome. ECE (expected calibration error) near 0 means the stated confidence can be trusted. Positions where the truth has an indel relative to the reference are not scored.</p>`;
   const sim = R.simulation.damage_briggs_v_l_d_s;
   const names = [["Nu", "ν nick frequency", sim[0]], ["Lambda", "λ overhang parameter", sim[1]], ["DeltaD", "δd double-stranded", sim[2]], ["DeltaS", "δs single-stranded", sim[3]]];
   const drows = names.map(([k, lab, v]) => `<tr><td>${lab}</td><td class="n">${v}</td>${R.references.map((r) => {
     const e = r.mapdamage_bayesian && r.mapdamage_bayesian[k];
     return `<td class="n">${e && e.Mean != null ? e.Mean.toFixed(4) : "—"}</td>`; }).join("")}</tr>`).join("");
-  $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(r.reference.organism.split(" (")[0])}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>`;
+  $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(commonName(r.reference.organism))}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>`;
   drawDamage(); drawCalibration(); drawTracks(); renderAdnaProv();
 }
 
@@ -782,6 +788,7 @@ function drawDamage() {
     }
   });
   g.setLineDash([]);
+  refs.forEach((x, k) => { g.fillStyle = COLORS[k % 4]; g.fillText(commonName(x.reference.organism), r - 130, t + 14 + 13 * k); });
 }
 
 function drawCalibration() {
@@ -797,7 +804,9 @@ function drawCalibration() {
       const rad = Math.min(6, 2 + Math.log10(bn.n));
       g.beginPath(); g.arc(X(bn.predicted_error), Y(bn.observed_error), rad, 0, 7); g.fill();
     }
+    g.fillText(commonName(x.reference.organism), r - 130, b - 10 - 13 * k);
   });
+  g.fillStyle = "#7f9fb3"; g.fillText("above the diagonal = overconfident", l + 6, t + 14);
 }
 
 function drawTracks() {
@@ -827,7 +836,12 @@ function renderAdnaProv() {
   const tools = Object.entries(R.tools).map(([k, v]) => `<li><b>${escapeHtml(k)}</b>: ${escapeHtml(v)}</li>`).join("");
   const refs = R.reference_catalog.genomes.map((g) => `<li>${escapeHtml(g.version)} — ${escapeHtml(g.organism)} (${g.length.toLocaleString()} bp, sha256 ${g.sha256.fa.slice(0, 12)}…)</li>`).join("");
   const steps = R.steps.map((s) => `<li>${escapeHtml(s.step)} · ${s.seconds} s<br><code>${escapeHtml(s.command)}</code></li>`).join("");
-  $("adnaProv").innerHTML = `<p><b>Simulation</b>: ${escapeHtml(JSON.stringify(R.simulation))}</p>
+  const S0 = R.simulation, b = S0.damage_briggs_v_l_d_s;
+  const simRows = [["Endogenous", `${S0.endogenous.version} (${commonName(S0.endogenous.organism)})`], ["Coverage", `${S0.coverage}×`],
+    ["Damage ν, λ, δd, δs", b.join(", ")], ["Contamination", pct(S0.contamination, 1)],
+    ["Fragment length", `log-normal, median ${Math.round(Math.exp(S0.fragment_length_lognormal[0]))} bp, σ ${S0.fragment_length_lognormal[1]}; min ${S0.min_length} bp`],
+    ["Reads", `${S0.read_length} bp paired-end, ${S0.platform}`]];
+  $("adnaProv").innerHTML = `<p><b>Simulation</b></p><ul>${simRows.map(([k, v]) => `<li>${escapeHtml(k)}: ${escapeHtml(String(v))}</li>`).join("")}</ul>
     <p><b>Tools</b></p><ul>${tools}</ul><p><b>Reference genomes</b> (${escapeHtml(R.reference_catalog.source)}, retrieved ${escapeHtml(R.reference_catalog.retrieved_utc)})</p><ul>${refs}</ul>
     <p><b>Steps</b></p><ol>${steps}</ol>`;
 }
