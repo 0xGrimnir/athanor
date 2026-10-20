@@ -15,6 +15,7 @@ Runs the published tools from the Linux engines pack (bioconda environment at
 from __future__ import annotations
 
 import glob
+import math
 import gzip
 import json
 import os
@@ -34,27 +35,133 @@ BIO = Path(os.environ.get("ATHANOR_BIO", "/opt/athanor/bio"))
 REFS = Path(os.environ.get("ATHANOR_REFS", "/opt/athanor/refs"))
 
 
+# Expected seconds per stage on a reference machine (CI, 10x mammoth demo);
+# the progress model rescales them by how fast this machine actually runs.
+EXPECTED = {"simulate": 5, "merge": 3, "truth": 2, "index": 1, "map": 6, "sort": 2, "flagstat": 1,
+            "damage_fast": 10, "damage_stats": 120, "consensus": 25}
+
+
+class Progress:
+    """Continuous percentage and ETA over a known plan of stages.
+
+    Each stage has an expected duration; within a running stage, progress
+    advances with elapsed time (capped at 95% of the stage until it finishes).
+    The ETA scales the remaining expected time by the ratio of actual to
+    expected time over the stages completed so far."""
+
+    def __init__(self, plan: list[tuple[str, float]], on_step=None):
+        self.plan, self.on_step = plan, on_step
+        self.total = sum(e for _, e in plan) or 1.0
+        self.idx, self.exp_done, self.act_done = 0, 0.0, 0.0
+        self.t_stage = time.time()
+        self.t0 = time.time()
+
+    def _ratio(self) -> float:
+        # actual/expected speed over completed stages, shrunk toward 1 by k
+        # pseudo-seconds so a single odd stage cannot swing the estimate
+        k = min(30.0, 0.1 * self.total)
+        return max(0.25, min(8.0, (self.act_done + k) / (self.exp_done + k)))
+
+    @staticmethod
+    def _stage_fraction(el: float, expected: float) -> float:
+        """Linear to 80% at 80% of the expected time, then an exponential tail:
+        always increasing, never reaching 100% before the stage really ends."""
+        if expected <= 0:
+            return 0.0
+        knee = 0.8 * expected
+        if el <= knee:
+            return el / expected
+        return 0.8 + 0.2 * (1 - math.exp(-(el - knee) / (0.5 * expected)))
+
+    def emit(self, label: str):
+        if not self.on_step:
+            return
+        exp_cur = self.plan[self.idx][1] if self.idx < len(self.plan) else 0.0
+        ratio = self._ratio()
+        el = time.time() - self.t_stage
+        frac_cur = self._stage_fraction(el, ratio * exp_cur)
+        done = self.exp_done + frac_cur * exp_cur
+        over = bool(exp_cur) and el > ratio * exp_cur
+        # remaining: the rest of the current stage (at least a little while it runs over) plus later stages
+        rest_cur = max(ratio * exp_cur - el, 0.15 * ratio * exp_cur if over else 0.0)
+        remaining = rest_cur + ratio * (self.total - self.exp_done - exp_cur)
+        self.on_step({"task": "adna", "stage": label, "step": self.idx + 1, "steps": len(self.plan),
+                      "fraction": round(min(0.999, done / self.total), 4),
+                      "eta_seconds": round(max(0.0, remaining)), "elapsed_seconds": round(time.time() - self.t0),
+                      "overrunning": bool(over)})
+
+    def finish_stage(self):
+        if self.idx < len(self.plan):
+            self.exp_done += self.plan[self.idx][1]
+            self.act_done += time.time() - self.t_stage
+            self.idx += 1
+        self.t_stage = time.time()
+
+
 class Step:
-    def __init__(self, log: list, on_step=None):
-        self.log, self.on_step = log, on_step
+    def __init__(self, log: list, progress: Progress | None = None):
+        self.log, self.progress = log, progress
 
     def run(self, name: str, cmd: list, cwd: Path, stdout_path: Path | None = None) -> str:
         env = dict(os.environ, PATH=f"{BIO / 'bin'}:{os.environ.get('PATH', '')}")
         t0 = time.time()
-        if self.on_step:
-            self.on_step({"task": "adna", "stage": name})
-        out = open(stdout_path, "wb") if stdout_path else subprocess.PIPE
+        out_f = open(stdout_path, "wb") if stdout_path else subprocess.PIPE
         try:
-            r = subprocess.run([str(c) for c in cmd], cwd=cwd, env=env, stdout=out, stderr=subprocess.PIPE)
+            proc = subprocess.Popen([str(c) for c in cmd], cwd=cwd, env=env, stdout=out_f, stderr=subprocess.PIPE)
+            # drain stderr in the background so a chatty tool cannot block
+            import threading
+            err_chunks: list = []
+            t = threading.Thread(target=lambda: err_chunks.append(proc.stderr.read()), daemon=True)
+            t.start()
+            out_chunks: list = []
+            if not stdout_path:
+                to = threading.Thread(target=lambda: out_chunks.append(proc.stdout.read()), daemon=True)
+                to.start()
+            last_emit = 0.0
+            while proc.poll() is None:
+                if self.progress and time.time() - last_emit >= 1.0:
+                    self.progress.emit(name)
+                    last_emit = time.time()
+                time.sleep(0.2)
+            t.join()
+            if not stdout_path:
+                to.join()
         finally:
             if stdout_path:
-                out.close()
+                out_f.close()
+        if self.progress:
+            self.progress.finish_stage()
         self.log.append({"step": name, "command": " ".join(map(str, cmd)), "seconds": round(time.time() - t0, 1),
-                         "exit": r.returncode})
-        if r.returncode != 0:
-            tail = r.stderr.decode(errors="replace")[-1500:]
-            raise RuntimeError(f"{name} failed (exit {r.returncode}): {tail}")
-        return (r.stdout or b"").decode(errors="replace") if not stdout_path else ""
+                         "exit": proc.returncode})
+        if proc.returncode != 0:
+            tail = (err_chunks[0] if err_chunks else b"").decode(errors="replace")[-1500:]
+            raise RuntimeError(f"{name} failed (exit {proc.returncode}): {tail}")
+        return (out_chunks[0] if out_chunks else b"").decode(errors="replace")
+
+    def python(self, name: str, fn):
+        """Time an in-process stage (BAM reading, consensus) as part of the plan."""
+        t0 = time.time()
+        if self.progress:
+            self.progress.emit(name)
+        result = fn()
+        if self.progress:
+            self.progress.finish_stage()
+        self.log.append({"step": name, "command": "(in-process)", "seconds": round(time.time() - t0, 1), "exit": 0})
+        return result
+
+
+def _plan(references, iterations: int, stats: bool) -> list[tuple[str, float]]:
+    E = EXPECTED
+    plan = [("simulate", E["simulate"]), ("merge", E["merge"])]
+    for _ in references:
+        plan.append(("truth", E["truth"]))
+        for it in range(1, iterations + 1):
+            last = it == iterations
+            plan += [("index", E["index"]), ("map aln", E["map"]), ("map samse", 1), ("sort", E["sort"]),
+                     ("index bam", 1), ("flagstat", E["flagstat"]),
+                     ("damage", E["damage_stats"] if (stats and last) else E["damage_fast"]),
+                     ("consensus", E["consensus"])]
+    return plan
 
 
 def tool_versions() -> dict:
@@ -104,9 +211,8 @@ def _map_once(step, rdir: Path, label: str, ref_seq: str, merged: str, stats: bo
     step.run(f"damage on {label} (mapDamage2)", md, rdir)
     prof = damage_profiles(rdir / "mapdamage")
     bayes = bayesian_estimates(rdir / "mapdamage") if stats else {}
-    if on_step:
-        on_step({"task": "adna", "stage": f"consensus on {label}"})
-    return observations_from_bam(str(rdir / "reads.bam"), min_mapq=min_mapq), prof, bayes, flag
+    obs = observations_from_bam(str(rdir / "reads.bam"), min_mapq=min_mapq)
+    return obs, prof, bayes, flag
 
 
 def _reconstruct(step, work: Path, acc: str, cat: dict, merged: str, truth_seq: str, endogenous: str,
@@ -128,7 +234,8 @@ def _reconstruct(step, work: Path, acc: str, cat: dict, merged: str, truth_seq: 
         obs, prof, bayes, flag = _map_once(step, base / f"it{it}", label, current, merged,
                                            mapdamage_stats and last, min_mapq, on_step)
         # calls use the divergence prior relative to the ORIGINAL reference
-        cons = call_consensus(ref_seq, obs, prof["delta5"], prof["delta3"], min_depth=1)
+        cons = step.python(f"consensus on {label}",
+                           lambda: call_consensus(ref_seq, obs, prof["delta5"], prof["delta3"], min_depth=1))
         calls = np.array(list(cons.call))
         scorable = known & (cons.depth > 0)
         correct = calls[scorable] == tb[scorable]
@@ -214,7 +321,8 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
     for d in ("input/endo", "input/cont", "input/bact", "sim", "merge"):
         (work / d).mkdir(parents=True, exist_ok=True)
     log: list = []
-    step = Step(log, on_step)
+    progress = Progress(_plan(references, max(1, iterations), mapdamage_stats), on_step)
+    step = Step(log, progress)
     cat = {g["accession"]: g for g in reference_catalog()["genomes"]}
     shutil.copy(REFS / f"{endogenous}.fa", work / "input/endo/endo.fa")
     shutil.copy(REFS / "NC_012920.fa", work / "input/cont/cont.fa")   # present-day human contaminant

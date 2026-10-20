@@ -159,7 +159,11 @@
     </div>
   </section>
   <section class="panel center-scroll" aria-label="Ancient DNA results">
-    <div class="busy" id="adnaBusy" hidden><div class="spinner"></div><span id="adnaBusyText">Running…</span></div>
+    <div class="busy progress" id="adnaBusy" hidden>
+      <div class="pbar"><i id="adnaBar"></i></div>
+      <div class="ptext"><b id="adnaPct">0%</b> <span id="adnaEta"></span></div>
+      <div class="pstage" id="adnaBusyText">Starting…</div>
+    </div>
     <div id="adnaEmpty" class="note">Choose a sample and references, then run. Requires the Linux engines (top bar).</div>
     <div id="adnaResults" hidden>
       <div class="sec"><div class="label">Reconstruction by reference</div><div id="adnaTable"></div></div>

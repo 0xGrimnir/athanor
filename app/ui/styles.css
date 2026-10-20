@@ -207,3 +207,10 @@ td.n { font-family: var(--f-data); text-align: right; font-variant-numeric: tabu
 .track canvas { width: 100%; height: 54px; display: block; background: rgba(0,0,0,.18); border: 1px solid var(--line); }
 #adnaProv code { font-family: var(--f-data); font-size: 11px; color: var(--text); word-break: break-all; }
 #adnaProv li { margin-bottom: 6px; }
+
+.busy.progress { flex-direction: column; align-items: stretch; gap: 8px; min-width: 460px; max-width: 70%; }
+.pbar { height: 8px; background: rgba(110,205,255,.12); border: 1px solid var(--line); overflow: hidden; }
+.pbar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--holo), var(--arc)); transition: width .9s linear; }
+.ptext { font-family: var(--f-data); font-size: 12.5px; color: var(--text); }
+.ptext b { color: var(--arc); font-size: 15px; margin-right: 4px; }
+.pstage { font-size: 12px; color: var(--dim); }

@@ -347,7 +347,11 @@ function currentMolecule() {
 function progressText(d) {
   if (d.task === "optimize")
     return `${S.busyLabel}: step ${d.step} · E ${fmt(d.energy, 8)} Eh · max force ${d.max_force.toExponential(2)} (target ${d.target_max_force.toExponential(1)})`;
-  if (d.task === "adna") return `Ancient DNA: ${d.stage}`;
+  if (d.task === "adna") {
+    let st = d.stage || "";
+    for (const g of (A.catalog && A.catalog.references.genomes) || []) st = st.replaceAll(g.accession, commonName(g.organism));
+    return `Step ${d.step ?? "?"} of ${d.steps ?? "?"} · ${st}`;
+  }
   if (d.task === "frequencies" && d.analytic) return `${S.busyLabel}: analytic Hessian and IR intensities (coupled-perturbed SCF)…`;
   if (d.task === "frequencies") return `${S.busyLabel}: Hessian gradient ${d.step} of ${d.total}`;
   return "";
@@ -722,10 +726,28 @@ function adnaParams() {
   };
 }
 
+function fmtDuration(sec) {
+  if (sec < 45) return "less than a minute";
+  if (sec < 90) return "about a minute";
+  if (sec < 3600) return `about ${Math.round(sec / 60)} min`;
+  return `about ${(sec / 3600).toFixed(1)} h`;
+}
+function adnaProgress(d) {
+  const f = d.fraction ?? 0;
+  $("adnaBar").style.width = `${(100 * f).toFixed(1)}%`;
+  $("adnaPct").textContent = `${Math.floor(100 * f)}%`;
+  const el = d.elapsed_seconds != null ? ` · ${fmtDuration(d.elapsed_seconds).replace("about ", "")} elapsed` : "";
+  $("adnaEta").textContent = d.overrunning
+    ? `· this step is taking longer than expected · ${fmtDuration(d.eta_seconds)} left at the earliest${el}`
+    : `· ${fmtDuration(d.eta_seconds)} left${el}`;
+  $("adnaBusyText").textContent = progressText(d);
+}
+
 async function runAdna() {
   const p = adnaParams();
   if (!p.references.length) { log("Choose at least one reference", true); return; }
   A.busy = true; $("adnaRun").disabled = true; $("adnaBusy").hidden = false; $("adnaBusyText").textContent = "Starting…";
+  $("adnaBar").style.width = "0%"; $("adnaPct").textContent = "0%"; $("adnaEta").textContent = "· estimating time";
   const job = addJob(`Ancient DNA · ${p.coverage}× · ${p.references.length} reference(s)`);
   try {
     A.result = await rpc("adna_run", p);
@@ -864,7 +886,7 @@ async function boot() {
     // First launch after install or update unpacks the science engines; show progress.
     TAURI.event.listen("core-progress", (e) => {
       const d = e.payload || {}, t = progressText(d);
-      if (d.task === "adna") { if (A.busy) $("adnaBusyText").textContent = t; return; }
+      if (d.task === "adna") { if (A.busy) adnaProgress(d); return; }
       if (t && S.busy) setBusy(true, t);
     });
     TAURI.event.listen("core-status", (e) => {

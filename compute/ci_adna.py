@@ -7,7 +7,16 @@ import time
 from athanor_core.adna.pipeline import run
 
 t0 = time.time()
-res = run("/tmp/adna", coverage=10.0, iterations=3, on_step=lambda d: print("stage:", d.get("stage"), flush=True))
+events = []
+
+
+def on_step(d):
+    events.append(dict(d, t=time.time() - t0))
+    if len(events) % 20 == 1:
+        print(f"progress {100 * d['fraction']:.1f}% eta {d['eta_seconds']}s step {d['step']}/{d['steps']} {d['stage']}", flush=True)
+
+
+res = run("/tmp/adna", coverage=10.0, iterations=3, on_step=on_step)
 out = sys.argv[1] if len(sys.argv) > 1 else "/tmp/adna.json"
 json.dump(res, open(out, "w"))
 sim = res["simulation"]
@@ -36,7 +45,17 @@ for r in res["references"]:
             print("     ", ex)
     print("   5' C>T raw:", [round(x, 4) for x in r["damage_profile"]["raw_5p_CtoT"][:6]],
           " background:", round(r["damage_profile"]["background_CtoT"], 4))
-print(f"total {time.time() - t0:.0f} s")
+total = time.time() - t0
+print(f"total {total:.0f} s")
+# How good was the ETA? Compare predicted remaining time with the actual remaining time.
+for mark in (0.1, 0.25, 0.5, 0.75):
+    e = next((x for x in events if x["fraction"] >= mark), None)
+    if e:
+        actual = total - e["t"]
+        print(f"[INFO] ETA at {int(mark * 100)}%: predicted {e['eta_seconds']} s, actual {actual:.0f} s")
+fr = [x["fraction"] for x in events]
+print(f"[INFO] progress events {len(events)}, monotone {fr == sorted(fr)}, steps planned {events[-1]['steps'] if events else '?'}, "
+      f"steps run {len(res['steps'])}")
 
 # ---- validation gates -------------------------------------------------------
 # Principled checks on the simulated truth; each prints PASS/FAIL.
@@ -70,4 +89,7 @@ for r in res["references"]:
          f"{r['calibration']['expected_calibration_error']:.5f}")
     gate(f"{acc}: mapDamage deltaD within 50% after iteration", abs(b["DeltaD"]["Mean"] - dd) <= 0.5 * dd,
          f"{b['DeltaD']['Mean']:.4f} vs {dd}")
+gate("progress plan matches the steps actually run", bool(events) and events[-1]["steps"] == len(res["steps"]),
+     f"planned {events[-1]['steps'] if events else 0}, ran {len(res['steps'])}")
+gate("progress never goes backwards", fr == sorted(fr), "monotone" if fr == sorted(fr) else "decreased")
 sys.exit(1 if fails else 0)
