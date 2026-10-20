@@ -44,6 +44,13 @@ jobs:
           if [ $rc -eq 0 ]; then echo "::notice title=compute-pack check::$msg"; else echo "::error title=compute-pack check failed::$msg"; fi
           exit $rc
 
+      - name: Report ancient-DNA tools and references
+        run: |
+          docker run --rm -v "$PWD/compute:/src/compute:ro" athanor-compute bash /src/compute/ci_probe_bio.sh > probe.txt 2>&1 || true
+          cat probe.txt
+          msg=$(head -c 30000 probe.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          echo "::notice title=bio probe::$msg"
+
       - name: Export, compress and split
         run: |
           mkdir -p out
