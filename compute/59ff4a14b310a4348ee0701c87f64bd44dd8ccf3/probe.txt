@@ -1,0 +1,64 @@
+== versions
+Version: 0.7.19-r1273
+samtools 1.24
+/src/compute/ci_probe_bio.sh: line 7: /opt/athanor/bio/bin/AdapterRemoval: No such file or directory
+2.2.2
+adptSim art_454 art_SOLiD art_illumina art_profiler_454 art_profiler_illumina deamSim fragSim gargammel 
+== gargammel help
+Can't locate Data/Dumper.pm in @INC (you may need to install the Data::Dumper module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.38.2 /usr/local/share/perl/5.38.2 /usr/lib/x86_64-linux-gnu/perl5/5.38 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.38 /usr/share/perl/5.38 /usr/local/lib/site_perl) at /opt/athanor/bio/bin/gargammel line 10.
+BEGIN failed--compilation aborted at /opt/athanor/bio/bin/gargammel line 10.
+== refs
+{
+ "source": "NCBI nuccore via E-utilities efetch",
+ "retrieved_utc": "2026-10-20T19:46:38Z",
+ "genomes": [
+  {
+   "accession": "NC_007596",
+   "version": "NC_007596.2",
+   "organism": "Mammuthus primigenius (woolly mammoth)",
+   "role": "truth source for the ancient-DNA demo",
+   "length": 16770,
+   "header": "NC_007596.2 Mammuthus primigenius mitochondrion, complete genome",
+   "sha256": {
+    "fa": "ad3bb60b81ea101578b63f9cc438fbff8e939374142492f779d6627d16d5d75e",
+    "gb": "5b2f65be7476e5ebdfb3e7b75fea5237e85c8d1ce83df3b82a1500a295085b89"
+   }
+  },
+  {
+   "accession": "NC_000934",
+   "version": "NC_000934.1",
+   "organism": "Loxodonta africana (African savanna elephant)",
+   "role": "mapping reference",
+   "length": 16866,
+   "header": "NC_000934.1 Loxodonta africana mitochondrion, complete genome",
+   "sha256": {
+    "fa": "60bd48ecfd11792cfd1a44207e6fc10616225fd0d31f1f88132f37e29aa76b1c",
+    "gb": "328dbf1fe68b1fc34687734f8bd1dc4499fd163eb29f89a99e23c1a511d2e386"
+   }
+  },
+  {
+   "accession": "NC_005129",
+   "version": "NC_005129.2",
+   "organism": "Elephas maximus (Asian elephant)",
+   "role": "mapping reference",
+   "length": 16902,
+   "header": "NC_005129.2 Elephas maximus mitochondrion, complete genome",
+   "sha256": {
+    "fa": "932c2830aab0134083e41dd14c39d6e4c58d89b583b7143bcb624e30eea4c812",
+    "gb": "9ec908d678a2796d2f06cee2e71a41907bb1a9339937bb752e02a792c01b1081"
+   }
+  },
+  {
+   "accession": "NC_012920",
+   "version": "NC_012920.1",
+   "organism": "Homo sapiens (revised Cambridge Reference Sequence)",
+   "role": "contaminant source / human mtDNA",
+   "length": 16569,
+   "header": "NC_012920.1 Homo sapiens mitochondrion, complete genome",
+   "sha256": {
+    "fa": "fc392cde8e63b4d2e3a870bb97cc0626dea33d46dfb8abdebffada040f42ec92",
+    "gb": "7530d659e7174272372814edfecb2ece1f87a444395a861fcdf1b977c4aa5c1f"
+   }
+  }
+ ]
+}
