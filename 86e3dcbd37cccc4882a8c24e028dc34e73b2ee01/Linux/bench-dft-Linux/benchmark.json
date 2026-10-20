@@ -1,0 +1,948 @@
+{
+ "reference": "phase1.json",
+ "tiers": {
+  "dft": {
+   "geometries": {
+    "method": "B3LYP/cc-pVTZ",
+    "rows": [
+     {
+      "id": "H2",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 0.741,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 0.7429049309019826,
+        "error": 0.0019049309019826266
+       }
+      ]
+     },
+     {
+      "id": "HF",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 0.917,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 0.9223138828187514,
+        "error": 0.0053138828187513365
+       }
+      ]
+     },
+     {
+      "id": "HCl",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 1.275,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 1.2834315185599103,
+        "error": 0.008431518559910423
+       }
+      ]
+     },
+     {
+      "id": "N2",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 1.098,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 1.0913749338131342,
+        "error": -0.006625066186865869
+       }
+      ]
+     },
+     {
+      "id": "CO",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 1.128,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 1.1261638955297792,
+        "error": -0.0018361044702206453
+       }
+      ]
+     },
+     {
+      "id": "F2",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 1.412,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 1.397280509383449,
+        "error": -0.014719490616550868
+       }
+      ]
+     },
+     {
+      "id": "Cl2",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 1.988,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "CCCBDB-R22",
+        "calc": 2.0232307925363617,
+        "error": 0.035230792536361744
+       }
+      ]
+     },
+     {
+      "id": "H2O",
+      "converged": true,
+      "params": [
+       {
+        "type": "bond",
+        "atoms": [
+         0,
+         1
+        ],
+        "value": 0.958,
+        "unc": 0.0005,
+        "kind": "re",
+        "source": "HoyBunker1979",
+        "calc": 0.9613327344560748,
+        "error": 0.0033327344560748484
+       },
+       {
+        "type": "angle",
+        "atoms": [
+         1,
+         0,
+         2
+        ],
+        "value": 104.4776,
+        "unc": 0.0019,
+        "kind": "re",
+        "source": "HoyBunker1979",
+        "calc": 104.43610069346771,
+        "error": -0.041499306532287505
+       }
+      ]
+     }
+    ],
+    "bond_length_angstrom": {
+     "n": 8,
+     "mean_signed": 0.0038791497499304495,
+     "mad": 0.009674315068339795,
+     "rms": 0.014226729529702093,
+     "max_abs": 0.035230792536361744
+    },
+    "angle_degrees": {
+     "n": 1,
+     "mean_signed": -0.041499306532287505,
+     "mad": 0.041499306532287505,
+     "rms": 0.041499306532287505,
+     "max_abs": 0.041499306532287505
+    }
+   },
+   "dipoles": {
+    "method": "B3LYP/aug-cc-pVTZ",
+    "geometry_method": "B3LYP/cc-pVTZ",
+    "rows": [
+     {
+      "id": "HF",
+      "exp": 1.827,
+      "calc": 1.8095411444646299,
+      "error": -0.017458855535370077,
+      "regularized_error": -0.009556023828883457
+     },
+     {
+      "id": "HCl",
+      "exp": 1.093,
+      "calc": 1.1155224004992466,
+      "error": 0.022522400499246586,
+      "regularized_error": 0.020606038883116733
+     },
+     {
+      "id": "HBr",
+      "exp": 0.827,
+      "calc": 0.8373644761105975,
+      "error": 0.010364476110597542,
+      "regularized_error": 0.010364476110597542
+     },
+     {
+      "id": "CO",
+      "exp": 0.112,
+      "calc": 0.09263765201834905,
+      "error": -0.019362347981650957,
+      "regularized_error": -0.019362347981650957
+     },
+     {
+      "id": "CS",
+      "exp": 1.958,
+      "calc": 1.9165318643366005,
+      "error": -0.041468135663399464,
+      "regularized_error": -0.021178823117160094
+     },
+     {
+      "id": "SiO",
+      "exp": 3.088,
+      "calc": 3.1968054157550228,
+      "error": 0.10880541575502267,
+      "regularized_error": 0.035234914428439984
+     },
+     {
+      "id": "ClF",
+      "exp": 0.88,
+      "calc": 0.920697292465318,
+      "error": 0.04069729246531795,
+      "regularized_error": 0.04069729246531795
+     },
+     {
+      "id": "LiH",
+      "exp": 5.88,
+      "calc": 5.715600788450547,
+      "error": -0.16439921154945303,
+      "regularized_error": -0.02795904958324031
+     },
+     {
+      "id": "H2O",
+      "exp": 1.857,
+      "calc": 1.858010991598439,
+      "error": 0.0010109915984390927,
+      "regularized_error": 0.0005444219700802868
+     },
+     {
+      "id": "H2S",
+      "exp": 0.977,
+      "calc": 0.9901864501231389,
+      "error": 0.013186450123138904,
+      "regularized_error": 0.013186450123138904
+     },
+     {
+      "id": "HCN",
+      "exp": 2.98,
+      "calc": 3.0401847312860624,
+      "error": 0.06018473128606239,
+      "regularized_error": 0.02019621855236993
+     },
+     {
+      "id": "HNC",
+      "exp": 3.05,
+      "calc": 3.060642604596397,
+      "error": 0.01064260459639721,
+      "regularized_error": 0.0034893785561958064
+     },
+     {
+      "id": "N2O",
+      "exp": 0.161,
+      "calc": 0.06983104129437114,
+      "error": -0.09116895870562887,
+      "regularized_error": -0.09116895870562887
+     },
+     {
+      "id": "O3",
+      "exp": 0.53,
+      "calc": 0.6615447661358675,
+      "error": 0.13154476613586752,
+      "regularized_error": 0.13154476613586752
+     },
+     {
+      "id": "FCN",
+      "exp": 2.17,
+      "calc": 2.260393118058945,
+      "error": 0.09039311805894501,
+      "regularized_error": 0.04165581477370738
+     },
+     {
+      "id": "F2O",
+      "exp": 0.297,
+      "calc": 0.3245786414242778,
+      "error": 0.027578641424277794,
+      "regularized_error": 0.027578641424277794
+     },
+     {
+      "id": "HCP",
+      "exp": 0.39,
+      "calc": 0.36238117312293483,
+      "error": -0.027618826877065183,
+      "regularized_error": -0.027618826877065183
+     },
+     {
+      "id": "HNO",
+      "exp": 1.67,
+      "calc": 1.6482621160558386,
+      "error": -0.021737883944161318,
+      "regularized_error": -0.013016696972551688
+     },
+     {
+      "id": "CO2",
+      "exp": 0.0,
+      "calc": 8.04950138223912e-08,
+      "error": 8.04950138223912e-08,
+      "regularized_error": 8.04950138223912e-08
+     },
+     {
+      "id": "N2",
+      "exp": 0.0,
+      "calc": 2.2484265412521874e-09,
+      "error": 2.2484265412521874e-09,
+      "regularized_error": 2.2484265412521874e-09
+     }
+    ],
+    "regularized_rms_percent": 4.169192840861088,
+    "n": 20
+   },
+   "frequencies": {
+    "method": "B3LYP/cc-pVTZ",
+    "rows": [
+     {
+      "id": "H2O",
+      "modes": [
+       {
+        "exp": 1595.0,
+        "harmonic": 1639.1830241772566,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3657.0,
+        "harmonic": 3801.2312781325295,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3756.0,
+        "harmonic": 3901.7833878514034,
+        "sym": "b1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     },
+     {
+      "id": "NH3",
+      "modes": [
+       {
+        "exp": 950.0,
+        "harmonic": 1060.7422736686553,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": true
+       },
+       {
+        "exp": 1627.0,
+        "harmonic": 1675.1138427427811,
+        "sym": "e",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1627.0,
+        "harmonic": 1676.9014596625839,
+        "sym": "e",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3337.0,
+        "harmonic": 3461.949936963202,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3444.0,
+        "harmonic": 3578.0843953883887,
+        "sym": "e",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3444.0,
+        "harmonic": 3580.3579171433125,
+        "sym": "e",
+        "phase": "gas",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     },
+     {
+      "id": "CH4",
+      "modes": [
+       {
+        "exp": 1306.0,
+        "harmonic": 1341.7485247057623,
+        "sym": "f2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1306.0,
+        "harmonic": 1342.0105836531654,
+        "sym": "f2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1306.0,
+        "harmonic": 1342.6373863247838,
+        "sym": "f2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1534.0,
+        "harmonic": 1559.4770462876336,
+        "sym": "e",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1534.0,
+        "harmonic": 1559.6021706260804,
+        "sym": "e",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 2917.0,
+        "harmonic": 3028.2582995054136,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3019.0,
+        "harmonic": 3129.2369169994868,
+        "sym": "f2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3019.0,
+        "harmonic": 3130.0732658169536,
+        "sym": "f2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3019.0,
+        "harmonic": 3131.9798779606645,
+        "sym": "f2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     },
+     {
+      "id": "HCN",
+      "skipped": "ValueError: 3 computed vs 4 experimental modes"
+     },
+     {
+      "id": "H2CO",
+      "modes": [
+       {
+        "exp": 1167.0,
+        "harmonic": 1202.5859188021482,
+        "sym": "b2",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1249.0,
+        "harmonic": 1268.5057393750342,
+        "sym": "b1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1500.0,
+        "harmonic": 1536.1683000750688,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1746.0,
+        "harmonic": 1823.9353890082525,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 2783.0,
+        "harmonic": 2876.783209055268,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 2843.0,
+        "harmonic": 2931.2499143917094,
+        "sym": "b1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     },
+     {
+      "id": "C2H4",
+      "modes": [
+       {
+        "exp": 826.0,
+        "harmonic": 835.8720632734453,
+        "sym": "b2u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 943.0,
+        "harmonic": 979.2324244846934,
+        "sym": "b2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 949.0,
+        "harmonic": 983.8609216642988,
+        "sym": "b1u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1023.0,
+        "harmonic": 1067.2184394082572,
+        "sym": "au",
+        "phase": "inactive",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1236.0,
+        "harmonic": 1246.4409242716167,
+        "sym": "b1g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1342.0,
+        "harmonic": 1382.1347881916022,
+        "sym": "ag",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1444.0,
+        "harmonic": 1478.8878442337166,
+        "sym": "b3u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1623.0,
+        "harmonic": 1692.9392758552376,
+        "sym": "ag",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 2989.0,
+        "harmonic": 3125.7309659973885,
+        "sym": "b3u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3026.0,
+        "harmonic": 3139.5023432074386,
+        "sym": "ag",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3103.0,
+        "harmonic": 3194.7901365361554,
+        "sym": "b1g",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3106.0,
+        "harmonic": 3223.2372656358166,
+        "sym": "b2u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     },
+     {
+      "id": "C2H2",
+      "skipped": "ValueError: 6 computed vs 7 experimental modes"
+     },
+     {
+      "id": "H2S",
+      "modes": [
+       {
+        "exp": 1183.0,
+        "harmonic": 1207.2330878032262,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 2615.0,
+        "harmonic": 2681.944564572556,
+        "sym": "a1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 2626.0,
+        "harmonic": 2695.9057102796232,
+        "sym": "b1",
+        "phase": "gas",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     },
+     {
+      "id": "C6H6",
+      "modes": [
+       {
+        "exp": 410.0,
+        "harmonic": 414.49795718709987,
+        "sym": "e2u",
+        "phase": "solution",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 410.0,
+        "harmonic": 414.6569149669272,
+        "sym": "e2u",
+        "phase": "solution",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 606.0,
+        "harmonic": 594.755709584729,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 606.0,
+        "harmonic": 634.0028905161844,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 673.0,
+        "harmonic": 691.182738125416,
+        "sym": "a2u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 703.0,
+        "harmonic": 727.0483856085737,
+        "sym": "b2g",
+        "phase": "estimated",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 849.0,
+        "harmonic": 867.5380439149827,
+        "sym": "e1g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 849.0,
+        "harmonic": 867.7907986847998,
+        "sym": "e1g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 975.0,
+        "harmonic": 988.6523436761432,
+        "sym": "e2u",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 975.0,
+        "harmonic": 988.8225696938963,
+        "sym": "e2u",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 992.0,
+        "harmonic": 1021.0825347704005,
+        "sym": "a1g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 995.0,
+        "harmonic": 1022.1828048050672,
+        "sym": "b2g",
+        "phase": "estimated",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1010.0,
+        "harmonic": 1031.2313309801857,
+        "sym": "b1u",
+        "phase": "solution",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1038.0,
+        "harmonic": 1062.2859310025867,
+        "sym": "e1u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1038.0,
+        "harmonic": 1062.5656573777121,
+        "sym": "e1u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1150.0,
+        "harmonic": 1176.6214650822878,
+        "sym": "b2u",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1178.0,
+        "harmonic": 1201.989839378249,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1178.0,
+        "harmonic": 1206.7861118766255,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1310.0,
+        "harmonic": 1335.6418905858732,
+        "sym": "b2u",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1326.0,
+        "harmonic": 1390.4989134433288,
+        "sym": "a2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1486.0,
+        "harmonic": 1519.049784045102,
+        "sym": "e1u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1486.0,
+        "harmonic": 1519.1563018174043,
+        "sym": "e1u",
+        "phase": "gas",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1596.0,
+        "harmonic": 1638.2249158731981,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 1596.0,
+        "harmonic": 1646.1984905360791,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3047.0,
+        "harmonic": 3157.3012439095173,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3047.0,
+        "harmonic": 3166.3662397558633,
+        "sym": "e2g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3062.0,
+        "harmonic": 3167.7993117830833,
+        "sym": "a1g",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3063.0,
+        "harmonic": 3182.649585407456,
+        "sym": "e1u",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3063.0,
+        "harmonic": 3183.005029423927,
+        "sym": "e1u",
+        "phase": "liquid",
+        "anharmonic_flag": false
+       },
+       {
+        "exp": 3068.0,
+        "harmonic": 3193.133441863188,
+        "sym": "b1u",
+        "phase": "solution",
+        "anharmonic_flag": false
+       }
+      ],
+      "n_imaginary": 0
+     }
+    ],
+    "matching": "rank order within each molecule after expanding degeneracies",
+    "all_modes": {
+     "n": 69,
+     "fitted_scale_factor": 0.9662823849486443,
+     "raw": {
+      "n": 69,
+      "mean_signed": 59.177536078384016,
+      "mad": 59.50345753969622,
+      "rms": 73.36758809339334,
+      "max_abs": 145.7833878514034
+     },
+     "fitted_scaled_rms_relative": 0.015450872387152143,
+     "literature_scale_factor": 0.967,
+     "literature_scaled": {
+      "n": 69,
+      "mean_signed": -2.32071391655054,
+      "mad": 13.654086353107912,
+      "rms": 17.117179759093798,
+      "max_abs": 75.7377786375896
+     },
+     "literature_scaled_rms_relative": 0.015257159234615625
+    },
+    "gas_phase_harmonic_modes": {
+     "n": 40,
+     "fitted_scale_factor": 0.9665017794131062,
+     "raw": {
+      "n": 40,
+      "mean_signed": 68.17842910669022,
+      "mad": 68.17842910669022,
+      "rms": 80.29864604100983,
+      "max_abs": 145.7833878514034
+     },
+     "fitted_scaled_rms_relative": 0.0089882282646097,
+     "literature_scale_factor": 0.967,
+     "literature_scaled": {
+      "n": 40,
+      "mean_signed": -2.7840590538306316,
+      "mad": 13.034064539055763,
+      "rms": 14.734686437657647,
+      "max_abs": 33.58184411947468
+     },
+     "literature_scaled_rms_relative": 0.008766901437943666
+    }
+   },
+   "gates": [
+    {
+     "check": "bond length MAD (A)",
+     "measured": 0.009674315068339795,
+     "published": 0.0125,
+     "limit": 0.025,
+     "pass": true,
+     "source": "Janoschek2001"
+    },
+    {
+     "check": "dipole regularized RMS (%)",
+     "measured": 4.169192840861088,
+     "published": 6.98,
+     "limit": 13.96,
+     "pass": true,
+     "source": "HaitHeadGordon2018"
+    },
+    {
+     "check": "scaled frequency RMS relative error (gas-phase modes)",
+     "measured": 0.008766901437943666,
+     "published": 0.018,
+     "limit": 0.036,
+     "pass": true,
+     "source": "CCCBDB-R22"
+    }
+   ],
+   "seconds": 3801.2
+  }
+ }
+}
