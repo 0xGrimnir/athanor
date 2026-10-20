@@ -1,0 +1,7 @@
+extracted in 79 s
+relocated 16 of 16 recorded files 
+relocated in 0.8 s
+relocation done
+server: {"jsonrpc": "2.0", "method": "ready", "params": {"version": "0.1.0.dev0"}}
+engines: {"mmff94": {"available": true, "engine": "RDKit", "version": "2026.09.1", "method": "MMFF94"}, "gfn2-xtb": {"available": true, "engine": "xtb", "version": "6.7.1", "method": "GFN2-xTB"}, "dft": {"available": true, "engine": "Psi4", "version": "1.11", "method": "B3LYP/def2-TZVP"}}
+SMOKE_OK {"mmff94": {"converged": true, "E": 0.0, "dipole_D": 2.465, "freqs": [1581.5, 3722.8, 3782.8], "seconds": 0.0}, "gfn2-xtb": {"converged": true, "E": -5.07054444, "dipole_D": 2.217, "freqs": [1539.4, 3643.8, 3652.1], "seconds": 4.4}, "dft": {"converged": true, "E": -76.35832579, "dipole_D": 2.005, "freqs": [1638.8, 3791.8, 3887.0], "seconds": 62.0}}
