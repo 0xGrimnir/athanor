@@ -4,6 +4,11 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-20
+
+### Added
+- Ancient DNA runs show a continuous progress bar: percentage, time left, time elapsed and the current step of the planned run. Progress updates every second inside each step and never stalls; the time estimate learns this machine's speed separately for each kind of step. Replaying CI timings, the estimate is within about 5% from the halfway point.
+
 ## [0.3.0] - 2026-10-20
 
 ### Added

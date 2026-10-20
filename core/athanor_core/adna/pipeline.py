@@ -37,8 +37,10 @@ REFS = Path(os.environ.get("ATHANOR_REFS", "/opt/athanor/refs"))
 
 # Expected seconds per stage on a reference machine (CI, 10x mammoth demo);
 # the progress model rescales them by how fast this machine actually runs.
-EXPECTED = {"simulate": 5, "merge": 3, "truth": 2, "index": 1, "map": 6, "sort": 2, "flagstat": 1,
-            "damage_fast": 10, "damage_stats": 120, "consensus": 25}
+# (measured in CI: every tool except mapDamage2's Bayesian estimate takes well
+# under a second on mitogenome data; the full MCMC takes about 100 s).
+EXPECTED = {"simulate": 1.0, "merge": 0.5, "truth": 0.5, "index": 0.3, "map": 0.3, "sort": 0.3, "flagstat": 0.3,
+            "damage_fast": 2.0, "damage_stats": 100.0, "consensus": 0.5}
 
 
 class Progress:
@@ -53,14 +55,22 @@ class Progress:
         self.plan, self.on_step = plan, on_step
         self.total = sum(e for _, e in plan) or 1.0
         self.idx, self.exp_done, self.act_done = 0, 0.0, 0.0
+        self.kind_exp: dict = {}
+        self.kind_act: dict = {}
         self.t_stage = time.time()
         self.t0 = time.time()
 
-    def _ratio(self) -> float:
-        # actual/expected speed over completed stages, shrunk toward 1 by k
-        # pseudo-seconds so a single odd stage cannot swing the estimate
-        k = min(30.0, 0.1 * self.total)
-        return max(0.25, min(8.0, (self.act_done + k) / (self.exp_done + k)))
+    def _ratio(self, kind: str | None = None) -> float:
+        """Actual/expected speed. Per kind of stage once one has completed
+        (BWA speed says nothing about R's MCMC speed), otherwise over all
+        completed stages; shrunk toward 1 so one odd stage cannot swing it."""
+        if kind is not None and self.kind_exp.get(kind, 0) > 0:
+            e, a = self.kind_exp[kind], self.kind_act[kind]
+            k = 0.2 * e
+        else:
+            e, a = self.exp_done, self.act_done
+            k = min(30.0, 0.1 * self.total)
+        return max(0.25, min(8.0, (a + k) / (e + k)))
 
     @staticmethod
     def _stage_fraction(el: float, expected: float) -> float:
@@ -76,15 +86,17 @@ class Progress:
     def emit(self, label: str):
         if not self.on_step:
             return
+        kind_cur = self.plan[self.idx][0] if self.idx < len(self.plan) else None
         exp_cur = self.plan[self.idx][1] if self.idx < len(self.plan) else 0.0
-        ratio = self._ratio()
+        ratio = self._ratio(kind_cur)
         el = time.time() - self.t_stage
         frac_cur = self._stage_fraction(el, ratio * exp_cur)
         done = self.exp_done + frac_cur * exp_cur
         over = bool(exp_cur) and el > ratio * exp_cur
         # remaining: the rest of the current stage (at least a little while it runs over) plus later stages
         rest_cur = max(ratio * exp_cur - el, 0.15 * ratio * exp_cur if over else 0.0)
-        remaining = rest_cur + ratio * (self.total - self.exp_done - exp_cur)
+        later = sum(self._ratio(k) * e for k, e in self.plan[self.idx + 1:])
+        remaining = rest_cur + later
         self.on_step({"task": "adna", "stage": label, "step": self.idx + 1, "steps": len(self.plan),
                       "fraction": round(min(0.999, done / self.total), 4),
                       "eta_seconds": round(max(0.0, remaining)), "elapsed_seconds": round(time.time() - self.t0),
@@ -92,8 +104,12 @@ class Progress:
 
     def finish_stage(self):
         if self.idx < len(self.plan):
-            self.exp_done += self.plan[self.idx][1]
-            self.act_done += time.time() - self.t_stage
+            kind, exp = self.plan[self.idx]
+            act = time.time() - self.t_stage
+            self.exp_done += exp
+            self.act_done += act
+            self.kind_exp[kind] = self.kind_exp.get(kind, 0.0) + exp
+            self.kind_act[kind] = self.kind_act.get(kind, 0.0) + act
             self.idx += 1
         self.t_stage = time.time()
 
@@ -159,7 +175,7 @@ def _plan(references, iterations: int, stats: bool) -> list[tuple[str, float]]:
             last = it == iterations
             plan += [("index", E["index"]), ("map aln", E["map"]), ("map samse", 1), ("sort", E["sort"]),
                      ("index bam", 1), ("flagstat", E["flagstat"]),
-                     ("damage", E["damage_stats"] if (stats and last) else E["damage_fast"]),
+                     ("damage stats" if (stats and last) else "damage", E["damage_stats"] if (stats and last) else E["damage_fast"]),
                      ("consensus", E["consensus"])]
     return plan
 
