@@ -84,6 +84,85 @@ def read_fasta(path: Path) -> tuple[str, str]:
     return lines[0][1:].split()[0], "".join(l.strip() for l in lines[1:] if not l.startswith(">")).upper()
 
 
+def _map_once(step, rdir: Path, label: str, ref_seq: str, merged: str, stats: bool, min_mapq: int, on_step):
+    """Map merged reads to ``ref_seq`` and estimate damage; returns (obs, profile, bayes, flagstat)."""
+    rdir.mkdir(parents=True, exist_ok=True)
+    ref_fa = rdir / "ref.fa"
+    ref_fa.write_text(">ref\n" + "\n".join(ref_seq[i:i + 70] for i in range(0, len(ref_seq), 70)) + "\n")
+    step.run(f"index {label} (bwa)", [BIO / "bin/bwa", "index", ref_fa], rdir)
+    step.run(f"map to {label} (bwa aln)", [BIO / "bin/bwa", "aln", "-l", 1024, "-n", 0.04, "-o", 2, "-t", 4,
+                                           ref_fa, merged], rdir, stdout_path=rdir / "reads.sai")
+    step.run(f"map to {label} (bwa samse)", [BIO / "bin/bwa", "samse", ref_fa, rdir / "reads.sai", merged],
+             rdir, stdout_path=rdir / "reads.sam")
+    step.run(f"sort {label} (samtools)", [BIO / "bin/samtools", "sort", "-o", rdir / "reads.bam", rdir / "reads.sam"], rdir)
+    step.run(f"index BAM {label} (samtools)", [BIO / "bin/samtools", "index", rdir / "reads.bam"], rdir)
+    (rdir / "reads.sam").unlink()
+    flag = step.run(f"flagstat {label}", [BIO / "bin/samtools", "flagstat", rdir / "reads.bam"], rdir)
+    md = [BIO / "bin/mapDamage", "-i", rdir / "reads.bam", "-r", ref_fa, "-d", rdir / "mapdamage", "-q"]
+    if not stats:
+        md.append("--no-stats")
+    step.run(f"damage on {label} (mapDamage2)", md, rdir)
+    prof = damage_profiles(rdir / "mapdamage")
+    bayes = bayesian_estimates(rdir / "mapdamage") if stats else {}
+    if on_step:
+        on_step({"task": "adna", "stage": f"consensus on {label}"})
+    return observations_from_bam(str(rdir / "reads.bam"), min_mapq=min_mapq), prof, bayes, flag
+
+
+def _reconstruct(step, work: Path, acc: str, cat: dict, merged: str, truth_seq: str, endogenous: str,
+                 iterations: int, mapdamage_stats: bool, min_mapq: int, on_step) -> dict:
+    base = work / f"ref_{acc}"
+    base.mkdir()
+    ref_id, ref_seq = read_fasta(REFS / f"{acc}.fa")
+    paf = step.run(f"align truth to {acc} (minimap2)", [BIO / "bin/minimap2", "-cx", "asm20", "--cs",
+                                                        REFS / f"{acc}.fa", REFS / f"{endogenous}.fa"], base)
+    tmap = truth_by_reference_position(paf, len(ref_seq), truth_seq)
+    tb = np.array([t if t is not None else "N" for t in tmap])
+    known = np.array([t is not None and t in BASES for t in tmap])
+    ref_arr = np.array(list(ref_seq))
+    current = ref_seq
+    history = []
+    for it in range(1, max(1, iterations) + 1):
+        last = it == max(1, iterations)
+        label = acc if iterations == 1 else f"{acc} iteration {it}"
+        obs, prof, bayes, flag = _map_once(step, base / f"it{it}", label, current, merged,
+                                           mapdamage_stats and last, min_mapq, on_step)
+        # calls use the divergence prior relative to the ORIGINAL reference
+        cons = call_consensus(ref_seq, obs, prof["delta5"], prof["delta3"], min_depth=1)
+        calls = np.array(list(cons.call))
+        scorable = known & (cons.depth > 0)
+        correct = calls[scorable] == tb[scorable]
+        c_it = calibration(cons.confidence[scorable], correct)
+        history.append({"iteration": it, "mapped_reads": _flagstat(flag, " mapped ("),
+                        "predicted_error": c_it["predicted_error_rate"], "observed_error": c_it["observed_error_rate"],
+                        "ece": c_it["expected_calibration_error"],
+                        "covered_fraction": float((cons.depth > 0).mean()), "mean_depth": float(cons.depth.mean()),
+                        "accuracy": float(correct.mean()) if correct.size else None,
+                        "estimated_divergence_theta": cons.theta})
+        if not last:
+            upd = (cons.confidence >= 0.99) & (cons.depth > 0)
+            current = "".join(c if u else r for c, u, r in zip(cons.call, upd, current))
+    cal = calibration(cons.confidence[scorable], correct)
+    err = np.flatnonzero(scorable)[~correct]
+    return {
+        "reference": cat[acc], "reference_id": ref_id, "length": len(ref_seq),
+        "total_reads": _flagstat(flag, " in total"), "mapped_reads": _flagstat(flag, " mapped ("),
+        "flagstat": flag.strip(), "observations": len(obs),
+        "mean_depth": float(cons.depth.mean()), "covered_fraction": float((cons.depth > 0).mean()),
+        "truth_vs_reference_divergence": float((ref_arr[known] != tb[known]).mean()) if known.any() else None,
+        "estimated_divergence_theta": cons.theta,
+        "truth_gap_positions": int(sum(t == "-" for t in tmap)),
+        "unaligned_positions": int(sum(t is None for t in tmap)),
+        "scored_sites": int(scorable.sum()), "accuracy": float(correct.mean()) if correct.size else None,
+        "error_positions": err.tolist(),
+        "error_diagnostics": _diagnose(err, calls, tb, ref_arr, cons, indel_sites(paf)),
+        "iterations": history,
+        "calibration": cal, "damage_profile": {k: (v.tolist() if hasattr(v, "tolist") else v) for k, v in prof.items()},
+        "mapdamage_bayesian": bayes,
+        "consensus": cons.call, "confidence": cons.confidence.round(6).tolist(), "depth": cons.depth.tolist(),
+    }
+
+
 def _flagstat(text: str, key: str):
     """First count on the samtools flagstat line containing ``key``."""
     for line in (text or "").splitlines():
@@ -117,13 +196,19 @@ def _diagnose(err_pos, calls, truth, ref, cons, indels) -> dict:
 def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("NC_007596", "NC_000934", "NC_005129"),
         coverage: float = 10.0, damage: tuple = (0.03, 0.4, 0.01, 0.3), contamination: float = 0.0,
         length_loc: float = 3.7, length_scale: float = 0.35, min_length: int = 25, read_length: int = 75,
-        mapdamage_stats: bool = True, min_mapq: int = 25, on_step=None) -> dict:
+        mapdamage_stats: bool = True, min_mapq: int = 25, iterations: int = 1, on_step=None) -> dict:
     """Simulate ancient reads from ``endogenous`` and reconstruct it against each reference.
 
     damage = Briggs et al. (2007) parameters (nick frequency, overhang geometric
     parameter, double-stranded deamination, single-stranded deamination).
     Fragment lengths are log-normal with log-location ``length_loc`` and
-    log-scale ``length_scale`` (exp(3.7) ≈ 40 bp median)."""
+    log-scale ``length_scale`` (exp(3.7) ≈ 40 bp median).
+
+    iterations > 1 re-maps the reads to a reference updated with the confident
+    consensus bases (iterative mapping, as used for the Neanderthal
+    mitogenome; Briggs et al., Science 325, 318, 2009), which reduces
+    reference bias. Final calls keep the divergence prior relative to the
+    original reference, so the reads are not counted twice."""
     work = Path(work)
     shutil.rmtree(work, ignore_errors=True)
     for d in ("input/endo", "input/cont", "input/bact", "sim", "merge"):
@@ -157,63 +242,12 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
 
     results = []
     for acc in references:
-        rdir = work / f"ref_{acc}"
-        rdir.mkdir()
-        ref_fa = rdir / "ref.fa"
-        shutil.copy(REFS / f"{acc}.fa", ref_fa)
-        ref_id, ref_seq = read_fasta(ref_fa)
-        # 3. map
-        step.run(f"index {acc} (bwa)", [BIO / "bin/bwa", "index", ref_fa], rdir)
-        step.run(f"map to {acc} (bwa aln)", [BIO / "bin/bwa", "aln", "-l", 1024, "-n", 0.04, "-o", 2, "-t", 4,
-                                             ref_fa, merged], rdir, stdout_path=rdir / "reads.sai")
-        step.run(f"map to {acc} (bwa samse)", [BIO / "bin/bwa", "samse", ref_fa, rdir / "reads.sai", merged],
-                 rdir, stdout_path=rdir / "reads.sam")
-        step.run(f"sort {acc} (samtools)", [BIO / "bin/samtools", "sort", "-o", rdir / "reads.bam", rdir / "reads.sam"], rdir)
-        step.run(f"index BAM {acc} (samtools)", [BIO / "bin/samtools", "index", rdir / "reads.bam"], rdir)
-        (rdir / "reads.sam").unlink()
-        flag = step.run(f"flagstat {acc}", [BIO / "bin/samtools", "flagstat", rdir / "reads.bam"], rdir)
-        # 4. damage
-        md_cmd = [BIO / "bin/mapDamage", "-i", rdir / "reads.bam", "-r", ref_fa, "-d", rdir / "mapdamage", "-q"]
-        if not mapdamage_stats:
-            md_cmd.append("--no-stats")
-        step.run(f"damage on {acc} (mapDamage2)", md_cmd, rdir)
-        prof = damage_profiles(rdir / "mapdamage")
-        bayes = bayesian_estimates(rdir / "mapdamage") if mapdamage_stats else {}
-        # 5. consensus
-        if on_step:
-            on_step({"task": "adna", "stage": f"consensus on {acc}"})
-        obs = observations_from_bam(str(rdir / "reads.bam"), min_mapq=min_mapq)
-        cons = call_consensus(ref_seq, obs, prof["delta5"], prof["delta3"], min_depth=1)
-        # 6. score against the truth
-        paf = step.run(f"align truth to {acc} (minimap2)", [BIO / "bin/minimap2", "-cx", "asm20", "--cs",
-                                                            ref_fa, REFS / f"{endogenous}.fa"], rdir)
-        tmap = truth_by_reference_position(paf, len(ref_seq), truth_seq)
-        scorable = np.array([t is not None and t in BASES for t in tmap]) & (cons.depth > 0)
-        tb = np.array([t if t is not None else "N" for t in tmap])
-        calls = np.array(list(cons.call))
-        correct = calls[scorable] == tb[scorable]
-        cal = calibration(cons.confidence[scorable], correct)
-        ref_arr = np.array(list(ref_seq))
-        known = np.array([t is not None and t in BASES for t in tmap])
-        results.append({
-            "reference": cat[acc], "reference_id": ref_id, "length": len(ref_seq),
-            "total_reads": _flagstat(flag, " in total"), "mapped_reads": _flagstat(flag, " mapped ("),
-            "flagstat": flag.strip(), "observations": len(obs),
-            "mean_depth": float(cons.depth.mean()), "covered_fraction": float((cons.depth > 0).mean()),
-            "truth_vs_reference_divergence": float((ref_arr[known] != tb[known]).mean()) if known.any() else None,
-            "estimated_divergence_theta": cons.theta,
-            "truth_gap_positions": int(sum(t == "-" for t in tmap)),
-            "unaligned_positions": int(sum(t is None for t in tmap)),
-            "scored_sites": int(scorable.sum()), "accuracy": float(correct.mean()) if correct.size else None,
-            "error_positions": np.flatnonzero(scorable)[~correct].tolist(),
-            "error_diagnostics": _diagnose(np.flatnonzero(scorable)[~correct], calls, tb, ref_arr, cons, indel_sites(paf)),
-            "calibration": cal, "damage_profile": {k: (v.tolist() if hasattr(v, "tolist") else v) for k, v in prof.items()},
-            "mapdamage_bayesian": bayes,
-            "consensus": cons.call, "confidence": cons.confidence.round(6).tolist(), "depth": cons.depth.tolist(),
-        })
+        results.append(_reconstruct(step, work, acc, cat, merged, truth_seq, endogenous, iterations,
+                                    mapdamage_stats, min_mapq, on_step))
     return {"simulation": {"endogenous": cat[endogenous], "coverage": coverage,
                            "damage_briggs_v_l_d_s": list(damage), "contamination": contamination,
                            "fragment_length_lognormal": [length_loc, length_scale], "min_length": min_length,
-                           "read_length": read_length, "platform": "Illumina HiSeq 2500 profile (ART)"},
+                           "read_length": read_length, "platform": "Illumina HiSeq 2500 profile (ART)",
+                           "iterations": iterations},
             "tools": tool_versions(), "steps": log, "references": results,
             "reference_catalog": reference_catalog()}

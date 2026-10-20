@@ -7,7 +7,7 @@ import time
 from athanor_core.adna.pipeline import run
 
 t0 = time.time()
-res = run("/tmp/adna", coverage=10.0, on_step=lambda d: print("stage:", d.get("stage"), flush=True))
+res = run("/tmp/adna", coverage=10.0, iterations=3, on_step=lambda d: print("stage:", d.get("stage"), flush=True))
 out = sys.argv[1] if len(sys.argv) > 1 else "/tmp/adna.json"
 json.dump(res, open(out, "w"))
 sim = res["simulation"]
@@ -23,6 +23,10 @@ for r in res["references"]:
           f"accuracy={r['accuracy']:.5f} predicted_err={c['predicted_error_rate']:.5f} observed_err={c['observed_error_rate']:.5f} "
           f"ECE={c['expected_calibration_error']:.5f} gaps={r['truth_gap_positions']} unaligned={r['unaligned_positions']}")
     print("   mapDamage Bayesian means:", est)
+    for h in r["iterations"]:
+        print(f"   iteration {h['iteration']}: mapped={h['mapped_reads']} covered={h['covered_fraction']:.3f} "
+              f"accuracy={h['accuracy']:.5f} predicted={h['predicted_error']:.5f} observed={h['observed_error']:.5f} "
+              f"ECE={h['ece']:.5f} theta={h['estimated_divergence_theta']:.4f}")
     dg = r["error_diagnostics"]
     if dg.get("n"):
         print(f"   errors: n={dg['n']} called-reference-where-truth-differs={dg['called_reference_where_truth_differs']} "
