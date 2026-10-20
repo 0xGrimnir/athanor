@@ -125,10 +125,27 @@ def optimize(engine: Engine, mol: Molecule, max_steps: int = 500, on_step=None,
 def frequencies(engine: Engine, mol: Molecule, step_bohr: float = 0.005, on_step=None) -> dict:
     """Harmonic frequencies and IR intensities at the given geometry. Run on an
     optimized structure: frequencies are only meaningful at a stationary point."""
-    prov = _prov(engine, mol, "frequencies", {"hessian": "central finite differences of analytic gradients",
-                                              "step_bohr": step_bohr})
+    analytic = getattr(engine, "supports_analytic_hessian", lambda m: False)(mol)
+    if analytic:
+        prov = _prov(engine, mol, "frequencies", {
+            "hessian": "analytic (coupled-perturbed SCF)",
+            "dipole_derivatives": "analytic atomic polar tensors"})
+    else:
+        prov = _prov(engine, mol, "frequencies", {"hessian": "central finite differences of analytic gradients",
+                                                  "step_bohr": step_bohr})
     r0 = engine.compute(mol)
     max_f = float(np.abs(r0.gradient).max())
+    if analytic:
+        if on_step:
+            on_step({"task": "frequencies", "step": 0, "total": 1, "analytic": True})
+        hess, dmu = engine.second_derivatives(mol)
+        va = harmonic_analysis(mol, hess, dmu)
+        if max_f > MAX_FORCE:
+            va.notes.append(f"geometry is not stationary (max force {max_f:.2e} Eh/bohr); frequencies are unreliable")
+        prov.notes.extend(va.notes)
+        out = va.to_dict()
+        out["provenance"] = prov.finish().to_dict()
+        return out
     total = 6 * len(mol.symbols)
     done = [0]
 

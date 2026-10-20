@@ -42,6 +42,14 @@ def run(quick: bool = False) -> dict:
                                     "error": f"{type(e).__name__}: {e} ({tb.filename.rsplit('/', 1)[-1]}:{tb.lineno})"})
         passed &= report["cases"][-1]["passed"]
     report["passed"] = passed
+    # Analytic Hessian + IR on the GPU vs finite differences of GPU gradients.
+    # Failing this does not disable the GPU tier; frequencies then use
+    # finite differences, as before.
+    if passed and not quick:
+        try:
+            report["analytic_hessian"] = _analytic_case()
+        except Exception as e:  # noqa: BLE001
+            report["analytic_hessian"] = {"passed": False, "error": f"{type(e).__name__}: {e}"}
     if not passed and not report.get("error"):
         errs = [c["error"] for c in report["cases"] if c.get("error")]
         if errs:
@@ -70,6 +78,28 @@ def _case(name: str, smiles: str, xc: str, basis: str) -> dict:
         "seconds_gpu": round(tg, 2), "seconds_cpu": round(tc, 2),
         "speedup": round(tc / tg, 1) if tg > 0 else None, "passed": case_ok,
     }
+
+
+HESS_TOL = {"frequency_cm1": 2.0, "ir_relative": 0.03, "ir_absolute_km_mol": 0.5}
+
+
+def _analytic_case() -> dict:
+    from .tasks import frequencies, optimize
+    from .vibrations import finite_difference_hessian, harmonic_analysis
+    fd = PySCFDFT("B3LYP", "def2-SVP", device="gpu", density_fitting=True)
+    an = PySCFDFT("B3LYP", "def2-SVP", device="gpu", density_fitting=True, hessian="analytic")
+    mol = optimize(fd, Molecule.from_smiles("C=O", name="formaldehyde"))["molecule"]
+    t0 = time.perf_counter(); h, dmu = finite_difference_hessian(fd.compute, mol, 0.005); t_fd = time.perf_counter() - t0
+    t0 = time.perf_counter(); fa = frequencies(an, mol); t_an = time.perf_counter() - t0
+    ff = harmonic_analysis(mol, h, dmu)
+    f1, f2 = np.array(ff.frequencies_cm1), np.array(fa["frequencies_cm1"])
+    i1, i2 = np.array(ff.ir_intensities_km_mol), np.array(fa["ir_intensities_km_mol"])
+    dfreq = float(np.abs(f1 - f2).max())
+    ok_ir = bool(np.all(np.abs(i1 - i2) <= HESS_TOL["ir_absolute_km_mol"] + HESS_TOL["ir_relative"] * np.abs(i1)))
+    return {"molecule": "formaldehyde", "method": an.method, "max_frequency_difference_cm1": round(dfreq, 3),
+            "ir_finite_difference": [round(x, 2) for x in i1], "ir_analytic": [round(x, 2) for x in i2],
+            "seconds_finite_difference": round(t_fd, 1), "seconds_analytic": round(t_an, 1),
+            "tolerances": HESS_TOL, "passed": dfreq <= HESS_TOL["frequency_cm1"] and ok_ir}
 
 
 if __name__ == "__main__":

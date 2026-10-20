@@ -195,8 +195,9 @@ impl Compute {
         };
         // 4. Self-test on this machine's GPU
         self.update(app, "testing", "Starting GPU core", None);
+        self.core.shutdown(); // a re-run replaces the running GPU core
         self.start_core(app, &python)?;
-        self.update(app, "testing", "Running GPU self-test (GPU vs CPU on water and caffeine)", None);
+        self.update(app, "testing", "Running GPU self-test (GPU vs CPU on water and caffeine; analytic Hessian on formaldehyde)", None);
         let report = self.core.call("gpu_selftest", json!({}))?;
         let inst = Installed { version: PACK_VERSION.into(), python: python.clone(), selftest: report.clone() };
         fs::write(dir.join("installed.json"), serde_json::to_vec_pretty(&inst).unwrap()).map_err(|e| e.to_string())?;

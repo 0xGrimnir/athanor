@@ -58,9 +58,16 @@ function methodLabel() {
   if (S.tier === "gfn2-xtb") return "GFN2-xTB";
   return `${$("funcSel").selectedOptions[0].textContent}/${$("basisSel").value}${S.tier === "dft-gpu" ? " (GPU, RI)" : ""}`;
 }
+function analyticHessianValidated() {
+  const a = S.compute && S.compute.selftest && S.compute.selftest.analytic_hessian;
+  return !!(a && a.passed);
+}
 function engineOptions() {
   if (!isDft(S.tier)) return {};
-  return { functional: $("funcSel").value, basis: $("basisSel").value };
+  const o = { functional: $("funcSel").value, basis: $("basisSel").value };
+  // Analytic Hessian + IR on the GPU only after this machine's self-test validated it.
+  if (S.tier === "dft-gpu" && analyticHessianValidated()) o.hessian = "analytic";
+  return o;
 }
 
 // ------------------------------------------------------------------ ticker & jobs
@@ -340,6 +347,7 @@ function currentMolecule() {
 function progressText(d) {
   if (d.task === "optimize")
     return `${S.busyLabel}: step ${d.step} · E ${fmt(d.energy, 8)} Eh · max force ${d.max_force.toExponential(2)} (target ${d.target_max_force.toExponential(1)})`;
+  if (d.task === "frequencies" && d.analytic) return `${S.busyLabel}: analytic Hessian and IR intensities (coupled-perturbed SCF)…`;
   if (d.task === "frequencies") return `${S.busyLabel}: Hessian gradient ${d.step} of ${d.total}`;
   return "";
 }
@@ -632,10 +640,14 @@ function renderCompute(st) {
 function selftestSummary(rep) {
   if (!rep) return "";
   if (rep.error) return rep.error;
-  return (rep.cases || []).map((c) =>
+  const a = rep.analytic_hessian;
+  const an = !a ? " · analytic Hessian: not tested (re-run the self-test to enable fast GPU frequencies)"
+    : a.error ? ` · analytic Hessian: ${a.error}`
+    : ` · analytic Hessian vs finite differences (formaldehyde): max Δfreq ${a.max_frequency_difference_cm1} cm⁻¹, ${a.seconds_analytic} s vs ${a.seconds_finite_difference} s ${a.passed ? "PASS" : "FAIL (frequencies use finite differences)"}`;
+  return (rep.cases || []).map((c) => c.error ? `${c.molecule}: ${c.error}` :
     `${c.molecule} (${c.atoms} atoms, ${c.method}): ΔE ${c.differences.energy_hartree.toExponential(1)} Eh, ` +
     `max Δgradient ${c.differences.gradient_hartree_per_bohr.toExponential(1)} Eh/bohr; ` +
-    `GPU ${c.seconds_gpu} s vs CPU ${c.seconds_cpu} s (${c.speedup}×) ${c.passed ? "PASS" : "FAIL"}`).join(" · ");
+    `GPU ${c.seconds_gpu} s vs CPU ${c.seconds_cpu} s (${c.speedup}×) ${c.passed ? "PASS" : "FAIL"}`).join(" · ") + an;
 }
 
 async function initCompute() {
@@ -651,7 +663,9 @@ async function initCompute() {
   $("gpuBtn").onclick = async () => {
     const st = S.compute || {};
     if (st.stage === "ready") {
-      alert(`GPU compute is ready.\n\n${st.gpu || ""}\n\nSelf-test: ${selftestSummary(st.selftest)}`);
+      const again = confirm(`GPU compute is ready.\n\n${st.gpu || ""}\n\nSelf-test: ${selftestSummary(st.selftest)}\n\n` +
+        "Re-run the GPU self-test now? (A minute or two; nothing is downloaded.)");
+      if (again) { try { await TAURI.core.invoke("compute_enable"); } catch (e) { log(`GPU compute: ${e}`, true); } }
       return;
     }
     if (st.stage === "needs-restart") { alert(st.message); return; }

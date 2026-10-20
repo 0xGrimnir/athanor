@@ -17,7 +17,7 @@ Done:
 - DFT benchmark passes all gates (B3LYP: bonds 0.0097 Å, dipoles 4.2%, frequencies 0.88%)
 
 Remaining:
-- MMFF94 accuracy set for organic molecules (currently water only)
+- MMFF94 accuracy set for organic molecules (currently water only): blocked on access to experimental structure tables (CCCBDB per-molecule pages; Halgren 1996 Part IV)
 - Smaller updates (only changed parts instead of the full installer)
 - Molecular orbitals and electron-density views
 - Conformer search
@@ -57,7 +57,7 @@ Remaining:
 ## Heavy-compute pack
 
 - GPU DFT (GPU4PySCF in WSL2), installed from inside the app and self-tested on the user's GPU (verified on an RTX 5080 in 0.2.3: GPU and CPU agree to 2×10⁻¹⁰ Eh on caffeine; 11.7× faster than CPU PySCF)
-- Next: analytic GPU Hessians and IR intensities, so frequencies of large molecules do not need 6N gradients
+- Analytic GPU Hessians and IR intensities, validated on the user's GPU before use (0.2.5)
 - With the genomics modules: native whole-genome mapping (minimap2, bwa-mem2, samtools) in the same distribution
 
 ## Afterward: open research problems

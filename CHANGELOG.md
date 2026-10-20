@@ -4,6 +4,12 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-10-20
+
+### Added
+- Analytic Hessians and IR intensities (atomic polar tensors from the coupled-perturbed SCF equations) for the GPU tier, closed-shell molecules. CI checks the formula on CPU against finite differences (frequencies within 1.5 cm⁻¹, intensities within 2%); the GPU self-test checks the GPU path the same way, and the GPU tier uses it only after that check passes on the user's machine. Otherwise frequencies use finite differences as before.
+- "GPU ready" offers to re-run the self-test.
+
 ## [0.2.4] - 2026-10-20
 
 ### Fixed

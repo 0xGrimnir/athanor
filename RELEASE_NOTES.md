@@ -1,5 +1,4 @@
-Athanor 0.2.4: faster DFT optimizations, live progress, Stop fixed.
+Athanor 0.2.5: fast GPU frequencies and IR spectra.
 
-- **Stop works during GPU calculations** (it hung in 0.2.3).
-- **DFT optimizations are about 3x faster from a fresh structure:** they now start with a quick GFN2-xTB pre-optimization (checkbox under the DFT options, on by default, recorded in the provenance), and stop on Gaussian's standard convergence criteria instead of over-converging.
-- **Live progress:** the busy indicator shows the optimization step, energy and largest force against its target, or the Hessian gradient count for frequency jobs.
+- **Analytic second derivatives on the GPU.** Frequencies and IR intensities on the DFT-GPU tier come from one SCF plus the coupled-perturbed equations instead of 6N separate gradient calculations, so IR spectra of larger molecules take minutes instead of hours.
+- **Validated before use.** Click **GPU ready** and re-run the self-test: it now also compares the analytic Hessian and IR intensities with finite differences on your GPU. The fast path switches on only if they agree; otherwise frequencies keep using finite differences.

@@ -213,3 +213,20 @@ def test_pyscf_engine_avoids_methods_gpu4pyscf_lacks(monkeypatch):
     # open shell (UKS)
     rad = eng.compute(Molecule.from_smiles("[CH3]"))
     assert abs(rad.charges.sum()) < 1e-6
+
+
+@pytest.mark.skipif(not HAS_PYSCF, reason="PySCF not installed")
+@pytest.mark.parametrize("df", [False, True])
+def test_pyscf_analytic_hessian_and_ir_match_finite_differences(df):
+    """Analytic Hessian and atomic polar tensors (the GPU tier's fast frequency
+    path, run here on CPU) against Athanor's finite differences of gradients."""
+    from athanor_core.vibrations import finite_difference_hessian
+    fd = get_engine("dft-pyscf", basis="def2-SVP", density_fitting=df)
+    an = get_engine("dft-pyscf", basis="def2-SVP", density_fitting=df, hessian="analytic")
+    mol = tasks.optimize(fd, Molecule.from_smiles("C=O"))["molecule"]
+    h, dmu = finite_difference_hessian(fd.compute, mol, 0.005)
+    ref = harmonic_analysis(mol, h, dmu)
+    out = tasks.frequencies(an, mol)
+    assert out["provenance"]["parameters"]["hessian"].startswith("analytic")
+    np.testing.assert_allclose(out["frequencies_cm1"], ref.frequencies_cm1, atol=1.5)
+    np.testing.assert_allclose(out["ir_intensities_km_mol"], ref.ir_intensities_km_mol, rtol=0.02, atol=0.3)

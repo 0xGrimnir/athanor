@@ -30,7 +30,8 @@ class PySCFDFT(Engine):
     def __init__(self, functional: str = "B3LYP", basis: str = "def2-TZVP", device: str = "gpu",
                  density_fitting: bool | None = None, auxbasis: str = "def2-universal-jkfit",
                  radial_points: int = 75, angular_points: int = 302,
-                 conv_tol: float = 1e-10, max_memory_mb: int = 8000):
+                 conv_tol: float = 1e-10, max_memory_mb: int = 8000,
+                 hessian: str = "finite-difference"):
         if device not in ("gpu", "cpu"):
             raise ValueError("device must be 'gpu' or 'cpu'")
         self.functional = functional
@@ -44,6 +45,9 @@ class PySCFDFT(Engine):
         self.angular_points = angular_points
         self.conv_tol = conv_tol
         self.max_memory_mb = max_memory_mb
+        if hessian not in ("finite-difference", "analytic"):
+            raise ValueError("hessian must be 'finite-difference' or 'analytic'")
+        self.hessian = hessian
         self.method = f"{functional}/{basis}" + ("/RI" if self.density_fitting else "")
         # Converged density of the previous call, reused as the initial guess
         # for the next geometry (same atoms, charge and spin). This changes
@@ -70,7 +74,7 @@ class PySCFDFT(Engine):
              "density_fitting": self.density_fitting,
              "grid": f"{self.radial_points} radial x {self.angular_points} angular (Lebedev), "
                      "Treutler-Ahlrichs radii, Becke partition",
-             "conv_tol": self.conv_tol}
+             "conv_tol": self.conv_tol, "hessian": self.hessian}
         if self.density_fitting:
             p["auxbasis"] = self.auxbasis
         return p
@@ -109,6 +113,70 @@ class PySCFDFT(Engine):
             extras["homo_lumo"] = {"homo_eh": float(mo_e[occ > 0].max()), "lumo_eh": float(mo_e[occ == 0].min())}
         return EngineResult(energy=energy, gradient=grad.reshape(-1, 3), dipole=dip.ravel(),
                             charges=charges.ravel(), charge_model="Mulliken", extras=extras)
+
+
+    # ------------------------------------------------------------ second derivatives
+    def supports_analytic_hessian(self, mol: Molecule) -> bool:
+        return self.hessian == "analytic" and mol.multiplicity == 1
+
+    def second_derivatives(self, mol: Molecule) -> tuple[np.ndarray, np.ndarray]:
+        """Analytic Hessian (3N, 3N; Eh/bohr^2) and dipole derivatives (3, 3N; e)
+        at ``mol``, from one SCF plus the coupled-perturbed (CPHF/CPKS) equations."""
+        mf = self._scf(mol)
+        mf.kernel()
+        if not mf.converged:
+            raise RuntimeError("SCF did not converge")
+        return analytic_hessian_and_apt(mf, gpu=(self.device == "gpu"))
+
+
+def analytic_hessian_and_apt(mf, gpu: bool) -> tuple[np.ndarray, np.ndarray]:
+    """Closed-shell analytic Hessian and atomic polar tensors (dipole derivatives).
+
+    The polar tensors follow GPU4PySCF's infrared routine
+    (gpu4pyscf/properties/ir.py, Apache-2.0): the first-order density from the
+    CPKS response orbitals contracted with the dipole integrals, plus the
+    derivative of the dipole integrals and the nuclear term. GPU4PySCF stores
+    the response orbitals in the MO basis, PySCF in the AO basis; that is the
+    only difference between the two paths. CI checks the CPU path against
+    finite differences, and the GPU self-test checks the GPU path the same way.
+    """
+    mol = mf.mol
+    natm, nao = mol.natm, mol.nao
+    hobj = mf.Hessian()
+    h = _np(hobj.kernel())                                   # (natm, natm, 3, 3)
+    H = h.transpose(0, 2, 1, 3).reshape(3 * natm, 3 * natm)
+    if gpu:
+        import cupy as xp
+    else:
+        xp = np
+    C = xp.asarray(mf.mo_coeff)
+    occ = xp.asarray(mf.mo_occ)
+    eps = xp.asarray(mf.mo_energy)
+    atmlst = range(natm)
+    h1 = hobj.make_h1(C, occ, None, atmlst)
+    fx = hobj.gen_vind(C, occ) if hasattr(hobj, "gen_vind") and callable(getattr(hobj, "gen_vind")) else None
+    mo1, _ = hobj.solve_mo1(eps, C, occ, h1, fx, atmlst, hobj.max_memory, 0)
+    mo1 = _np(xp.asarray(mo1))  # as in GPU4PySCF's IR routine
+    C, occ = _np(C), _np(occ)
+    mocc = C[:, occ > 0]
+    dm0 = _np(mf.make_rdm1())
+    with mol.with_common_orig((0, 0, 0)):
+        hmu = mol.intor("int1e_r")                                 # (3, nao, nao)
+        hmu11 = -mol.intor("int1e_irp").reshape(3, 3, nao, nao)
+    apt = np.zeros((3, 3, natm))
+    for ia, (_s0, _s1, p0, p1) in enumerate(mol.aoslice_by_atom()):
+        h11 = np.zeros((3, 3, nao, nao))
+        h11[:, :, :, p0:p1] += hmu11[:, :, :, p0:p1]
+        h11[:, :, p0:p1] += hmu11[:, :, :, p0:p1].transpose(0, 1, 3, 2)
+        if gpu:   # mo1[ia]: (3, nmo, nocc), MO basis
+            dm1 = np.stack([C @ mo1[ia, y] @ mocc.T for y in range(3)])
+        else:     # mo1[ia]: (3, nao, nocc), AO basis
+            dm1 = np.stack([mo1[ia, y] @ mocc.T for y in range(3)])
+        apt[:, :, ia] = (-4.0 * np.einsum("xuv,yuv->xy", hmu, dm1)
+                         - np.einsum("xyuv,vu->xy", h11, dm0)
+                         + mol.atom_charge(ia) * np.eye(3))
+    dmu = apt.transpose(0, 2, 1).reshape(3, 3 * natm)             # dmu[x, 3*atom + y]
+    return 0.5 * (H + H.T), dmu
 
 
 def mulliken_charges(mf) -> np.ndarray:
