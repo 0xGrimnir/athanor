@@ -1,13 +1,14 @@
 #!/bin/bash
 # Report tool versions and command-line interfaces from inside the pack image.
+export PATH=/opt/athanor/bio/bin:$PATH
 B=/opt/athanor/bio/bin
+echo "== binaries"; ls $B | grep -iE "adapter|garg|deam|frag|adpt|art_illumina|mapdamage|minimap|bwa|samtools|perl$" | tr '\n' ' '; echo
 echo "== versions"
-$B/bwa 2>&1 | grep -i version
-$B/samtools --version | head -1
-$B/AdapterRemoval --version 2>&1 | head -1
-$B/mapDamage --version 2>&1 | head -1
-ls $B | grep -iE "garg|deam|frag|adptsim|art_" | tr '\n' ' '; echo
-echo "== gargammel help"
-$B/gargammel --help 2>&1 | head -120 || $B/gargammel.pl --help 2>&1 | head -120
-echo "== refs"
-cat /opt/athanor/refs/manifest.json | head -60
+bwa 2>&1 | grep -i version; samtools --version | head -1; minimap2 --version
+for a in AdapterRemoval adapterremoval adapterremoval3; do command -v $a >/dev/null && { echo "$a:"; $a --version 2>&1 | head -2; }; done
+mapDamage --version 2>&1 | head -1
+echo "== gargammel --help"; gargammel --help 2>&1 | head -150
+echo "== fragSim"; fragSim 2>&1 | head -60
+echo "== deamSim"; deamSim 2>&1 | head -60
+echo "== AdapterRemoval --help"; (AdapterRemoval --help || adapterremoval3 --help) 2>&1 | head -80
+echo "== mapDamage --help"; mapDamage --help 2>&1 | head -120

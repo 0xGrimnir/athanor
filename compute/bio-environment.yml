@@ -8,3 +8,5 @@ dependencies:
   - samtools
   - adapterremoval
   - mapdamage2
+  - minimap2
+  - perl
