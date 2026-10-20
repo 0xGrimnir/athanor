@@ -269,6 +269,10 @@ fn unpack(env: &Path, unpacker: &Path, emit: &dyn Fn(Status)) -> Result<(), Stri
     // "progress <done> <total>" lines, forwarded to the UI.
     let mut cmd = Command::new(python_path(env));
     cmd.arg("-I").arg("-S").arg(unpacker).arg(env);
+    // Precomputed list of the files that change (built with the installer).
+    if let Some(list) = unpacker.parent().map(|d| d.join("relocate.json")).filter(|p| p.exists()) {
+        cmd.arg(list);
+    }
     cmd.envs(runtime_env(env, env, env)).stdout(Stdio::piped()).stderr(Stdio::piped()).stdin(Stdio::null());
     #[cfg(windows)]
     cmd.creation_flags(CREATE_NO_WINDOW);

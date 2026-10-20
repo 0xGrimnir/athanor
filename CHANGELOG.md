@@ -4,6 +4,11 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-19
+
+### Changed
+- The installer build now determines which engine files need relocating (16 of about 35,000); first launch touches only those.
+
 ## [0.2.1] - 2026-10-19
 
 ### Changed

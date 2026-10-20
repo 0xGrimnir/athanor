@@ -34,9 +34,11 @@ env.update(CONDA_PREFIX=str(env_dir), PYTHONPATH=str(runtime / "core"), PYTHONNO
            PYTHONUTF8="1", PSI_SCRATCH=str(work))
 
 # Same relocation step the installed app runs.
-r = subprocess.run([str(py), "-I", "-S", str(runtime / "unpack_env.py"), str(env_dir)], env=env,
-                   capture_output=True, text=True)
-print(r.stdout.strip(), r.stderr.strip())
+t0 = time.time()
+r = subprocess.run([str(py), "-I", "-S", str(runtime / "unpack_env.py"), str(env_dir), str(runtime / "relocate.json")],
+                   env=env, capture_output=True, text=True)
+print(r.stdout.strip().splitlines()[-1] if r.stdout.strip() else "", r.stderr.strip())
+print(f"relocated in {time.time() - t0:.1f} s")
 r.check_returncode()
 print("relocation done")
 

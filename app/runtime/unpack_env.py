@@ -5,7 +5,10 @@ those it leaves unchanged. On Windows that fails for DLLs (.pyd) its own Python
 process has loaded, e.g. ``DLLs/_bz2.pyd``. This runner reuses conda-pack's
 prefix records and replacement functions from ``conda-unpack-script.py`` but
 reads each file first and rewrites only those whose contents change. Run it
-with the environment's own interpreter: ``python -I -S unpack_env.py <env>``.
+with the environment's own interpreter:
+``python -I -S unpack_env.py <env> [relocate.json]``. The optional list,
+computed when the installer is built, limits the work to the files that
+actually change.
 
 Prefix-replacement logic is conda-pack's (BSD-3-Clause), executed unmodified.
 
@@ -21,7 +24,7 @@ import os
 import sys
 
 
-def relocate(env: str) -> tuple[int, int]:
+def relocate(env: str, only: str | None = None) -> tuple[int, int]:
     env = os.path.abspath(env)
     win = sys.platform == "win32"
     scripts = os.path.join(env, "Scripts" if win else "bin")
@@ -37,6 +40,11 @@ def relocate(env: str) -> tuple[int, int]:
     exec(compile(src, script, "exec"), ns)
     replace_prefix = ns["replace_prefix"]
     records = ns["_prefix_records"]
+    if only and os.path.exists(only):
+        # Precomputed at build time: the records whose files actually change.
+        import json
+        with open(only, encoding="utf-8") as fh:
+            records = [tuple(r) for r in json.load(fh)]
 
     def needed(rec) -> bool:
         path, _placeholder, mode = rec
@@ -73,5 +81,5 @@ def relocate(env: str) -> tuple[int, int]:
 
 
 if __name__ == "__main__":
-    n, changed = relocate(sys.argv[1])
+    n, changed = relocate(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None)
     print(f"relocated {changed} of {n} recorded files")
