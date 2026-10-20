@@ -184,8 +184,42 @@ impl Compute {
                 return Err("RESTART:WSL2 was enabled. Restart Windows, then click Enable GPU compute again to continue.".into());
             }
         }
-        // 2. Download
+        // 2-3. Download and import, unless this pack version is already imported
         let dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?.join("compute");
+        let python = match existing_pack(&dir) {
+            Some(py) => {
+                self.update(app, "testing", "Compute pack already installed; re-running the self-test", None);
+                py
+            }
+            None => self.install_pack(app, &dir)?,
+        };
+        // 4. Self-test on this machine's GPU
+        self.update(app, "testing", "Starting GPU core", None);
+        self.start_core(app, &python)?;
+        self.update(app, "testing", "Running GPU self-test (GPU vs CPU on water and caffeine)", None);
+        let report = self.core.call("gpu_selftest", json!({}))?;
+        let inst = Installed { version: PACK_VERSION.into(), python: python.clone(), selftest: report.clone() };
+        fs::write(dir.join("installed.json"), serde_json::to_vec_pretty(&inst).unwrap()).map_err(|e| e.to_string())?;
+        let mut st = self.status();
+        st.selftest = Some(report.clone());
+        st.progress = None;
+        if passed(&report) {
+            st.stage = "ready".into();
+            st.message = "GPU compute ready: self-test passed".into();
+        } else {
+            self.core.shutdown();
+            st.stage = "failed".into();
+            st.message = report.get("error").and_then(Value::as_str)
+                .map(|e| format!("GPU self-test failed: {e}"))
+                .unwrap_or_else(|| "GPU self-test failed: GPU and CPU results disagree; the GPU tier stays off".into());
+        }
+        self.set(app, st);
+        Ok(())
+    }
+
+    /// Download, verify and import the pack; returns the interpreter path inside the distribution.
+    fn install_pack(&self, app: &AppHandle, dir: &Path) -> Result<String, String> {
+        // 2. Download
         let dl = dir.join("download");
         fs::create_dir_all(&dl).map_err(|e| e.to_string())?;
         let base = format!("{FEED}/compute-{PACK_VERSION}");
@@ -267,28 +301,9 @@ impl Compute {
         if !ok {
             return Err(format!("wsl --import failed: {out}"));
         }
-        // 4. Self-test on this machine's GPU
-        self.update(app, "testing", "Starting GPU core", None);
-        self.start_core(app, &manifest.python)?;
-        self.update(app, "testing", "Running GPU self-test (GPU vs CPU on water and caffeine)", None);
-        let report = self.core.call("gpu_selftest", json!({}))?;
-        let inst = Installed { version: PACK_VERSION.into(), python: manifest.python.clone(), selftest: report.clone() };
-        fs::write(dir.join("installed.json"), serde_json::to_vec_pretty(&inst).unwrap()).map_err(|e| e.to_string())?;
-        let mut st = self.status();
-        st.selftest = Some(report.clone());
-        st.progress = None;
-        if passed(&report) {
-            st.stage = "ready".into();
-            st.message = "GPU compute ready: self-test passed".into();
-        } else {
-            self.core.shutdown();
-            st.stage = "failed".into();
-            st.message = report.get("error").and_then(Value::as_str)
-                .map(|e| format!("GPU self-test failed: {e}"))
-                .unwrap_or_else(|| "GPU self-test failed: GPU and CPU results disagree; the GPU tier stays off".into());
-        }
-        self.set(app, st);
-        Ok(())
+        let marker = Installed { version: PACK_VERSION.into(), python: manifest.python.clone(), selftest: Value::Null };
+        fs::write(dir.join("pack.json"), serde_json::to_vec_pretty(&marker).unwrap()).map_err(|e| e.to_string())?;
+        Ok(manifest.python)
     }
 
     /// Unregister the distribution and delete everything the pack installed.
@@ -304,6 +319,27 @@ impl Compute {
         let _ = fs::remove_dir_all(&dir);
         self.init(app);
         Ok(())
+    }
+}
+
+/// The interpreter path if this pack version is already imported and usable.
+/// Installs made by 0.2.0-0.2.2 have no pack.json marker; pack 1 is the only
+/// version those could have imported, so a working interpreter identifies it.
+fn existing_pack(dir: &Path) -> Option<String> {
+    if !distro_exists() {
+        return None;
+    }
+    let python = match fs::read(dir.join("pack.json")).ok().and_then(|b| serde_json::from_slice::<Installed>(&b).ok()) {
+        Some(m) if m.version == PACK_VERSION => m.python,
+        Some(_) => return None,
+        None if PACK_VERSION == "1" => "/opt/athanor/venv/bin/python".to_string(),
+        None => return None,
+    };
+    // find_spec checks installation without importing gpu4pyscf (whose import initialises CUDA).
+    let probe = "import importlib.util as u, sys; sys.exit(0 if u.find_spec('pyscf') and u.find_spec('gpu4pyscf') else 3)";
+    match wsl(&["-d", DISTRO, "--exec", python.as_str(), "-c", probe]) {
+        Ok((true, _)) => Some(python),
+        _ => None,
     }
 }
 

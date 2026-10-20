@@ -1,4 +1,4 @@
-Athanor 0.2.2: near-instant first launch.
+Athanor 0.2.3: GPU self-test fix.
 
-- The one-time "Relocating engine paths" step after installing or updating now touches only the handful of engine files that actually contain build paths (determined when the installer is built), instead of scanning about 35,000 files.
-- Includes everything in 0.2.0, including the optional GPU compute pack (**Enable GPU compute** in the top bar).
+- Fixes the GPU self-test error "TypeError: 'NotImplementedType' object is not callable". GPU4PySCF does not implement Mulliken charge analysis on the GPU, so Athanor now computes charges from the GPU density with PySCF's CPU routine, identically on both paths.
+- **GPU: retry** re-runs the self-test without downloading the compute pack again.

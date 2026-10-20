@@ -192,3 +192,24 @@ def test_vibrations_match_ase():
     np.testing.assert_allclose(np.sort(mine["frequencies_cm1"]), f[keep][order], atol=3.0)
     np.testing.assert_allclose(np.array(mine["ir_intensities_km_mol"])[np.argsort(mine["frequencies_cm1"])],
                                inten[keep][order], rtol=0.05, atol=0.5)
+
+
+@pytest.mark.skipif(not HAS_PYSCF, reason="PySCF not installed")
+def test_pyscf_engine_avoids_methods_gpu4pyscf_lacks(monkeypatch):
+    """GPU4PySCF's SCF objects set mulliken_pop to NotImplemented; the engine
+    must compute charges without it (the 0.2.0 GPU self-test failed on this).
+    Charges must match PySCF's own Mulliken analysis."""
+    from pyscf import dft
+    eng = get_engine("dft-pyscf", functional="B3LYP", basis="def2-SVP", density_fitting=True)
+    mol = Molecule.from_smiles("C=O")
+    ref = eng._scf(mol)
+    ref.kernel()
+    expected = ref.mulliken_pop(verbose=0)[1]
+    for cls in (dft.rks.RKS, dft.uks.UKS):
+        monkeypatch.setattr(cls, "mulliken_pop", NotImplemented, raising=False)
+    r = eng.compute(mol)
+    np.testing.assert_allclose(r.charges, expected, atol=1e-8)
+    assert abs(r.charges.sum()) < 1e-6
+    # open shell (UKS)
+    rad = eng.compute(Molecule.from_smiles("[CH3]"))
+    assert abs(rad.charges.sum()) < 1e-6

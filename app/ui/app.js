@@ -627,7 +627,8 @@ async function initCompute() {
       return;
     }
     if (st.stage === "needs-restart") { alert(st.message); return; }
-    const ok = confirm(
+    const retry = st.stage === "failed";
+    const ok = retry ? confirm("Retry GPU compute?\n\nIf the compute pack is already installed it is not downloaded again; Athanor re-runs the GPU self-test.") : confirm(
       "Enable GPU compute?\n\n" +
       "• Uses WSL2. If it is not enabled yet, Windows will ask for administrator approval, and may need a restart.\n" +
       "• Downloads the compute pack (about 2–3 GB) from the Athanor release feed and checks every part's SHA-256.\n" +

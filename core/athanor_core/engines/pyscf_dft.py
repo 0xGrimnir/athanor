@@ -94,8 +94,7 @@ class PySCFDFT(Engine):
             raise RuntimeError(f"SCF did not converge in {mf.max_cycle} cycles")
         grad = _np(mf.nuc_grad_method().kernel())
         dip = _np(mf.dip_moment(unit="AU", verbose=0))  # about the coordinate origin
-        mull = mf.mulliken_pop(verbose=0)[1]
-        charges = _np(mull)
+        charges = mulliken_charges(mf)
         mo_e = _np(mf.mo_energy)
         occ = _np(mf.mo_occ)
         extras = {}
@@ -103,6 +102,17 @@ class PySCFDFT(Engine):
             extras["homo_lumo"] = {"homo_eh": float(mo_e[occ > 0].max()), "lumo_eh": float(mo_e[occ == 0].min())}
         return EngineResult(energy=energy, gradient=grad.reshape(-1, 3), dipole=dip.ravel(),
                             charges=charges.ravel(), charge_model="Mulliken", extras=extras)
+
+
+def mulliken_charges(mf) -> np.ndarray:
+    """Mulliken charges from the SCF density, computed by PySCF's CPU routine
+    on both paths. GPU4PySCF's SCF objects deliberately leave
+    ``mulliken_pop`` unimplemented (``NotImplemented``), so the method is
+    never called on them."""
+    from pyscf.scf import hf as hf_cpu
+    dm = _np(mf.make_rdm1())
+    s = mf.mol.intor_symmetric("int1e_ovlp")
+    return np.asarray(hf_cpu.mulliken_pop(mf.mol, dm, s, verbose=0)[1]).ravel()
 
 
 def gpu_available() -> tuple[bool, str]:
