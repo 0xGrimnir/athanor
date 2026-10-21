@@ -13,6 +13,7 @@ on:
   push:
     paths:
       - "compute/**"
+      - "core/athanor_core/adna/**"
       - ".github/workflows/compute.yml"
 
 permissions:
@@ -68,6 +69,30 @@ jobs:
             (cd "$d" && git add -A && git commit -qm "adna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
           msg=$(grep -E "^\[|tools:|total|Error|failed" adna.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
           if [ $rc -eq 0 ]; then echo "::notice title=adna::$msg"; else echo "::error title=adna failed::$(tail -c 3000 adna.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc
+
+      - name: Real-data validation and reproduction of published mitogenomes
+        run: |
+          set +e
+          python3 compute/fetch_reproduction.py repro > fetch.txt 2>&1
+          frc=$?
+          cat fetch.txt
+          mkdir -p reproout
+          if [ $frc -eq 0 ]; then
+            docker run --rm -v "$PWD/core:/src/core:ro" -v "$PWD/compute:/src/compute:ro" -v "$PWD/repro:/repro:ro" \
+              -v "$PWD/reproout:/out" -e PYTHONPATH=/src/core athanor-compute \
+              /opt/athanor/venv/bin/python /src/compute/ci_reproduce.py /repro /out/repro.json > repro.txt 2>&1
+            rc=$?
+          else
+            echo "download of the published data failed" > repro.txt; rc=1
+          fi
+          cat repro.txt
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/compute/${GITHUB_SHA}" && cat fetch.txt repro.txt > "$d/compute/${GITHUB_SHA}/repro.txt" && \
+            (cp reproout/repro.json "$d/compute/${GITHUB_SHA}/repro.json" 2>/dev/null; true) && \
+            (cd "$d" && git add -A && git commit -qm "repro ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
+          msg=$(grep -E "^\[|^== |agreement|total" repro.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=reproduction::$msg"; else echo "::error title=reproduction failed::$msg"; fi
           exit $rc
 
       - name: Export, compress and split

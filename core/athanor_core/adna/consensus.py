@@ -42,6 +42,9 @@ class Observations:
     dist5: np.ndarray      # distance from the read's 5' end (0-based)
     dist3: np.ndarray      # distance from the read's 3' end (0-based)
     reverse: np.ndarray    # read mapped to the reverse strand
+    # False where the read's 3' end is not the molecule's end (a single-end
+    # read that ran to the full sequencing length); no 3' damage applies there.
+    full: np.ndarray | None = None
 
     def __len__(self) -> int:
         return len(self.site)
@@ -67,6 +70,8 @@ def log_likelihoods(obs: Observations, delta5: np.ndarray, delta3: np.ndarray) -
     o = np.where(obs.reverse, COMP[obs.base], obs.base)
     d5 = delta5[np.minimum(obs.dist5, len(delta5) - 1)]
     d3 = delta3[np.minimum(obs.dist3, len(delta3) - 1)]
+    if obs.full is not None:
+        d3 = np.where(obs.full, d3, 0.0)
     n = len(obs)
     like = np.empty((n, 4))
     for t_ref in range(4):
@@ -131,3 +136,19 @@ def calibration(confidence: np.ndarray, correct: np.ndarray, bins: int = 10) -> 
     return {"bins": rows, "expected_calibration_error": float(ece), "n_sites": int(n),
             "observed_error_rate": float(1 - correct.mean()) if n else None,
             "predicted_error_rate": float(err_pred.mean()) if n else None}
+
+
+def majority_consensus(obs: Observations, length: int, min_depth: int = 3, majority: float = 0.5,
+                       trim: int = 2) -> tuple[str, np.ndarray, np.ndarray]:
+    """Majority-rule consensus as commonly done in Geneious and similar
+    tools: ``trim`` bases are ignored at both ends of every read (where
+    deamination concentrates), a base is called where at least ``min_depth``
+    reads cover the site and more than ``majority`` of them agree, else N.
+    Returns (sequence, per-site base counts (L, 4), depth)."""
+    keep = (obs.dist5 >= trim) & (obs.dist3 >= trim)
+    counts = np.zeros((length, 4), dtype=np.int64)
+    np.add.at(counts, (obs.site[keep], obs.base[keep]), 1)
+    depth = counts.sum(axis=1)
+    top = counts.argmax(axis=1)
+    ok = (depth >= min_depth) & (counts.max(axis=1) > majority * depth)
+    return "".join(BASES[t] if k else "N" for t, k in zip(top, ok)), counts, depth

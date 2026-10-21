@@ -40,7 +40,9 @@ REFS = Path(os.environ.get("ATHANOR_REFS", "/opt/athanor/refs"))
 # (measured in CI: every tool except mapDamage2's Bayesian estimate takes well
 # under a second on mitogenome data; the full MCMC takes about 100 s).
 EXPECTED = {"simulate": 1.0, "merge": 0.5, "truth": 0.5, "index": 0.3, "map": 0.3, "sort": 0.3, "flagstat": 0.3,
-            "damage_fast": 2.0, "damage_stats": 100.0, "consensus": 0.5}
+            "damage_fast": 2.0, "damage_stats": 100.0, "consensus": 0.5,
+            # real-data stages
+            "read_input": 1.0, "trim": 0.5, "clean": 0.5, "count": 0.5, "compare": 0.3}
 
 
 class Progress:
@@ -59,6 +61,13 @@ class Progress:
         self.kind_act: dict = {}
         self.t_stage = time.time()
         self.t0 = time.time()
+        self.last_fraction = 0.0
+
+    def expect(self, remaining: list[tuple[str, float]]):
+        """Replace the stages still to come (from the current one on) once
+        the work is known better, e.g. after the inputs have been read."""
+        self.plan = self.plan[:self.idx] + list(remaining)
+        self.total = sum(e for _, e in self.plan) or 1.0
 
     def _ratio(self, kind: str | None = None) -> float:
         """Actual/expected speed. Per kind of stage once one has completed
@@ -97,8 +106,10 @@ class Progress:
         rest_cur = max(ratio * exp_cur - el, 0.15 * ratio * exp_cur if over else 0.0)
         later = sum(self._ratio(k) * e for k, e in self.plan[self.idx + 1:])
         remaining = rest_cur + later
+        # never move backwards, even when the plan is revised
+        self.last_fraction = max(self.last_fraction, min(0.999, done / self.total))
         self.on_step({"task": "adna", "stage": label, "step": self.idx + 1, "steps": len(self.plan),
-                      "fraction": round(min(0.999, done / self.total), 4),
+                      "fraction": round(self.last_fraction, 4),
                       "eta_seconds": round(max(0.0, remaining)), "elapsed_seconds": round(time.time() - self.t0),
                       "overrunning": bool(over)})
 
@@ -316,6 +327,38 @@ def _diagnose(err_pos, calls, truth, ref, cons, indels) -> dict:
     }
 
 
+def simulate(step, work: Path, endogenous: str = "NC_007596", coverage: float = 10.0,
+             damage: tuple = (0.03, 0.4, 0.01, 0.3), contamination: float = 0.0, length_loc: float = 3.7,
+             length_scale: float = 0.35, min_length: int = 25, read_length: int = 75,
+             contaminant: str = "NC_012920") -> dict:
+    """gargammel paired-end reads from ``endogenous`` with a fraction
+    ``contamination`` of present-day ``contaminant`` molecules (no damage),
+    then AdapterRemoval trimming and merging. Returns the read files."""
+    work = Path(work)
+    for d in ("input/endo", "input/cont", "input/bact", "sim", "merge"):
+        (work / d).mkdir(parents=True, exist_ok=True)
+    shutil.copy(REFS / f"{endogenous}.fa", work / "input/endo/endo.fa")
+    shutil.copy(REFS / f"{contaminant}.fa", work / "input/cont/cont.fa")
+    shutil.copy(REFS / f"{contaminant}.fa", work / "input/bact/bact.fa")   # placeholder; bacterial fraction is 0
+    step.run("simulate (gargammel)", [
+        BIO / "bin/gargammel", "-c", coverage, "--comp", f"0,{contamination},{1 - contamination}",
+        "-damagee", ",".join(map(str, damage)), "--loc", length_loc, "--scale", length_scale,
+        "--minsize", min_length, "--maxsize", 200, "-rl", read_length, "-ss", "HS25",
+        "-o", work / "sim/sim", work / "input"], work)
+    s1 = sorted(glob.glob(str(work / "sim/*_s1.fq.gz")))
+    s2 = sorted(glob.glob(str(work / "sim/*_s2.fq.gz")))
+    if not s1 or not s2:
+        raise RuntimeError(f"gargammel produced no paired reads: {os.listdir(work / 'sim')}")
+    # trim adapters and merge overlapping pairs into full fragments
+    step.run("trim and merge (AdapterRemoval)", [
+        BIO / "bin/adapterremoval3", "--in-file1", s1[-1], "--in-file2", s2[-1], "--out-prefix", work / "merge/m",
+        "--merge", "--threads", "4"], work)
+    merged = next(iter(sorted(glob.glob(str(work / "merge/m*merged*")))), None)
+    if merged is None:
+        raise RuntimeError(f"AdapterRemoval produced no merged reads: {os.listdir(work / 'merge')}")
+    return {"r1": s1[-1], "r2": s2[-1], "merged": merged}
+
+
 def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("NC_007596", "NC_000934", "NC_005129"),
         coverage: float = 10.0, damage: tuple = (0.03, 0.4, 0.01, 0.3), contamination: float = 0.0,
         length_loc: float = 3.7, length_scale: float = 0.35, min_length: int = 25, read_length: int = 75,
@@ -334,35 +377,14 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
     original reference, so the reads are not counted twice."""
     work = Path(work)
     shutil.rmtree(work, ignore_errors=True)
-    for d in ("input/endo", "input/cont", "input/bact", "sim", "merge"):
-        (work / d).mkdir(parents=True, exist_ok=True)
     log: list = []
     progress = Progress(_plan(references, max(1, iterations), mapdamage_stats), on_step)
     step = Step(log, progress)
     cat = {g["accession"]: g for g in reference_catalog()["genomes"]}
-    shutil.copy(REFS / f"{endogenous}.fa", work / "input/endo/endo.fa")
-    shutil.copy(REFS / "NC_012920.fa", work / "input/cont/cont.fa")   # present-day human contaminant
-    shutil.copy(REFS / "NC_012920.fa", work / "input/bact/bact.fa")   # placeholder; bacterial fraction is 0
     truth_id, truth_seq = read_fasta(REFS / f"{endogenous}.fa")
-
-    # 1. simulate
-    step.run("simulate (gargammel)", [
-        BIO / "bin/gargammel", "-c", coverage, "--comp", f"0,{contamination},{1 - contamination}",
-        "-damagee", ",".join(map(str, damage)), "--loc", length_loc, "--scale", length_scale,
-        "--minsize", min_length, "--maxsize", 200, "-rl", read_length, "-ss", "HS25",
-        "-o", work / "sim/sim", work / "input"], work)
-    s1 = sorted(glob.glob(str(work / "sim/*_s1.fq.gz")))
-    s2 = sorted(glob.glob(str(work / "sim/*_s2.fq.gz")))
-    if not s1 or not s2:
-        raise RuntimeError(f"gargammel produced no paired reads: {os.listdir(work / 'sim')}")
-
-    # 2. trim adapters and merge overlapping pairs into full fragments
-    step.run("trim and merge (AdapterRemoval)", [
-        BIO / "bin/adapterremoval3", "--in-file1", s1[-1], "--in-file2", s2[-1], "--out-prefix", work / "merge/m",
-        "--merge", "--threads", "4"], work)
-    merged = next(iter(sorted(glob.glob(str(work / "merge/m*merged*")))), None)
-    if merged is None:
-        raise RuntimeError(f"AdapterRemoval produced no merged reads: {os.listdir(work / 'merge')}")
+    sim = simulate(step, work, endogenous, coverage, damage, contamination, length_loc, length_scale,
+                   min_length, read_length)
+    merged = sim["merged"]
 
     results = []
     for acc in references:
