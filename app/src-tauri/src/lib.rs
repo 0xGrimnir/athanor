@@ -69,6 +69,59 @@ async fn compute_remove(app: tauri::AppHandle, compute: State<'_, Arc<Compute>>)
         .map_err(|e| format!("internal error: {e}"))?
 }
 
+/// Native file picker for the user's data files (reads, references). Returns
+/// the chosen paths; the files stay where they are and are read in place.
+#[tauri::command]
+async fn pick_files(
+    app: tauri::AppHandle,
+    title: String,
+    filters: Vec<(String, Vec<String>)>,
+    multiple: bool,
+) -> Result<Vec<String>, String> {
+    use tauri_plugin_dialog::DialogExt;
+    let (tx, rx) = std::sync::mpsc::channel::<Vec<String>>();
+    let mut d = app.dialog().file().set_title(&title);
+    for (name, exts) in &filters {
+        let e: Vec<&str> = exts.iter().map(String::as_str).collect();
+        d = d.add_filter(name, &e);
+    }
+    if multiple {
+        d.pick_files(move |p| {
+            let _ = tx.send(p.map(|v| v.iter().map(|f| f.to_string()).collect()).unwrap_or_default());
+        });
+    } else {
+        d.pick_file(move |p| {
+            let _ = tx.send(p.map(|f| vec![f.to_string()]).unwrap_or_default());
+        });
+    }
+    tauri::async_runtime::spawn_blocking(move || rx.recv().unwrap_or_default())
+        .await
+        .map_err(|e| format!("internal error: {e}"))
+}
+
+/// Native save dialog; returns the chosen path (None if cancelled).
+#[tauri::command]
+async fn pick_save_path(
+    app: tauri::AppHandle,
+    title: String,
+    default_name: String,
+    filters: Vec<(String, Vec<String>)>,
+) -> Result<Option<String>, String> {
+    use tauri_plugin_dialog::DialogExt;
+    let (tx, rx) = std::sync::mpsc::channel::<Option<String>>();
+    let mut d = app.dialog().file().set_title(&title).set_file_name(&default_name);
+    for (name, exts) in &filters {
+        let e: Vec<&str> = exts.iter().map(String::as_str).collect();
+        d = d.add_filter(name, &e);
+    }
+    d.save_file(move |p| {
+        let _ = tx.send(p.map(|f| f.to_string()));
+    });
+    tauri::async_runtime::spawn_blocking(move || rx.recv().ok().flatten())
+        .await
+        .map_err(|e| format!("internal error: {e}"))
+}
+
 #[derive(Serialize)]
 struct UpdateInfo {
     current: String,
@@ -122,6 +175,7 @@ async fn update_install(app: tauri::AppHandle, core: State<'_, Arc<CoreHandle>>)
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
             let handle = app.handle().clone();
             let core = Arc::new(CoreHandle::new());
@@ -159,7 +213,8 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            core_call, core_restart, update_check, update_install, compute_status, compute_enable, compute_remove
+            core_call, core_restart, update_check, update_install, compute_status, compute_enable, compute_remove,
+            pick_files, pick_save_path
         ])
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::Destroyed = event {

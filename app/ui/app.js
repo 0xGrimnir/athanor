@@ -571,6 +571,18 @@ function wire() {
   $("btnOpt").onclick = () => runOptimize().catch(() => {});
   $("btnFreq").onclick = runFrequencies;
   $("adnaRun").onclick = () => runAdna();
+  document.querySelectorAll("#adnaModeSeg button").forEach((b) => (b.onclick = () => setAdnaMode(b.dataset.mode)));
+  $("realAdd").onclick = () => realAddFiles();
+  $("realClear").onclick = () => { R2.raw = []; R2.files = []; renderRealFiles(); };
+  $("realRef").onchange = () => realRefChanged();
+  $("realCmp").onclick = () => realPickCompare();
+  $("realCmpClear").onclick = () => { R2.cmpPath = null; $("realCmpName").textContent = "None"; };
+  $("realRun").onclick = () => runReal();
+  $("realIt").oninput = (e) => ($("realItVal").textContent = e.target.value);
+  $("realDepth").oninput = (e) => ($("realDepthVal").textContent = e.target.value);
+  $("realSaveFasta").onclick = () => realExport("fasta");
+  $("realSaveMaj").onclick = () => realExport("majority_fasta");
+  $("realSaveJson").onclick = () => realExport("json");
   $("adnaCov").oninput = (e) => ($("adnaCovVal").textContent = `${e.target.value}×`);
   $("adnaCont").oninput = (e) => ($("adnaContVal").textContent = `${e.target.value}%`);
   $("adnaLen").oninput = (e) => ($("adnaLenVal").textContent = `${e.target.value} bp`);
@@ -695,14 +707,16 @@ async function initCompute() {
 }
 
 // ------------------------------------------------------------------ Ancient DNA
-const A = { catalog: null, result: null, busy: false };
+const A = { catalog: null, result: null, busy: false, mode: "sim" };
 
 async function initAdna() {
   const linuxReady = S.compute && S.compute.stage === "ready";
   $("adnaRun").disabled = !linuxReady || A.busy;
-  $("adnaEmpty").textContent = linuxReady
-    ? "Choose a sample and references, then run."
-    : "The Ancient DNA Lab runs in the Linux engines pack. Install or update it from the top bar first.";
+  $("realRun").disabled = !linuxReady || A.busy;
+  $("adnaEmpty").textContent = !linuxReady
+    ? "The Ancient DNA Lab runs in the Linux engines pack. Install or update it from the top bar first."
+    : A.mode === "real" ? "Add read files, choose a starting reference, then reconstruct."
+    : "Choose a sample and references, then run.";
   if (!linuxReady || A.catalog) return;
   try {
     A.catalog = await rpc("adna_catalog", {});
@@ -710,6 +724,8 @@ async function initAdna() {
     $("adnaEndo").innerHTML = g.map((x) => `<option value="${x.accession}" ${x.accession === "NC_007596" ? "selected" : ""}>${escapeHtml(x.organism)} — ${x.version}</option>`).join("");
     $("adnaRefs").innerHTML = g.map((x) => `<label><input type="checkbox" value="${x.accession}" ${["NC_007596", "NC_000934", "NC_005129"].includes(x.accession) ? "checked" : ""}>
       <span>${escapeHtml(x.organism)}<small>${x.version} · ${x.length.toLocaleString()} bp</small></span></label>`).join("");
+    $("realRef").innerHTML = g.map((x) => `<option value="${x.accession}" ${x.accession === "NC_007596" ? "selected" : ""}>${escapeHtml(x.organism)} — ${x.version}</option>`).join("")
+      + `<option value="__file">Another genome (FASTA file)…</option>`;
   } catch (e) { $("adnaEmpty").textContent = `Could not reach the Linux engines: ${e.message || e}`; }
 }
 
@@ -751,7 +767,8 @@ async function runAdna() {
   const job = addJob(`Ancient DNA · ${p.coverage}× · ${p.references.length} reference(s)`);
   try {
     A.result = await rpc("adna_run", p);
-    renderAdna(); job.done(`${A.result.references.length} reference(s)`);
+    if (A.mode === "sim") renderAdna();
+    job.done(`${A.result.references.length} reference(s)`);
     const endo = A.result.simulation.endogenous.accession;
     const others = A.result.references.filter((r) => r.reference.accession !== endo);
     if (others.length) {
@@ -877,6 +894,258 @@ function renderAdnaProv() {
   $("adnaProv").innerHTML = `<p><b>Simulation</b></p><ul>${simRows.map(([k, v]) => `<li>${escapeHtml(k)}: ${escapeHtml(String(v))}</li>`).join("")}</ul>
     <p><b>Tools</b></p><ul>${tools}</ul><p><b>Reference genomes</b> (${escapeHtml(R.reference_catalog.source)}, retrieved ${escapeHtml(R.reference_catalog.retrieved_utc)})</p><ul>${refs}</ul>
     <p><b>Steps</b></p><ol>${steps}</ol>`;
+}
+
+// ------------------------------------------------------------------ Ancient DNA: the user's own reads
+const R2 = { raw: [], files: [], refPath: null, cmpPath: null, result: null };
+const baseName = (p) => String(p).split(/[\\/]/).pop();
+
+function setAdnaMode(m) {
+  A.mode = m;
+  document.querySelectorAll("#adnaModeSeg button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.mode === m)));
+  $("adnaSimControls").hidden = m !== "sim";
+  $("adnaRealControls").hidden = m !== "real";
+  const has = m === "sim" ? !!A.result : !!R2.result;
+  $("adnaResults").hidden = !(m === "sim" && A.result);
+  $("realResults").hidden = !(m === "real" && R2.result);
+  $("adnaEmpty").hidden = has;
+  initAdna();
+  if (m === "sim" && A.result) renderAdna();
+  else if (m === "real" && R2.result) renderReal();
+  else $("adnaProv").textContent = "No run yet.";
+}
+
+function kindOf(p) {
+  if (/\.bam$/i.test(p)) return "bam";
+  if (/\.f(ast)?q(\.gz)?$/i.test(p)) return "fastq";
+  return null;
+}
+
+// Pair FASTQ mates: file names that differ only by a 1 in one and a 2 in the
+// other (sample_R1_001.fastq.gz / sample_R2_001.fastq.gz, run_1.fq / run_2.fq),
+// where that digit stands alone (lane chunks _001/_002 are not mates).
+function pairFiles(paths) {
+  const out = [], fq = [];
+  for (const p of paths) { const k = kindOf(p); if (k === "fastq") fq.push(p); else if (k) out.push({ kind: k, path: p }); }
+  const used = new Set();
+  const mates = (a, b) => {
+    const x = baseName(a), y = baseName(b);
+    if (x.length !== y.length || a.length - x.length !== b.length - y.length || a.slice(0, a.length - x.length) !== b.slice(0, b.length - y.length)) return false;
+    let d = -1;
+    for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) { if (d >= 0) return false; d = i; }
+    // the mate number stands alone (not part of a lane or chunk number like _001/_002)
+    return d >= 0 && x[d] === "1" && y[d] === "2" && !/\d/.test(x[d - 1] || "") && !/\d/.test(x[d + 1] || "");
+  };
+  for (const a of fq) {
+    if (used.has(a)) continue;
+    const b = fq.find((q) => !used.has(q) && q !== a && mates(a, q));
+    if (b) { used.add(a); used.add(b); out.push({ kind: "fastq", path: a, path2: b }); }
+  }
+  for (const a of fq) if (!used.has(a)) out.push({ kind: "fastq", path: a });
+  return out;
+}
+
+function renderRealFiles() {
+  $("realFiles").innerHTML = R2.files.length
+    ? R2.files.map((f, i) => `<div class="file"><span class="kind">${f.kind === "bam" ? "BAM" : f.path2 ? "FASTQ pair" : "FASTQ"}</span>
+        <span class="fn" title="${escapeHtml(f.path)}${f.path2 ? "\n" + escapeHtml(f.path2) : ""}">${escapeHtml(baseName(f.path))}${f.path2 ? `<br>${escapeHtml(baseName(f.path2))}` : ""}</span>
+        <button type="button" class="btn sm" data-rm="${i}" aria-label="Remove">×</button></div>`).join("")
+    : `<p class="note">No files yet.</p>`;
+  $("realFiles").querySelectorAll("[data-rm]").forEach((b) => (b.onclick = () => {
+    const f = R2.files[+b.dataset.rm];
+    R2.raw = R2.raw.filter((p) => p !== f.path && p !== f.path2);
+    R2.files = pairFiles(R2.raw); renderRealFiles();
+  }));
+}
+
+async function realAddFiles() {
+  if (!TAURI) return;
+  try {
+    const paths = await TAURI.core.invoke("pick_files", { title: "Add sequencing reads", multiple: true,
+      filters: [["Reads (FASTQ, BAM)", ["fq", "fastq", "gz", "bam"]], ["All files", ["*"]]] });
+    const bad = paths.filter((p) => !kindOf(p));
+    if (bad.length) log(`Not FASTQ or BAM (skipped): ${bad.map(baseName).join(", ")}`, true);
+    R2.raw = [...new Set([...R2.raw, ...paths.filter(kindOf)])];
+    R2.files = pairFiles(R2.raw); renderRealFiles();
+    if ($("realSample").value === "sample" && R2.files.length) $("realSample").value = baseName(R2.files[0].path).replace(/([._-]R?[12])?([._-]\d{3})?\.(bam|f(ast)?q(\.gz)?)$/i, "");
+  } catch (e) { log(`File dialog: ${e}`, true); }
+}
+
+async function realRefChanged() {
+  if ($("realRef").value !== "__file") { R2.refPath = null; $("realRefFileRow").hidden = true; return; }
+  const [p] = await TAURI.core.invoke("pick_files", { title: "Reference genome (FASTA)", multiple: false,
+    filters: [["FASTA", ["fa", "fasta", "fna", "fas"]], ["All files", ["*"]]] }).catch(() => []);
+  if (!p) { $("realRef").value = "NC_007596"; return; }
+  R2.refPath = p; $("realRefFile").textContent = baseName(p); $("realRefFileRow").hidden = false;
+}
+
+async function realPickCompare() {
+  const [p] = await TAURI.core.invoke("pick_files", { title: "Published sequence (FASTA)", multiple: false,
+    filters: [["FASTA", ["fa", "fasta", "fna", "fas"]], ["All files", ["*"]]] }).catch(() => []);
+  if (p) { R2.cmpPath = p; $("realCmpName").textContent = baseName(p); }
+}
+
+async function runReal() {
+  if (!R2.files.length) { log("Add read files first", true); return; }
+  const trimmed = $("realTrimmed").checked;
+  const p = {
+    sample: $("realSample").value.trim() || "sample",
+    inputs: R2.files.map((f) => ({ kind: f.kind, path: f.path, ...(f.path2 ? { path2: f.path2 } : {}), trimmed: f.kind === "bam" ? true : trimmed })),
+    circular: $("realCircular").checked, contamination_check: $("realContam").checked,
+    iterations: +$("realIt").value, min_depth: +$("realDepth").value, min_confidence: +$("realConf").value,
+    mapdamage_stats: $("realStats").checked,
+  };
+  if (R2.refPath) p.reference_path = R2.refPath; else p.reference = $("realRef").value;
+  if (R2.cmpPath) p.compare_path = R2.cmpPath;
+  A.busy = true; $("realRun").disabled = true; $("adnaRun").disabled = true; $("adnaBusy").hidden = false;
+  $("adnaBusyText").textContent = "Starting…"; $("adnaBar").style.width = "0%"; $("adnaPct").textContent = "0%"; $("adnaEta").textContent = "· estimating time";
+  const job = addJob(`Ancient DNA · ${p.sample} · ${p.inputs.length} input(s)`);
+  try {
+    R2.result = await rpc("adna_real_run", p);
+    const c = R2.result.consensus;
+    job.done(`${c.called_sites.toLocaleString()} of ${R2.result.coverage.length.toLocaleString()} bases called`);
+    log(`Ancient DNA: ${p.sample} reconstructed, ${c.called_sites.toLocaleString()} bases called at ${R2.result.coverage.mean_depth.toFixed(1)}× mean depth`);
+    if (A.mode === "real") { $("adnaEmpty").hidden = true; $("realResults").hidden = false; renderReal(); }
+  } catch (e) { job.fail(String(e)); log(`Ancient DNA run failed: ${e.message || e}`, true); }
+  finally { A.busy = false; $("realRun").disabled = false; $("adnaRun").disabled = false; $("adnaBusy").hidden = true; }
+}
+
+async function realExport(what) {
+  if (!R2.result) return;
+  const ext = what === "json" ? "json" : "fasta";
+  const name = `${R2.result.sample}${what === "majority_fasta" ? ".majority" : what === "json" ? ".athanor-report" : ".athanor"}.${ext}`;
+  try {
+    const path = await TAURI.core.invoke("pick_save_path", { title: "Save", defaultName: name,
+      filters: [[ext === "json" ? "JSON" : "FASTA", [ext === "json" ? "json" : "fasta", "fa"]]] });
+    if (!path) return;
+    await rpc("adna_export", { path, what });
+    log(`Saved ${baseName(path)}`);
+  } catch (e) { log(`Save failed: ${e.message || e}`, true); }
+}
+
+const ci = (c) => (c ? `${pct(c[0], 2)} – ${pct(c[1], 2)}` : "—");
+const kvTable = (rows) => `<table class="kv"><tbody>${rows.map(([k, v]) => `<tr><td>${k}</td><td class="n">${v}</td></tr>`).join("")}</tbody></table>`;
+
+function renderReal() {
+  const R = R2.result; if (!R) return;
+  const reads = R.inputs.reduce((a, x) => a + (x.reads_kept || 0), 0);
+  const m = R.mapping, cov = R.coverage, c = R.consensus, L = cov.length;
+  const ref = R.reference;
+  $("realSummary").innerHTML = kvTable([
+    ["Sample", escapeHtml(R.sample)],
+    ["Starting reference", `${escapeHtml(ref.organism || ref.accession || "")} ${escapeHtml(ref.version || "")}`],
+    ["Reads analysed (≥ " + R.settings.min_length + " bp)", `${reads.toLocaleString()} <small>(${R.fragment_lengths.whole_molecules.toLocaleString()} whole molecules, ${R.fragment_lengths.cut_by_read_length.toLocaleString()} cut by the read length)</small>`],
+    ["Mapped, MAPQ ≥ " + R.settings.min_mapq + ", unique", `${(m.kept || 0).toLocaleString()} <small>(${(m.duplicates || 0).toLocaleString()} duplicates removed, ${pct(m.duplication_rate, 1)})</small>`],
+    ["Depth", `mean ${cov.mean_depth.toFixed(1)}×, median ${cov.median_depth}× · covered ${pct(cov.fraction_ge1, 1)}, ≥3 reads ${pct(cov.fraction_ge3, 1)}, ≥10 reads ${pct(cov.fraction_ge10, 1)}`],
+    ["Bases called", `${c.called_sites.toLocaleString()} of ${L.toLocaleString()} (${pct(c.called_sites / L, 2)}); the rest are N`],
+    ["Expected errors among called bases", c.predicted_errors_in_called_sites < 0.01 ? "< 0.01" : c.predicted_errors_in_called_sites.toFixed(2)],
+    ["Divergence from the starting reference", pct(c.estimated_divergence_theta, 2)],
+    ["Iterative mapping", R.converged ? `converged after ${R.iterations.length} iteration(s)` : `<span class="warn">not converged after ${R.iterations.length} iterations; increase iterations</span>`],
+    ["Majority-rule consensus", `${R.majority_rule.called_sites.toLocaleString()} bases called (${escapeHtml(R.majority_rule.rule)})`],
+  ]) + `<p class="note">Bases are called from damage-aware posteriors: N where fewer than ${R.settings.min_depth} reads cover a base or its posterior is below ${R.settings.min_posterior}. The expected error count is the sum of (1 − posterior) over called bases; it assumes the model's damage and error rates, which are measured from this sample.</p>`;
+
+  const ts = R.authentication.terminal_signal, fl = R.fragment_lengths;
+  const row = (lab, x) => [lab, x.frequency == null ? "—" : `${pct(x.frequency, 2)} <small>(95% ${ci(x.ci95)}; n ${x.n.toLocaleString()})</small>`];
+  $("realAuth").innerHTML = kvTable([
+    row("5′ C→T, first base", ts.CtoT_5p_position1), row("5′ C→T, second base", ts.CtoT_5p_position2),
+    row("C→T, molecule interior (≥ 10 bases in)", ts.CtoT_interior),
+    row("3′ G→A, last base (whole molecules)", ts.GtoA_3p_position1), row("G→A, interior", ts.GtoA_interior),
+    ["Whole-molecule length", fl.median == null ? "—" : `median ${fl.median} bp, mean ${fl.mean.toFixed(1)} bp`],
+  ]) + `<p class="${ts.terminal_excess ? "note" : "warnbox"}">${ts.terminal_excess
+      ? "Deamination is elevated at the molecule ends compared with their interior (intervals do not overlap): the pattern of authentic ancient DNA (Briggs et al. 2007). Libraries partially treated with uracil-DNA glycosylase keep this signal only at the terminal one or two bases."
+      : "No excess of terminal deamination was detected. Either the library was fully treated with uracil-DNA glycosylase, or the reads are not ancient."}</p>
+    <p class="note">Measured against this sample's own consensus, so genuine differences from the reference do not count as damage.</p>`;
+
+  const ct = R.contamination;
+  if (!ct) $("realContamOut").innerHTML = `<p class="note">Not estimated.</p>`;
+  else {
+    const h = ct.human_reads_detail, t = ct.target_reads;
+    $("realContamOut").innerHTML = kvTable([
+      ["Present-day human (reads assigned to human mtDNA)", `${pct(ct.fraction, 2)} <small>(95% ${ci(ct.ci95)}; ${ct.human_reads.toLocaleString()} of ${ct.assigned_reads.toLocaleString()})</small>`],
+      ["Median length, human / sample reads", `${h.median_length ?? "—"} / ${t.median_length ?? "—"} bp`],
+      ["5′ C→T first base, human / sample reads", `${pct(h.damage.CtoT_5p_position1.frequency, 1)} / ${pct(t.damage.CtoT_5p_position1.frequency, 1)}`],
+    ]) + `<p class="note">${escapeHtml(ct.method)}: reads mapped to the sample's sequence and the human mitogenome (${escapeHtml(ct.references.human)}) together; only reads with mapping quality above ${ct.min_mapq_exclusive} count. Present-day contaminants are typically longer and lack terminal damage.</p>`
+      + ct.notes.map((n) => `<p class="note">${escapeHtml(n)}</p>`).join("");
+  }
+
+  $("realIter").innerHTML = `<table><thead><tr><th>Iteration</th><th>Length</th><th>Reads kept</th><th>Covered</th><th>Mean depth</th><th>Divergence</th><th>Bases changed</th><th>Indels</th></tr></thead><tbody>${
+    R.iterations.map((h) => `<tr><td class="n">${h.iteration}</td><td class="n">${h.reference_length.toLocaleString()}</td><td class="n">${(h.mapping.kept || 0).toLocaleString()}</td>
+      <td class="n">${pct(h.covered_fraction, 1)}</td><td class="n">${h.mean_depth.toFixed(1)}×</td><td class="n">${pct(h.estimated_divergence_theta)}</td>
+      <td class="n">${h.substitutions_found}</td><td class="n">${h.indels_found}</td></tr>`).join("")}</tbody></table>
+    <p class="note">Each round writes confident bases and majority-supported insertions and deletions into the reference and maps again, until nothing changes. Posteriors always use the starting reference as the prior, so reads are not counted twice.</p>`;
+
+  const cmp = R.comparison;
+  $("realCmpSec").hidden = !cmp;
+  if (cmp) {
+    const line = (lab, x) => `<tr><td>${lab}</td><td class="n">${pct(x.agreement, 3)}</td><td class="n">${x.sites_called_by_both.toLocaleString()}</td>
+      <td class="n">${x.substitutions.length}</td><td class="n">${x.insertions_in_ours.length + x.deletions_in_ours.length}</td>
+      <td class="n">${x.uncalled_ours.toLocaleString()} / ${x.uncalled_theirs.toLocaleString()}</td><td class="n">${pct(x.theirs_aligned_fraction, 1)}</td></tr>`;
+    const diffs = cmp.athanor.substitutions.map((d) => `<tr><td class="n">${(d.theirs_pos + 1).toLocaleString()}</td><td class="n">${(d.ours_pos + 1).toLocaleString()}</td>
+      <td class="n">${d.theirs}</td><td class="n">${d.ours}</td><td class="n">${d.depth}</td><td class="n">${d.posterior.toFixed(4)}</td>
+      <td class="n">${Object.entries(d.base_counts_trimmed).map(([b, n]) => `${b}${n}`).join(" ")}</td></tr>`).join("");
+    const indels = [...cmp.athanor.insertions_in_ours.map((d) => [d.uncalled ? "extra uncalled (N) bases in ours: length unresolved" : "extra in ours", d]),
+                    ...cmp.athanor.deletions_in_ours.map((d) => [d.uncalled ? "published has N here; ours lacks them" : "missing in ours", d])]
+      .map(([k, d]) => `<tr><td class="n">${(d.theirs_pos + 1).toLocaleString()}</td><td>${k}</td><td class="n">${escapeHtml(d.sequence)}</td></tr>`).join("");
+    $("realCmpOut").innerHTML = `<table><thead><tr><th>Consensus</th><th>Agreement</th><th>Bases both call</th><th>Differences</th><th>Indel differences</th><th>Uncalled ours / theirs</th><th>Published aligned</th></tr></thead>
+      <tbody>${line("Athanor (posterior)", cmp.athanor)}${line("Majority rule", cmp.majority_rule)}</tbody></table>
+      <p class="note">Compared with ${escapeHtml(cmp.athanor.theirs_name)} by minimap2. Agreement counts only bases both sequences call; N and ambiguity codes are uncalled, not disagreements.</p>
+      ${diffs ? `<table><thead><tr><th>Published position</th><th>Our position</th><th>Published</th><th>Athanor</th><th>Reads</th><th>Posterior</th><th>Base counts (ends trimmed)</th></tr></thead><tbody>${diffs}</tbody></table>` : `<p class="note">No base differences where both call a base.</p>`}
+      ${indels ? `<table><thead><tr><th>Published position</th><th>Difference</th><th>Bases</th></tr></thead><tbody>${indels}</tbody></table>` : ""}`;
+  }
+  drawRealDamage(); drawRealLengths(); drawRealTrack(); renderRealProv();
+}
+
+function drawRealDamage() {
+  const { g, l, r, t, b } = plotFrame($("realDamagePlot"));
+  const P = R2.result.authentication.damage_vs_consensus, n = Math.min(25, P.raw_5p_CtoT.length);
+  const ymax = Math.max(0.02, ...P.raw_5p_CtoT.slice(0, n), ...P.raw_3p_GtoA.slice(0, n)) * 1.1;
+  const X = (i) => l + (i / (n - 1)) * (r - l), Y = (v) => b - (v / ymax) * (b - t);
+  g.strokeRect(l, t, r - l, b - t); g.fillText("C→T from 5′ (blue), G→A from 3′ (amber)", l, t - 5);
+  g.fillText(ymax.toFixed(3), 4, t + 8); g.fillText("0", 30, b); g.fillText("position from molecule end", l + 60, b + 18);
+  for (const [arr, col] of [[P.raw_5p_CtoT, COLORS[0]], [P.raw_3p_GtoA, COLORS[1]]]) {
+    g.strokeStyle = col; g.beginPath(); arr.slice(0, n).forEach((v, i) => (i ? g.lineTo(X(i), Y(v)) : g.moveTo(X(i), Y(v)))); g.stroke();
+  }
+}
+
+function drawRealLengths() {
+  const { g, l, r, t, b } = plotFrame($("realLenPlot"));
+  const hst = R2.result.fragment_lengths.histogram || [];
+  g.strokeRect(l, t, r - l, b - t); g.fillText("whole-molecule lengths (bp)", l, t - 5);
+  if (!hst.length) { g.fillText("no whole molecules (all reads ran to the read length)", l + 8, t + 20); return; }
+  const lo = 20, hi = Math.max(lo + 10, hst.length), ymax = Math.max(1, ...hst);
+  const X = (i) => l + ((i - lo) / (hi - lo)) * (r - l);
+  g.fillStyle = "rgba(98,214,255,.6)";
+  for (let i = lo; i < hst.length; i++) { const hh = (hst[i] / ymax) * (b - t); g.fillRect(X(i), b - hh, Math.max(1, (r - l) / (hi - lo) - 0.5), hh); }
+  g.fillStyle = "#7f9fb3"; g.fillText(String(lo), l, b + 14); g.fillText(String(hi), r - 20, b + 14);
+}
+
+function drawRealTrack() {
+  const R = R2.result, depth = R.consensus.depth, seq = R.consensus.sequence;
+  $("realTrack").innerHTML = `<div class="track"><div class="tl">${escapeHtml(R.sample)} · ${depth.length.toLocaleString()} bp</div><canvas id="realTrk"></canvas></div>`;
+  const cv = $("realTrk"), dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = 54;
+  cv.width = w * dpr; cv.height = h * dpr; const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const L = depth.length, maxd = Math.max(1, ...depth), bins = Math.max(1, Math.floor(w));
+  for (let p = 0; p < bins; p++) {
+    const s0 = Math.floor((p * L) / bins), s1 = Math.max(s0 + 1, Math.floor(((p + 1) * L) / bins));
+    let d = 0, nN = 0;
+    for (let i = s0; i < s1; i++) { d += depth[i]; if (seq[i] === "N") nN++; }
+    d /= (s1 - s0);
+    g.fillStyle = "rgba(98,214,255,.45)"; const hh = (d / maxd) * (h - 6); g.fillRect(p, h - hh, 1, hh);
+    if (nN) { g.fillStyle = "#ffb34a"; g.fillRect(p, 0, 1, 4); }
+  }
+  const cmp = R.comparison && R.comparison.athanor;
+  if (cmp) { g.fillStyle = "#ff6a57"; for (const d of cmp.substitutions) g.fillRect(Math.floor((d.ours_pos / L) * w), 6, 1.5, h - 6); }
+}
+
+function renderRealProv() {
+  const R = R2.result;
+  const inputs = R.inputs.map((x) => `<li>${escapeHtml(x.file)}${x.file2 ? " + " + escapeHtml(x.file2) : ""} (${escapeHtml(x.kind)}) · ${(x.reads_in || 0).toLocaleString()} reads, ${(x.reads_kept || 0).toLocaleString()} kept · sha256 ${x.sha256.slice(0, 12)}…${x.all_reads_mapped ? "<br><small>BAM held only mapped reads</small>" : ""}</li>`).join("");
+  const tools = Object.entries(R.tools).map(([k, v]) => `<li><b>${escapeHtml(k)}</b>: ${escapeHtml(v)}</li>`).join("");
+  const steps = R.steps.map((s) => `<li>${escapeHtml(s.step)} · ${s.seconds} s<br><code>${escapeHtml(s.command)}</code></li>`).join("");
+  const st = Object.entries(R.settings).map(([k, v]) => `<li>${escapeHtml(k)}: ${escapeHtml(String(v))}</li>`).join("");
+  $("adnaProv").innerHTML = `<p><b>Inputs</b> (read in place on this computer)</p><ul>${inputs}</ul>
+    <p><b>Starting reference</b></p><ul><li>${escapeHtml(R.reference.version || R.reference.accession || "")} ${escapeHtml(R.reference.organism || "")} · ${R.reference.length.toLocaleString()} bp · sha256 ${R.reference.sha256.slice(0, 12)}…${R.circular ? " · circular" : ""}</li></ul>
+    <p><b>Settings</b></p><ul>${st}</ul><p><b>Tools</b></p><ul>${tools}</ul><p><b>Steps</b></p><ol>${steps}</ol>`;
 }
 
 async function boot() {

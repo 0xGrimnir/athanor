@@ -11,6 +11,9 @@ through pipes only: no network socket is opened. Methods:
   optimize {molecule, tier, options?}
   frequencies {molecule, tier, options?}
   validation                    -> published benchmark comparators for the UI's error bars
+  adna_catalog / adna_run       -> Ancient DNA Lab, simulated data (Linux engines pack)
+  adna_real_run {inputs, ...}   -> Ancient DNA Lab, the user's own reads (Linux engines pack)
+  adna_export {path, what}      -> save the last real-data consensus or report
 """
 from __future__ import annotations
 
@@ -92,6 +95,83 @@ def m_adna_run(p):
     return run(work, on_step=_progress({"tier": "adna"}), **kw)
 
 
+_LAST_REAL: dict = {}
+
+
+def to_linux_path(p: str) -> str:
+    """Windows paths from the desktop app's file dialogs, as seen inside the
+    WSL2 engines pack (drives are mounted under /mnt)."""
+    import re
+    s = str(p)
+    for pre in ("\\\\?\\",):
+        if s.startswith(pre):
+            s = s[len(pre):]
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", s)
+    if m:
+        return f"/mnt/{m.group(1).lower()}/" + m.group(2).replace("\\", "/")
+    m = re.match(r"^[\\/]{2}wsl(?:\.localhost|\$)[\\/][^\\/]+[\\/](.*)$", s, re.IGNORECASE)
+    if m:
+        return "/" + m.group(1).replace("\\", "/")
+    return s
+
+
+def m_adna_real_run(p):
+    """Reconstruct a mitogenome from the user's own reads (FASTQ or BAM).
+    Files are read where they are; nothing leaves the computer."""
+    import os
+    from .adna.pipeline import read_fasta
+    from .adna.realdata import run_real
+    p = p or {}
+    inputs = []
+    for inp in p.get("inputs", []):
+        d = {"kind": inp["kind"], "path": to_linux_path(inp["path"])}
+        if inp.get("path2"):
+            d["path2"] = to_linux_path(inp["path2"])
+        for k in ("trimmed", "read_length"):
+            if k in inp:
+                d[k] = inp[k]
+        inputs.append(d)
+    if not inputs:
+        raise ValueError("no read files given")
+    kw = {k: p[k] for k in ("iterations", "min_mapq", "min_length", "min_depth", "min_confidence",
+                            "mapdamage_stats", "circular", "sample") if k in p}
+    if p.get("reference_path"):
+        kw["reference_fasta"] = to_linux_path(p["reference_path"])
+    else:
+        kw["reference"] = p.get("reference", "NC_007596")
+    kw["contaminant"] = "NC_012920" if p.get("contamination_check", True) else None
+    if p.get("compare_path"):
+        name, seq = read_fasta(to_linux_path(p["compare_path"]))
+        kw["compare_with"] = (name, seq)
+    work = os.path.join(os.path.expanduser("~"), "athanor-adna", "real")
+    res = run_real(work, inputs, on_step=_progress({"tier": "adna"}), **kw)
+    _LAST_REAL.clear()
+    _LAST_REAL.update(res)
+    return res
+
+
+def m_adna_export(p):
+    """Write the last real-data result: consensus FASTA, majority-rule FASTA or full report (JSON)."""
+    if not _LAST_REAL:
+        raise ValueError("no reconstruction to export yet")
+    path = to_linux_path(p["path"])
+    what = p.get("what", "fasta")
+    R = _LAST_REAL
+    if what == "fasta":
+        text = R["consensus"]["fasta"]
+    elif what == "majority_fasta":
+        seq = R["majority_rule"]["sequence"]
+        text = (f">{R['sample']} majority-rule consensus ({R['majority_rule']['rule']}; reference "
+                f"{R['reference'].get('accession', '')})\n" + "\n".join(seq[i:i + 70] for i in range(0, len(seq), 70)) + "\n")
+    elif what == "json":
+        text = json.dumps(R, indent=1)
+    else:
+        raise ValueError(f"unknown export {what!r}")
+    with open(path, "w", newline="\n") as fh:
+        fh.write(text)
+    return {"path": p["path"], "bytes": len(text)}
+
+
 def m_build(p):
     return mol_to_json(Molecule.from_smiles(p["smiles"], name=p.get("name", p["smiles"])))
 
@@ -149,7 +229,8 @@ METHODS = {"ping": m_ping, "engines": m_engines, "build": m_build, "parse_xyz": 
            "parse_molblock": m_parse_molblock,
            "single_point": m_single_point, "optimize": m_optimize, "frequencies": m_frequencies,
            "validation": m_validation, "gpu_status": m_gpu_status, "gpu_selftest": m_gpu_selftest,
-           "adna_catalog": m_adna_catalog, "adna_run": m_adna_run}
+           "adna_catalog": m_adna_catalog, "adna_run": m_adna_run,
+           "adna_real_run": m_adna_real_run, "adna_export": m_adna_export}
 
 
 def handle(line: str) -> dict:

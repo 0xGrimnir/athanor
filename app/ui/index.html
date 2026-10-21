@@ -132,6 +132,13 @@
 <main class="view deck" id="view-adna" hidden>
   <section class="panel" aria-label="Simulation and references">
     <div class="sec">
+      <div class="seg" id="adnaModeSeg" role="radiogroup" aria-label="Data source">
+        <button type="button" data-mode="sim" role="radio" aria-checked="true">Simulated<small>known truth</small></button>
+        <button type="button" data-mode="real" role="radio" aria-checked="false">Your data<small>FASTQ or BAM</small></button>
+      </div>
+    </div>
+    <div id="adnaSimControls">
+    <div class="sec">
       <div class="label">Sample</div>
       <p class="note">Ancient reads are simulated from a real mitochondrial genome with gargammel, so the true sequence is known and every reconstructed base can be scored.</p>
       <label class="mini">Endogenous genome<select id="adnaEndo" class="field"></select></label>
@@ -157,6 +164,42 @@
       <p class="note">Runs in the Linux engines pack: gargammel → AdapterRemoval → BWA aln (ancient-DNA settings) → mapDamage2 → damage-aware consensus → scoring against the truth. Takes a few minutes.</p>
       <button type="button" class="btn primary" id="adnaRun">Simulate and reconstruct</button>
     </div>
+    </div>
+    <div id="adnaRealControls" hidden>
+      <div class="sec">
+        <div class="label">Reads</div>
+        <p class="note">FASTQ (paired-end or single-end, may be gzipped) or BAM, such as the files deposited with a publication. Files are read where they are, on this computer; nothing is uploaded.</p>
+        <label class="mini">Sample name<input id="realSample" class="field" value="sample" spellcheck="false"></label>
+        <div id="realFiles" class="filelist"></div>
+        <div class="row"><button type="button" class="btn sm" id="realAdd">Add read files…</button><button type="button" class="btn sm" id="realClear">Clear</button></div>
+        <label class="mini check"><input type="checkbox" id="realTrimmed" checked> Single-end FASTQ already adapter-trimmed</label>
+      </div>
+      <div class="sec">
+        <div class="label">Reference</div>
+        <label class="mini">Starting reference<select id="realRef" class="field"></select></label>
+        <div class="row small" id="realRefFileRow" hidden><span class="note" id="realRefFile"></span></div>
+        <label class="mini check"><input type="checkbox" id="realCircular" checked> Circular genome (mitochondrial)</label>
+        <label class="mini check"><input type="checkbox" id="realContam" checked> Estimate present-day human contamination</label>
+      </div>
+      <div class="sec">
+        <div class="label">Consensus</div>
+        <label class="mini">Mapping iterations (until the sequence stops changing) <span class="val" id="realItVal">4</span><input id="realIt" type="range" min="1" max="10" step="1" value="4"></label>
+        <label class="mini">Minimum reads per base <span class="val" id="realDepthVal">3</span><input id="realDepth" type="range" min="1" max="10" step="1" value="3"></label>
+        <label class="mini">Minimum posterior <select id="realConf" class="field">
+          <option value="0.9">0.9</option><option value="0.99" selected>0.99</option><option value="0.999">0.999</option></select></label>
+        <label class="mini check"><input type="checkbox" id="realStats"> mapDamage2 Bayesian damage estimate (adds minutes)</label>
+      </div>
+      <div class="sec">
+        <div class="label">Compare (optional)</div>
+        <p class="note">A published sequence for the same sample (FASTA), e.g. from GenBank. Every difference is listed with its read support.</p>
+        <div class="row"><button type="button" class="btn sm" id="realCmp">Choose FASTA…</button><button type="button" class="btn sm" id="realCmpClear">None</button></div>
+        <p class="note" id="realCmpName">None</p>
+      </div>
+      <div class="sec">
+        <p class="note">Linux engines pack: AdapterRemoval → BWA aln (ancient-DNA settings, circular reference) → duplicate removal → iterative damage-aware consensus with indels → competitive mapping against human mtDNA → mapDamage2.</p>
+        <button type="button" class="btn primary" id="realRun">Reconstruct</button>
+      </div>
+    </div>
   </section>
   <section class="panel center-scroll" aria-label="Ancient DNA results">
     <div class="busy progress" id="adnaBusy" hidden>
@@ -173,6 +216,20 @@
       <div class="sec"><div class="label">Genome tracks</div>
         <p class="note">Depth (area), consensus errors against the truth (red), low-confidence calls &lt;99% (amber), uncovered (grey).</p>
         <div id="adnaTracks"></div></div>
+    </div>
+    <div id="realResults" hidden>
+      <div class="sec"><div class="label">Reconstruction</div><div id="realSummary"></div>
+        <div class="row"><button type="button" class="btn sm" id="realSaveFasta">Save consensus FASTA…</button>
+          <button type="button" class="btn sm" id="realSaveMaj">Save majority-rule FASTA…</button>
+          <button type="button" class="btn sm" id="realSaveJson">Save full report (JSON)…</button></div></div>
+      <div class="sec"><div class="label">Authentication</div><div id="realAuth"></div>
+        <div class="plots"><canvas id="realDamagePlot" height="220"></canvas><canvas id="realLenPlot" height="220"></canvas></div></div>
+      <div class="sec"><div class="label">Contamination</div><div id="realContamOut"></div></div>
+      <div class="sec"><div class="label">Mapping iterations</div><div id="realIter"></div></div>
+      <div class="sec" id="realCmpSec" hidden><div class="label">Comparison with the published sequence</div><div id="realCmpOut"></div></div>
+      <div class="sec"><div class="label">Genome track</div>
+        <p class="note">Depth (area), bases left uncalled (N) for low depth or posterior (amber), differences from the published sequence (red).</p>
+        <div id="realTrack"></div></div>
     </div>
   </section>
   <section class="panel" aria-label="Provenance">

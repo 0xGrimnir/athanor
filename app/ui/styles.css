@@ -214,3 +214,14 @@ td.n { font-family: var(--f-data); text-align: right; font-variant-numeric: tabu
 .ptext { font-family: var(--f-data); font-size: 12.5px; color: var(--text); }
 .ptext b { color: var(--arc); font-size: 15px; margin-right: 4px; }
 .pstage { font-size: 12px; color: var(--dim); }
+/* Ancient DNA: the user's read files */
+.filelist { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; }
+.filelist .file { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; border: 1px solid var(--line); padding: 5px 7px; font-size: 12px; }
+.filelist .kind { font-family: var(--f-data); font-size: 10px; letter-spacing: .08em; color: var(--arc); text-transform: uppercase; }
+.filelist .fn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--f-data); }
+.filelist .btn.sm { padding: 2px 7px; }
+td .warn, span.warn { color: var(--warn); }
+table.kv td:first-child { width: 36%; color: var(--dim); }
+table.kv td.n { text-align: left; }
+#adnaRealControls .sec + .sec, #adnaSimControls .sec + .sec { margin-top: 6px; }
+#realResults .sec + .sec, #adnaResults .sec + .sec { margin-top: 14px; }

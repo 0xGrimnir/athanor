@@ -34,10 +34,12 @@ def parse_cs(cs: str, t_start: int, q_start: int, q_reverse: bool = False) -> di
             t += 1; q += 1
         elif m.group(4):
             s = m.group(4)
-            out["insertions_in_ours"].append({"theirs_pos": t, "ours_pos": q, "sequence": s.upper()}); q += len(s)
+            out["insertions_in_ours"].append({"theirs_pos": t, "ours_pos": q, "sequence": s.upper(),
+                                              "uncalled": set(s) <= {"n"}}); q += len(s)
         elif m.group(5):
             s = m.group(5)
-            out["deletions_in_ours"].append({"theirs_pos": t, "ours_pos": q, "sequence": s.upper()}); t += len(s)
+            out["deletions_in_ours"].append({"theirs_pos": t, "ours_pos": q, "sequence": s.upper(),
+                                             "uncalled": set(s) <= {"n"}}); t += len(s)
     return out
 
 

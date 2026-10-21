@@ -94,8 +94,9 @@ def test_parse_cs_classifies_differences():
     assert r["matches"] == 20
     assert r["substitutions"] == [{"theirs_pos": 10, "ours_pos": 10, "theirs": "A", "ours": "G"}]
     assert r["uncalled_theirs"] == 1 and r["uncalled_ours"] == 1
-    assert r["insertions_in_ours"] == [{"theirs_pos": 18, "ours_pos": 18, "sequence": "TT"}]
-    assert r["deletions_in_ours"] == [{"theirs_pos": 21, "ours_pos": 23, "sequence": "C"}]
+    assert r["insertions_in_ours"] == [{"theirs_pos": 18, "ours_pos": 18, "sequence": "TT", "uncalled": False}]
+    assert r["deletions_in_ours"] == [{"theirs_pos": 21, "ours_pos": 23, "sequence": "C", "uncalled": False}]
+    assert parse_cs(":3+nnn:3", 0, 0)["insertions_in_ours"][0]["uncalled"]
 
 
 def _obs(sites, bases, d5, d3, rev=None, full=None):
@@ -134,3 +135,12 @@ def test_intervals():
     assert lo == pytest.approx(0.0164, abs=2e-4) and hi == pytest.approx(0.1128, abs=2e-4)
     lo, hi = wilson_interval(5, 100)
     assert lo == pytest.approx(0.0215, abs=2e-4) and hi == pytest.approx(0.1118, abs=2e-4)
+
+
+def test_windows_paths_map_into_wsl():
+    from athanor_core.server import to_linux_path as t
+    assert t(r"C:\Users\me\reads\a.bam") == "/mnt/c/Users/me/reads/a.bam"
+    assert t("D:/data/x.fq.gz") == "/mnt/d/data/x.fq.gz"
+    assert t("\\\\?\\C:\\x\\y.bam") == "/mnt/c/x/y.bam"
+    assert t("\\\\wsl.localhost\\AthanorCompute\\root\\a.bam") == "/root/a.bam"
+    assert t("/already/linux") == "/already/linux"

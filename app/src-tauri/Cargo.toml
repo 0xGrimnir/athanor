@@ -18,6 +18,7 @@ tauri = { version = "2.12", features = [] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri-plugin-updater = "2.14"
+tauri-plugin-dialog = "2"
 sha2 = "0.10"
 
 [profile.release]
