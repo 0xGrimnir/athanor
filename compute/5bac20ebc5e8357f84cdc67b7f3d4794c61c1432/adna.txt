@@ -1,0 +1,93 @@
+progress 0.0% eta 348s step 1/77 simulate (gargammel)
+progress 3.4% eta 289s step 18/77 damage on NC_007596 iteration 2 (mapDamage2)
+progress 8.5% eta 267s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 15.2% eta 247s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 21.9% eta 227s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 28.1% eta 207s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 30.1% eta 206s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 31.4% eta 206s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 32.1% eta 206s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 32.6% eta 206s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 33.0% eta 206s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 33.1% eta 206s step 26/77 damage on NC_007596 iteration 3 (mapDamage2)
+progress 35.3% eta 383s step 36/77 consensus on NC_000934 iteration 1
+progress 38.4% eta 374s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 41.6% eta 354s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 44.7% eta 334s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 47.9% eta 314s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 51.0% eta 294s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 54.1% eta 274s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 57.3% eta 253s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 60.4% eta 233s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 61.9% eta 213s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 62.8% eta 221s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 63.6% eta 221s step 51/77 damage on NC_000934 iteration 3 (mapDamage2)
+progress 67.9% eta 198s step 60/77 damage on NC_005129 iteration 1 (mapDamage2)
+progress 71.2% eta 190s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 74.2% eta 170s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 77.2% eta 150s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 80.2% eta 130s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 83.3% eta 110s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 86.3% eta 90s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 89.3% eta 70s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 92.4% eta 50s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 94.6% eta 30s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 95.6% eta 10s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+progress 96.4% eta 29s step 76/77 damage on NC_005129 iteration 3 (mapDamage2)
+tools: {"bwa": "Version: 0.7.19-r1273", "samtools": "samtools 1.24", "adapterremoval": "adapterremoval3 v3.0.2", "mapDamage": "2.2.2", "minimap2": "2.31-r1302", "gargammel": "gargammel (bioconda; see pack lock)"}
+simulated damage (v,l,d,s): [0.03, 0.4, 0.01, 0.3]
+[NC_007596] Mammuthus primigenius (woolly mammoth): mapped=3890 depth=10.1 covered=0.997 truth-ref divergence=0.0000 theta=0.0000 accuracy=1.00000 predicted_err=0.00000 observed_err=0.00000 ECE=0.00000 gaps=0 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0001, 'DeltaD': 0.0118, 'DeltaS': 0.5669, 'Lambda': 0.4141, 'Rho': 1.2832, 'LogLik': -137.4087}
+   iteration 1: mapped=3890 covered=0.997 accuracy=1.00000 predicted=0.00000 observed=0.00000 ECE=0.00000 theta=0.0000
+   iteration 2: mapped=3890 covered=0.997 accuracy=1.00000 predicted=0.00000 observed=0.00000 ECE=0.00000 theta=0.0000
+   iteration 3: mapped=3890 covered=0.997 accuracy=1.00000 predicted=0.00000 observed=0.00000 ECE=0.00000 theta=0.0000
+   5' C>T raw: [0.1662, 0.0913, 0.082, 0.0412, 0.0389, 0.0157]  background: 0.0049
+[NC_000934] Loxodonta africana (African savanna elephant): mapped=3765 depth=9.8 covered=0.978 truth-ref divergence=0.0476 theta=0.0467 accuracy=0.99970 predicted_err=0.00010 observed_err=0.00030 ECE=0.00021 gaps=111 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0016, 'DeltaD': 0.0138, 'DeltaS': 0.5653, 'Lambda': 0.4112, 'Rho': 0.4058, 'LogLik': -247.3583}
+   iteration 1: mapped=2831 covered=0.925 accuracy=0.99910 predicted=0.00033 observed=0.00090 ECE=0.00057 theta=0.0392
+   iteration 2: mapped=3610 covered=0.969 accuracy=0.99969 predicted=0.00012 observed=0.00031 ECE=0.00021 theta=0.0452
+   iteration 3: mapped=3765 covered=0.978 accuracy=0.99970 predicted=0.00010 observed=0.00030 ECE=0.00021 theta=0.0467
+   errors: n=5 called-reference-where-truth-differs=5 within-10bp-of-indel=0 median-depth errors/all=1.0/10.0 mean-confidence-at-errors=0.8874
+      {'pos': 4678, 'call': 'G', 'truth': 'A', 'ref': 'G', 'depth': 1, 'confidence': 0.8668832353158148, 'dist_to_indel': 282}
+      {'pos': 10711, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.6669174662048122, 'dist_to_indel': 843}
+      {'pos': 13123, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.9030105793104236, 'dist_to_indel': 2299}
+      {'pos': 16297, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 3, 'confidence': 0.9999999999999927, 'dist_to_indel': 38}
+      {'pos': 16299, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 3, 'confidence': 0.9999999999999087, 'dist_to_indel': 40}
+   5' C>T raw: [0.1592, 0.0934, 0.0775, 0.0469, 0.0401, 0.0163]  background: 0.0073
+[NC_005129] Elephas maximus (Asian elephant): mapped=3800 depth=9.8 covered=0.982 truth-ref divergence=0.0438 theta=0.0431 accuracy=0.99939 predicted_err=0.00006 observed_err=0.00061 ECE=0.00057 gaps=139 unaligned=0
+   mapDamage Bayesian means: {'Theta': 0.0028, 'DeltaD': 0.0124, 'DeltaS': 0.5838, 'Lambda': 0.4202, 'Rho': 0.1191, 'LogLik': -220.217}
+   iteration 1: mapped=2950 covered=0.940 accuracy=0.99899 predicted=0.00048 observed=0.00101 ECE=0.00053 theta=0.0371
+   iteration 2: mapped=3671 covered=0.978 accuracy=0.99921 predicted=0.00024 observed=0.00079 ECE=0.00058 theta=0.0422
+   iteration 3: mapped=3800 covered=0.982 accuracy=0.99939 predicted=0.00006 observed=0.00061 ECE=0.00057 theta=0.0431
+   errors: n=10 called-reference-where-truth-differs=6 within-10bp-of-indel=4 median-depth errors/all=5.5/10.0 mean-confidence-at-errors=0.9329
+      {'pos': 13057, 'call': 'T', 'truth': 'C', 'ref': 'T', 'depth': 8, 'confidence': 1.0, 'dist_to_indel': 3127}
+      {'pos': 13058, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 8, 'confidence': 1.0, 'dist_to_indel': 3126}
+      {'pos': 13059, 'call': 'G', 'truth': 'C', 'ref': 'C', 'depth': 8, 'confidence': 1.0, 'dist_to_indel': 3125}
+      {'pos': 13060, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 8, 'confidence': 1.0, 'dist_to_indel': 3124}
+      {'pos': 14191, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.9136396009188414, 'dist_to_indel': 1993}
+      {'pos': 15106, 'call': 'C', 'truth': 'T', 'ref': 'C', 'depth': 1, 'confidence': 0.5564673002414526, 'dist_to_indel': 1078}
+      {'pos': 16184, 'call': 'G', 'truth': 'A', 'ref': 'A', 'depth': 4, 'confidence': 0.999999999999996, 'dist_to_indel': 0}
+      {'pos': 16192, 'call': 'A', 'truth': 'G', 'ref': 'A', 'depth': 1, 'confidence': 0.9982032999906008, 'dist_to_indel': 8}
+   5' C>T raw: [0.1646, 0.0918, 0.0744, 0.0464, 0.0396, 0.0176]  background: 0.0059
+total 655 s
+[INFO] ETA at 10%: predicted 262 s, actual 629 s
+[INFO] ETA at 25%: predicted 217 s, actual 584 s
+[INFO] ETA at 50%: predicted 300 s, actual 359 s
+[INFO] ETA at 75%: predicted 164 s, actual 186 s
+[INFO] progress events 713, monotone True, steps planned 77, steps run 77
+[PASS] self-reference accuracy >= 99.9%: 1.00000
+[PASS] mapDamage recovers deltaD within 30%: 0.0118 vs 0.01
+[PASS] mapDamage recovers lambda within 20%: 0.4141 vs 0.4
+[INFO] mapDamage deltaS 0.5669 vs gargammel s=0.3: parameterisations differ; reported, not gated
+[PASS] NC_000934: iterative mapping does not lose accuracy: 0.99910 -> 0.99970
+[PASS] NC_000934: iterative mapping moves divergence estimate toward the truth: 0.0392 -> 0.0467 (true 0.0476)
+[PASS] NC_000934: final consensus >= 99.9% correct: 0.99970
+[PASS] NC_000934: expected calibration error <= 0.002: 0.00021
+[PASS] NC_000934: mapDamage deltaD within 50% after iteration: 0.0138 vs 0.01
+[PASS] NC_005129: iterative mapping does not lose accuracy: 0.99899 -> 0.99939
+[PASS] NC_005129: iterative mapping moves divergence estimate toward the truth: 0.0371 -> 0.0431 (true 0.0438)
+[PASS] NC_005129: final consensus >= 99.9% correct: 0.99939
+[PASS] NC_005129: expected calibration error <= 0.002: 0.00057
+[PASS] NC_005129: mapDamage deltaD within 50% after iteration: 0.0124 vs 0.01
+[PASS] progress plan matches the steps actually run: planned 77, ran 77
+[PASS] progress never goes backwards: monotone
