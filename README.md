@@ -63,9 +63,11 @@ The deposited reads of seven woolly mammoth ivory samples from Hohle Fels (Scien
 | HOLF010.B | PZ244055.1 | 36.4× | 16,694 | 0 |
 | HOLF022.A | PZ244058.1 | 124.1× | 16,767 | 0 |
 | HOLF024.B | PZ244059.1 | 28.1× | 16,538 | 1 |
-| HOLF025.B | PZ244060.1 | 16.2× | 16,723 | 0 |
+| HOLF025.B | PZ244060.1 | 16.2× | 16,767 | 0 |
 
-Every sample shows the terminal C→T excess of authentic ancient DNA. Remaining length differences lie in the control-region repeat, where both sequences leave bases uncalled. Simulations with known answers check the rest: contamination estimates of 0.00%, 2.05% and 10.40% against true 0%, 2.00% and 10.19%, and the mammoth sequence rebuilt starting from the African elephant genome agrees with the truth at 99.988% of 16,626 called bases. All of it runs in CI (`compute/ci_reproduce.py`).
+Every sample shows the terminal C→T excess of authentic ancient DNA. The one disagreement (HOLF024.B, position 12,196) is a base the published sequence gives as T, while all six deposited reads covering it read C. The remaining differences are lengths in the control-region repeat (HOLF003.A, HOLF010.B), where the published sequences also carry uncalled bases.
+
+Simulations with known answers check the rest. Contamination estimates were 0.00%, 1.95% and 10.40% against true values of 0%, 1.95% and 10.20%. The mammoth sequence, rebuilt starting from the African elephant genome (about 9% divergent), agreed with the truth at every one of 16,462 called bases (latest CI run; the simulations are random, so the figures vary slightly between runs). All of it runs in CI (`compute/ci_reproduce.py`).
 
 ## Architecture
 

@@ -15,7 +15,7 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
   - Present-day human contamination by competitive mapping (Feuerborn et al. 2020), with an exact binomial interval and the length and damage of the human-assigned reads.
   - Consensus FASTA with an N mask (depth and posterior thresholds), a conventional majority-rule consensus, and a full JSON report with provenance (input SHA-256, settings, every command).
   - Optional comparison with a published sequence, listing every difference with its read support.
-- CI reproduces seven published woolly mammoth mitogenomes (Hohle Fels; ENA PRJEB103048, GenBank PZ244049–PZ244060) from their deposited reads: six identical at every base both sequences call, one differing at a single base. Simulations check the contamination estimate (0%, 2%, 10%) and reconstruction starting from the African elephant genome.
+- CI reproduces seven published woolly mammoth mitogenomes (Hohle Fels; ENA PRJEB103048, GenBank PZ244049–PZ244060) from their deposited reads: six identical at every base both sequences call; the seventh differs at one base, where the published sequence has T and all six deposited reads have C. Simulations check the contamination estimate (0%, 2%, 10%) and reconstruction starting from the African elephant genome.
 
 ### Changed
 - No new Linux engines pack is needed; the existing pack (version 2) has every tool.
