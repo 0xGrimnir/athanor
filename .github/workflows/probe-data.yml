@@ -1,0 +1,23 @@
+name: probe-data
+# On-demand listing of a public dataset (ENA files, GenBank records) for the
+# reproduction tests; output goes to the ci-results branch.
+on:
+  workflow_dispatch:
+    inputs:
+      project: {description: "ENA project accession", required: true}
+      first: {description: "first GenBank accession", required: true}
+      last: {description: "last GenBank accession", required: true}
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python3 tools/probe_dataset.py "${{ inputs.project }}" "${{ inputs.first }}" "${{ inputs.last }}" > probe.txt 2>&1 || true
+          cat probe.txt
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/datasets" && cp probe.txt "$d/datasets/${{ inputs.project }}.txt" && \
+            (cd "$d" && git add -A && git commit -qm "dataset probe ${{ inputs.project }}" && git push -q origin HEAD:ci-results)
