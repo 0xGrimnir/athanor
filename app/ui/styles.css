@@ -225,3 +225,4 @@ table.kv td:first-child { width: 36%; color: var(--dim); }
 table.kv td.n { text-align: left; }
 #adnaRealControls .sec + .sec, #adnaSimControls .sec + .sec { margin-top: 6px; }
 #realResults .sec + .sec, #adnaResults .sec + .sec { margin-top: 14px; }
+.note.mono { font-family: var(--f-data); word-break: break-word; }

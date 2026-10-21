@@ -104,7 +104,7 @@ for s in manifest["samples"]:
     _, deposited = read_fasta(repro / s["isolate"] / "deposited.fa")
     inputs = [{"kind": "bam", "path": str(repro / f["path"]), "trimmed": True} for f in s["files"]]
     t1 = time.time()
-    res = run_real(Path("/tmp/repro") / s["isolate"], inputs, reference="NC_007596", iterations=4,
+    res = run_real(Path("/tmp/repro") / s["isolate"], inputs, reference="NC_007596", iterations=6,
                    sample=s["isolate"], compare_with=(s["genbank"], deposited))
     a, m = res["comparison"]["athanor"], res["comparison"]["majority_rule"]
     ts = res["authentication"]["terminal_signal"]
@@ -114,7 +114,8 @@ for s in manifest["samples"]:
           f"{sum(f['reads'] for f in s['files'])} reads) {time.time() - t1:.0f} s", flush=True)
     print(f"  mapping {res['mapping']}; coverage mean {cov['mean_depth']:.1f}, >=3 reads {cov['fraction_ge3']:.4f}")
     print(f"  iterations {[(h['iteration'], h['substitutions_found'], h['indels_found']) for h in res['iterations']]}"
-          f" converged {res['converged']}; theta vs NC_007596 {res['consensus']['estimated_divergence_theta']:.5f}")
+          f" converged {res['converged']} oscillating {res['oscillating']}; pending {res['pending_changes']}; "
+          f"theta vs NC_007596 {res['consensus']['estimated_divergence_theta']:.5f}")
     print(f"  fragments: whole {fl['whole_molecules']} median {fl['median']}; cut by read length {fl['cut_by_read_length']}")
     print(f"  5' C>T pos1 {ts['CtoT_5p_position1']['frequency']:.4f} pos2 {ts['CtoT_5p_position2']['frequency']:.4f} "
           f"interior {ts['CtoT_interior']['frequency']:.4f}; 3' G>A pos1 {ts['GtoA_3p_position1']['frequency']:.4f}")
@@ -126,7 +127,9 @@ for s in manifest["samples"]:
               f"substitutions {len(c['substitutions'])}; insertions {len(c['insertions_in_ours'])}; "
               f"deletions {len(c['deletions_in_ours'])}")
         for x in c["substitutions"][:12]:
-            print("     ", x)
+            print("     ", {k: v for k, v in x.items() if k != "observations"})
+            for o in x.get("observations", []):
+                print("         read base", o)
         for x in (c["insertions_in_ours"] + c["deletions_in_ours"])[:12]:
             print("      indel", x)
     print(f"  predicted errors among called sites: {res['consensus']['predicted_errors_in_called_sites']:.3f}")

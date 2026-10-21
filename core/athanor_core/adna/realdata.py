@@ -65,6 +65,17 @@ def _final_stages(stats: bool, compare: int) -> list:
         + [("compare", EXPECTED["compare"])] * compare
 
 
+def _site_observations(obs, p: int, limit: int = 60) -> list[dict]:
+    """Every read base at site p (reference orientation), with its strand and
+    distance from each molecule end, so a difference can be traced to
+    damage at read ends or to genuine disagreement among reads."""
+    idx = np.flatnonzero(obs.site == p)[:limit]
+    full = obs.full if obs.full is not None else np.ones(len(obs), bool)
+    return [{"base": BASES[int(obs.base[i])], "strand": "-" if obs.reverse[i] else "+",
+             "from_5p": int(obs.dist5[i]), "from_3p": int(obs.dist3[i]) if full[i] else None,
+             "quality": int(obs.qual[i])} for i in idx]
+
+
 def run_real(work: str | Path, inputs: list[dict], reference: str = "NC_007596", reference_fasta: str | None = None,
              circular: bool = True, contaminant: str | None = "NC_012920", iterations: int = 4,
              min_mapq: int = 25, min_length: int = 30, min_depth: int = 3, min_confidence: float = 0.99,
@@ -105,6 +116,8 @@ def run_real(work: str | Path, inputs: list[dict], reference: str = "NC_007596",
     cur, origin = list(ref_seq), list(range(len(ref_seq)))
     history, applied = [], []
     converged = False
+    oscillating = False
+    seen = {hash("".join(cur))}
     for it in range(1, iterations + 1):
         L = len(cur)
         seq = "".join(cur)
@@ -148,8 +161,17 @@ def run_real(work: str | Path, inputs: list[dict], reference: str = "NC_007596",
             progress.expect((_contam_stages() if contaminant else []) + _final_stages(mapdamage_stats, n_compare))
             break
         if it < iterations:
+            new, new_origin = apply_changes(cur, origin, subs, indels)
+            key = hash("".join(new))
+            if key in seen:
+                # the changes lead back to a sequence already mapped against:
+                # the calls alternate between states, so iterating further cannot settle them
+                oscillating = True
+                progress.expect((_contam_stages() if contaminant else []) + _final_stages(mapdamage_stats, n_compare))
+                break
+            seen.add(key)
             applied.append({"after_iteration": it, "substitutions": len(subs), "indels": indels})
-            cur, origin = apply_changes(cur, origin, subs, indels)
+            cur, origin = new, new_origin
 
     # 4. outputs on the final mapping
     L = len(cur)
@@ -192,11 +214,12 @@ def run_real(work: str | Path, inputs: list[dict], reference: str = "NC_007596",
                 s["depth"] = int(cons.depth[p])
                 s["posterior"] = float(conf[p])
                 s["base_counts_trimmed"] = dict(zip(BASES, map(int, counts[p])))
+                s["observations"] = _site_observations(obs, p)
 
     fasta = (f">{sample} Athanor consensus (reference {ref_id}; N where depth < {min_depth} "
              f"or posterior < {min_confidence})\n" + "\n".join(athanor_seq[i:i + 70] for i in range(0, L, 70)) + "\n")
     depth = cons.depth
-    pending = [] if converged else [{"substitutions": len(subs), "indels": indels}]
+    pending = [] if converged else [{"substitutions": sorted(int(i) for i in subs), "indels": indels}]
     return {
         "mode": "real data",
         "sample": sample, "inputs": prepared["inputs"], "fragment_lengths": prepared["fragment_lengths"],
@@ -205,7 +228,8 @@ def run_real(work: str | Path, inputs: list[dict], reference: str = "NC_007596",
                      "min_depth": min_depth, "min_posterior": min_confidence, "mapdamage_stats": mapdamage_stats,
                      "bwa_aln": "-l 1024 -n 0.04 -o 2"},
         "contamination": contamination,
-        "iterations": history, "changes_applied": applied, "converged": converged, "pending_changes": pending,
+        "iterations": history, "changes_applied": applied, "converged": converged, "oscillating": oscillating,
+        "pending_changes": pending,
         "mapping": history[-1]["mapping"],
         "coverage": {"length": L, "mean_depth": float(depth.mean()), "median_depth": float(np.median(depth)),
                      "fraction_ge1": float((depth >= 1).mean()), "fraction_ge3": float((depth >= 3).mean()),

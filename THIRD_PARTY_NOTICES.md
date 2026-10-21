@@ -9,6 +9,8 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Component | Use | License | Status |
 |---|---|---|---|
 | Tauri | Desktop shell, installer, updater | Apache-2.0 OR MIT | Verified |
+| tauri-plugin-dialog, tauri-plugin-fs | Native file open/save dialogs | Apache-2.0 OR MIT | Verified |
+| rfd | Native dialogs on Windows (used by tauri-plugin-dialog) | MIT | Verified |
 | three.js | 3D rendering | MIT | Verified |
 | fflate | Unzipping report archives | MIT | Verified |
 | igv.js | Genome browser | MIT | Verified |
@@ -71,6 +73,7 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | MMFF94 validation suite and parameter tables (T. A. Halgren) | MMFF94 correctness test; fitted-parameter coverage check | Distributed via CCL and RDKit (BSD-3-Clause) | Verified |
 | NIST CCCBDB (SRD 101), NIST Chemistry WebBook (SRD 69) | Experimental reference values for benchmarks | US government data | Verified |
 | NCBI RefSeq mitogenomes NC_007596.2, NC_000934.1, NC_005129.2, NC_012920.1 | Ancient DNA Lab references (fetched at pack build; hashes in the pack manifest) | NCBI: no general restrictions; individual records may carry their own | Verified source |
+| ENA PRJEB103048 reads and GenBank PZ244049–PZ244060 (Hohle Fels mammoth ivory, Scientific Reports 2026) | CI reproduction test only: downloaded at test time, never redistributed | INSDC public data | Verified source |
 | Ensembl (release 110) | Gene coordinates and transcript models | No restrictions on use | To verify |
 
 ## Compute pack note

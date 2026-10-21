@@ -39,15 +39,22 @@ Open questions carried forward:
 - mapDamage2's δs differs from gargammel's single-stranded deamination parameter on every reference (≈ 0.55 vs 0.3): likely different parameterisations; to be resolved from both programs' definitions
 - Residual overconfidence at single-read sites (prior toward the reference); candidate fix: site-heterogeneous divergence prior
 
-## Phase 2b: Ancient DNA Lab, real data
+## Phase 2b: Ancient DNA Lab, real data (working; 0.4.0)
 
-- **Import:** raw paired-end FASTQ (pipeline starts at adapter trimming) or already-mapped BAM; processed locally, never uploaded
-- **Authentication without a known truth:** deamination profile at read ends as evidence of antiquity, fragment-length distribution, coverage and depth reports
-- **Contamination estimation** for mitochondrial data (fraction of present-day human or other reads), using an established published method
-- **Outputs:** consensus FASTA with per-base posteriors and an N mask, provenance record, report suitable for a methods section
-- **Validation by reproduction:** run the raw reads of a published ancient mitogenome (raw reads in ENA/SRA, final sequence in GenBank; mammoth or Neanderthal candidates, availability to be verified) through Athanor and compare with the deposited sequence
-- **Benchmark:** reproduce published mitogenomes within the uncertainty the app reports; contamination estimates consistent with the original publications
-- Scope: mitochondrial-scale data first; ancient nuclear genomes later, with the heavy-compute pack
+Done:
+- **Import:** paired-end FASTQ (adapter trimming and merging), single-end FASTQ, or BAM (e.g. the files deposited with a publication; reads restored to sequencing orientation); read in place, never uploaded
+- **Circular mapping:** BWA aln to the reference elongated by its own start (as in CircularMapper), positions folded back; per-library duplicate removal
+- **Iterative, indel-aware reconstruction** from the species' or a relative's reference until the sequence stops changing; posteriors keep the starting reference as the prior
+- **Damage measured against the sample's own consensus**; reads cut short by the read length carry no 3′ damage term
+- **Authentication:** terminal C→T / G→A with 95% intervals against the molecule interior, whole-molecule length distribution, coverage, mapDamage2 profiles
+- **Contamination:** competitive mapping against the reconstructed sequence and the human mitogenome (Feuerborn et al. 2020), exact binomial interval, length and damage of the human-assigned reads
+- **Outputs:** consensus FASTA with an N mask, majority-rule consensus, per-base posteriors and depths, full JSON report with provenance
+- **Validation in CI:** contamination estimates on simulations (0%, 2%, 10%); mammoth reconstructed starting from the African elephant genome; reproduction of the published Hohle Fels mammoth mitogenomes (ENA PRJEB103048 → GenBank PZ244049–PZ244060)
+
+Next:
+- More reproduction datasets (a non-UDG library; a Neanderthal mitogenome with an established contamination estimate)
+- Human samples: contamination needs a different method (e.g. haplotype-based), since competitive mapping against human cannot separate human from human
+- Scope: mitochondrial-scale data; ancient nuclear genomes later, with native whole-genome mapping
 
 ## Phase 3: Genome module and live data
 

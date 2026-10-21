@@ -1040,7 +1040,9 @@ function renderReal() {
     ["Bases called", `${c.called_sites.toLocaleString()} of ${L.toLocaleString()} (${pct(c.called_sites / L, 2)}); the rest are N`],
     ["Expected errors among called bases", c.predicted_errors_in_called_sites < 0.01 ? "< 0.01" : c.predicted_errors_in_called_sites.toFixed(2)],
     ["Divergence from the starting reference", pct(c.estimated_divergence_theta, 2)],
-    ["Iterative mapping", R.converged ? `converged after ${R.iterations.length} iteration(s)` : `<span class="warn">not converged after ${R.iterations.length} iterations; increase iterations</span>`],
+    ["Iterative mapping", R.converged ? `converged after ${R.iterations.length} iteration(s)`
+      : R.oscillating ? `<span class="warn">stopped after ${R.iterations.length} iterations: the remaining calls alternate between states (positions ${escapeHtml((R.pending_changes[0]?.substitutions || []).slice(0, 8).map((x) => x + 1).join(", "))}); they are reported with their posteriors</span>`
+      : `<span class="warn">not converged after ${R.iterations.length} iterations; increase iterations</span>`],
     ["Majority-rule consensus", `${R.majority_rule.called_sites.toLocaleString()} bases called (${escapeHtml(R.majority_rule.rule)})`],
   ]) + `<p class="note">Bases are called from damage-aware posteriors: N where fewer than ${R.settings.min_depth} reads cover a base or its posterior is below ${R.settings.min_posterior}. The expected error count is the sum of (1 − posterior) over called bases; it assumes the model's damage and error rates, which are measured from this sample.</p>`;
 
@@ -1082,7 +1084,10 @@ function renderReal() {
       <td class="n">${x.uncalled_ours.toLocaleString()} / ${x.uncalled_theirs.toLocaleString()}</td><td class="n">${pct(x.theirs_aligned_fraction, 1)}</td></tr>`;
     const diffs = cmp.athanor.substitutions.map((d) => `<tr><td class="n">${(d.theirs_pos + 1).toLocaleString()}</td><td class="n">${(d.ours_pos + 1).toLocaleString()}</td>
       <td class="n">${d.theirs}</td><td class="n">${d.ours}</td><td class="n">${d.depth}</td><td class="n">${d.posterior.toFixed(4)}</td>
-      <td class="n">${Object.entries(d.base_counts_trimmed).map(([b, n]) => `${b}${n}`).join(" ")}</td></tr>`).join("");
+      <td class="n">${Object.entries(d.base_counts_trimmed).map(([b, n]) => `${b}${n}`).join(" ")}</td></tr>
+      ${d.observations && d.observations.length ? `<tr><td colspan="7"><details><summary class="note">Every read base here (strand, bases from the 5′ / 3′ end)</summary>
+        <p class="note mono">${d.observations.map((o) => `${o.base}${o.strand} ${o.from_5p}/${o.from_3p ?? "–"}`).join(" · ")}</p>
+        <p class="note">A T supported only by bases at 5′ ends of + reads or 3′ ends of − reads (or an A at the mirror positions) is what deamination produces.</p></details></td></tr>` : ""}`).join("");
     const indels = [...cmp.athanor.insertions_in_ours.map((d) => [d.uncalled ? "extra uncalled (N) bases in ours: length unresolved" : "extra in ours", d]),
                     ...cmp.athanor.deletions_in_ours.map((d) => [d.uncalled ? "published has N here; ours lacks them" : "missing in ours", d])]
       .map(([k, d]) => `<tr><td class="n">${(d.theirs_pos + 1).toLocaleString()}</td><td>${k}</td><td class="n">${escapeHtml(d.sequence)}</td></tr>`).join("");
