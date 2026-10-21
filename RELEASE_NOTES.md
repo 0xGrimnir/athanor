@@ -1,5 +1,7 @@
-Athanor 0.3.1: a real progress bar for ancient-DNA runs.
+Athanor 0.4.0: reconstruct ancient mitogenomes from your own reads.
 
-- Shows percentage, time left and elapsed time, and which step of the run is in progress (e.g. "Step 51 of 77 · damage on African savanna elephant iteration 3").
-- Updates every second, including during mapDamage2's long statistical estimate, and learns how fast your machine runs each kind of step.
-- No new Linux engines pack needed.
+- New "Your data" mode in the Ancient DNA tab: add FASTQ or BAM files, pick a starting reference, and get a consensus sequence with per-base confidence, an authentication report (terminal damage, fragment lengths) and a human-contamination estimate. Save the consensus as FASTA or the full report as JSON.
+- Files are read on your computer and never uploaded.
+- Optionally compare with a published sequence; every difference is listed with the reads behind it.
+- Checked against seven published woolly mammoth mitogenomes, reproduced from their deposited reads.
+- Uses the Linux engines pack you already have; no new download.

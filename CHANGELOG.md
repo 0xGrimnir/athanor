@@ -4,6 +4,22 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-21
+
+### Added
+- **Ancient DNA Lab: your own data.** A new "Your data" mode reconstructs a mitogenome from real reads: paired-end or single-end FASTQ, or BAM files such as those deposited with a publication. Files are chosen with the Windows file dialog and read where they are; nothing is uploaded.
+  - Circular mapping (reference elongated by its own start, positions folded back) and per-library duplicate removal.
+  - Iterative, indel-aware reconstruction from the species' or a relative's genome until the sequence stops changing; stops and reports calls that alternate between states.
+  - Damage measured against the sample's own consensus; reads cut short by the sequencing read length get no 3′ damage term.
+  - Authentication: terminal C→T and G→A with 95% intervals against the molecule interior, whole-molecule length distribution, mapDamage2 profiles.
+  - Present-day human contamination by competitive mapping (Feuerborn et al. 2020), with an exact binomial interval and the length and damage of the human-assigned reads.
+  - Consensus FASTA with an N mask (depth and posterior thresholds), a conventional majority-rule consensus, and a full JSON report with provenance (input SHA-256, settings, every command).
+  - Optional comparison with a published sequence, listing every difference with its read support.
+- CI reproduces seven published woolly mammoth mitogenomes (Hohle Fels; ENA PRJEB103048, GenBank PZ244049–PZ244060) from their deposited reads: six identical at every base both sequences call, one differing at a single base. Simulations check the contamination estimate (0%, 2%, 10%) and reconstruction starting from the African elephant genome.
+
+### Changed
+- No new Linux engines pack is needed; the existing pack (version 2) has every tool.
+
 ## [0.3.1] - 2026-10-20
 
 ### Added

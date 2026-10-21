@@ -22,7 +22,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | Module | What it does | Engines | State |
 |---|---|---|---|
 | **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Phase 1, working |
-| **Ancient DNA Lab** | Simulate damaged ancient reads from a real mitogenome, map them to relatives' genomes, estimate damage, call a damage-aware consensus with calibrated per-base posteriors, quantify and reduce reference bias by iterative mapping, and score every base against the known truth | gargammel, AdapterRemoval, BWA aln, mapDamage2, minimap2 (Linux engines pack) | Phase 2, working |
+| **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Phase 2–2b, working |
 | **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 3 |
 | **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 4 |
 | **Structure** | Protein structures, linking each genome position to its residue in 3D, docking | Mol*, AutoDock Vina | Phase 4 |
@@ -51,6 +51,22 @@ Woolly mammoth mtDNA (NC_007596.2) simulated at 10× with Briggs damage (ν 0.03
 
 These run as gated checks in CI on every pack build (`compute/ci_adna.py`).
 
+### Real data: reproduction of published mitogenomes
+
+The deposited reads of seven woolly mammoth ivory samples from Hohle Fels (Scientific Reports, 2026; reads ENA PRJEB103048, sequences GenBank PZ244049–PZ244060) are run through Athanor from the mammoth reference and compared with the published sequences:
+
+| Sample | GenBank | Mean depth | Bases both call | Disagreements |
+|---|---|---|---|---|
+| HOLF001.A | PZ244049.1 | 19.6× | 16,538 | 0 |
+| HOLF003.A | PZ244050.1 | 28.2× | 16,721 | 0 |
+| HOLF009.A | PZ244054.1 | 33.7× | 16,767 | 0 |
+| HOLF010.B | PZ244055.1 | 36.4× | 16,694 | 0 |
+| HOLF022.A | PZ244058.1 | 124.1× | 16,767 | 0 |
+| HOLF024.B | PZ244059.1 | 28.1× | 16,538 | 1 |
+| HOLF025.B | PZ244060.1 | 16.2× | 16,723 | 0 |
+
+Every sample shows the terminal C→T excess of authentic ancient DNA. Remaining length differences lie in the control-region repeat, where both sequences leave bases uncalled. Simulations with known answers check the rest: contamination estimates of 0.00%, 2.05% and 10.40% against true 0%, 2.00% and 10.19%, and the mammoth sequence rebuilt starting from the African elephant genome agrees with the truth at 99.988% of 16,626 called bases. All of it runs in CI (`compute/ci_reproduce.py`).
+
 ## Architecture
 
 - **Shell:** [Tauri 2](https://tauri.app). A native Windows app with a web-technology interface, shipped as a standard installer with signed in-app updates.
@@ -74,6 +90,7 @@ Download the latest installer from [Releases](../../releases) and run it. The ap
 - **The WebAssembly genomics engines** are slower than native builds and capped at about 4 GB of memory. That's fine for mitochondrial, bacterial and targeted-region work; whole-human-genome mapping waits for the optional compute pack.
 - **No simulation predicts an organism from its genome.** Splice experiments stop at molecular compatibility.
 - **Ancient-DNA reconstruction** gives probabilities for missing bases, never certainty.
+- **Contamination by competitive mapping** detects human DNA in non-human samples only, and is a lower bound. Human ancient samples need a haplotype-based method (planned).
 
 ## Citing
 
