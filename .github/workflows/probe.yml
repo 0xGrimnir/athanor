@@ -1,0 +1,20 @@
+name: probe
+# Runs a small listing script from tools/probes on demand; output goes to the ci-results branch.
+on:
+  workflow_dispatch:
+    inputs:
+      script: {description: "script name in tools/probes (without .py)", required: true}
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python3 "tools/probes/${{ inputs.script }}.py" > probe.txt 2>&1 || true
+          cat probe.txt
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/probes" && cp probe.txt "$d/probes/${{ inputs.script }}.txt" && \
+            (cd "$d" && git add -A && git commit -qm "probe ${{ inputs.script }}" && git push -q origin HEAD:ci-results)
