@@ -4,7 +4,7 @@
 
 An *athanor* was the alchemist's furnace, built for slow, controlled transformation. This one runs on real math: every number comes from an established scientific engine, carries a label saying which method produced it, and ships with its known error bars.
 
-> **Status: pre-alpha.** Phase 1 (the molecule workbench) is working: MMFF94, GFN2-xTB and DFT tiers, frequencies and IR spectra, provenance, and an in-app Validation view. The browser prototype in [`prototype/`](prototype/) is kept as a design reference only; its chemistry and gap-fill modules were illustrative and are superseded. See [Roadmap](docs/ROADMAP.md).
+> **Status: pre-alpha.** Working: the molecule workbench (MMFF94, GFN2-xTB and DFT tiers, frequencies and IR spectra), the Ancient DNA Lab (simulated and real reads), and the first release of Personal Genome. The browser prototype in [`prototype/`](prototype/) is kept as a design reference only. See [Roadmap](docs/ROADMAP.md).
 
 ---
 
@@ -21,14 +21,15 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 
 | Module | What it does | Engines | State |
 |---|---|---|---|
-| **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Phase 1, working |
-| **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Phase 2–2b, working |
-| **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 4 |
-| **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 5 |
-| **Structure** | Protein structures, linking each genome position to its residue in 3D, docking | Mol*, AutoDock Vina | Phase 5 |
-| **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get about 70 evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, modern ancestry, relatives, appearance, food and drink, pharmacogenomics, and opt-in health | AADR, 1000 Genomes, HGDP, PhyloTree, YFull; CPIC, PGS Catalog, ClinVar later | Phase 3, first release working |
+| **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Working (0.1–0.2) |
+| **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Working (0.3–0.4) |
+| **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get about 70 evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, modern ancestry, relatives, appearance, food and drink, pharmacogenomics, and opt-in health | AADR, 1000 Genomes, HGDP, PhyloTree, YFull; CPIC, PGS Catalog, ClinVar later | First release working (0.5) |
+| **DNA Structure** | Any sequence as a 3D helix built from measured parameters; groove shape, melting, base-pairing energies, ancient damage in place, your variants in 3D, and a zoom from helix to chromosome | Molecules engines, DNAshape, nearest-neighbour thermodynamics, PDB, 4D Nucleome | Planned |
+| **Deep Time** | Ancient nuclear genomes, traits from ancient genomes, ancient proteins, DNA decay, radiocarbon calibration | minimap2, bwa-mem2, samtools; IntCal20 | Planned |
+| **Populations** | Evolution sandbox: drift, selection, bottlenecks and interbreeding, compared with real ancient data | msprime, SLiM | Planned |
+| **RNA and proteins** | RNA folding; Personal Genome variants placed on AlphaFold and PDB protein structures | Mol* | Planned |
 
-## Validation (Phase 1)
+## Validation (Molecules)
 
 | Tier | Correctness check | Accuracy check against experiment |
 |---|---|---|
