@@ -1,0 +1,79 @@
+script length 19803
+#!/usr/local/bin/python
+
+
+<<DOCSTRING>>
+
+import sys, os
+from optparse import OptionParser
+
+usage = "usage: zcat mtDB.gz | python %prog  [options] "
+parser = OptionParser(usage=usage, version="%prog v2")
+parser.add_option( "-i", "--id", action="store", type="string", dest="idset", help="extract mitogenomes for a set of ids",default=False)
+parser.add_option( "-f", "--file", action="store", type="string", dest="idfile", help="extract a list of mitogenomes from file (will only list the ones in idset, if specified)",default=False)
+parser.add_option( "-c", "--check", action="store_true", dest="check", help="extract a list of mitogenomes from file (will only list the ones in idset, if specified)",default=False)
+(options, args) = parser.parse_args()
+
+if options.idset:
+  nids= len( options.idset.split(","))
+  sys.stderr.write( "# looking for %i ID(s): idset=%s\n" % (nids, options.idset ))
+
+rsrs = <<DOCSTRING>>.replace("\n","")
+
+
+seq_in=[]
+get_ids={}
+
+if options.idset:
+  [ get_ids.setdefault(x,1) for x in options.idset.split(',') ]
+
+if options.idfile:
+  print "# reading IDs from file"
+
+  if not os.path.exists( options.idfile ):
+    print "Yikes: no id file: .%s. - quitting"
+    exit
+    
+  fh = open( options.idfile )
+  for l in fh.xreadlines():
+    l = l.strip()
+    get_ids[l]=1
+
+n_get_ids=len(get_ids)
+hit={}
+
+ndumped=0
+for l in sys.stdin:
+  l = l.strip()
+  v = l.split("\t")
+  idd = v[0].replace(">","")
+
+  flag_dump=0
+  if True:
+    # dump?
+    if get_ids.has_key( idd ) or n_get_ids==0:
+      if options.check:
+        print "found: %s" % idd
+        continue
+
+      seq_in = v[1]
+      seq_in = "%s%s" % ( seq_in, "-" * ( len(rsrs)-len(seq_in) ))
+      x = [ x[0].replace( 'Q', x[1] ) for x in zip( seq_in, rsrs ) ]
+      x = "".join(x)
+      print ">%s" % idd
+      print "\n".join( [ x[i:i+60] for i in range( 0,len(x),60 )] )
+      ndumped+=1
+
+    hit[ idd ] = 1
+    
+    continue
+    
+# report
+nhit=len(hit)
+sys.stderr.write( "# Number of ( ids_requested, scanned, outputted ) = (%i, %i, %i)\n" % ( n_get_ids, nhit, ndumped  ))
+if n_get_ids>0 and nhit<n_get_ids:
+  sys.stderr.write( "# %i requested ids could not be found:\n" % ( n_get_ids-nhit))
+  sys.stderr.write( "%s\n"  % "\n".join( [ "%i: %s (missing)" % (n,x) for n,x in enumerate( get_ids ) if x not in hit ]) )
+                   
+  
+
