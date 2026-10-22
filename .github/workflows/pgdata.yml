@@ -1,0 +1,179 @@
+name: pgdata
+# Builds the Personal Genome reference data pack from public sources and
+# validates it. The pack is what the app downloads once; the raw data it is
+# built from (the AADR, ~7 GB) is never redistributed, only summaries of it.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Pack version to publish (integer, e.g. 1); empty = build and validate only"
+        required: false
+        default: ""
+      synthetic:
+        description: "Use the small synthetic stand-in instead of downloading the AADR"
+        required: false
+        default: "false"
+  push:
+    paths:
+      - "tools/pgdata/**"
+      - "core/athanor_core/personal/**"
+      - ".github/workflows/pgdata.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h / | tail -1
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: pg
+          create-args: >-
+            python=3.12 numpy scipy msprime admixtools=8.0.2
+          condarc: |
+            channels: [conda-forge, bioconda]
+          cache-environment: true
+
+      - name: Reference trees and the build chain
+        run: |
+          set -euo pipefail
+          mkdir -p ext
+          git clone -q --depth 1 https://github.com/genid/Yleaf.git ext/Yleaf
+          git clone -q --depth 1 https://github.com/genepi/phylotree-rsrs-17.git ext/phylotree
+          # UCSC chain for files on GRCh38; Yleaf ships the same file if UCSC is unreachable
+          curl -fsSL --retry 3 -o ext/hg38ToHg19.over.chain.gz \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.over.chain.gz \
+            || cp ext/Yleaf/yleaf/data/hg19/hg38ToHg19.over.chain.gz ext/hg38ToHg19.over.chain.gz
+          ls -la ext/hg38ToHg19.over.chain.gz
+
+      - name: qpAdm against ADMIXTOOLS (estimator cross-check)
+        run: |
+          set +e
+          python tools/pgdata/crosscheck_qpadm.py "$CONDA_PREFIX/bin" cc > crosscheck.txt 2>&1
+          rc=$?
+          cat crosscheck.txt
+          msg=$(grep -E "^\[|^   " crosscheck.txt | tail -c 2500 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=qpAdm cross-check::$msg"; else echo "::error title=qpAdm cross-check failed::$msg"; fi
+          exit $rc
+
+      - name: Fetch the Allen Ancient DNA Resource (v66.p1, 1240K)
+        if: github.event_name == 'workflow_dispatch' && inputs.synthetic != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p aadr
+          base=https://dataverse.harvard.edu/api/access/datafile
+          # file id, name, md5 (from the Dataverse record; CC0)
+          while read -r id name md5; do
+            echo "downloading $name"
+            curl -fsSL --retry 5 --retry-delay 10 -o "aadr/$name" "$base/$id"
+            got=$(md5sum "aadr/$name" | cut -d' ' -f1)
+            [ "$got" = "$md5" ] || { echo "::error::$name md5 $got != $md5"; exit 1; }
+          done <<'EOF'
+          13994829 v66.p1_1240K.aadr.patch.PUB.geno 5ea1d2675a271c81e55b8f8b08b3ff3b
+          13994513 v66.p1_1240K.aadr.patch.PUB.ind 19a434ac954bcd10dbb8dba1d1188a09
+          13994514 v66.p1_1240K.aadr.patch.PUB.snp 50f66178fc81b8aa087cc4b135317e59
+          13994515 v66.p1_1240K.aadr.PUB.anno a2db1ac16f0f3558ed66fb251e1d5c7d
+          13994529 v66.p1_MT.repo.fa.gz 4e9e6f3d1deb148bc4cd3c5ed4e45184
+          EOF
+          ( cd aadr && for f in *.geno *.ind *.snp; do mv "$f" "aadr.${f##*.}"; done )
+          ls -la aadr; df -h / | tail -1
+
+      - name: Build the synthetic stand-in instead
+        if: github.event_name != 'workflow_dispatch' || inputs.synthetic == 'true'
+        run: |
+          mkdir -p aadr
+          python tools/pgdata/synthetic.py aadr/aadr
+          mv aadr/aadr.anno aadr/v66.p1_1240K.aadr.PUB.anno
+
+      - name: Record the sources
+        run: |
+          mkdir -p pack
+          python - <<'PY'
+          import json, subprocess
+          def rev(p):
+              return subprocess.run(["git", "-C", p, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+          json.dump({
+            "aadr": {"name": "Allen Ancient DNA Resource v66.p1 (1240K)", "licence": "CC0 1.0",
+                     "doi": "https://doi.org/10.7910/DVN/FFIDCW",
+                     "citation": "Mallick et al., Sci. Data 11, 182 (2024)"},
+            "phylotree": {"name": "PhyloTree Build 17 (RSRS), as packaged for Haplogrep 3", "licence": "MIT",
+                          "commit": rev("ext/phylotree"),
+                          "citation": "van Oven & Kayser, Hum. Mutat. 30, E386 (2009); Schonherr et al., NAR 51, W263 (2023)"},
+            "yleaf": {"name": "Yleaf Y-chromosome tree and GRCh37 positions (YFull)", "licence": "GPL-3.0",
+                      "commit": rev("ext/Yleaf"), "citation": "Ralf et al., Mol. Biol. Evol. 35, 1291 (2018)"},
+            "chain": {"name": "UCSC hg38ToHg19 liftOver chain", "licence": "free for academic and non-profit use; commercial use of the UCSC tools requires a licence"},
+          }, open("pack/sources.json", "w"), indent=1)
+          PY
+          cat pack/sources.json
+
+      - name: Build the pack
+        run: |
+          set +e
+          python tools/pgdata/build.py aadr/aadr aadr/v66.p1_1240K.aadr.PUB.anno ext/Yleaf ext/phylotree \
+            ext/hg38ToHg19.over.chain.gz pack valdata > build.txt 2>&1
+          rc=$?
+          tail -80 build.txt
+          du -sh pack; ls -la pack
+          if [ $rc -ne 0 ]; then echo "::error title=pack build failed::$(tail -c 2000 build.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc
+
+      - name: Validate
+        run: |
+          set +e
+          mt=aadr/v66.p1_MT.repo.fa.gz
+          [ -f "$mt" ] || mt=none
+          python tools/pgdata/validate.py pack valdata aadr/aadr aadr/v66.p1_1240K.aadr.PUB.anno "$mt" \
+            "$CONDA_PREFIX/bin" > validate.txt 2>&1
+          rc=$?
+          cat validate.txt
+          msg=$(grep -E "^\[(PASS|FAIL)\]" validate.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=pgdata validation::$msg"; else echo "::error title=pgdata validation failed::$msg"; fi
+          exit $rc
+
+      - name: Publish the logs to ci-results
+        if: always()
+        run: |
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/pgdata/${GITHUB_SHA}" && \
+            cp crosscheck.txt build.txt validate.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
+            cp pack/manifest.json pack/validation.json "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
+            (cd "$d" && git add -A && git commit -qm "pgdata ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
+
+      - name: Package and publish to the release feed
+        if: inputs.version != ''
+        run: |
+          set -euo pipefail
+          v="${{ inputs.version }}"
+          [[ "$v" =~ ^[0-9]+$ ]] || { echo "::error::pack version must be an integer"; exit 1; }
+          ( cd pack && tar -czf ../pgdata-$v.tar.gz . )
+          python - <<PY
+          import hashlib, json, os
+          f = "pgdata-$v.tar.gz"
+          h = hashlib.sha256()
+          with open(f, "rb") as fh:
+              for c in iter(lambda: fh.read(1 << 22), b""):
+                  h.update(c)
+          json.dump({"format": 1, "name": "pgdata-$v", "file": f, "size": os.path.getsize(f),
+                     "sha256": h.hexdigest()}, open("pgdata-manifest.json", "w"), indent=1)
+          print(open("pgdata-manifest.json").read())
+          PY
+          gh release create "pgdata-$v" pgdata-$v.tar.gz pgdata-manifest.json \
+            --repo 0xGrimnir/athanor-releases --latest=false \
+            --title "Personal Genome reference data $v" \
+            --notes "Reference data for the Personal Genome module, built from public sources (see sources.json inside). Installed from inside Athanor; not a standalone download. Built from ${GITHUB_SHA}."
+          echo "::notice title=published::pgdata-$v"
+        env:
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
