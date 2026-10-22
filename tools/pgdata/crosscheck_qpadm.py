@@ -10,6 +10,7 @@ Usage: python crosscheck_qpadm.py ADMIXTOOLS_BIN [WORKDIR]
 """
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import tempfile
@@ -135,5 +136,11 @@ gate("Athanor's standard errors match ADMIXTOOLS within 0.005", float(np.max(np.
 gate("both recover the simulated proportions within 0.03",
      float(max(np.max(np.abs(w_me - TRUE)), np.max(np.abs(w_ad - TRUE)))) <= 0.03,
      f"Athanor {np.round(np.abs(w_me - TRUE), 4)}, ADMIXTOOLS {np.round(np.abs(w_ad - TRUE), 4)}")
+summary = (f"Athanor's qpAdm reproduces ADMIXTOOLS qpAdm {np.round(w_ad, 3).tolist()} with "
+           f"{np.round(w_me, 3).tolist()} on a well-powered simulation: every weight agrees to within "
+           f"{np.max(np.abs(w_me - w_ad)):.4f} and every standard error to within "
+           f"{np.nanmax(np.abs(se_me - se_ad)):.4f}, and both recover the simulated proportions "
+           f"{TRUE} to within {max(np.max(np.abs(w_me - TRUE)), np.max(np.abs(w_ad - TRUE))):.3f}.")
+(WORK / "crosscheck.json").write_text(json.dumps({"ancient_ancestry": summary, "fails": fails}, indent=1))
 print(f"{len(fails)} gate(s) failed: {fails}")
 sys.exit(1 if fails else 0)

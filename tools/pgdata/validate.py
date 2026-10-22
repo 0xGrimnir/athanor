@@ -283,9 +283,9 @@ if TRUTH:
         worst = max(errs, key=lambda x: x[2])
         gate("qpAdm recovers the simulated proportions within two standard errors", worst[2] <= 2.0,
              f"worst {worst[0]}: {worst[1]:.3f} = {worst[2]:.1f} standard errors, over {len(errs)} population(s)")
-        summary["ancient_ancestry_accuracy"] = (
-            f"On simulated populations whose true proportions are known, the fitted proportions were within two "
-            f"standard errors of the truth for all {len(errs)} populations (largest deviation {worst[1]:.3f}).")
+        summary["ancient_ancestry"] = ((summary.get("ancient_ancestry", "") + " ").strip() +
+            f" On simulated populations whose true proportions are known, the fitted proportions were within two "
+            f"standard errors of the truth for all {len(errs)} populations (largest deviation {worst[1]:.3f}).").strip()
 
 # ------------------------------------------------------------------ 5. haplogroups
 YT = Tree(ref.tree("y"))
@@ -364,6 +364,21 @@ if MTFA and ANNO and MTFA.exists():
                                     f"same lineage in {100 * c:.0f}% (identical in {100 * res_full['exact'] / res_full['n']:.0f}%); "
                                     f"using only 1,500 chip-like positions, on the same lineage in {100 * cc:.0f}%.")
 
+# the estimator cross-check runs as its own step; fold its summary in here
+cc = os.environ.get("ATHANOR_CROSSCHECK")
+if cc and Path(cc).exists():
+    got = json.loads(Path(cc).read_text()).get("ancient_ancestry")
+    if got:
+        summary["ancient_ancestry"] = (got + " " + summary.get("ancient_ancestry", "")).strip()
+
 (PACK / "validation.json").write_text(json.dumps({"summary": summary, "fails": fails}, indent=1))
+# The report cards show how each one was checked, so the summaries travel with
+# the pack rather than sitting in a separate file.
+mpath = PACK / "manifest.json"
+man = json.loads(mpath.read_text())
+man["validation"] = {k: v for k, v in summary.items() if v}
+man["validated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+mpath.write_text(json.dumps(man, indent=1))
+print("   validation summaries written into the pack manifest:", sorted(man["validation"]))
 print(f"total {time.time() - T0:.0f} s; {len(fails)} gate(s) failed: {fails}")
 sys.exit(1 if fails else 0)

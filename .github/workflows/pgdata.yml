@@ -130,6 +130,8 @@ jobs:
           exit $rc
 
       - name: Validate
+        env:
+          ATHANOR_CROSSCHECK: cc/crosscheck.json
         run: |
           set +e
           mt=aadr/v66.p1_MT.repo.fa.gz
