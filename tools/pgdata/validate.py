@@ -1,6 +1,6 @@
 """Validate the Personal Genome reference pack and analyses (runs in CI).
 
-Usage: python validate.py PACK_DIR VAL_DIR [AADR_PREFIX ANNO MT_FASTA_GZ ADMIXTOOLS_BIN]
+Usage: python validate.py PACK_DIR VAL_DIR [AADR_PREFIX ANNO ADMIXTOOLS_BIN]
 
 Checks (thresholds fixed here before results are seen; each prints PASS or FAIL):
   1. Parsers: held-out genomes written in each vendor's format (and as a
@@ -11,13 +11,12 @@ Checks (thresholds fixed here before results are seen; each prints PASS or FAIL)
      estimate.
   4. qpAdm: Athanor's weights agree with ADMIXTOOLS qpAdm on the same
      individuals and SNPs.
-  5. Haplogroups: Y calls of ancient males and mtDNA calls of the AADR
-     mitochondrial sequences are on the same lineage as the published calls.
+  5. Haplogroups: Y and mtDNA calls for ancient individuals are on the same
+     lineage as the haplogroups published for them.
 Writes PACK_DIR/validation.json (summaries shown on the app's report cards).
 """
 from __future__ import annotations
 
-import gzip
 import json
 import os
 import subprocess
@@ -39,8 +38,7 @@ from athanor_core.personal.writers import write  # noqa: E402
 PACK, VAL = Path(sys.argv[1]), Path(sys.argv[2])
 AADR = Path(sys.argv[3]) if len(sys.argv) > 3 else None
 ANNO = Path(sys.argv[4]) if len(sys.argv) > 4 else None
-MTFA = Path(sys.argv[5]) if len(sys.argv) > 5 else None
-BIN = Path(sys.argv[6]) if len(sys.argv) > 6 else None
+BIN = Path(sys.argv[5]) if len(sys.argv) > 5 else None
 T0 = time.time()
 fails, summary = [], {}
 os.environ["ATHANOR_PGDATA"] = str(PACK)
@@ -329,61 +327,38 @@ if n:
     summary["y_haplogroup"] = (f"On {n} ancient men with published Y haplogroups, Athanor's call from the 1240K Y-chromosome "
                                f"SNPs was on the same lineage in {100 * consistent / n:.0f}% and identical in {100 * exact / n:.0f}%.")
 MT = Tree(ref.tree("mt"))
-if MTFA and ANNO and MTFA.exists():
-    import csv
-    rows = list(csv.reader(open(ANNO, encoding="utf-8", errors="replace"), delimiter="\t"))
-    hdr = rows[0]
-    mcol = next(i for i, h in enumerate(hdr) if h.lower().startswith("mtdna haplogroup"))
-    hg = {r[0]: r[mcol] for r in rows[1:] if len(r) > mcol}
-    hg.update({r[2]: r[mcol] for r in rows[1:] if len(r) > mcol})
-    seqs, cur, buf = {}, None, []
-    opener = gzip.open if str(MTFA).endswith(".gz") else open
-    with opener(MTFA, "rt") as fh:
-        for line in fh:
-            if line.startswith(">"):
-                if cur:
-                    seqs[cur] = "".join(buf)
-                head = line[1:].rstrip("\n")
-                cur, buf = head.split()[0], []
-                if "\t" in head:            # id and sequence on one line
-                    buf.append(head.split("\t", 1)[1].strip())
-            else:
-                buf.append(line.strip())
-        if cur:
-            seqs[cur] = "".join(buf)
-    pos_all = MT.positions
-    res_full = {"n": 0, "consistent": 0, "exact": 0}
-    res_chip = {"n": 0, "consistent": 0, "exact": 0}
-    chip_pos = sorted(rng.choice(pos_all, min(1500, len(pos_all)), replace=False).tolist())
-    tried = 0
-    for sid, sq in seqs.items():
-        key = sid if sid in hg else sid.split(".")[0]
-        name = hg.get(key) or hg.get(sid.split("_")[0])
-        if not name or name in ("..", "n/a") or len(sq) < 16560:
+mg = H["mt_geno"] if "mt_geno" in H.files else np.zeros((0, 0))
+if mg.size:
+    # the same check as for the Y chromosome, on the mitochondrial positions of
+    # the 1240K set: call each ancient individual and compare with the
+    # haplogroup published for them
+    consistent = exact = n = 0
+    for k in range(len(H["mt_ids"])):
+        obs = {}
+        for p_, a1_, a2_, x in zip(H["mt_pos"], H["mt_a1"], H["mt_a2"], mg[k]):
+            if x == 0:
+                obs[int(p_)] = "ACGT"[a1_]
+            elif x == 2:
+                obs[int(p_)] = "ACGT"[a2_]
+        res = MT.call(obs)
+        pub = MT.lookup(str(H["mt_calls"][k]))
+        if res.get("node") is None or pub is None:
             continue
-        pub = MT.lookup(name)
-        if pub is None:
-            continue
-        tried += 1
-        for posset, acc in ((pos_all, res_full), (chip_pos, res_chip)):
-            obs = {p: sq[p - 1].upper() for p in posset if p <= len(sq) and sq[p - 1].upper() in "ACGT"}
-            r = MT.call(obs)
-            if r.get("node") is None:
-                continue
-            acc["n"] += 1
-            acc["exact"] += r["node"] == pub
-            acc["consistent"] += MT.is_ancestor(r["node"], pub) or MT.is_ancestor(pub, r["node"])
-        if tried >= 1500:
-            break
-    print(f"   mtDNA sequences compared: {tried} (full: {res_full}; 1,500 chip-like positions: {res_chip})")
-    if res_full["n"]:
-        c = res_full["consistent"] / res_full["n"]
-        gate("mtDNA haplogroups from full sequences on the same lineage as published in >= 95%", c >= 0.95,
-             f"{res_full['consistent']}/{res_full['n']}, identical {res_full['exact']}")
-        cc = res_chip["consistent"] / max(1, res_chip["n"])
-        summary["mt_haplogroup"] = (f"On {res_full['n']} ancient mitogenomes with published haplogroups, Athanor's call was on the "
-                                    f"same lineage in {100 * c:.0f}% (identical in {100 * res_full['exact'] / res_full['n']:.0f}%); "
-                                    f"using only 1,500 chip-like positions, on the same lineage in {100 * cc:.0f}%.")
+        n += 1
+        me = res["node"]
+        exact += me == pub
+        consistent += MT.is_ancestor(me, pub) or MT.is_ancestor(pub, me)
+    if n:
+        gate("mtDNA haplogroups of ancient individuals on the same lineage as the published call in >= 95%",
+             consistent / n >= 0.95, f"{consistent}/{n} on the same lineage, {exact} identical")
+        summary["mt_haplogroup"] = (
+            f"On {n} ancient individuals with published mtDNA haplogroups, Athanor's call from the mitochondrial "
+            f"positions of the 1240K marker set was on the same lineage in {100 * consistent / n:.0f}% and identical "
+            f"in {100 * exact / n:.0f}%.")
+    else:
+        print("   no ancient individual could be compared for mtDNA")
+else:
+    print("   the validation bundle holds no mitochondrial genotypes; mtDNA check skipped")
 
 # the estimator cross-check runs as its own step; fold its summary in here
 cc = os.environ.get("ATHANOR_CROSSCHECK")

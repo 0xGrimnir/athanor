@@ -56,7 +56,8 @@ for i, l in enumerate(snp_lines):
         rsid[i] = int(f[0][2:])
 keep = (chrom >= 1) & (chrom <= 22) & (a1 < 4) & (a2 < 4)
 ysnp = (chrom == 24) & (a1 < 4) & (a2 < 4)
-log("SNPs", nsnp_all, "autosomal biallelic", int(keep.sum()), "Y", int(ysnp.sum()))
+mtsnp = (chrom == 26) & (a1 < 4) & (a2 < 4)
+log("SNPs", nsnp_all, "autosomal biallelic", int(keep.sum()), "Y", int(ysnp.sum()), "MT", int(mtsnp.sum()))
 
 ind = [l.split() for l in (PREFIX.with_suffix(".ind")).read_text().splitlines()]
 nind = len(ind)
@@ -296,6 +297,8 @@ log("ancient individuals (PASS, >= 20k SNPs, one version each)", len(ancients))
 
 # Y validation set: ancient males with Y calls and good coverage
 ymales = [i for i in ancients if (a_get(ids[i], "sex") or "") == "M" and a_get(ids[i], "y") and snps_hit[i] >= 500000][:600]
+# ancient individuals with a published mtDNA haplogroup, for the same check on the maternal line
+mtinds = [i for i in ancients if a_get(ids[i], "mt") and snps_hit[i] >= 500000][:800]
 
 # ------------------------------------------------------------------ pass 1
 S_idx = np.flatnonzero(keep)
@@ -559,6 +562,10 @@ if VALDIR:
         G = decode(np.array(holdout), s_lo, s_hi)[:, S_idx[c0:c1] - s_lo]
         gh[:, c0:c1] = np.where(G == 3, -1, 2 - G.astype(np.int8))
     yidx = np.flatnonzero(ysnp)
+    midx = np.flatnonzero(mtsnp)
+    have_mt = bool(mtinds) and len(midx) > 0
+    gm = (decode(np.array(mtinds), int(midx.min()), int(midx.max()) + 1)[:, midx - int(midx.min())]
+          if have_mt else np.zeros((0, 0), np.uint8))
     have_y = bool(ymales) and len(yidx) > 0
     gy = (decode(np.array(ymales), int(yidx.min()), int(yidx.max()) + 1)[:, yidx - int(yidx.min())]
           if have_y else np.zeros((0, 0), np.uint8))
@@ -568,6 +575,10 @@ if VALDIR:
                         pc_west=np.array([proj["west"][i] for i in holdout]),
                         y_geno=np.where(gy == 3, -1, 2 - gy.astype(np.int8)) if have_y else np.zeros((0, 0), np.int8),
                         y_pos=pos[yidx], y_a1=a1[yidx], y_a2=a2[yidx],
+                        mt_geno=np.where(gm == 3, -1, 2 - gm.astype(np.int8)) if have_mt else np.zeros((0, 0), np.int8),
+                        mt_pos=pos[midx], mt_a1=a1[midx], mt_a2=a2[midx],
+                        mt_ids=np.array([ids[i] for i in mtinds] if have_mt else [], dtype=object).astype(str),
+                        mt_calls=np.array([a_get(ids[i], "mt") or "" for i in mtinds] if have_mt else [], dtype=object).astype(str),
                         y_ids=np.array([ids[i] for i in ymales] if have_y else [], dtype=object).astype(str),
                         y_calls=np.array([a_get(ids[i], "y") or "" for i in ymales] if have_y else [], dtype=object).astype(str))
     # population-level frequencies of the validation groups for ADMIXTOOLS cross-checks
@@ -577,7 +588,7 @@ if VALDIR:
     t = PREFIX.with_suffix(".truth.json")
     if t.exists():
         shutil.copy(t, VALDIR / "truth.json")
-    log("validation bundle written")
+    log(f"validation bundle written (Y {len(ymales)} men, mtDNA {len(mtinds)} individuals)")
 
 manifest = {"name": "pgdata-1", "built": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "sources": json.loads(Path(OUT / "sources.json").read_text()) if (OUT / "sources.json").exists() else {},
