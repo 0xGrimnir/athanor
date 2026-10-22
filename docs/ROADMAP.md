@@ -56,16 +56,74 @@ Next:
 - Human samples: contamination needs a different method (e.g. haplotype-based), since competitive mapping against human cannot separate human from human
 - Scope: mitochondrial-scale data; ancient nuclear genomes later, with native whole-genome mapping
 
-## Phase 3: Genome module and live data
+## Phase 3: Personal Genome (next; high priority)
+
+Load a consumer raw DNA file and get a library of reports, the way third-party upload sites offer dozens of them, but with every report graded for evidence, validated against data with known answers, and computed on the user's computer. The file never leaves the machine.
+
+### Foundations
+- **Inputs:** AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA and Living DNA raw files; VCF from whole-genome sequencing. Detect the vendor, chip version and genome build; normalise strands; lift over between GRCh37 and GRCh38.
+- **Imputation** (optional, Linux engines pack): Beagle 5 against the 1000 Genomes panel fills in untyped variants for polygenic scores and haplotype methods. Accuracy is reported per allele-frequency bin from masked-genotype tests.
+- **Reference data pack:** 1000 Genomes and HGDP genotypes at consumer-chip positions, the Allen Ancient DNA Resource (AADR), Neanderthal and Denisovan genomes, PhyloTree/ISOGG haplogroup trees, CPIC and PharmVar tables, ClinVar, PGS Catalog scores. Every file has a recorded version and hash.
+- **Every report card** shows the result, an evidence grade (A established, B moderate, C weak or fun), the effect size, what it cannot tell you, its sources and how it was validated. Reports export as a document.
+
+### Report catalogue (about 70)
+
+**Your file (3).** File check: vendor, chip, build, call rate. Genetic sex check. Imputation coverage.
+
+**Deep ancestry: Ice Age to Bronze Age (10)** — built first; it connects to the Ancient DNA Lab.
+- Ancient ancestry proportions: hunter-gatherer, early farmer, steppe herder and other regional ancient sources (published qpAdm-style models on AADR)
+- Your closest ancient individuals, on a map with dates
+- Neanderthal ancestry, as a percentile among people of similar ancestry, not a falsely precise percentage
+- Denisovan ancestry
+- Your Neanderthal-derived variants and what each is known to be associated with
+- mtDNA haplogroup and Y haplogroup (if male)
+- Ancient individuals who carried your mtDNA or Y haplogroup (AADR), with places and dates
+- Haplogroup timeline: when each branch arose, with uncertainty
+
+**Modern ancestry (7).** Continental and regional composition (supervised admixture against 1000 Genomes and HGDP). Chromosome painting (local ancestry). Placement among reference populations (PCA). Indigenous American ancestry, which states the reference-panel limits plainly and that it is not tribal membership. Runs of homozygosity. Ancestry on the X chromosome.
+
+**Relatives: two files (4).** Relationship estimate from shared DNA (IBD segments and kinship). Shared-segment chromosome browser. X-chromosome sharing. Parent–child check.
+
+**Appearance (12).** Eye, hair and skin colour (HIrisPlex-S, a validated forensic model with published accuracy). Freckling. Red hair (MC1R). Earwax type and underarm odour (ABCC11). Hair thickness and curl (EDAR, TCHH). Male-pattern baldness (polygenic). Height (polygenic, with variance explained by ancestry). Unusual-trait corner: photic sneeze, asparagus smell detection, cilantro taste (grade C, labelled as such).
+
+**Food and drink (11).** Lactose tolerance (LCT and the known African and Middle Eastern variants). Alcohol flush (ALDH2, ADH1B). Caffeine metabolism (CYP1A2, AHR). Bitter taste (TAS2R38). Vitamin D, vitamin B12 and omega-3 conversion (GC/CYP2R1, FUT2, FADS1/2: effect on blood levels, not a diet). Celiac-compatible HLA types (mainly useful to rule out). Body-mass polygenic score, showing how little it determines. Coffee and alcohol intake tendencies (GWAS).
+
+**Fitness and sleep (3).** ACTN3 sprint/power variant (real but small effect). Chronotype: morning or evening person (polygenic). Sleep duration (polygenic).
+
+**Medicines: pharmacogenomics (11).** CPIC level-A gene–drug pairs only. CYP2C19 (clopidogrel, SSRIs, PPIs); CYP2C9 and VKORC1 (warfarin); CYP2D6 (codeine, tamoxifen; copy-number limits of chips stated); SLCO1B1 (statins); DPYD (fluoropyrimidines); TPMT and NUDT15 (thiopurines); UGT1A1 (irinotecan; Gilbert syndrome); CYP3A5 (tacrolimus); G6PD; HLA-B*57:01 and HLA-B*58:01 tag variants. Framed as something to show a clinician, never a reason to change a medicine.
+
+**Health, opt-in and separated (10).** Blood type (ABO, with stated accuracy; Rh limited on chips). Factor V Leiden and prothrombin G20210A. HFE haemochromatosis. Alpha-1 antitrypsin (Z and S). Carrier status for common recessive conditions, with chip limits. APOE, behind an explicit opt-in that explains what it does and doesn't mean. Polygenic risk scores (coronary disease, type 2 diabetes, breast and prostate cancer) with each score's published accuracy and how well it transfers across ancestries. ClinVar scan in which any rare pathogenic call is marked as needing clinical confirmation: about 40% of such calls in consumer raw data were false positives in a clinical follow-up (Tandy-Connor et al., Genet. Med. 2018).
+
+**Declined, with the reason shown.** Personality and intelligence or education scores (little predictive power, high potential for misreading). "Ideal diet type" and genotype-based diet plans (the DIETFITS trial, Gardner et al., JAMA 2018, found that genotype did not predict which diet worked). "Athletic potential" scores. Royal, Viking or famous-ancestor claims. Sexual orientation.
+
+### Validation
+- **Ancestry:** 1000 Genomes and HGDP individuals cut down to each vendor's chip positions, scored against their known populations with leave-one-out. Reproduce published ancient-ancestry proportions for modern populations.
+- **Haplogroups:** 1000 Genomes individuals with published Y haplogroups (Poznik et al. 2016) and mtDNA haplogroups.
+- **Pharmacogenomics:** GeT-RM consensus star alleles for reference samples (CDC Genetic Testing Reference Materials).
+- **Polygenic scores:** results must match the PGS Catalog's reference calculator (pgsc_calc) on the same input; accuracy is quoted from the score's published evaluation.
+- **Relatives:** known relative pairs in 1000 Genomes, plus simulated pedigrees.
+- **Imputation:** masked-genotype concordance.
+- **Rare-variant gate:** CI fails if any rare variant is shown as a finding without the confirmation warning.
+
+### Build order
+1. Foundations, file check, deep ancestry, haplogroups, Neanderthal and Denisovan (the first release of the module)
+2. Modern ancestry, appearance, food and drink, fitness and sleep
+3. Pharmacogenomics
+4. Relatives and imputation
+5. Health reports (opt-in)
+
+### Licences to check before shipping data
+SNPedia (CC BY-NC-SA: non-commercial, so avoided if Athanor is sold), PharmGKB (CC BY-SA 4.0), CPIC, ClinVar (public domain), gnomAD, PGS Catalog (licence per score), AADR, HIrisPlex-S model terms, Beagle and PLINK 2 (GPL-3), ADMIXTURE.
+
+## Phase 4: Genome module and live data
 
 - igv.js browser: BAM/CRAM, VCF, BED, bigWig, GFF; pileups, coverage, Sashimi plots
 - Live Ensembl, UCSC and NCBI access from the user's machine
 - Alignment-based identity (Needleman-Wunsch, MAFFT), with the identity definition and denominator stated on every value
 - Circular and comparative views: synteny ribbons, GC skew, multi-ring plots
-- DNA Report cross-checked against ClinVar and gnomAD
 - **Benchmark:** published pairwise identity values
 
-## Phase 4: Sequence workbench and structure
+## Phase 5: Sequence workbench and structure
 
 - Editing, ORF finding, restriction maps, Primer3 primer design, Gibson and Golden Gate assembly simulation
 - MAFFT/MUSCLE alignment, FastTree/IQ-TREE phylogenetics, BLAST+

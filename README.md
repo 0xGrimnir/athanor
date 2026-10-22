@@ -23,10 +23,10 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 |---|---|---|---|
 | **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Phase 1, working |
 | **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Phase 2–2b, working |
-| **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 3 |
-| **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 4 |
-| **Structure** | Protein structures, linking each genome position to its residue in 3D, docking | Mol*, AutoDock Vina | Phase 4 |
-| **DNA Report** | Load a Promethease or raw genotype report locally; triage by magnitude and rarity; cross-check against ClinVar and gnomAD | In-app parser | Prototype; ClinVar/gnomAD in Phase 3 |
+| **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 4 |
+| **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 5 |
+| **Structure** | Protein structures, linking each genome position to its residue in 3D, docking | Mol*, AutoDock Vina | Phase 5 |
+| **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get about 70 evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, modern ancestry, relatives, appearance, food and drink, pharmacogenomics, and opt-in health | 1000 Genomes, HGDP, AADR, CPIC, PGS Catalog, ClinVar; Beagle (Linux engines pack) | Phase 3, next |
 
 ## Validation (Phase 1)
 
