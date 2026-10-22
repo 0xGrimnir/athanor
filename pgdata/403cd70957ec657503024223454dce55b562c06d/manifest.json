@@ -1,0 +1,285 @@
+{
+ "name": "pgdata-1",
+ "built": "2026-10-22T20:33:39Z",
+ "sources": {
+  "aadr": {
+   "name": "Allen Ancient DNA Resource v66.p1 (1240K)",
+   "licence": "CC0 1.0",
+   "doi": "https://doi.org/10.7910/DVN/FFIDCW",
+   "citation": "Mallick et al., Sci. Data 11, 182 (2024)"
+  },
+  "phylotree": {
+   "name": "PhyloTree Build 17 (RSRS), as packaged for Haplogrep 3",
+   "licence": "MIT",
+   "commit": "0e79ddf1b78f7a1b81fb5d607bc31a6ddea7b18b",
+   "citation": "van Oven & Kayser, Hum. Mutat. 30, E386 (2009); Schonherr et al., NAR 51, W263 (2023)"
+  },
+  "yleaf": {
+   "name": "Yleaf Y-chromosome tree and GRCh37 positions (YFull)",
+   "licence": "GPL-3.0",
+   "commit": "c167c4e8951623a53c370e7c300a0cfc7f411b62",
+   "citation": "Ralf et al., Mol. Biol. Evol. 35, 1291 (2018)"
+  },
+  "chain": {
+   "name": "UCSC hg38ToHg19 liftOver chain",
+   "licence": "free for academic and non-profit use; commercial use of the UCSC tools requires a licence"
+  }
+ },
+ "roles": {
+  "Mbuti": {
+   "groups": [
+    "Mbuti"
+   ],
+   "individuals": 6
+  },
+  "YRI": {
+   "groups": [
+    "YRI"
+   ],
+   "individuals": 30
+  },
+  "Chimp": {
+   "groups": [
+    "Chimp"
+   ],
+   "individuals": 1
+  },
+  "Altai": {
+   "groups": [
+    "Altai_Neanderthal"
+   ],
+   "individuals": 1
+  },
+  "Vindija": {
+   "groups": [
+    "VindijaCave_Neanderthal"
+   ],
+   "individuals": 1
+  },
+  "Chagyrskaya": {
+   "groups": [
+    "ChagyrskayaCave_Neanderthal"
+   ],
+   "individuals": 1
+  },
+  "Denisova": {
+   "groups": [
+    "Russia_Denisova"
+   ],
+   "individuals": 1
+  },
+  "WHG": {
+   "groups": [
+    "Luxembourg_Loschbour_Mesolithic"
+   ],
+   "individuals": 16
+  },
+  "Anatolia_N": {
+   "groups": [
+    "Turkey_N"
+   ],
+   "individuals": 20
+  },
+  "Yamnaya": {
+   "groups": [
+    "Russia_Samara_EBA_Yamnaya"
+   ],
+   "individuals": 20
+  },
+  "Iran_N": {
+   "groups": [
+    "Iran_GanjDareh_N"
+   ],
+   "individuals": 6
+  },
+  "CHG": {
+   "groups": [
+    "Georgia_KotiasKlde_Mesolithic"
+   ],
+   "individuals": 4
+  },
+  "Steppe_MLBA": {
+   "groups": [
+    "Russia_Chelyabinsk_MLBA_Sintashta"
+   ],
+   "individuals": 6
+  },
+  "Onge": {
+   "groups": [
+    "ONG"
+   ],
+   "individuals": 4
+  },
+  "UstIshim": {
+   "groups": [
+    "Russia_UstIshim_IUP"
+   ],
+   "individuals": 1
+  },
+  "Kostenki": {
+   "groups": [
+    "Russia_Kostenki_UP"
+   ],
+   "individuals": 1
+  },
+  "MA1": {
+   "groups": [
+    "Russia_Malta_UP"
+   ],
+   "individuals": 3
+  },
+  "Han": {
+   "groups": [
+    "Han"
+   ],
+   "individuals": 8
+  },
+  "Papuan": {
+   "groups": [
+    "Papuan"
+   ],
+   "individuals": 6
+  },
+  "Chukchi": {
+   "groups": [
+    "Chukchi"
+   ],
+   "individuals": 1
+  },
+  "Karitiana": {
+   "groups": [
+    "Karitiana"
+   ],
+   "individuals": 6
+  },
+  "Natufian": {
+   "groups": [
+    "Israel_Natufian"
+   ],
+   "individuals": 4
+  },
+  "Mota": {
+   "groups": [
+    "Ethiopia_MotaCave_4500BP"
+   ],
+   "individuals": 2
+  }
+ },
+ "models": [
+  {
+   "id": "europe",
+   "title": "European three-way model",
+   "description": "Western hunter-gatherers, Anatolian early farmers and Yamnaya steppe herders (Haak et al. 2015).",
+   "sources": [
+    "WHG",
+    "Anatolia_N",
+    "Yamnaya"
+   ],
+   "labels": {
+    "WHG": "Western hunter-gatherer",
+    "Anatolia_N": "Anatolian early farmer",
+    "Yamnaya": "Steppe herder (Yamnaya)"
+   },
+   "right": [
+    "Mbuti",
+    "UstIshim",
+    "Kostenki",
+    "MA1",
+    "Han",
+    "Papuan",
+    "Onge",
+    "Chukchi",
+    "Karitiana"
+   ]
+  },
+  {
+   "id": "europe_west_asia",
+   "title": "European and West Asian four-way model",
+   "description": "Adds early Iranian farmers for ancestry from the Caucasus and Near East (southern Europe, West Asia).",
+   "sources": [
+    "WHG",
+    "Anatolia_N",
+    "Yamnaya",
+    "Iran_N"
+   ],
+   "labels": {
+    "WHG": "Western hunter-gatherer",
+    "Anatolia_N": "Anatolian early farmer",
+    "Yamnaya": "Steppe herder (Yamnaya)",
+    "Iran_N": "Iranian early farmer"
+   },
+   "right": [
+    "Mbuti",
+    "UstIshim",
+    "Kostenki",
+    "MA1",
+    "Han",
+    "Papuan",
+    "Onge",
+    "Chukchi",
+    "Karitiana",
+    "Natufian",
+    "Mota"
+   ]
+  },
+  {
+   "id": "south_asia",
+   "title": "South Asian three-way model",
+   "description": "Iranian-related farmers, Middle-to-Late Bronze Age steppe herders and an ancestral South Indian proxy (Narasimhan et al. 2019).",
+   "sources": [
+    "Iran_N",
+    "Steppe_MLBA",
+    "Onge"
+   ],
+   "labels": {
+    "Iran_N": "Iranian-related farmer",
+    "Steppe_MLBA": "Steppe herder (Bronze Age)",
+    "Onge": "Ancestral South Indian (Onge proxy)"
+   },
+   "right": [
+    "Mbuti",
+    "UstIshim",
+    "Kostenki",
+    "MA1",
+    "Han",
+    "Papuan",
+    "Karitiana",
+    "Natufian",
+    "Anatolia_N",
+    "WHG",
+    "Mota"
+   ]
+  }
+ ],
+ "archaic_roles": {
+  "altai": "Altai",
+  "chimp": "Chimp",
+  "vindija": "Vindija",
+  "africa": "YRI",
+  "denisova": "Denisova"
+ },
+ "archaic_definition": "All of the Altai, Vindija and Chagyrskaya Neanderthals that are called carry the allele (at least two called); under 1% in sub-Saharan African reference genomes (at least 100 chromosomes); at least 1% in European, East Asian and South Asian 1000 Genomes samples combined.",
+ "pca": [
+  {
+   "id": "world",
+   "title": "Worldwide",
+   "reference_individuals": 148
+  },
+  {
+   "id": "west",
+   "title": "West Eurasia",
+   "reference_individuals": 84
+  }
+ ],
+ "snps": 421567,
+ "ancients": 89,
+ "mt_matched": 89,
+ "y_matched": 27,
+ "validation": {
+  "file_check": "Raw files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF) are read back with every genotype exact.",
+  "pca": "Genomes reduced to about 92,858 SNPs (a genotyping chip's worth) land a median 0.96% of the map's width from where the same genomes land with all 1.15 million SNPs (168 placements of 84 held-out genomes).",
+  "neanderthal": "On 84 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
+  "ancient_ancestry": "Athanor's qpAdm reproduces ADMIXTOOLS qpAdm [0.524, 0.282, 0.195] with [0.524, 0.282, 0.194] on a well-powered simulation: every weight agrees to within 0.0006 and every standard error to within 0.0003, and both recover the simulated proportions [0.5, 0.3, 0.2] to within 0.024. On simulated populations whose true proportions are known, the fitted proportions were within two standard errors of the truth for all 6 populations (largest deviation 0.515)."
+ },
+ "validated": "2026-10-22T20:35:26Z"
+}
