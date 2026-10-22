@@ -257,7 +257,7 @@ for p in VAL_POPS:
     v = [i for i in range(nind) if group[i] == p and date_bp[i] == 0]
     used = set(i for r in ROLES.values() for i in r)
     v = [i for i in v if i not in used]
-    holdout += sorted(int(x) for x in rng.choice(v, min(8, len(v)), replace=False)) if v else []
+    holdout += sorted(int(x) for x in rng.choice(v, min(16, len(v)), replace=False)) if v else []
 hold = set(holdout)
 world_ref = capped([i for i in present if i not in hold], 25)
 west_ref = capped([i for i in present if i not in hold and REGION[group[i]] in ("Europe", "West Asia", "North Africa")], 40)
@@ -520,18 +520,24 @@ if VALDIR:
         G = decode(np.array(holdout), s_lo, s_hi)[:, S_idx[c0:c1] - s_lo]
         gh[:, c0:c1] = np.where(G == 3, -1, 2 - G.astype(np.int8))
     yidx = np.flatnonzero(ysnp)
-    gy = decode(np.array(ymales), int(yidx.min()), int(yidx.max()) + 1)[:, yidx - int(yidx.min())] if ymales else np.zeros((0, 0))
+    have_y = bool(ymales) and len(yidx) > 0
+    gy = (decode(np.array(ymales), int(yidx.min()), int(yidx.max()) + 1)[:, yidx - int(yidx.min())]
+          if have_y else np.zeros((0, 0), np.uint8))
     np.savez_compressed(VALDIR / "holdout.npz", geno=gh, ids=np.array([ids[i] for i in holdout]),
                         groups=np.array([group[i] for i in holdout]),
                         pc_world=np.array([proj["world"][i] for i in holdout]),
                         pc_west=np.array([proj["west"][i] for i in holdout]),
-                        y_geno=np.where(gy == 3, -1, 2 - gy.astype(np.int8)) if ymales else np.zeros((0, 0)),
+                        y_geno=np.where(gy == 3, -1, 2 - gy.astype(np.int8)) if have_y else np.zeros((0, 0), np.int8),
                         y_pos=pos[yidx], y_a1=a1[yidx], y_a2=a2[yidx],
-                        y_ids=np.array([ids[i] for i in ymales]), y_calls=np.array([a_get(ids[i], "y") or "" for i in ymales]))
+                        y_ids=np.array([ids[i] for i in ymales] if have_y else [], dtype=object).astype(str),
+                        y_calls=np.array([a_get(ids[i], "y") or "" for i in ymales] if have_y else [], dtype=object).astype(str))
     # population-level frequencies of the validation groups for ADMIXTOOLS cross-checks
     json.dump({"holdout": [ids[i] for i in holdout], "roles": {k: [ids[i] for i in v] for k, v in ROLES.items()},
                "world_ref": [ids[i] for i in world_ref], "west_ref": [ids[i] for i in west_ref]},
               open(VALDIR / "sets.json", "w"))
+    t = PREFIX.with_suffix(".truth.json")
+    if t.exists():
+        shutil.copy(t, VALDIR / "truth.json")
     log("validation bundle written")
 
 manifest = {"name": "pgdata-1", "built": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
