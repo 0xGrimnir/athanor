@@ -1,0 +1,29 @@
+.....Fss.........sssss.s.sss..................                           [100%]
+================================== FAILURES ===================================
+__________________ test_progress_is_monotone_and_eta_adapts ___________________
+tests\test_adna_progress.py:19: in test_progress_is_monotone_and_eta_adapts
+    assert prog.idx == 3 and abs(prog.act_done - 6.3) < 0.6
+E   assert (3 == 3 and 0.8694843769073488 < 0.6)
+E    +  where 3 = <athanor_core.adna.pipeline.Progress object at 0x0000021ACD5E0950>.idx
+E    +  and   0.8694843769073488 = abs((7.169484376907349 - 6.3))
+E    +    where 7.169484376907349 = <athanor_core.adna.pipeline.Progress object at 0x0000021ACD5E0950>.act_done
+============================== warnings summary ===============================
+tests/test_crosschecks.py: 29 warnings
+  C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\ase\atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    a.shape = (-1,) + shape
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_adna_progress.py::test_progress_is_monotone_and_eta_adapts - assert (3 == 3 and 0.8694843769073488 < 0.6)
+ +  where 3 = <athanor_core.adna.pipeline.Progress object at 0x0000021ACD5E0950>.idx
+ +  and   0.8694843769073488 = abs((7.169484376907349 - 6.3))
+ +    where 7.169484376907349 = <athanor_core.adna.pipeline.Progress object at 0x0000021ACD5E0950>.act_done
+SKIPPED [1] tests\test_adna_pileup.py:5: could not import 'pysam': No module named 'pysam'
+SKIPPED [1] tests\test_adna_realdata.py:28: could not import 'pysam': No module named 'pysam'
+SKIPPED [1] tests\test_adna_realdata.py:63: could not import 'pysam': No module named 'pysam'
+SKIPPED [5] tests\test_crosschecks.py:98: needs both tblite and the xtb program
+SKIPPED [1] tests\test_crosschecks.py:130: needs Psi4 and PySCF
+SKIPPED [1] tests\test_crosschecks.py:197: PySCF not installed
+SKIPPED [2] tests\test_crosschecks.py:218: PySCF not installed
+1 failed, 34 passed, 12 skipped, 29 warnings in 124.63s (0:02:04)
