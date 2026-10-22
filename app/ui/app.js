@@ -1312,11 +1312,14 @@ const DETAIL = {
       return `<div class="model ${m.fit === "fits" ? "ok" : m.fit === "marginal" ? "mar" : "no"}">
         <div class="mhead"><b>${escapeHtml(m.title)}</b> <span class="fit">${escapeHtml(m.fit)} · p = ${m.p.toFixed(3)}</span></div>
         <p class="note">${escapeHtml(m.description || "")}</p>
-        ${m.fit === "does not fit" ? "" : `<div class="stack">${bar}</div>`}
+        ${m.fit === "does not fit" ? `<p class="note">This model does not explain your genome, so it gives no proportions:
+            the sources it offers cannot account for how your genome relates to the outgroup populations.
+            Sources tried: ${m.components.map((x) => escapeHtml(x.label)).join(", ")}. Fitted on ${(m.snps || 0).toLocaleString()} markers.</p>`
+          : `<div class="stack">${bar}</div>
         <table><thead><tr><th>Ancient source</th><th>Share</th><th>95% interval</th></tr></thead><tbody>
         ${m.components.map((x, i) => `<tr><td><i class="dot s${i}"></i>${escapeHtml(x.label)}</td><td class="n">${pct(x.proportion, 1)}</td>
           <td class="n">${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}</td></tr>`).join("")}</tbody></table>
-        <p class="note">${m.fit === "does not fit" ? "This model does not explain your genome: your ancestry includes sources it leaves out, so no proportions are shown." : m.imprecise ? "The intervals are wide, so read these as rough shares." : ""} Fitted on ${(m.snps || 0).toLocaleString()} markers.</p></div>`;
+        <p class="note">${m.imprecise ? "The intervals are wide, so read these as rough shares. " : ""}Fitted on ${(m.snps || 0).toLocaleString()} markers.</p>`}</div>`;
     }).join("");
   },
   pca(el, c) {

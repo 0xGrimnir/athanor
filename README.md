@@ -26,7 +26,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | **Genome** | Genome browsing: reads, variants, coverage, multiple assemblies; circular and comparative views | igv.js, minimap2, MAFFT | Phase 4 |
 | **Sequence Workbench** | Editing, ORFs, restriction maps, primer design, cloning simulation, alignments, phylogenetic trees, CRISPR guide scoring | Primer3, MAFFT/MUSCLE, FastTree/IQ-TREE, BLAST+ | Phase 5 |
 | **Structure** | Protein structures, linking each genome position to its residue in 3D, docking | Mol*, AutoDock Vina | Phase 5 |
-| **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get about 70 evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, modern ancestry, relatives, appearance, food and drink, pharmacogenomics, and opt-in health | 1000 Genomes, HGDP, AADR, CPIC, PGS Catalog, ClinVar; Beagle (Linux engines pack) | Phase 3, next |
+| **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get about 70 evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, modern ancestry, relatives, appearance, food and drink, pharmacogenomics, and opt-in health | AADR, 1000 Genomes, HGDP, PhyloTree, YFull; CPIC, PGS Catalog, ClinVar later | Phase 3, first release working |
 
 ## Validation (Phase 1)
 
@@ -68,6 +68,21 @@ The deposited reads of seven woolly mammoth ivory samples from Hohle Fels (Scien
 Every sample shows the terminal C→T excess of authentic ancient DNA. The one disagreement (HOLF024.B, position 12,196) is a base the published sequence gives as T, while all six deposited reads covering it read C. The remaining differences are lengths in the control-region repeat (HOLF003.A, HOLF010.B), where the published sequences also carry uncalled bases.
 
 Simulations with known answers check the rest. Contamination estimates were 0.00%, 1.95% and 10.40% against true values of 0%, 1.95% and 10.20%. The mammoth sequence, rebuilt starting from the African elephant genome (about 9% divergent), agreed with the truth at every one of 16,462 called bases (latest CI run; the simulations are random, so the figures vary slightly between runs). All of it runs in CI (`compute/ci_reproduce.py`).
+
+## Validation (Personal Genome)
+
+Everything the module reports is checked before release, and each report card shows what was checked.
+
+| Check | Result |
+|---|---|
+| qpAdm against ADMIXTOOLS 8.0.2 | On a well-powered simulation, weights agree to 0.0006 and standard errors to 0.0003 |
+| qpAdm accuracy | Recovers simulated mixture proportions within 0.03 when the truth is known |
+| Raw-file parsers | Files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF, converted by liftOver) read back with every genotype exact |
+| PCA placement | Genomes cut down to a genotyping chip's worth of markers land a median ~1% of the map's width from where the same genomes land with all 1.15 million markers |
+| Neanderthal ancestry | On held-out genomes reduced to chip size, the 95% interval contains the all-marker estimate in ≥ 90% of cases |
+| Haplogroups | Calls for ancient individuals are on the same lineage as the published call in ≥ 95% of cases |
+
+These run as gated checks in CI whenever the reference data is rebuilt (`tools/pgdata/validate.py`, `tools/pgdata/crosscheck_qpadm.py`).
 
 ## Architecture
 

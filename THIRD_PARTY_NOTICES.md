@@ -73,6 +73,12 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | MMFF94 validation suite and parameter tables (T. A. Halgren) | MMFF94 correctness test; fitted-parameter coverage check | Distributed via CCL and RDKit (BSD-3-Clause) | Verified |
 | NIST CCCBDB (SRD 101), NIST Chemistry WebBook (SRD 69) | Experimental reference values for benchmarks | US government data | Verified |
 | NCBI RefSeq mitogenomes NC_007596.2, NC_000934.1, NC_005129.2, NC_012920.1 | Ancient DNA Lab references (fetched at pack build; hashes in the pack manifest) | NCBI: no general restrictions; individual records may carry their own | Verified source |
+| Allen Ancient DNA Resource v66.p1 (1240K) | Personal Genome reference data: ancient and present-day genotypes, dates, places and published haplogroups (summaries only; the raw data is not redistributed) | CC0 1.0 | Verified |
+| PhyloTree Build 17 (RSRS), as packaged for Haplogrep 3 | mtDNA haplogroup tree and mutation weights | MIT | Verified |
+| Y-chromosome tree and GRCh37 marker positions, as packaged with Yleaf | Y haplogroup calling | Yleaf is GPL-3.0; the underlying YFull tree's own terms are **to verify before any commercial release** | To verify |
+| UCSC hg38ToHg19 liftOver chain | Converting files on GRCh38 to GRCh37 | Free for academic and non-profit use; commercial use of UCSC tools requires a licence — **to verify before any commercial release** | To verify |
+| ADMIXTOOLS, EIGENSOFT | Independent cross-check of qpAdm in CI (not shipped) | GPL-3.0 | Verified |
+| msprime | Simulated genomes with known answers for the CI gates (not shipped) | GPL-3.0 | Verified |
 | ENA PRJEB103048 reads and GenBank PZ244049–PZ244060 (Hohle Fels mammoth ivory, Scientific Reports 2026) | CI reproduction test only: downloaded at test time, never redistributed | INSDC public data | Verified source |
 | Ensembl (release 110) | Gene coordinates and transcript models | No restrictions on use | To verify |
 

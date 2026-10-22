@@ -56,7 +56,7 @@ Next:
 - Human samples: contamination needs a different method (e.g. haplotype-based), since competitive mapping against human cannot separate human from human
 - Scope: mitochondrial-scale data; ancient nuclear genomes later, with native whole-genome mapping
 
-## Phase 3: Personal Genome (next; high priority)
+## Phase 3: Personal Genome (first release working; 0.5.0)
 
 Load a consumer raw DNA file and get a library of reports, the way third-party upload sites offer dozens of them, but with every report graded for evidence, validated against data with known answers, and computed on the user's computer. The file never leaves the machine.
 
@@ -106,11 +106,16 @@ Load a consumer raw DNA file and get a library of reports, the way third-party u
 - **Rare-variant gate:** CI fails if any rare variant is shown as a finding without the confirmation warning.
 
 ### Build order
-1. Foundations, file check, deep ancestry, haplogroups, Neanderthal and Denisovan (the first release of the module)
+1. **Done (0.5.0):** foundations, file check, deep ancestry, haplogroups, Neanderthal and Denisovan
 2. Modern ancestry, appearance, food and drink, fitness and sleep
 3. Pharmacogenomics
 4. Relatives and imputation
 5. Health reports (opt-in)
+
+### Open questions carried forward
+- The Y-chromosome tree ships via Yleaf (GPL-3); the underlying YFull tree's own terms need checking before any commercial release, and an alternative tree may be needed
+- The UCSC liftOver chain is free for academic use only; a commercial release needs either a licence or a different chain
+- Imputation (Beagle) is not in yet, so polygenic scores and haplotype methods wait for it
 
 ### Licences to check before shipping data
 SNPedia (CC BY-NC-SA: non-commercial, so avoided if Athanor is sold), PharmGKB (CC BY-SA 4.0), CPIC, ClinVar (public domain), gnomAD, PGS Catalog (licence per score), AADR, HIrisPlex-S model terms, Beagle and PLINK 2 (GPL-3), ADMIXTURE.

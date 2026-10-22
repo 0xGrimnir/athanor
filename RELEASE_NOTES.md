@@ -1,7 +1,7 @@
-Athanor 0.4.0: reconstruct ancient mitogenomes from your own reads.
+Athanor 0.5.0: your own DNA file, read on your computer.
 
-- New "Your data" mode in the Ancient DNA tab: add FASTQ or BAM files, pick a starting reference, and get a consensus sequence with per-base confidence, an authentication report (terminal damage, fragment lengths) and a human-contamination estimate. Save the consensus as FASTA or the full report as JSON.
-- Files are read on your computer and never uploaded.
-- Optionally compare with a published sequence; every difference is listed with the reads behind it.
-- Checked against seven published woolly mammoth mitogenomes, reproduced from their deposited reads.
-- Uses the Linux engines pack you already have; no new download.
+- New Personal Genome tab. Load the raw data file from AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA (or a VCF) and get reports on your deep ancestry: which ancient peoples your genome traces to, where you sit among present-day and ancient populations, the ancient individuals closest to you, your Neanderthal and Denisovan ancestry, and your maternal and paternal haplogroups with the ancient genomes that share them.
+- Your file is read on this computer and never uploaded.
+- Every report says how strong the evidence is, what it cannot tell you, and how it was checked.
+- The reference data (about 150 MB, built from the Allen Ancient DNA Resource and published haplogroup trees) downloads once from inside the app.
+- More report groups are planned: modern ancestry, relatives, appearance, food and drink, medicines, and opt-in health.
