@@ -1,0 +1,87 @@
+[    0.0s] chip-like subset 92858 of 421567
+   23andme: vendor 23andMe, build GRCh37, markers 92858, used 46469, exact True, dropped ambiguous 46389
+   ancestry: vendor AncestryDNA, build GRCh37, markers 92858, used 46469, exact True, dropped ambiguous 46389
+   myheritage: vendor MyHeritage, build GRCh37, markers 92858, used 46469, exact True, dropped ambiguous 46389
+   ftdna: vendor FamilyTreeDNA, build GRCh37, markers 92858, used 46469, exact True, dropped ambiguous 46389
+   livingdna: vendor Living DNA, build GRCh37, markers 92858, used 46469, exact True, dropped ambiguous 46389
+   vcf: vendor VCF, build GRCh37, markers 92858, used 46469, exact True, dropped ambiguous 46389
+   vcf38: vendor VCF, build GRCh38 (converted to GRCh37), markers 62402, used 31243, exact True, dropped ambiguous 31159
+[PASS] parsers: every vendor format reads back exactly: see lines above
+[    5.1s]   analysed 1/178
+[   24.0s]   analysed 21/178
+[   43.0s]   analysed 41/178
+[   62.3s]   analysed 61/178
+[   81.6s]   analysed 81/178
+[  101.0s]   analysed 101/178
+[  120.5s]   analysed 121/178
+[  140.2s]   analysed 141/178
+[  159.8s]   analysed 161/178
+[PASS] PCA: chip-subset genomes land within 2% of the PC1 range of their all-SNP position (median): median 1.16%, 95th percentile 3.54% over 356 placements
+[PASS] Neanderthal: chip-subset 95% interval contains the all-SNP estimate in >= 90% of genomes: 100% of 178
+   all-SNP Neanderthal estimates by group: {'GBR': 2.15, 'CEU': 2.18, 'FIN': 2.17, 'IBS': 2.14, 'TSI': 2.21, 'CHB': 2.64, 'JPT': 2.57, 'GIH': 2.48, 'PJL': 2.54, 'PEL': 2.7, 'MXL': 2.61, 'PUR': 2.26, 'Sardinian': 2.2, 'Druze': 2.38}
+   model fit by group (fits / marginal / does not fit):
+     CEU        europe             8/0/8
+     CEU        europe_west_asia   5/0/11
+     CEU        south_asia         0/0/16
+     CHB        europe             0/0/12
+     CHB        europe_west_asia   0/0/12
+     CHB        south_asia         0/0/12
+     Druze      europe             4/1/5
+     Druze      europe_west_asia   0/0/10
+     Druze      south_asia         1/1/8
+     FIN        europe             5/0/11
+     FIN        europe_west_asia   5/0/11
+     FIN        south_asia         0/0/16
+     GBR        europe             10/0/6
+     GBR        europe_west_asia   3/0/13
+     GBR        south_asia         0/0/16
+     GIH        europe             0/0/12
+     GIH        europe_west_asia   0/0/12
+     GIH        south_asia         11/1/0
+     IBS        europe             8/1/7
+     IBS        europe_west_asia   3/0/13
+     IBS        south_asia         0/0/16
+     JPT        europe             0/0/12
+     JPT        europe_west_asia   0/0/12
+     JPT        south_asia         0/0/12
+     MXL        europe             0/0/10
+     MXL        europe_west_asia   0/0/10
+     MXL        south_asia         0/0/10
+     PEL        europe             0/0/10
+     PEL        europe_west_asia   0/0/10
+     PEL        south_asia         0/0/10
+     PJL        europe             0/0/12
+     PJL        europe_west_asia   0/0/12
+     PJL        south_asia         10/1/1
+     PUR        europe             6/1/3
+     PUR        europe_west_asia   5/0/5
+     PUR        south_asia         0/1/9
+     Sardinian  europe             0/0/10
+     Sardinian  europe_west_asia   0/0/10
+     Sardinian  south_asia         0/0/10
+     TSI        europe             4/0/12
+     TSI        europe_west_asia   2/0/14
+     TSI        south_asia         0/0/16
+   CEU: max weight difference 2.9791, largest standard error 0.5260  (not identifiable; excluded)
+   CHB: max weight difference 1061.3659, largest standard error 40.6627  (not identifiable; excluded)
+   Druze: max weight difference 39.0792, largest standard error 1.3903  (not identifiable; excluded)
+   FIN: max weight difference 2.8953, largest standard error 0.8228  (not identifiable; excluded)
+   GBR: max weight difference 11.3402, largest standard error 0.7580  (not identifiable; excluded)
+   GIH: max weight difference 29.2378, largest standard error 12.5703  (not identifiable; excluded)
+   IBS: max weight difference 1.6139, largest standard error 0.8018  (not identifiable; excluded)
+   JPT: max weight difference 6823.6970, largest standard error 40.2727  (not identifiable; excluded)
+   MXL: max weight difference 1790.3766, largest standard error 50.6876  (not identifiable; excluded)
+   PEL: max weight difference 1274.7474, largest standard error 50.1925  (not identifiable; excluded)
+   PJL: max weight difference 30.6281, largest standard error 12.9607  (not identifiable; excluded)
+   PUR: max weight difference 3.4438, largest standard error 0.4227  (not identifiable; excluded)
+   Sardinian: max weight difference 84.1922, largest standard error 0.5915  (not identifiable; excluded)
+   TSI: max weight difference 1.7711, largest standard error 1.0471  (not identifiable; excluded)
+   no population target was well determined enough to compare (the estimator itself is checked by crosscheck_qpadm.py)
+   GBR: largest difference from the simulated proportion 0.117 (0.3 standard errors; model p 0.090)
+   CEU: largest difference from the simulated proportion 0.161 (0.4 standard errors; model p 0.252)
+   FIN: largest difference from the simulated proportion 0.515 (0.7 standard errors; model p 0.283)
+   IBS: largest difference from the simulated proportion 0.238 (0.5 standard errors; model p 0.412)
+   TSI: largest difference from the simulated proportion 0.325 (0.4 standard errors; model p 0.096)
+   PUR: largest difference from the simulated proportion 0.119 (0.6 standard errors; model p 0.405)
+[PASS] qpAdm recovers the simulated proportions within two standard errors: worst FIN: 0.515 = 0.7 standard errors, over 6 population(s)
+total 217 s; 0 gate(s) failed: []

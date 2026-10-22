@@ -1,0 +1,9 @@
+{
+ "summary": {
+  "file_check": "Raw files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF) are read back with every genotype exact.",
+  "pca": "Genomes reduced to about 92,858 SNPs (a genotyping chip's worth) land a median 1.16% of the map's width from where the same genomes land with all 1.15 million SNPs (356 placements of 178 held-out genomes).",
+  "neanderthal": "On 178 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
+  "ancient_ancestry_accuracy": "On simulated populations whose true proportions are known, the fitted proportions were within two standard errors of the truth for all 6 populations (largest deviation 0.515)."
+ },
+ "fails": []
+}
