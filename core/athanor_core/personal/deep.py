@@ -89,14 +89,16 @@ def ancient_ancestry(ref: RefData, dos: np.ndarray, auto: np.ndarray) -> dict:
             continue
         w = np.array(r["weights"])
         se = np.array(r["se"])
-        feasible = bool(np.all(w - Z95 * se > -0.05) and np.all(w + Z95 * se < 1.05))
+        # ADMIXTOOLS' feasibility: proportions between 0 and 1 (a small tolerance for noise at 0)
+        feasible = bool(np.all(w > -0.02) and np.all(w < 1.02))
         fit = "fits" if (r["p"] >= 0.05 and feasible) else ("marginal" if (r["p"] >= 0.01 and feasible) else "does not fit")
+        imprecise = bool(np.max(se) > 0.15)
         results.append({"model": mdl["id"], "title": mdl["title"], "description": mdl.get("description", ""),
                         "components": [{"source": s, "label": mdl["labels"][s], "proportion": float(wi), "se": float(si),
                                         "ci95": [float(wi - Z95 * si), float(wi + Z95 * si)]}
                                        for s, wi, si in zip(mdl["sources"], w, se)],
                         "p": r["p"], "chi2": r["chi2"], "df": r["df"], "snps": r["snps"], "blocks": r["blocks"],
-                        "fit": fit, "right": mdl["right"]})
+                        "fit": fit, "feasible": feasible, "imprecise": imprecise, "right": mdl["right"]})
     fitting = [r for r in results if r.get("fit") in ("fits", "marginal")]
     best = max(fitting, key=lambda r: r["p"]) if fitting else None
     if best:
