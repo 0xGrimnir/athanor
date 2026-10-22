@@ -75,12 +75,13 @@ Everything the module reports is checked before release, and each report card sh
 
 | Check | Result |
 |---|---|
-| qpAdm against ADMIXTOOLS 8.0.2 | On a well-powered simulation, weights agree to 0.0006 and standard errors to 0.0003 |
+| qpAdm against ADMIXTOOLS 8.0.2 | On a well-powered simulation, weights agree to 0.0006 and standard errors to 0.0003; on real population data, within two standard errors |
 | qpAdm accuracy | Recovers simulated mixture proportions within 0.03 when the truth is known |
 | Raw-file parsers | Files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF, converted by liftOver) read back with every genotype exact |
 | PCA placement | Genomes cut down to a genotyping chip's worth of markers land a median ~1% of the map's width from where the same genomes land with all 1.15 million markers |
 | Neanderthal ancestry | On held-out genomes reduced to chip size, the 95% interval contains the all-marker estimate in ≥ 90% of cases |
-| Haplogroups | Calls for ancient individuals are on the same lineage as the published call in ≥ 95% of cases |
+| Y haplogroups | 586 of 600 ancient men on the same lineage as the published call, 204 identical |
+| mtDNA haplogroups | 1,476 of 1,500 ancient mitogenomes on the same lineage, 1,246 identical |
 
 These run as gated checks in CI whenever the reference data is rebuilt (`tools/pgdata/validate.py`, `tools/pgdata/crosscheck_qpadm.py`).
 

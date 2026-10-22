@@ -15,7 +15,7 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
   - **Maternal and paternal lines:** mtDNA and Y haplogroups from the PhyloTree and YFull trees, the ancient genomes that carry the same branch, and the oldest dated genome on each step of your lineage.
   - Every card carries an evidence grade, what it cannot tell you, the method, its sources, and how it was checked. The report saves as JSON.
 - Reference data (about 150 MB) is downloaded once from the release feed and checked against its checksum. It is built in CI from public sources with recorded versions: the Allen Ancient DNA Resource (CC0), PhyloTree 17, the YFull tree as packaged with Yleaf, and the UCSC liftOver chain.
-- CI gates on the Personal Genome: qpAdm is checked against ADMIXTOOLS 8.0.2 on a well-powered simulation (weights agree to 0.0006, standard errors to 0.0003) and recovers known simulated proportions; the parsers round-trip every vendor layout exactly; chip-sized genomes land where full-marker genomes land on the PCA; the Neanderthal interval covers the all-marker estimate; haplogroup calls match published ones for ancient individuals.
+- CI gates on the Personal Genome: qpAdm is checked against ADMIXTOOLS 8.0.2 on a well-powered simulation (weights agree to 0.0006, standard errors to 0.0003) and recovers known simulated proportions; the parsers round-trip every vendor layout exactly; chip-sized genomes land where full-marker genomes land on the PCA; the Neanderthal interval covers the all-marker estimate; haplogroup calls match published ones for ancient individuals (Y: 586 of 600 on the same lineage; mtDNA: 1,476 of 1,500).
 
 ## [0.4.0] - 2026-10-21
 
