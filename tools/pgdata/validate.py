@@ -1,6 +1,6 @@
 """Validate the Personal Genome reference pack and analyses (runs in CI).
 
-Usage: python validate.py PACK_DIR VAL_DIR [AADR_PREFIX ANNO ADMIXTOOLS_BIN]
+Usage: python validate.py PACK_DIR VAL_DIR [AADR_PREFIX ANNO MT_FASTA ADMIXTOOLS_BIN]
 
 Checks (thresholds fixed here before results are seen; each prints PASS or FAIL):
   1. Parsers: held-out genomes written in each vendor's format (and as a
@@ -38,7 +38,8 @@ from athanor_core.personal.writers import write  # noqa: E402
 PACK, VAL = Path(sys.argv[1]), Path(sys.argv[2])
 AADR = Path(sys.argv[3]) if len(sys.argv) > 3 else None
 ANNO = Path(sys.argv[4]) if len(sys.argv) > 4 else None
-BIN = Path(sys.argv[5]) if len(sys.argv) > 5 else None
+MTFA = Path(sys.argv[5]) if len(sys.argv) > 5 and sys.argv[5] != "none" else None
+BIN = Path(sys.argv[6]) if len(sys.argv) > 6 else None
 T0 = time.time()
 fails, summary = [], {}
 os.environ["ATHANOR_PGDATA"] = str(PACK)
@@ -357,8 +358,69 @@ if mg.size:
             f"in {100 * exact / n:.0f}%.")
     else:
         print("   no ancient individual could be compared for mtDNA")
+elif MTFA and ANNO and MTFA.exists():
+    # the mitochondrial markers are not part of the 1240K set, so the check uses
+    # the mitogenomes published alongside it
+    import csv as _csv
+    rows = list(_csv.reader(open(ANNO, encoding="utf-8", errors="replace"), delimiter="\t"))
+    hdr = rows[0]
+    mcol = next(i for i, h in enumerate(hdr) if h.lower().startswith("mtdna haplogroup"))
+    hg = {}
+    for r in rows[1:]:
+        if len(r) > mcol:
+            hg[r[0]] = r[mcol]
+            hg.setdefault(r[2], r[mcol])
+    seqs, cur, buf = {}, None, []
+    with open(MTFA) as fh:
+        for line in fh:
+            if line.startswith(">"):
+                if cur:
+                    seqs[cur] = "".join(buf)
+                cur, buf = line[1:].split()[0], []
+            else:
+                buf.append(line.strip())
+        if cur:
+            seqs[cur] = "".join(buf)
+    pos_all = MT.positions
+    chip_pos = sorted(rng.choice(pos_all, min(1500, len(pos_all)), replace=False).tolist())
+    full = {"n": 0, "consistent": 0, "exact": 0}
+    thin = {"n": 0, "consistent": 0, "exact": 0}
+    tried = 0
+    for sid, sq in seqs.items():
+        name = hg.get(sid) or hg.get(sid.split(".")[0])
+        if not name or name in ("..", "n/a") or len(sq) < 16000:
+            continue
+        pub = MT.lookup(name)
+        if pub is None:
+            continue
+        called = sum(1 for p_ in pos_all if p_ <= len(sq) and sq[p_ - 1].upper() in "ACGT")
+        if called < 0.8 * len(pos_all):
+            continue                       # too little of the mitogenome recovered to call
+        tried += 1
+        for posset, acc in ((pos_all, full), (chip_pos, thin)):
+            obs = {p_: sq[p_ - 1].upper() for p_ in posset if p_ <= len(sq) and sq[p_ - 1].upper() in "ACGT"}
+            r = MT.call(obs)
+            if r.get("node") is None:
+                continue
+            acc["n"] += 1
+            acc["exact"] += r["node"] == pub
+            acc["consistent"] += MT.is_ancestor(r["node"], pub) or MT.is_ancestor(pub, r["node"])
+        if tried >= 1500:
+            break
+    print(f"   mtDNA sequences compared: {tried} (full {full}; 1,500 chip-like positions {thin})")
+    if full["n"]:
+        c = full["consistent"] / full["n"]
+        gate("mtDNA haplogroups on the same lineage as the published call in >= 95%", c >= 0.95,
+             f"{full['consistent']}/{full['n']} on the same lineage, {full['exact']} identical")
+        cc_ = thin["consistent"] / max(1, thin["n"])
+        summary["mt_haplogroup"] = (
+            f"On {full['n']} ancient mitogenomes with published haplogroups, Athanor's call was on the same lineage "
+            f"in {100 * c:.0f}% and identical in {100 * full['exact'] / full['n']:.0f}%; from only 1,500 positions, "
+            f"of the kind a genotyping chip reads, on the same lineage in {100 * cc_:.0f}%.")
+    else:
+        print("   no mitogenome could be compared")
 else:
-    print("   the validation bundle holds no mitochondrial genotypes; mtDNA check skipped")
+    print("   no mitochondrial data supplied; mtDNA check skipped")
 
 # the estimator cross-check runs as its own step; fold its summary in here
 cc = os.environ.get("ATHANOR_CROSSCHECK")

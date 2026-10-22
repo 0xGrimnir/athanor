@@ -85,7 +85,10 @@ jobs:
           13994513 v66.p1_1240K.aadr.patch.PUB.ind 19a434ac954bcd10dbb8dba1d1188a09
           13994514 v66.p1_1240K.aadr.patch.PUB.snp 50f66178fc81b8aa087cc4b135317e59
           13994515 v66.p1_1240K.aadr.PUB.anno a2db1ac16f0f3558ed66fb251e1d5c7d
+          13994529 v66.p1_MT.repo.fa.gz 4e9e6f3d1deb148bc4cd3c5ed4e45184
+          13994857 mtdna_uncompress.py 55241ce7ab4680252161bc5ed7495660
           EOF
+          python tools/pgdata/mt_decode.py aadr/v66.p1_MT.repo.fa.gz aadr/mtdna_uncompress.py aadr/mt.fa
           ( cd aadr && for f in *.geno *.ind *.snp; do mv "$f" "aadr.${f##*.}"; done )
           ls -la aadr; df -h / | tail -1
 
@@ -133,7 +136,8 @@ jobs:
           ATHANOR_CROSSCHECK: cc/crosscheck.json
         run: |
           set +e
-          python tools/pgdata/validate.py pack valdata aadr/aadr aadr/v66.p1_1240K.aadr.PUB.anno \
+          mt=aadr/mt.fa; [ -f "$mt" ] || mt=none
+          python tools/pgdata/validate.py pack valdata aadr/aadr aadr/v66.p1_1240K.aadr.PUB.anno "$mt" \
             "$CONDA_PREFIX/bin" > validate.txt 2>&1
           rc=$?
           cat validate.txt
