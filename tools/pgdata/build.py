@@ -111,13 +111,23 @@ MM = np.memmap(geno_path, dtype=np.uint8, mode="r", offset=48, shape=(nind, RLEN
 LUT = np.array([[(b >> (6 - 2 * k)) & 3 for k in range(4)] for b in range(256)], dtype=np.uint8)
 
 
-def decode(rows_idx: np.ndarray, s0: int, s1: int) -> np.ndarray:
+def decode(rows_idx: np.ndarray, s0: int, s1: int, source=None) -> np.ndarray:
     """(len(rows), s1 - s0) genotypes = copies of allele 1, 3 = missing."""
     b0, b1 = s0 // 4, (s1 + 3) // 4
-    raw = np.asarray(MM[rows_idx, b0:b1])
+    raw = np.asarray((MM if source is None else source)[rows_idx, b0:b1])
     g = LUT[raw].reshape(len(rows_idx), -1)
     off = s0 - b0 * 4
     return g[:, off:off + (s1 - s0)]
+
+
+def load_rows(rows: list) -> tuple[np.ndarray, dict]:
+    """Copy whole genotype rows into memory (each row is contiguous on disk).
+    Pass 1 touches the same individuals for every SNP chunk, so reading them
+    once this way replaces millions of scattered reads."""
+    arr = np.empty((len(rows), RLEN), np.uint8)
+    for k, i in enumerate(rows):
+        arr[k] = MM[i]
+    return arr, {i: k for k, i in enumerate(rows)}
 
 
 # orientation check: the hg19 reference individual must be homozygous for allele 1
@@ -305,8 +315,9 @@ indstat = {k: np.zeros((len(present_all), NB)) for k in ("nean_num", "nean_den",
 
 need = sorted(set(int(i) for r in ROLES.values() for i in r) | set(world_ref) | set(west_ref)
               | set(i for v in super_idx.values() for i in v) | set(present_all))
-need_arr = np.array(need)
-pos_in_need = {i: k for k, i in enumerate(need)}
+NEED, pos_in_need = load_rows(need)
+need_arr = np.arange(len(need))
+log(f"held {len(need)} genotype rows in memory ({NEED.nbytes / 1e9:.2f} GB)")
 
 
 def freq_of(G, idx):
@@ -321,7 +332,7 @@ log("pass 1: frequencies, archaic statistics, PCA relationship matrices")
 for c0 in range(0, S, CHUNK):
     c1 = min(S, c0 + CHUNK)
     s_lo, s_hi = int(S_idx[c0]), int(S_idx[c1 - 1]) + 1
-    G = decode(need_arr, s_lo, s_hi)[:, S_idx[c0:c1] - s_lo]          # (len(need), chunk)
+    G = decode(need_arr, s_lo, s_hi, NEED)[:, S_idx[c0:c1] - s_lo]    # (len(need), chunk)
     for k, r in enumerate(role_names):
         a, t = freq_of(G, ROLES[r])
         alt_cnt[k, c0:c1] = a; tot_cnt[k, c0:c1] = t
@@ -372,34 +383,54 @@ for name in pca_sets:
 
 # ------------------------------------------------------------------ pass 2: loadings and projections
 loadings = {k: np.zeros((S, K), np.float32) for k in pca_sets}
+log("pass 2a: SNP loadings")
+for name, members_ in pca_sets.items():
+    lam, U = eig[name]
+    ok = pca_stats[name]["ok"]
+    p_all = pca_stats[name]["p"]
+    sc_all = np.sqrt(np.maximum(p_all * (1 - p_all), 1e-6))
+    acc = np.zeros((S, K), np.float64)
+    for c0 in range(0, S, CHUNK):
+        c1 = min(S, c0 + CHUNK)
+        s_lo, s_hi = int(S_idx[c0]), int(S_idx[c1 - 1]) + 1
+        G = decode(np.array([pos_in_need[i] for i in members_]), s_lo, s_hi, NEED)[:, S_idx[c0:c1] - s_lo]
+        G = G.astype(np.float32)
+        p, sc = p_all[c0:c1], sc_all[c0:c1]
+        Z = np.where(G != 3, ((2 - G) - 2 * p) / sc, 0)
+        acc[c0:c1] = (Z.T @ U) / np.sqrt(lam)[None, :]
+    acc[~ok] = 0
+    loadings[name] = acc.astype(np.float32)
+    log(f"  {name} done")
+
 proj_rows = sorted(set(ancients) | set(holdout) | set(present_all))
-proj_arr = np.array(proj_rows)
 AtA = {k: np.zeros((len(proj_rows), K * K)) for k in pca_sets}
 Atb = {k: np.zeros((len(proj_rows), K)) for k in pca_sets}
-log("pass 2: SNP loadings and least-squares projection of", len(proj_rows), "individuals")
-CHUNK2 = 5000
-for c0 in range(0, S, CHUNK2):
-    c1 = min(S, c0 + CHUNK2)
-    s_lo, s_hi = int(S_idx[c0]), int(S_idx[c1 - 1]) + 1
-    cols = S_idx[c0:c1] - s_lo
-    Gp = decode(proj_arr, s_lo, s_hi)[:, cols]
-    for name, members_ in pca_sets.items():
-        lam, U = eig[name]
-        ok = pca_stats[name]["ok"][c0:c1]
-        p = pca_stats[name]["p"][c0:c1]
-        sc = np.sqrt(np.maximum(p * (1 - p), 1e-6))
-        G = decode(members_, s_lo, s_hi)[:, cols].astype(np.float32)
-        Z = np.where(G != 3, ((2 - G) - 2 * p) / sc, 0)
-        V = (Z.T @ U) / np.sqrt(lam)[None, :]                    # loadings: Z = U S V'
-        V[~ok] = 0
-        loadings[name][c0:c1] = V
-        M = (Gp != 3) & ok[None, :]
-        Zp = np.where(M, ((2 - Gp.astype(np.float32)) - 2 * p) / sc, 0).astype(np.float32)
-        Atb[name] += Zp @ V
-        VV = (V[:, :, None] * V[:, None, :]).reshape(len(V), K * K)
-        AtA[name] += M.astype(np.float32) @ VV
-    if (c0 // CHUNK2) % 40 == 0:
-        log(f"  {c1}/{S}")
+log("pass 2b: projecting", len(proj_rows), "individuals")
+BATCH = 64
+SUB = 200000
+for p0 in range(0, len(proj_rows), BATCH):
+    rows = proj_rows[p0:p0 + BATCH]
+    block_rows = np.empty((len(rows), RLEN), np.uint8)
+    for k, i in enumerate(rows):
+        block_rows[k] = MM[i]                       # one contiguous read per individual
+    idx = np.arange(len(rows))
+    for name in pca_sets:
+        ok = pca_stats[name]["ok"]
+        p_all = pca_stats[name]["p"]
+        sc_all = np.sqrt(np.maximum(p_all * (1 - p_all), 1e-6))
+        V = loadings[name]
+        for c0 in range(0, S, SUB):
+            c1 = min(S, c0 + SUB)
+            s_lo, s_hi = int(S_idx[c0]), int(S_idx[c1 - 1]) + 1
+            G = decode(idx, s_lo, s_hi, block_rows)[:, S_idx[c0:c1] - s_lo]
+            m = (G != 3) & ok[c0:c1][None, :]
+            Zp = np.where(m, ((2 - G.astype(np.float32)) - 2 * p_all[c0:c1]) / sc_all[c0:c1], 0)
+            Vc = V[c0:c1]
+            Atb[name][p0:p0 + len(rows)] += Zp @ Vc
+            VV = (Vc[:, :, None] * Vc[:, None, :]).reshape(len(Vc), K * K)
+            AtA[name][p0:p0 + len(rows)] += m.astype(np.float32) @ VV
+    if (p0 // BATCH) % 20 == 0:
+        log(f"  {p0 + len(rows)}/{len(proj_rows)}")
 
 proj = {}
 for name in pca_sets:

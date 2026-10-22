@@ -13,6 +13,7 @@
     <button type="button" class="tab" data-view="molecule" aria-pressed="true"><span class="k">01</span>Molecule</button>
     <button type="button" class="tab" data-view="validation" aria-pressed="false"><span class="k">02</span>Validation</button>
     <button type="button" class="tab" data-view="adna" aria-pressed="false"><span class="k">03</span>Ancient DNA</button>
+      <button type="button" class="tab" data-view="personal" aria-pressed="false"><span class="k">04</span>Personal Genome</button>
   </nav>
   <button type="button" class="btn update" id="updateBtn" hidden></button>
   <button type="button" class="btn gpu" id="gpuBtn" hidden></button>
@@ -234,6 +235,43 @@
   </section>
   <section class="panel" aria-label="Provenance">
     <div class="sec"><div class="label">Provenance</div><div id="adnaProv" class="note">No run yet.</div></div>
+  </section>
+</main>
+
+<!-- ============================ PERSONAL GENOME ============================ -->
+<main class="view deck" id="view-personal" hidden>
+  <section class="panel" aria-label="Your DNA file">
+    <div class="sec">
+      <div class="label">Reference data</div>
+      <div id="pgPack" class="note">Checking…</div>
+      <div class="row"><button type="button" class="btn sm" id="pgInstall" hidden>Download reference data</button>
+        <button type="button" class="btn sm" id="pgRemove" hidden>Remove</button></div>
+      <div class="busy progress" id="pgPackBusy" hidden>
+        <div class="pbar"><i id="pgPackBar"></i></div>
+        <div class="pstage" id="pgPackText">Starting…</div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="label">Your DNA file</div>
+      <p class="note">The raw data file from AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA (the .txt or .zip you download from them), or a VCF. It is read on this computer and never uploaded.</p>
+      <div id="pgFile" class="filelist"></div>
+      <div class="row"><button type="button" class="btn sm" id="pgChoose">Choose file…</button></div>
+      <button type="button" class="btn primary" id="pgRun" disabled>Analyse</button>
+      <p class="note">About 70 reports are planned; this release covers your file and deep ancestry. Each card states how good the evidence is and what it cannot tell you.</p>
+    </div>
+  </section>
+  <section class="panel center-scroll" aria-label="Reports">
+    <div class="busy progress" id="pgBusy" hidden>
+      <div class="pbar"><i id="pgBar"></i></div>
+      <div class="ptext"><b id="pgPct">0%</b></div>
+      <div class="pstage" id="pgBusyText">Starting…</div>
+    </div>
+    <div id="pgEmpty" class="note">Download the reference data, then choose your DNA file.</div>
+    <div id="pgCards" hidden></div>
+  </section>
+  <section class="panel" aria-label="Provenance">
+    <div class="sec"><div class="label">Provenance</div><div id="pgProv" class="note">No report yet.</div>
+      <div class="row"><button type="button" class="btn sm" id="pgExport" hidden>Save report (JSON)…</button></div></div>
   </section>
 </main>
 

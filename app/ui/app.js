@@ -352,6 +352,11 @@ function progressText(d) {
     for (const g of (A.catalog && A.catalog.references.genomes) || []) st = st.replaceAll(g.accession, commonName(g.organism));
     return `Step ${d.step ?? "?"} of ${d.steps ?? "?"} · ${st}`;
   }
+  if (d.task === "personal") return d.stage ? d.stage[0].toUpperCase() + d.stage.slice(1) : "";
+  if (d.task === "pgdata") {
+    if (d.total_bytes) return `${d.stage} · ${(d.bytes / 1e6).toFixed(0)} of ${(d.total_bytes / 1e6).toFixed(0)} MB`;
+    return d.stage || "";
+  }
   if (d.task === "frequencies" && d.analytic) return `${S.busyLabel}: analytic Hessian and IR intensities (coupled-perturbed SCF)…`;
   if (d.task === "frequencies") return `${S.busyLabel}: Hessian gradient ${d.step} of ${d.total}`;
   return "";
@@ -583,6 +588,11 @@ function wire() {
   $("realSaveFasta").onclick = () => realExport("fasta");
   $("realSaveMaj").onclick = () => realExport("majority_fasta");
   $("realSaveJson").onclick = () => realExport("json");
+  $("pgInstall").onclick = () => pgInstall();
+  $("pgRemove").onclick = () => pgRemove();
+  $("pgChoose").onclick = () => pgChoose();
+  $("pgRun").onclick = () => pgRun();
+  $("pgExport").onclick = () => pgExport();
   $("adnaCov").oninput = (e) => ($("adnaCovVal").textContent = `${e.target.value}×`);
   $("adnaCont").oninput = (e) => ($("adnaContVal").textContent = `${e.target.value}%`);
   $("adnaLen").oninput = (e) => ($("adnaLenVal").textContent = `${e.target.value} bp`);
@@ -608,9 +618,10 @@ function wire() {
   document.getElementById("tabs").onclick = (e) => {
     const b = e.target.closest(".tab"); if (!b) return;
     document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-pressed", String(t === b)));
-    for (const v of ["molecule", "validation", "adna"]) $(`view-${v}`).hidden = b.dataset.view !== v;
+    for (const v of ["molecule", "validation", "adna", "personal"]) $(`view-${v}`).hidden = b.dataset.view !== v;
     if (b.dataset.view === "validation") renderValidation();
     if (b.dataset.view === "adna") initAdna();
+    if (b.dataset.view === "personal") initPersonal();
   };
 }
 
@@ -1153,6 +1164,339 @@ function renderRealProv() {
     <p><b>Settings</b></p><ul>${st}</ul><p><b>Tools</b></p><ul>${tools}</ul><p><b>Steps</b></p><ol>${steps}</ol>`;
 }
 
+// ------------------------------------------------------------------ Personal Genome
+const PG = { status: null, path: null, result: null, busy: false };
+const GRADE = { A: "established", B: "moderate", C: "weak or for fun" };
+
+async function initPersonal() {
+  try {
+    PG.status = await rpc("personal_status", {});
+  } catch (e) { $("pgPack").textContent = `Could not reach the science core: ${e.message || e}`; return; }
+  renderPgPack();
+}
+
+function renderPgPack() {
+  const st = PG.status || {};
+  $("pgInstall").hidden = !!st.installed;
+  $("pgRemove").hidden = !st.installed;
+  $("pgRun").disabled = !(st.installed && PG.path) || PG.busy;
+  if (!st.installed) {
+    $("pgPack").innerHTML = `Not downloaded yet. The reference data (about 150 MB) holds published ancient genomes, present-day reference populations and the haplogroup trees. It is downloaded once and checked against its checksum.`;
+    $("pgEmpty").textContent = "Download the reference data, then choose your DNA file.";
+    return;
+  }
+  const src = st.sources || {};
+  $("pgPack").innerHTML = kvTable([
+    ["Version", `${escapeHtml(st.pack || "")} · built ${escapeHtml((st.built || "").slice(0, 10))}`],
+    ["Reference SNPs", (st.snps || 0).toLocaleString()],
+    ["Ancient genomes", (st.ancients || 0).toLocaleString()],
+    ["Built from", Object.values(src).map((x) => escapeHtml(x.name || "")).join("<br>")],
+  ]);
+  $("pgEmpty").textContent = PG.path ? "Ready. Click Analyse." : "Choose your DNA file.";
+}
+
+function pgPackProgress(d) {
+  $("pgPackBusy").hidden = false;
+  $("pgPackBar").style.width = `${(100 * (d.fraction || 0)).toFixed(1)}%`;
+  $("pgPackText").textContent = progressText(d);
+}
+
+async function pgInstall() {
+  $("pgInstall").disabled = true;
+  const job = addJob("Personal Genome reference data");
+  try {
+    PG.status = await rpc("personal_install", {});
+    job.done("installed");
+    log("Personal Genome reference data installed and verified");
+  } catch (e) { job.fail(String(e)); log(`Reference data: ${e.message || e}`, true); }
+  finally { $("pgInstall").disabled = false; $("pgPackBusy").hidden = true; renderPgPack(); }
+}
+
+async function pgRemove() {
+  PG.status = await rpc("personal_remove", {});
+  renderPgPack();
+}
+
+async function pgChoose() {
+  if (!TAURI) return;
+  try {
+    const [p] = await TAURI.core.invoke("pick_files", { title: "Your raw DNA file", multiple: false,
+      filters: [["Raw DNA data (txt, csv, zip, gz, vcf)", ["txt", "csv", "tsv", "zip", "gz", "vcf"]], ["All files", ["*"]]] });
+    if (!p) return;
+    PG.path = p;
+    $("pgFile").innerHTML = `<div class="file"><span class="kind">DNA</span><span class="fn" title="${escapeHtml(p)}">${escapeHtml(baseName(p))}</span></div>`;
+    renderPgPack();
+  } catch (e) { log(`File dialog: ${e}`, true); }
+}
+
+function pgProgress(d) {
+  if (!PG.busy) return;
+  $("pgBar").style.width = `${(100 * (d.fraction || 0)).toFixed(1)}%`;
+  $("pgPct").textContent = `${Math.floor(100 * (d.fraction || 0))}%`;
+  $("pgBusyText").textContent = progressText(d);
+}
+
+async function pgRun() {
+  if (!PG.path) return;
+  PG.busy = true; $("pgRun").disabled = true; $("pgBusy").hidden = false;
+  $("pgBar").style.width = "0%"; $("pgPct").textContent = "0%"; $("pgBusyText").textContent = "Starting…";
+  const job = addJob(`Personal Genome · ${baseName(PG.path)}`);
+  try {
+    PG.result = await rpc("personal_analyse", { path: PG.path });
+    job.done(`${PG.result.cards.length} reports`);
+    renderPersonal();
+    log(`Personal Genome: ${PG.result.cards.length} reports from ${PG.result.file.vendor} data`);
+  } catch (e) { job.fail(String(e)); log(`Personal Genome: ${e.message || e}`, true); }
+  finally { PG.busy = false; $("pgRun").disabled = false; $("pgBusy").hidden = true; }
+}
+
+async function pgExport() {
+  try {
+    const path = await TAURI.core.invoke("pick_save_path", { title: "Save report",
+      defaultName: "athanor-personal-genome.json", filters: [["JSON", ["json"]]] });
+    if (!path) return;
+    await rpc("personal_export", { path });
+    log(`Saved ${baseName(path)}`);
+  } catch (e) { log(`Save failed: ${e.message || e}`, true); }
+}
+
+const BP = (bp) => (bp == null ? "undated" : (1950 - bp <= 0 ? `${(bp - 1950).toLocaleString()} BCE` : `${(1950 - bp).toLocaleString()} CE`));
+
+function renderPersonal() {
+  const R = PG.result; if (!R) return;
+  $("pgEmpty").hidden = true; $("pgCards").hidden = false; $("pgExport").hidden = false;
+  const groups = [];
+  for (const c of R.cards) {
+    let g = groups.find((x) => x.name === c.group);
+    if (!g) groups.push((g = { name: c.group, cards: [] }));
+    g.cards.push(c);
+  }
+  $("pgCards").innerHTML = groups.map((g) => `<div class="sec"><div class="label">${escapeHtml(g.name)}</div>
+    ${g.cards.map(cardHtml).join("")}</div>`).join("");
+  for (const c of R.cards) {
+    const el = $(`pgbody_${c.id}`);
+    if (el && DETAIL[c.id]) { try { DETAIL[c.id](el, c); } catch (e) { el.innerHTML = `<p class="note">${escapeHtml(String(e))}</p>`; } }
+  }
+  renderPgProv();
+}
+
+function cardHtml(c) {
+  return `<div class="pgcard${c.ok ? "" : " warn"}">
+    <div class="pghead"><b>${escapeHtml(c.title)}</b><span class="grade g${c.grade}" title="Strength of the evidence">${c.grade} · ${GRADE[c.grade] || ""}</span></div>
+    <p class="pgsum">${escapeHtml(c.summary)}</p>
+    <div id="pgbody_${c.id}"></div>
+    ${c.limits && c.limits.length ? `<details><summary class="note">What this cannot tell you</summary><ul class="note">${c.limits.map((l) => `<li>${escapeHtml(l)}</li>`).join("")}</ul></details>` : ""}
+    ${c.method ? `<details><summary class="note">How it is worked out</summary><p class="note">${escapeHtml(c.method)}</p>
+      ${c.validation ? `<p class="note"><b>Checked:</b> ${escapeHtml(c.validation)}</p>` : ""}
+      ${c.sources && c.sources.length ? `<ul class="note">${c.sources.map((s) => `<li>${escapeHtml(s.title)}</li>`).join("")}</ul>` : ""}</details>` : ""}
+  </div>`;
+}
+
+const DETAIL = {
+  file_check(el, c) {
+    const r = c.result, m = r.reference_match || {};
+    el.innerHTML = kvTable([
+      ["Testing company", escapeHtml(r.vendor)],
+      ["Markers in the file", r.markers.toLocaleString() + ` (${pct(r.call_rate, 1)} with a call)`],
+      ["Genome build", escapeHtml(m.build || "")],
+      ["Used for ancestry", (m.used || 0).toLocaleString() + " markers" + (m.strand_flipped ? `, ${m.strand_flipped.toLocaleString()} strand-flipped to match the reference` : "")],
+      ["Left out", `${(m.ambiguous_dropped || 0).toLocaleString()} where the strand cannot be checked, ${(m.allele_mismatch_dropped || 0).toLocaleString()} whose alleles do not match the reference`],
+      ["Genetic sex", `${escapeHtml(r.genetic_sex)} <small>(${escapeHtml(r.genetic_sex_basis)})</small>`],
+    ]);
+  },
+  ancient_ancestry(el, c) {
+    const ms = c.result.models || [];
+    el.innerHTML = ms.map((m) => {
+      if (m.error) return `<p class="note">${escapeHtml(m.title)}: ${escapeHtml(m.error)}</p>`;
+      const bar = m.components.map((x, i) => `<i class="s${i}" style="width:${Math.max(0, 100 * x.proportion).toFixed(1)}%" title="${escapeHtml(x.label)}"></i>`).join("");
+      return `<div class="model ${m.fit === "fits" ? "ok" : m.fit === "marginal" ? "mar" : "no"}">
+        <div class="mhead"><b>${escapeHtml(m.title)}</b> <span class="fit">${escapeHtml(m.fit)} · p = ${m.p.toFixed(3)}</span></div>
+        <p class="note">${escapeHtml(m.description || "")}</p>
+        ${m.fit === "does not fit" ? "" : `<div class="stack">${bar}</div>`}
+        <table><thead><tr><th>Ancient source</th><th>Share</th><th>95% interval</th></tr></thead><tbody>
+        ${m.components.map((x, i) => `<tr><td><i class="dot s${i}"></i>${escapeHtml(x.label)}</td><td class="n">${pct(x.proportion, 1)}</td>
+          <td class="n">${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}</td></tr>`).join("")}</tbody></table>
+        <p class="note">${m.fit === "does not fit" ? "This model does not explain your genome: your ancestry includes sources it leaves out, so no proportions are shown." : m.imprecise ? "The intervals are wide, so read these as rough shares." : ""} Fitted on ${(m.snps || 0).toLocaleString()} markers.</p></div>`;
+    }).join("");
+  },
+  pca(el, c) {
+    const maps = c.result.maps || {};
+    el.innerHTML = Object.entries(maps).filter(([, m]) => m.coords)
+      .map(([k, m]) => `<div class="plotwrap"><div class="note">${escapeHtml(m.title)} — placed using ${(m.snps || 0).toLocaleString()} markers</div>
+        <canvas id="pgpca_${k}" height="320"></canvas></div>`).join("")
+      || `<p class="note">No map could be drawn.</p>`;
+    for (const [k, m] of Object.entries(maps)) if (m.coords) drawPca($(`pgpca_${k}`), m);
+  },
+  closest_ancients(el, c) {
+    const rows = (c.result.west && c.result.west.length ? c.result.west : c.result.world) || [];
+    el.innerHTML = `<div class="plotwrap"><canvas id="pgmap" height="300"></canvas></div>
+      <table><thead><tr><th>Ancient individual</th><th>When</th><th>Where</th><th>mtDNA</th><th>Y</th></tr></thead><tbody>
+      ${rows.slice(0, 10).map((a) => `<tr><td>${escapeHtml(a.group || a.id)}<br><small>${escapeHtml(a.id)}</small></td>
+        <td class="n">${escapeHtml(BP(a.date_bp))}</td><td>${escapeHtml([a.locality, a.country].filter(Boolean).join(", "))}</td>
+        <td class="n">${escapeHtml(a.mt || "—")}</td><td class="n">${escapeHtml(a.y || "—")}</td></tr>`).join("")}</tbody></table>`;
+    drawMap($("pgmap"), rows.slice(0, 10));
+  },
+  neanderthal(el, c) {
+    const r = c.result; if (r.error) { el.innerHTML = `<p class="note">${escapeHtml(r.error)}</p>`; return; }
+    const groups = (r.reference_groups && r.reference_groups.regions) || [];
+    el.innerHTML = `<div class="plotwrap"><canvas id="pgnean" height="240"></canvas></div>
+      <p class="note">Your estimate with its 95% interval, against the averages of present-day reference groups computed the same way.</p>`;
+    drawNean($("pgnean"), r, groups);
+  },
+  denisovan(el, c) {
+    const r = c.result; if (r.error) { el.innerHTML = `<p class="note">${escapeHtml(r.error)}</p>`; return; }
+    const regions = (r.reference_groups && r.reference_groups.regions) || [];
+    el.innerHTML = kvTable([["Your statistic", `${r.D.toFixed(4)} (Z ${r.z >= 0 ? "+" : ""}${r.z.toFixed(1)}, ${(r.snps || 0).toLocaleString()} markers)`]])
+      + `<table><thead><tr><th>Reference region</th><th>Average</th><th>Spread</th></tr></thead><tbody>
+      ${regions.map((g) => `<tr><td>${escapeHtml(g.region)}</td><td class="n">${g.mean.toFixed(4)}</td><td class="n">${g.sd == null ? "—" : "±" + g.sd.toFixed(4)}</td></tr>`).join("")}</tbody></table>`;
+  },
+  archaic_alleles(el, c) {
+    const r = c.result;
+    const vs = r.variants || [];
+    el.innerHTML = kvTable([
+      ["Sites checked in your file", (r.typed_sites || 0).toLocaleString()],
+      ["Sites where you carry it", (r.sites_carried || 0).toLocaleString()],
+      ["Total copies", (r.copies || 0).toLocaleString()],
+    ]) + (vs.length ? `<details><summary class="note">The first ${Math.min(vs.length, 400)} variants, with how common each is</summary>
+      <table><thead><tr><th>Variant</th><th>Position</th><th>Your copies</th><th>Europe</th><th>East Asia</th><th>South Asia</th></tr></thead><tbody>
+      ${vs.slice(0, 400).map((v) => `<tr><td class="n">rs${v.rsid}</td><td class="n">${v.chrom}:${v.pos.toLocaleString()}</td><td class="n">${v.copies}</td>
+        <td class="n">${pct(v.EUR, 0)}</td><td class="n">${pct(v.EAS, 0)}</td><td class="n">${pct(v.SAS, 0)}</td></tr>`).join("")}</tbody></table></details>` : "")
+      + `<p class="note">${escapeHtml(r.definition || "")}</p>`;
+  },
+  mt_haplogroup(el, c) { haploDetail(el, c, "mtDNA"); },
+  y_haplogroup(el, c) { haploDetail(el, c, "Y"); },
+};
+
+function haploDetail(el, c, kind) {
+  const r = c.result;
+  if (!r.call) { el.innerHTML = `<p class="note">${escapeHtml(r.reason || "No call.")}</p>`; return; }
+  const path = r.path || [], tl = r.timeline || [], car = r.carriers || [];
+  el.innerHTML = kvTable([
+    ["Haplogroup", `<b>${escapeHtml(r.call)}</b>`],
+    ["Tree", escapeHtml(r.tree || "")],
+    ["Markers in your file on this tree", (r.markers_in_file || 0).toLocaleString() + ` (${r.typed_mutations || 0} on branch-defining positions)`],
+    ["Support along the lineage", `${r.path_derived} markers agree, ${r.path_ancestral} disagree`],
+  ]) + `<p class="note">Your lineage from the root: ${path.map((p) => escapeHtml(p.name)).join(" → ")}</p>`
+    + (tl.length ? `<details open><summary class="note">Oldest dated genome known to carry each branch of your line</summary>
+      <table><thead><tr><th>Branch</th><th>Oldest carrier</th><th>When</th><th>Where</th></tr></thead><tbody>
+      ${tl.filter((t) => t.oldest).map((t) => `<tr><td class="n">${escapeHtml(t.branch)}</td><td>${escapeHtml(t.oldest.group || t.oldest.id)}</td>
+        <td class="n">${escapeHtml(BP(t.oldest.date_bp))}</td><td>${escapeHtml([t.oldest.locality, t.oldest.country].filter(Boolean).join(", "))}</td></tr>`).join("")}
+      </tbody></table><p class="note">Each row gives a minimum age for that branch: the lineage existed at least that long ago.</p></details>` : "")
+    + (car.length ? `<details><summary class="note">${car.length} ancient genomes carry this ${kind} branch or one below it</summary>
+      <div class="plotwrap"><canvas id="pgmap_${c.id}" height="260"></canvas></div>
+      <table><thead><tr><th>Individual</th><th>When</th><th>Where</th></tr></thead><tbody>
+      ${car.slice(0, 60).map((a) => `<tr><td>${escapeHtml(a.group || a.id)}</td><td class="n">${escapeHtml(BP(a.date_bp))}</td>
+        <td>${escapeHtml([a.locality, a.country].filter(Boolean).join(", "))}</td></tr>`).join("")}</tbody></table></details>` : "");
+  const cv = $(`pgmap_${c.id}`);
+  if (cv) setTimeout(() => drawMap(cv, car.slice(0, 400)), 0);
+}
+
+const REGION_COLOR = { "Europe": "#62d6ff", "West Asia": "#ffb34a", "North Africa": "#d9a066", "Africa": "#ff6a57",
+  "South Asia": "#b98cff", "Central Asia": "#8fe3c8", "East Asia": "#52f0b0", "Siberia and North Asia": "#9fd4ff",
+  "Oceania and Island Southeast Asia": "#ff8fd0", "Americas": "#ffe066" };
+
+function drawPca(cv, m) {
+  const { g, w, h, l, r, t, b } = plotFrame(cv);
+  const pts = m.reference.coords, reg = m.reference.region;
+  const xs = pts.map((p) => p[0]).concat([m.coords[0]]), ys = pts.map((p) => p[1]).concat([m.coords[1]]);
+  const anc = (m.nearest_ancients || []);
+  const pad = 0.08;
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const dx = (x1 - x0) * pad || 1, dy = (y1 - y0) * pad || 1;
+  const X = (v) => l + ((v - x0 + dx) / (x1 - x0 + 2 * dx)) * (r - l);
+  const Y = (v) => b - ((v - y0 + dy) / (y1 - y0 + 2 * dy)) * (b - t);
+  g.strokeRect(l, t, r - l, b - t);
+  pts.forEach((p, i) => { g.fillStyle = (REGION_COLOR[reg[i]] || "#7f9fb3") + "88"; g.beginPath(); g.arc(X(p[0]), Y(p[1]), 2.4, 0, 7); g.fill(); });
+  g.fillStyle = "#ffffff";
+  anc.forEach((a) => { if (a.pc) return; });
+  g.strokeStyle = "#fff"; g.lineWidth = 2;
+  g.beginPath(); g.arc(X(m.coords[0]), Y(m.coords[1]), 6, 0, 7); g.stroke();
+  g.fillStyle = "#fff"; g.font = "12px JetBrains Mono, monospace";
+  g.fillText("you", X(m.coords[0]) + 9, Y(m.coords[1]) + 4);
+  const regs = [...new Set(reg)];
+  g.font = "10px JetBrains Mono, monospace";
+  regs.forEach((rr, i) => { g.fillStyle = REGION_COLOR[rr] || "#7f9fb3"; g.fillText(rr, l + 6, t + 12 + 12 * i); });
+  g.fillStyle = "#7f9fb3"; g.fillText("component 1", (l + r) / 2 - 30, b + 16);
+}
+
+let WORLD = null;
+async function loadWorld() {
+  if (WORLD) return WORLD;
+  try { WORLD = await (await fetch("data/world110.json")).json(); } catch { WORLD = { rings: [] }; }
+  return WORLD;
+}
+
+async function drawMap(cv, points) {
+  const world = await loadWorld();
+  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight || 300;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const lons = points.map((p) => p.lon).filter((x) => x != null), lats = points.map((p) => p.lat).filter((x) => x != null);
+  let lo0 = -25, lo1 = 80, la0 = 20, la1 = 72;
+  if (lons.length) {
+    lo0 = Math.min(...lons) - 8; lo1 = Math.max(...lons) + 8;
+    la0 = Math.min(...lats) - 6; la1 = Math.max(...lats) + 6;
+  }
+  const ar = (lo1 - lo0) / Math.max(1e-6, la1 - la0), want = w / h;
+  if (ar < want) { const c = (lo0 + lo1) / 2, half = (la1 - la0) * want / 2; lo0 = c - half; lo1 = c + half; }
+  else { const c = (la0 + la1) / 2, half = (lo1 - lo0) / want / 2; la0 = c - half; la1 = c + half; }
+  const X = (lon) => ((lon - lo0) / (lo1 - lo0)) * w, Y = (lat) => h - ((lat - la0) / (la1 - la0)) * h;
+  g.fillStyle = "rgba(10,22,32,.6)"; g.fillRect(0, 0, w, h);
+  g.strokeStyle = "rgba(110,205,255,.35)"; g.lineWidth = 1;
+  for (const ring of world.rings) {
+    g.beginPath();
+    for (let i = 0; i < ring.length; i += 2) {
+      const x = X(ring[i]), y = Y(ring[i + 1]);
+      i ? g.lineTo(x, y) : g.moveTo(x, y);
+    }
+    g.stroke();
+  }
+  const bps = points.map((p) => p.date_bp).filter((x) => x != null);
+  const oldest = Math.max(1, ...bps);
+  for (const p of points) {
+    if (p.lon == null || p.lat == null) continue;
+    const f = p.date_bp == null ? 0.5 : p.date_bp / oldest;
+    g.fillStyle = `rgba(${Math.round(98 + 157 * f)},${Math.round(214 - 70 * f)},${Math.round(255 - 180 * f)},.85)`;
+    g.beginPath(); g.arc(X(p.lon), Y(p.lat), 4, 0, 7); g.fill();
+  }
+  g.fillStyle = "#7f9fb3"; g.font = "10px JetBrains Mono, monospace";
+  g.fillText("blue = more recent, orange = older", 6, h - 6);
+}
+
+function drawNean(cv, r, regions) {
+  const { g, l, r: rr, t, b } = plotFrame(cv);
+  const rows = [{ region: "you", mean: r.estimate, lo: r.ci95[0], hi: r.ci95[1] }]
+    .concat(regions.filter((x) => x.n >= 3).map((x) => ({ region: x.region, mean: x.mean, lo: x.mean - 2 * (x.sd || 0), hi: x.mean + 2 * (x.sd || 0) })));
+  const all = rows.flatMap((x) => [x.lo, x.hi]).filter((x) => isFinite(x));
+  const v0 = Math.min(0, ...all), v1 = Math.max(...all) * 1.05;
+  const X = (v) => l + ((v - v0) / (v1 - v0)) * (rr - l);
+  const rowH = Math.max(14, (b - t) / Math.max(1, rows.length));
+  g.strokeRect(l, t, rr - l, b - t);
+  rows.forEach((x, i) => {
+    const y = t + rowH * (i + 0.5);
+    const me = i === 0;
+    g.strokeStyle = me ? "#fff" : "rgba(98,214,255,.7)"; g.lineWidth = me ? 2 : 1;
+    g.beginPath(); g.moveTo(X(x.lo), y); g.lineTo(X(x.hi), y); g.stroke();
+    g.fillStyle = me ? "#fff" : "#62d6ff";
+    g.beginPath(); g.arc(X(x.mean), y, me ? 4 : 3, 0, 7); g.fill();
+    g.font = "10px JetBrains Mono, monospace";
+    g.fillText(x.region.slice(0, 26), l + 4, y - 4);
+  });
+  g.fillStyle = "#7f9fb3"; g.fillText(`${(100 * v0).toFixed(1)}%`, l, b + 14);
+  g.fillText(`${(100 * v1).toFixed(1)}% Neanderthal`, rr - 110, b + 14);
+}
+
+function renderPgProv() {
+  const R = PG.result, st = PG.status || {};
+  const src = st.sources || {};
+  $("pgProv").innerHTML = `<p><b>Your file</b> (read on this computer, never uploaded)</p>
+    <ul><li>${escapeHtml(R.file.file)} — ${escapeHtml(R.file.vendor)}, ${R.file.markers.toLocaleString()} markers<br>
+      <small>sha256 ${escapeHtml(R.file.sha256.slice(0, 16))}…</small></li></ul>
+    <p><b>Reference data</b></p><ul>${Object.entries(src).map(([k, v]) => `<li><b>${escapeHtml(k)}</b>: ${escapeHtml(v.name || "")}
+      ${v.licence ? `<br><small>licence ${escapeHtml(v.licence)}</small>` : ""}${v.citation ? `<br><small>${escapeHtml(v.citation)}</small>` : ""}</li>`).join("")}</ul>
+    <p class="note">Analysis took ${R.seconds} s.</p>`;
+}
+
 async function boot() {
   wire(); setTier("gfn2-xtb"); setBusy(false);
   try { S.bench = await (await fetch("data/benchmark.json")).json(); } catch { S.bench = null; }
@@ -1161,6 +1505,8 @@ async function boot() {
     TAURI.event.listen("core-progress", (e) => {
       const d = e.payload || {}, t = progressText(d);
       if (d.task === "adna") { if (A.busy) adnaProgress(d); return; }
+      if (d.task === "personal") { pgProgress(d); return; }
+      if (d.task === "pgdata") { pgPackProgress(d); return; }
       if (t && S.busy) setBusy(true, t);
     });
     TAURI.event.listen("core-status", (e) => {

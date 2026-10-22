@@ -14,10 +14,14 @@ through pipes only: no network socket is opened. Methods:
   adna_catalog / adna_run       -> Ancient DNA Lab, simulated data (Linux engines pack)
   adna_real_run {inputs, ...}   -> Ancient DNA Lab, the user's own reads (Linux engines pack)
   adna_export {path, what}      -> save the last real-data consensus or report
+  personal_status / personal_install / personal_remove -> Personal Genome reference data
+  personal_analyse {path}       -> report cards from a consumer raw DNA file
+  personal_export {path}        -> save the last Personal Genome report
 """
 from __future__ import annotations
 
 import json
+import os
 import sys
 import traceback
 from pathlib import Path
@@ -172,6 +176,102 @@ def m_adna_export(p):
     return {"path": p["path"], "bytes": len(text)}
 
 
+# ------------------------------------------------------------------ Personal Genome
+PG_FEED = "https://github.com/0xGrimnir/athanor-releases/releases/download/pgdata-{v}/"
+PG_VERSION = 1
+
+
+def m_personal_status(_):
+    """Is the reference data present, and what was it built from?"""
+    from .personal.refdata import PACK_NAME, RefData, default_dir
+    d = default_dir()
+    try:
+        ref = RefData(d)
+    except FileNotFoundError:
+        return {"installed": False, "path": str(d), "pack": PACK_NAME, "version": PG_VERSION}
+    m = ref.manifest
+    return {"installed": True, "path": str(d), "pack": PACK_NAME, "version": PG_VERSION,
+            "built": m.get("built"), "sources": m.get("sources"), "snps": m.get("snps"),
+            "ancients": m.get("ancients"), "models": [{"id": x["id"], "title": x["title"]} for x in m.get("models", [])],
+            "validation": m.get("validation")}
+
+
+def m_personal_install(p):
+    """Download and unpack the reference data (about 150 MB), verifying its checksum."""
+    import hashlib
+    import json as _json
+    import tarfile
+    import tempfile
+    import urllib.request
+    from .personal.refdata import default_dir
+    v = int((p or {}).get("version", PG_VERSION))
+    base = PG_FEED.format(v=v)
+    notify = _progress({"tier": "personal"})
+    notify({"task": "pgdata", "stage": "finding the reference data", "fraction": 0.0})
+    man = _json.loads(urllib.request.urlopen(base + "pgdata-manifest.json", timeout=120).read())
+    total = int(man.get("size") or 0)
+    dest = default_dir()
+    dest.mkdir(parents=True, exist_ok=True)
+    h = hashlib.sha256()
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".tar.gz") as tmp:
+        with urllib.request.urlopen(base + man["file"], timeout=600) as r:
+            got = 0
+            while True:
+                chunk = r.read(1 << 20)
+                if not chunk:
+                    break
+                tmp.write(chunk)
+                h.update(chunk)
+                got += len(chunk)
+                notify({"task": "pgdata", "stage": "downloading the reference data",
+                        "fraction": 0.9 * got / total if total else 0.5,
+                        "bytes": got, "total_bytes": total})
+        path = tmp.name
+    if h.hexdigest() != man["sha256"]:
+        os.unlink(path)
+        raise RuntimeError("the downloaded reference data did not match its checksum; nothing was installed")
+    notify({"task": "pgdata", "stage": "unpacking", "fraction": 0.95})
+    with tarfile.open(path) as tf:
+        tf.extractall(dest, filter="data")
+    os.unlink(path)
+    notify({"task": "pgdata", "stage": "done", "fraction": 1.0})
+    return m_personal_status(None)
+
+
+def m_personal_remove(_):
+    import shutil
+    from .personal.refdata import default_dir
+    d = default_dir()
+    shutil.rmtree(d, ignore_errors=True)
+    return m_personal_status(None)
+
+
+def m_personal_analyse(p):
+    """Read a raw DNA file and produce the Personal Genome report cards.
+    The file is read where it is; nothing leaves this computer."""
+    from .personal.deep import analyse
+    from .personal.refdata import RefData
+    res = analyse(to_linux_path(p["path"]) if p.get("wsl") else p["path"], RefData(),
+                  on_step=_progress({"tier": "personal"}))
+    _LAST_PERSONAL.clear()
+    _LAST_PERSONAL.update(res)
+    return res
+
+
+_LAST_PERSONAL: dict = {}
+
+
+def m_personal_export(p):
+    """Save the last report as JSON."""
+    if not _LAST_PERSONAL:
+        raise ValueError("no Personal Genome report to export yet")
+    path = p["path"]
+    text = json.dumps(_LAST_PERSONAL, indent=1)
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(text)
+    return {"path": path, "bytes": len(text)}
+
+
 def m_build(p):
     return mol_to_json(Molecule.from_smiles(p["smiles"], name=p.get("name", p["smiles"])))
 
@@ -230,7 +330,10 @@ METHODS = {"ping": m_ping, "engines": m_engines, "build": m_build, "parse_xyz": 
            "single_point": m_single_point, "optimize": m_optimize, "frequencies": m_frequencies,
            "validation": m_validation, "gpu_status": m_gpu_status, "gpu_selftest": m_gpu_selftest,
            "adna_catalog": m_adna_catalog, "adna_run": m_adna_run,
-           "adna_real_run": m_adna_real_run, "adna_export": m_adna_export}
+           "adna_real_run": m_adna_real_run, "adna_export": m_adna_export,
+           "personal_status": m_personal_status, "personal_install": m_personal_install,
+           "personal_remove": m_personal_remove, "personal_analyse": m_personal_analyse,
+           "personal_export": m_personal_export}
 
 
 def handle(line: str) -> dict:
