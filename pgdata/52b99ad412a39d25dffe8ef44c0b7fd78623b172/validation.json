@@ -1,9 +1,12 @@
 {
  "summary": {
   "file_check": "Raw files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF) are read back with every genotype exact.",
-  "pca": "Genomes reduced to about 92,858 SNPs (a genotyping chip's worth) land a median 0.96% of the map's width from where the same genomes land with all 1.15 million SNPs (168 placements of 84 held-out genomes).",
-  "neanderthal": "On 84 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
-  "ancient_ancestry": "Athanor's qpAdm reproduces ADMIXTOOLS qpAdm [0.524, 0.282, 0.195] with [0.524, 0.282, 0.194] on a well-powered simulation: every weight agrees to within 0.0006 and every standard error to within 0.0003, and both recover the simulated proportions [0.5, 0.3, 0.2] to within 0.024. On simulated populations whose true proportions are known, the fitted proportions were within two standard errors of the truth for all 6 populations (largest deviation 0.515)."
+  "pca": "Genomes reduced to about 252,881 SNPs (a genotyping chip's worth) land a median 0.29% of the map's width from where the same genomes land with all 1.15 million SNPs (186 placements of 93 held-out genomes).",
+  "neanderthal": "On 93 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
+  "ancient_ancestry": "Athanor's qpAdm reproduces ADMIXTOOLS qpAdm [0.524, 0.282, 0.195] with [0.524, 0.282, 0.194] on a well-powered simulation: every weight agrees to within 0.0006 and every standard error to within 0.0003, and both recover the simulated proportions [0.5, 0.3, 0.2] to within 0.024. Athanor's qpAdm reproduces ADMIXTOOLS qpAdm (v8.0.2) on 0 of 1 held-out population targets, every weight agreeing within the estimate's own standard error.",
+  "y_haplogroup": "On 600 ancient men with published Y haplogroups, Athanor's call from the 1240K Y-chromosome SNPs was on the same lineage in 98% and identical in 34%."
  },
- "fails": []
+ "fails": [
+  "qpAdm: weights agree with ADMIXTOOLS within one standard error on well-determined population targets"
+ ]
 }

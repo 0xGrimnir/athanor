@@ -1,47 +1,63 @@
-[    0.6s] SNPs 421567 autosomal biallelic 421567 Y 0
-[    0.6s] individuals 431 annotated 431
-[    0.6s] hg19ref homozygous for allele 1: 1.0
-[    0.6s] role Mbuti: 6 individuals: [np.str_('Mbuti')] e.g. ['Mbuti_0', 'Mbuti_1', 'Mbuti_2']
-[    0.6s] role YRI: 30 individuals: [np.str_('YRI')] e.g. ['YRI_0', 'YRI_1', 'YRI_2']
-[    0.6s] role Chimp: 1 individuals: [np.str_('Chimp')] e.g. ['Chimp_0']
-[    0.6s] role Altai: 1 individuals: [np.str_('Altai_Neanderthal')] e.g. ['Altai_Neanderthal_0']
-[    0.6s] role Vindija: 1 individuals: [np.str_('VindijaCave_Neanderthal')] e.g. ['VindijaCave_Neanderthal_0']
-[    0.6s] role Chagyrskaya: 1 individuals: [np.str_('ChagyrskayaCave_Neanderthal')] e.g. ['ChagyrskayaCave_Neanderthal_0']
-[    0.6s] role Denisova: 1 individuals: [np.str_('Russia_Denisova')] e.g. ['Russia_Denisova_0']
-[    0.6s] role WHG: 16 individuals: [np.str_('Luxembourg_Loschbour_Mesolithic')] e.g. ['Luxembourg_Loschbour_Mesolithic_0', 'Luxembourg_Loschbour_Mesolithic_1', 'Luxembourg_Loschbour_Mesolithic_2']
-[    0.6s] role Anatolia_N: 20 individuals: [np.str_('Turkey_N')] e.g. ['Turkey_N_0', 'Turkey_N_1', 'Turkey_N_2']
-[    0.6s] role Yamnaya: 20 individuals: [np.str_('Russia_Samara_EBA_Yamnaya')] e.g. ['Russia_Samara_EBA_Yamnaya_0', 'Russia_Samara_EBA_Yamnaya_1', 'Russia_Samara_EBA_Yamnaya_2']
-[    0.6s] role Iran_N: 6 individuals: [np.str_('Iran_GanjDareh_N')] e.g. ['Iran_GanjDareh_N_0', 'Iran_GanjDareh_N_1', 'Iran_GanjDareh_N_2']
-[    0.6s] role CHG: 4 individuals: [np.str_('Georgia_KotiasKlde_Mesolithic')] e.g. ['Georgia_KotiasKlde_Mesolithic_0', 'Georgia_KotiasKlde_Mesolithic_1', 'Georgia_KotiasKlde_Mesolithic_2']
-[    0.6s] role Steppe_MLBA: 6 individuals: [np.str_('Russia_Chelyabinsk_MLBA_Sintashta')] e.g. ['Russia_Chelyabinsk_MLBA_Sintashta_0', 'Russia_Chelyabinsk_MLBA_Sintashta_1', 'Russia_Chelyabinsk_MLBA_Sintashta_2']
-[    0.6s] role Onge: 4 individuals: [np.str_('ONG')] e.g. ['ONG_0', 'ONG_1', 'ONG_2']
-[    0.6s] role UstIshim: 1 individuals: [np.str_('Russia_UstIshim_IUP')] e.g. ['Russia_UstIshim_IUP_0']
-[    0.6s] role Kostenki: 1 individuals: [np.str_('Russia_Kostenki_UP')] e.g. ['Russia_Kostenki_UP_0']
-[    0.6s] role MA1: 3 individuals: [np.str_('Russia_Malta_UP')] e.g. ['Russia_Malta_UP_0', 'Russia_Malta_UP_1', 'Russia_Malta_UP_2']
-[    0.6s] role Han: 8 individuals: [np.str_('Han')] e.g. ['Han_0', 'Han_1', 'Han_2']
-[    0.6s] role Papuan: 6 individuals: [np.str_('Papuan')] e.g. ['Papuan_0', 'Papuan_1', 'Papuan_2']
-[    0.6s] role Chukchi: 1 individuals: [np.str_('Chukchi')] e.g. ['Chukchi_0']
-[    0.6s] role Karitiana: 6 individuals: [np.str_('Karitiana')] e.g. ['Karitiana_0', 'Karitiana_1', 'Karitiana_2']
-[    0.6s] role Natufian: 4 individuals: [np.str_('Israel_Natufian')] e.g. ['Israel_Natufian_0', 'Israel_Natufian_1', 'Israel_Natufian_2']
-[    0.6s] role Mota: 2 individuals: [np.str_('Ethiopia_MotaCave_4500BP')] e.g. ['Ethiopia_MotaCave_4500BP_0', 'Ethiopia_MotaCave_4500BP_1']
-[    0.6s] PCA reference individuals: world 148 west 84 held out 178
-[    0.6s] ancient individuals (PASS, >= 20k SNPs, one version each) 89
-[    0.7s] held 423 genotype rows in memory (0.04 GB)
-[    0.7s] pass 1: frequencies, archaic statistics, PCA relationship matrices
-[    0.9s]   20000/421567
-[    3.6s]   220000/421567
-[    6.3s]   420000/421567
-[    6.3s] PCA world: top eigenvalues [15.56  8.25  4.25  1.69  0.75  0.72  0.71  0.7 ] % of variance
-[    6.3s] PCA west: top eigenvalues [1.69 1.64 1.61 1.59 1.58 1.57 1.54 1.53] % of variance
-[    6.3s] pass 2a: SNP loadings
-[    7.0s]   world done
-[    7.5s]   west done
-[    7.5s] pass 2b: projecting 420 individuals
-[    8.3s]   64/420
-[   14.1s] trees: mt 5435 y 42041
-[   16.0s] pca_world: 94885 SNPs
-[   16.1s] pca_west: 63630 SNPs
-[   16.1s] ancients written 89 mt matched 89 y matched 27
-[   18.9s] archaic alleles 0
-[   24.1s] validation bundle written
-[   24.1s] done
+[    2.0s] SNPs 1233013 autosomal biallelic 1150639 Y 32670
+[    2.2s] individuals 23089 annotated 23089
+[    2.3s] hg19ref homozygous for allele 1: 1.0
+[    2.5s] role Mbuti: 13 individuals: [np.str_('Mbuti'), np.str_('MbutiPygmy')] e.g. ['B_Mbuti-4.DG', 'S_Mbuti-1.DG', 'S_Mbuti-2.DG']
+[    2.5s] role YRI: 102 individuals: [np.str_('YRI')] e.g. ['NA19149.DG', 'NA19152.DG', 'NA18856.DG']
+[    2.5s] role Chimp: 1 individuals: [np.str_('Chimp')] e.g. ['Chimp.REF']
+[    2.5s] role Altai: 1 individuals: [np.str_('Altai_Neanderthal')] e.g. ['AltaiNeanderthal.DG']
+[    2.5s] role Vindija: 1 individuals: [np.str_('VindijaCave_Neanderthal')] e.g. ['Vindija.DG']
+[    2.5s] role Chagyrskaya: 1 individuals: [np.str_('ChagyrskayaCave_Neanderthal')] e.g. ['Chagyrskaya8.SG']
+[    2.5s] role Denisova: 1 individuals: [np.str_('Russia_Denisova')] e.g. ['Denisova3.DG']
+[    2.5s] role WHG: 1 individuals: [np.str_('Luxembourg_Loschbour_Mesolithic')] e.g. ['Loschbour.DG']
+[    2.5s] role Anatolia_N: 48 individuals: [np.str_('Turkey_N')] e.g. ['I0723.AG', 'I0724.AG', 'I0727.AG']
+[    2.5s] role Yamnaya: 30 individuals: [np.str_('Russia_Samara_EBA_Yamnaya')] e.g. ['I0242.AG', 'I0243.AG', 'I10363.AG']
+[    2.5s] role Iran_N: 10 individuals: [np.str_('Iran_GanjDareh_N')] e.g. ['I1944.AG', 'I1946.AG', 'I1947.AG']
+[    2.5s] role CHG: 3 individuals: [np.str_('Georgia_KotiasKlde_Mesolithic'), np.str_('Georgia_Satsurblia_LateUP')] e.g. ['KK1.SG', 'SATP.SG', 'NEO281.SG']
+[    2.5s] role Steppe_MLBA: 41 individuals: [np.str_('Russia_Chelyabinsk_MLBA_Sintashta')] e.g. ['I0937.AG', 'I0938.AG', 'I0939.AG']
+[    2.5s] role Onge: 6 individuals: [np.str_('ONG')] e.g. ['ONG-1.SG', 'ONG-12.SG', 'ONG-14.SG']
+[    2.5s] role UstIshim: 1 individuals: [np.str_('Russia_UstIshim_IUP')] e.g. ['Ust_Ishim.DG']
+[    2.5s] role Kostenki: 2 individuals: [np.str_('Russia_Kostenki_UP')] e.g. ['Kostenki12.AG.BY.AA', 'Kostenki14_d.AG.BY.AA']
+[    2.5s] role MA1: 1 individuals: [np.str_('Russia_Malta_UP')] e.g. ['MA1.SG']
+[    2.5s] role Han: 43 individuals: [np.str_('Han')] e.g. ['B_Han-3.DG', 'S_Han-1.DG', 'S_Han-2.DG']
+[    2.5s] role Papuan: 17 individuals: [np.str_('Papuan')] e.g. ['B_Papuan-15.DG', 'S_Papuan-10.DG', 'S_Papuan-11.DG']
+[    2.5s] role Chukchi: 1 individuals: [np.str_('Chukchi')] e.g. ['S_Chukchi-1.DG']
+[    2.5s] role Karitiana: 13 individuals: [np.str_('Karitiana')] e.g. ['BI16.SG', 'B_Karitiana-3.DG', 'S_Karitiana-1.DG']
+[    2.5s] role Natufian: 6 individuals: [np.str_('Israel_Natufian')] e.g. ['I1069.AG', 'I1687.AG', 'I1690.AG.TW']
+[    2.5s] role Mota: 1 individuals: [np.str_('Ethiopia_MotaCave_4500BP')] e.g. ['mota.SG']
+[    2.6s] PCA reference individuals: world 1681 west 595 held out 242
+[    2.7s] ancient individuals (PASS, >= 20k SNPs, one version each) 14175
+[    3.5s] held 3731 genotype rows in memory (1.15 GB)
+[    3.5s] pass 1: frequencies, archaic statistics, PCA relationship matrices
+[    8.6s]   20000/1150639
+[   59.4s]   220000/1150639
+[   97.8s]   420000/1150639
+[  135.3s]   620000/1150639
+[  172.6s]   820000/1150639
+[  209.5s]   1020000/1150639
+[  234.3s] PCA world: top eigenvalues [7.91 4.13 1.22 0.79 0.62 0.58 0.3  0.28] % of variance
+[  234.4s] PCA west: top eigenvalues [1.42 0.68 0.5  0.45 0.4  0.37 0.37 0.36] % of variance
+[  234.4s] pass 2a: SNP loadings
+[  255.1s]   world done
+[  263.5s]   west done
+[  263.5s] pass 2b: projecting 17457 individuals
+[  266.7s]   64/17457
+[  317.4s]   1344/17457
+[  368.4s]   2624/17457
+[  420.1s]   3904/17457
+[  471.7s]   5184/17457
+[  523.0s]   6464/17457
+[  574.0s]   7744/17457
+[  624.4s]   9024/17457
+[  673.7s]   10304/17457
+[  720.4s]   11584/17457
+[  770.6s]   12864/17457
+[  821.6s]   14144/17457
+[  873.3s]   15424/17457
+[  922.7s]   16704/17457
+[  957.4s] trees: mt 5435 y 42041
+[  965.7s] pca_world: 974123 SNPs
+[  966.9s] pca_west: 885257 SNPs
+[  967.3s] ancients written 14175 mt matched 12037 y matched 7150
+[  971.8s] archaic alleles 7498
+[ 1019.5s] validation bundle written
+[ 1019.5s] done

@@ -1,50 +1,56 @@
-[    0.0s] chip-like subset 92858 of 421567
-   23andme: vendor 23andMe, build GRCh37, markers 92858, used 92858, exact True, dropped ambiguous 0
-   ancestry: vendor AncestryDNA, build GRCh37, markers 92858, used 92858, exact True, dropped ambiguous 0
-   myheritage: vendor MyHeritage, build GRCh37, markers 92858, used 92858, exact True, dropped ambiguous 0
-   ftdna: vendor FamilyTreeDNA, build GRCh37, markers 92858, used 92858, exact True, dropped ambiguous 0
-   livingdna: vendor Living DNA, build GRCh37, markers 92858, used 92858, exact True, dropped ambiguous 0
-   vcf: vendor VCF, build GRCh37, markers 92858, used 92858, exact True, dropped ambiguous 0
-   vcf38: vendor VCF, build GRCh38 (converted to GRCh37), markers 62402, used 62402, exact True, dropped ambiguous 0
+[    0.1s] chip-like subset 252881 of 1150639
+   23andme: vendor 23andMe, build GRCh37, markers 252881, used 252480, exact True, dropped ambiguous 0
+   ancestry: vendor AncestryDNA, build GRCh37, markers 252881, used 242111, exact True, dropped ambiguous 0
+   myheritage: vendor MyHeritage, build GRCh37, markers 252881, used 242119, exact True, dropped ambiguous 0
+   ftdna: vendor FamilyTreeDNA, build GRCh37, markers 252881, used 242119, exact True, dropped ambiguous 0
+   livingdna: vendor Living DNA, build GRCh37, markers 252881, used 242125, exact True, dropped ambiguous 0
+   vcf: vendor VCF, build GRCh37, markers 252881, used 242106, exact True, dropped ambiguous 0
+   vcf38: vendor VCF, build GRCh38 (converted to GRCh37), markers 232317, used 222540, exact True, dropped ambiguous 0
 [PASS] parsers: every vendor format reads back exactly: see lines above
-analysing 84 of 178 held-out genomes (6 per population)
-[    5.0s]   analysed 1/84
-[   15.4s]   analysed 11/84
-[   25.9s]   analysed 21/84
-[   36.4s]   analysed 31/84
-[   47.1s]   analysed 41/84
-[   57.6s]   analysed 51/84
-[   67.9s]   analysed 61/84
-[   78.4s]   analysed 71/84
-[   88.8s]   analysed 81/84
-[PASS] PCA: chip-subset genomes land within 2% of the PC1 range of their all-SNP position (median): median 0.96%, 95th percentile 2.37% over 168 placements
-[PASS] Neanderthal: chip-subset 95% interval contains the all-SNP estimate in >= 90% of genomes: 100% of 84
-   all-SNP Neanderthal estimates by group: {'GBR': 2.2, 'CEU': 2.17, 'FIN': 2.15, 'IBS': 2.21, 'TSI': 2.25, 'CHB': 2.63, 'JPT': 2.59, 'GIH': 2.55, 'PJL': 2.55, 'PEL': 2.65, 'MXL': 2.58, 'PUR': 2.23, 'Sardinian': 2.21, 'Druze': 2.32}
+analysing 93 of 242 held-out genomes (6 per population)
+[   17.0s]   analysed 1/93
+[   47.3s]   analysed 11/93
+[   77.6s]   analysed 21/93
+[  107.9s]   analysed 31/93
+[  138.5s]   analysed 41/93
+[  169.0s]   analysed 51/93
+[  199.5s]   analysed 61/93
+[  230.0s]   analysed 71/93
+[  260.2s]   analysed 81/93
+[  290.3s]   analysed 91/93
+[PASS] PCA: chip-subset genomes land within 2% of the PC1 range of their all-SNP position (median): median 0.29%, 95th percentile 0.69% over 186 placements
+[PASS] Neanderthal: chip-subset 95% interval contains the all-SNP estimate in >= 90% of genomes: 100% of 93
+/home/runner/work/athanor/athanor/tools/pgdata/validate.py:197: RuntimeWarning: Mean of empty slice
+  return np.nanmean(g, axis=0) / 2
+   all-SNP Neanderthal estimates by group: {'GBR': 1.77, 'CEU': 1.92, 'FIN': 1.95, 'IBS': 1.76, 'TSI': 1.79, 'CHB': 2.15, 'JPT': 2.05, 'GIH': 1.78, 'PJL': 1.8, 'PEL': 2.15, 'MXL': 1.8, 'PUR': 1.54, 'Sardinian': 1.83, 'Druze': 1.58, 'Papuan': 2.85, 'Karitiana': 2.08}
    model fit by group (fits / marginal / does not fit):
-     CEU        europe             4/0/2
-     CEU        europe_west_asia   1/0/5
+     CEU        europe             2/1/3
+     CEU        europe_west_asia   3/0/3
      CEU        south_asia         0/0/6
      CHB        europe             0/0/6
      CHB        europe_west_asia   0/0/6
      CHB        south_asia         0/0/6
      Druze      europe             0/0/6
      Druze      europe_west_asia   0/0/6
-     Druze      south_asia         1/1/4
-     FIN        europe             2/0/4
-     FIN        europe_west_asia   1/0/5
+     Druze      south_asia         0/0/6
+     FIN        europe             0/0/6
+     FIN        europe_west_asia   0/0/6
      FIN        south_asia         0/0/6
-     GBR        europe             2/0/4
-     GBR        europe_west_asia   1/0/5
+     GBR        europe             2/2/2
+     GBR        europe_west_asia   2/2/2
      GBR        south_asia         0/0/6
      GIH        europe             0/0/6
      GIH        europe_west_asia   0/0/6
-     GIH        south_asia         5/0/1
-     IBS        europe             2/0/4
+     GIH        south_asia         2/3/1
+     IBS        europe             0/0/6
      IBS        europe_west_asia   1/0/5
      IBS        south_asia         0/0/6
      JPT        europe             0/0/6
      JPT        europe_west_asia   0/0/6
      JPT        south_asia         0/0/6
+     Karitiana  europe             0/0/3
+     Karitiana  europe_west_asia   0/0/3
+     Karitiana  south_asia         0/0/3
      MXL        europe             0/0/6
      MXL        europe_west_asia   0/0/6
      MXL        south_asia         0/0/6
@@ -53,27 +59,25 @@ analysing 84 of 178 held-out genomes (6 per population)
      PEL        south_asia         0/0/6
      PJL        europe             0/0/6
      PJL        europe_west_asia   0/0/6
-     PJL        south_asia         6/0/0
-     PUR        europe             5/1/0
-     PUR        europe_west_asia   2/0/4
+     PJL        south_asia         1/0/5
+     PUR        europe             0/0/6
+     PUR        europe_west_asia   0/0/6
      PUR        south_asia         0/0/6
+     Papuan     europe             0/0/6
+     Papuan     europe_west_asia   0/0/6
+     Papuan     south_asia         0/0/6
      Sardinian  europe             1/0/5
-     Sardinian  europe_west_asia   0/0/6
+     Sardinian  europe_west_asia   2/0/4
      Sardinian  south_asia         0/0/6
-     TSI        europe             2/0/4
-     TSI        europe_west_asia   1/0/5
+     TSI        europe             0/0/6
+     TSI        europe_west_asia   4/1/1
      TSI        south_asia         0/0/6
-   CEU: max weight difference 2.9791, largest standard error 0.5260  (not identifiable; excluded)
-   CHB: max weight difference 1061.3659, largest standard error 40.6627  (not identifiable; excluded)
-   Druze: max weight difference 39.0792, largest standard error 1.3903  (not identifiable; excluded)
-   FIN: max weight difference 2.8953, largest standard error 0.8228  (not identifiable; excluded)
-   no population target was well determined enough to compare (the estimator itself is checked by crosscheck_qpadm.py)
-   GBR: largest difference from the simulated proportion 0.117 (0.3 standard errors; model p 0.090)
-   CEU: largest difference from the simulated proportion 0.161 (0.4 standard errors; model p 0.252)
-   FIN: largest difference from the simulated proportion 0.515 (0.7 standard errors; model p 0.283)
-   IBS: largest difference from the simulated proportion 0.238 (0.5 standard errors; model p 0.412)
-   TSI: largest difference from the simulated proportion 0.325 (0.4 standard errors; model p 0.096)
-   PUR: largest difference from the simulated proportion 0.119 (0.6 standard errors; model p 0.405)
-[PASS] qpAdm recovers the simulated proportions within two standard errors: worst FIN: 0.515 = 0.7 standard errors, over 6 population(s)
-   validation summaries written into the pack manifest: ['ancient_ancestry', 'file_check', 'neanderthal', 'pca']
-total 106 s; 0 gate(s) failed: []
+   CEU: max weight difference 0.0407, largest standard error 0.0320
+   CHB: max weight difference 66.2201, largest standard error 0.5550  (not identifiable; excluded)
+   Druze: max weight difference 0.0776, largest standard error 0.0605  (not identifiable; excluded)
+   FIN: max weight difference 6.9050, largest standard error 0.0613  (not identifiable; excluded)
+[FAIL] qpAdm: weights agree with ADMIXTOOLS within one standard error on well-determined population targets: 0/1 populations
+[PASS] Y haplogroups of ancient males on the same lineage as the published call in >= 95%: 586/600 on the same lineage, 204 identical
+   mtDNA sequences compared: 0 (full: {'n': 0, 'consistent': 0, 'exact': 0}; 1,500 chip-like positions: {'n': 0, 'consistent': 0, 'exact': 0})
+   validation summaries written into the pack manifest: ['ancient_ancestry', 'file_check', 'neanderthal', 'pca', 'y_haplogroup']
+total 1475 s; 1 gate(s) failed: ['qpAdm: weights agree with ADMIXTOOLS within one standard error on well-determined population targets']
