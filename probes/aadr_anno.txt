@@ -1,0 +1,84 @@
+columns:
+0 'Genetic ID (suffices: ".DG" is a high coverage shotgun genome with diploid genotype calls; ".SG" is a high coverage shotgun genome with dipl' | e.g. 'Loschbour.AG' | 'C1668.AG'
+1 'Persistent Genetic ID' | e.g. '33' | '6841'
+2 'Individual ID' | e.g. 'Loschbour' | 'C1668'
+3 'Skeletal code' | e.g. 'Loschbour2' | 'C1668'
+4 'Skeletal element' | e.g. 'tooth' | 'tooth'
+5 'First publication: Abbreviation for earliest paper that reported data from this individual (this is not always the same as the data being an' | e.g. 'LazaridisKrauseNature2014' | 'KumarFuScience2022'
+6 'Publication abbreviation' | e.g. 'MathiesonReichNature2018' | 'KumarFuScience2022'
+7 'doi for publication of this representation of the data' | e.g. 'https://doi.org/10.1038/nature25778' | 'https://doi.org/10.1126/science.abk1534'
+8 'Link to the most permanent repository hosting these data' | e.g. 'ENA:PRJEB22652' | 'GSA:PRJCA005576'
+9 'Method for Determining Date; unless otherwise specified, calibrations use 95.4% intervals from OxCal v4.4.2 Bronk Ramsey (2009); r5; Atmosph' | e.g. 'Direct: IntCal20' | 'Direct (WARNING: NO UNCALIBRATED DATE OR LAB CODE)'
+10 'Date mean in BP in years before 1950 CE [OxCal mu for a direct radiocarbon date, and average of range for a contextual date]' | e.g. '8025' | '2154'
+11 'Date standard deviation in BP [OxCal sigma for a direct radiocarbon date, and standard deviation of the uniform distribution between the two' | e.g. '64' | '84'
+12 'Full Date One of two formats. (Format 1) 95.4% CI calibrated radiocarbon age (Conventional Radiocarbon Age BP, Lab number) e.g. 2624-2350 ca' | e.g. '6221-5986 calBCE (7205±50 BP, OxA-7738)' | '350-58 calBCE'
+13 'Age at death, Morphological sex from physical anthropology' | e.g. 'adult (middle); 34-47 yrs' | '..'
+14 'Group ID' | e.g. 'Luxembourg_Loschbour_Mesolithic' | 'China_Xinjiang_Kuokesuxi_EIA'
+15 'Locality' | e.g. 'Loschbour (Echternach)' | 'Kuokesuxi (Xinjiang, Yili Region, Tekesi County)'
+16 'Political Entity' | e.g. 'Luxembourg' | 'China'
+17 'Latitude' | e.g. '49.81' | '43.08'
+18 'Longitude' | e.g. '6.4' | '81.52'
+19 'Pulldown Strategy' | e.g. 'Native Pulldown on 3.2M snpset' | 'Native Pulldown on 3.2M snpset'
+20 'Suffices (indicating data types used for sources which can be a subset of that in bam)' | e.g. 'AG' | 'AG'
+21 'Data type' | e.g. '390K' | '1240k'
+22 'No. Libraries' | e.g. '..' | '1'
+23 'Mean coverage on 1.15M autosomal targets for full bam (if no off-target entry not up-to-date)' | e.g. '3.36425934' | '0.90976405'
+24 'Mean coverage on non-targeted autosomal SNPs for full bam - not yet computed if "".."" and bam restricted to on-target SNPs if ""0""' | e.g. '0.12398937' | '0.02492635'
+25 'SNPs hit on autosomal targets (Computed using easystats on enhance 2M capture subset)\xa0' | e.g. '718012' | '728484'
+26 'SNPs hit on autosomal targets (Computed using easystats on 1240k snpset)' | e.g. '463455' | '498708'
+27 'SNPs hit on autosomal targets (Computed using easystats on HO snpset)' | e.g. '366175' | '289549'
+28 'SNPs hit on autosomal targets (Computed using easystats on Compatibility snpset)' | e.g. '462385' | '450993'
+29 'SNPs hit on autosomal targets (Computed using easystats on Compatibility_HO snpset)' | e.g. '173464' | '133651'
+30 'Molecular Sex' | e.g. 'M' | 'M'
+31 'Family relations' | e.g. '..' | '..'
+32 'Sum total of ROH segments >20cM' | e.g. '0' | '0'
+33 'Sum total of ROH segments >20cM' | e.g. '0' | '0'
+34 'Y haplogroup in terminal mutation notation automatically called based on Y-full 12.03 with the software described in Lazaridis et al. Scienc' | e.g. 'I-V6473' | 'N-Y6503'
+35 'Y haplogroup  in ISOGG notation automatically called based on Yfull 12.03 with the software described in Lazaridis et al. Science 2022' | e.g. 'I2a1a2' | 'N'
+36 'Y haplogroup manually called if different from automatic' | e.g. '..' | '..'
+37 'mtDNA coverage (merged data)' | e.g. '..' | '383'
+38 'mtDNA haplogroup if >2x or published' | e.g. 'U5b1a' | 'C4a1'
+39 'mtDNA match to consensus if >10x (merged data) [estimates are typically off by (uncorrected + power(10,-0.271*LOG(mt-coverage)-1.120)]' | e.g. '..' | '..'
+40 'Damage rate in first nucleotide on sequences overlapping 1240k targets (merged data)' | e.g. '..' | '0.035'
+41 'Sex ratio [Y/(Y+X) counts] (merged data)' | e.g. '..' | '..'
+42 'ANGSD MOM 95% CI truncated at 0 (only if male and >=200 SNPs) [estimates are typically 0.005 too high]' | e.g. '..' | '..'
+43 'hapConX 95% CI truncated at 0 (only if male and >=2000 SNPs covered on X chromosome) [estimates are typically 0.005 too high]' | e.g. '[0.005,0.012]' | '[0.011,0.022]'
+44 'Library type (minus=no.damage.correction, half=damage.retained.at.last.position, plus=damage.fully.corrected, ds=double.stranded.library.pre' | e.g. '..' | 'ds.half'
+45 'Libraries' | e.g. '..' | 'L4921'
+46 'endogenous by library (computed on shotgun data)' | e.g. '..' | '..'
+47 'ASSESSMENT' | e.g. 'Pass' | 'Questionable'
+48 'ASSESSMENT WARNINGS: X contamination interval is listed if lower bound is >=0.005 for either ANGSD or hapConX, "QUESTIONABLE" if lower bound' | e.g. '..' | 'hapConX=[0.011,0.022]'
+n rows 23089
+ind head ['        Loschbour.AG M Luxembourg_Loschbour_Mesolithic', '            Kou01.SG U Greece_EpanoKoufonisi_EBA_Cycladic', '            Kou03.SG F Greece_EpanoKoufonisi_EBA_Cycladic'] n 23089
+snp head ['           rs3094315     1        0.020130          752566 G A', '          rs12124819     1        0.020242          776546 A G', '          rs28765502     1        0.022137          832918 T C', '           rs7419119     1        0.022518          842013 T G', '            rs950122     1        0.022720          846864 G C']
+groups 3897 present-day groups 253 present-day individuals 3970
+present-day groups (top 300): [('TSI', 108), ('GWD', 106), ('CHB', 105), ('CHS', 105), ('ITU', 103), ('JPT', 103), ('YRI', 102), ('ESN', 101), ('PUR', 100), ('STU', 99), ('CEU', 99), ('CDX', 98), ('LWK', 94), ('CLM', 94), ('ACB', 92), ('FIN', 89), ('GIH', 88), ('PJL', 87), ('BEB', 87), ('KHV', 85), ('PEL', 82), ('GBR', 79), ('MSL', 78), ('MXL', 64), ('Pakistani', 62), ('ASW', 60), ('Spanish', 55), ('Palestinian', 49), ('Han', 46), ('IBS', 45), ('Druze', 44), ('Papuan', 32), ('Japanese', 31), ('French', 31), ('Sardinian', 31), ('Mozabite', 29), ('Brahui', 28), ('Makrani', 27), ('Russian', 27), ('Mandenka', 26), ('Balochi', 26), ('Burusho', 26), ('Pathan', 26), ('Basque', 25), ('BedouinA', 25), ('Mayan', 24), ('Yoruba', 24), ('Italian_North', 24), ('Biaka', 24), ('Kalash', 24), ('Yakut', 22), ('BedouinB', 21), ('Sindhi_Pakistan', 19), ('Hazara', 18), ('Balti', 18), ('Adygei', 18), ('Orcadian', 17), ('Karitiana', 16), ('Uyghur', 15), ('Mbuti', 15), ('Pima', 15), ('Dai', 14), ('BantuKenya', 13), ('Nasioi', 13), ('Punjabi', 12), ('English', 12), ('Miao', 12), ('She', 12), ('Tu', 12), ('Yi', 12), ('Cambodian', 11), ('Hezhen', 11), ('Mongola', 11), ('Naxi', 11), ('Oroqen', 11), ('Tujia', 11), ('Xibo', 11), ('RAJ', 10), ('RIA', 10), ('UBR', 10), ('Kinh_Vietnamese', 10), ('Finnish', 10), ('Ju_hoan_North', 10), ('Daur', 10), ('China_Lahu', 10), ('Surui', 10), ('ILA', 9), ('VLR', 9), ('Luhya', 9), ('Mende', 9), ('Piapoco', 9), ('BIR', 8), ('Gambian', 8), ('YRI-o', 7), ('BantuSA', 7), ('ONG', 6), ('Spanish_North', 5), ('GujaratiD', 5), ('ASW-oNativeAmerican', 5), ('Hazara_1', 5), ('Sindhi_1', 5), ('Buryat', 4), ('GujaratiB', 4), ('JAR', 4), ('Kyrgyz_Kyrgyzstan', 4), ('KHV-1', 4), ('GujaratiA', 4), ('GujaratiC', 4), ('KHV-2', 4), ('PUR-oAfrica', 4), ('Aleut', 4), ('Namibia_Bantu_Herero', 4), ('Saami', 3), ('Karakalpak', 3), ('Kazakh', 3), ('MXL-oEurope', 3), ('Tajik', 3), ('Uzbek', 3), ('FIN-o', 3), ('CHS-o', 3), ('Scottish', 3), ('Mixe', 3), ('Eskimo_ChaplinSireniki', 3), ('Even', 3), ('Jordanian', 3), ('Quechua', 3), ('Yakut_1', 3), ('Altaian', 2), ('Bashkir', 2), ('Dungan', 2), ('Kalmyk', 2), ('Koryak', 2), ('Tatar_Irtysh_Barabinsk', 2), ('Tatar_Tomsk', 2), ('Tatar_Volga', 2), ('Teleut', 2), ('Turkmen', 2), ('ACB-1', 2), ('STU-2', 2), ('STU-1', 2), ('PEL-oHighEuropean', 2), ('IBS_CanaryIslands', 2), ('Australian', 2), ('Greek_Crete', 2), ('Abkhasian', 2), ('Ami', 2), ('Armenian', 2), ('Brahmin', 2), ('Bulgarian', 2), ('Burmese', 2), ('Dusun', 2), ('Eskimo_Naukan', 2), ('Estonian', 2), ('Georgian', 2), ('Hungarian', 2), ('Icelandic', 2), ('Igbo', 2), ('Iranian', 2), ('Jew_Iraqi', 2), ('Irula', 2), ('Kapu', 2), ('Khomani_San', 2), ('Korean', 2), ('Kusunda', 2), ('Lemande', 2), ('Lezgin', 2), ('Luo', 2), ('Madiga', 2), ('Mala', 2), ('Mansi', 2), ('Masai', 2), ('Nahua', 2), ('Ossetian', 2), ('Saharawi', 2), ('Tajik_Pamiri', 2), ('Thai', 2), ('Tubalar', 2), ('Turkish', 2), ('Ulchi', 2), ('Yadava', 2), ('Jew_Yemenite', 2), ('Mexico_Zapotec', 2), ('MbutiPygmy', 2), ('Yakut_2', 2), ('Altaian-o', 1), ('Ancestor', 1), ('Avar', 1), ('Aymara', 1), ('Bashkir-o', 1), ('BEN', 1), ('BIR-o', 1), ('Chimp', 1), ('Dinka', 1), ('Gorilla', 1), ('hg19ref', 1), ('Huichol', 1), ('French-Discovery', 1), ('Han-Discovery', 1), ('Ju_hoan_North-Discovery', 1), ('Karitiana-Discovery', 1), ('Mbuti-Discovery', 1), ('Papuan-Discovery', 1), ('Sardinian-Discovery', 1), ('YRI-Discovery', 1), ('ILA-o', 1), ('Indian', 1), ('Mari', 1), ('PUN', 1), ('Tajik-o', 1), ('Tsimshian', 1), ('Yukpa', 1), ('PJL-o', 1), ('ACB-3', 1), ('ACB-2', 1), ('GWD-oEurope', 1), ('IBS-1', 1), ('Spanish-1', 1), ('YRI-oRelative', 1), ('BEB-o', 1), ('PEL-oEastAsia', 1), ('GIH-o', 1), ('PUR-oEurope', 1), ('CDX-o', 1), ('PEL-oHighAfrican', 1), ('ASW-oEurope', 1), ('Malaysia_Jehai', 1), ('Albanian', 1), ('Atayal', 1), ('Chechen', 1), ('Chukchi', 1), ('Czech', 1), ('Greek_1', 1), ('Greek', 1), ('Hawaiian', 1), ('Igorot', 1), ('Philippines_Kankanaey', 1), ('Itelmen', 1), ('Khonda_Dora', 1), ('Kongo', 1), ('Maori', 1), ('Mixtec_1', 1), ('Mixtec_2', 1), ('Norwegian', 1), ('Polish', 1), ('Relli_1', 1), ('Relli_2', 1), ('Samaritan', 1), ('Kenya_Somali', 1), ('Hazara_2', 1), ('Sindhi_2', 1), ('BedouinB_1', 1), ('BedouinB_2', 1), ('BantuSA_Ovambo', 1)]
+[Mbuti] [('Mbuti', 15), ('MbutiPygmy', 2), ('Mbuti-Discovery', 1)]
+[Yoruba] [('Yoruba', 24)]
+[Chimp] [('Chimp', 1)]
+[Altai] [('Russia_AltaiKrai_N', 34), ('Russia_Altai_Afanasievo', 20), ('Russia_AltaiKrai_Eneolithic', 18), ('Russia_AltaiKrai_N_Bolshemys', 8), ('Russia_Altai_Eneolithic_Afanasievo', 6), ('Russia_AltaiKrai_LN', 5), ('Russia_AltaiKrai_Afanasievo', 5), ('Russia_Altai_IA-3', 3), ('Russia_GornoAltaisk_Afanasievo', 3), ('Russia_Altai_EIA_Afanasievo', 2), ('Altai_Neanderthal', 2), ('Altaian', 2), ('Russia_AltaiKrai_MLBA', 1), ('Russia_AltaiKrai_Medieval-2', 1), ('Russia_AltaiKrai_Eneolithic_Altai', 1), ('Russia_AltaiKrai_N-oEastAsia', 1), ('Altaian-o', 1), ('Russia_AltaiKrai_N_Itkul', 1)]
+[Vindija] [('VindijaCave_Neanderthal', 2)]
+[Chagyrskaya] [('ChagyrskayaCave_Neanderthal', 2)]
+[Denisova] [('Russia_Denisova', 3), ('Russia_Denisova_Neanderthal_Mix', 1), ('Russia_DenisovaCave', 1), ('Russia_DenisovaCave_MPleistocene', 1)]
+[Ust] [('Russia_UstIshim_IUP', 1)]
+[Kostenki] [('Russia_Kostenki_UP', 3)]
+[MA1|Malta] [('Malta_EBA', 3), ('Russia_Malta_UP', 1)]
+[Han] [('Han', 46), ('Russia_Omsk_HanMan', 8), ('Russia_KhantyMansiyskAutonomousOkrugUgra_HanMan', 2), ('Russia_Tyumen_HanMan', 1), ('Russia_Omsk_HanMan-o', 1), ('Han-Discovery', 1)]
+[Papuan] [('Papuan', 32), ('Papuan-Discovery', 1)]
+[Onge] []
+[Chukchi] [('Chukchi', 1)]
+[Karitiana] [('Karitiana', 16), ('Karitiana-Discovery', 1)]
+[Loschbour] [('Luxembourg_Loschbour_Mesolithic', 2)]
+[Luxembourg] [('Luxembourg_Loschbour_Mesolithic', 2)]
+[WHG] [('Hungary_EN_Koros-oWHG', 5), ('Czechia_N-oWHG', 3), ('England_BellBeaker-ohighWHG', 3), ('Denmark_MN-oWHG', 2), ('Denmark_EN-oWHG', 2), ('Germany_Westerheim_Magdalenian-oWHG', 2), ('Germany_BlatterhohleCave_MN-oWHG', 1), ('Hungary_EN_HG_Koros-oWHG', 1), ('Italy_Abruzzo_N-oWHG', 1), ('Germany_Tangermunde_LN-oWHG', 1), ('Montenegro_Mesolithic_LN_Hvar-oWHG', 1)]
+[Turkey.*N|Barcin|Anatolia] [('Turkey_N', 68), ('Turkey_Catalhoyuk_MN', 46), ('Turkey_PPN', 32), ('Turkey_Catalhoyuk_LN', 32), ('Turkey_Catalhoyuk_EN', 17), ('Turkey_Catalhoyuk_N', 10), ('Italy_Lazio_ImperialRoman_Roman-oAnatoliaCaucasus', 3), ('Czechia_BellBeaker-oAnatolia2', 3), ('Turkey_PPNA', 3), ('Turkey_Catalhoyuk_EarlyC_LN', 2), ('Czechia_BellBeaker-oAnatolia1', 1), ('Czechia_N-oAnatolia', 1), ('Turkey_N-o', 1), ('Turkey_PPN-o', 1), ('Turkey_LN', 1)]
+[Yamnaya] [('Russia_Samara_EBA_Yamnaya', 46), ('Russia_Kalmykia_EBA_Yamnaya', 31), ('Russia_Rostov_EBA_Don_Yamnaya', 27), ('Moldova_EBA_Yamnaya', 26), ('Romania_EBA_Yamnaya', 17), ('Russia_Orenburg_EBA_Yamnaya', 16), ('Russia_Rostov_EBA_Yamnaya', 16), ('Hungary_LateC_EBA_Yamnaya', 13), ('Kazakhstan_KumsayKyrykOba_EBA_Yamnaya', 12), ('Russia_Chelyabinsk_EBA_Yamnaya', 10), ('Russia_Rostov_EBA_Yamnaya-o', 9), ('Russia_Volgograd_EBA_Yamnaya', 8), ('Ukraine_Odesa_EBA_Yamnaya', 8), ('Russia_EBA_Yamnaya', 6), ('Russia_StavropolKrai_EBA_Yamnaya', 5), ('Russia_Rostov_EMBA_Don_Yamnaya', 5), ('Ukraine_Dnieperpetrovsk_EBA_Yamnaya', 4), ('Russia_EBA_Caucasus_Yamnaya', 3), ('Moldova_EBA_Yamnaya-o', 3), ('Bulgaria_Boyanovo_EBA_Yamnaya', 3), ('Hungary_LateC_Yamnaya', 3), ('Ukraine_Shevchenko_EBA_Yamnaya', 3), ('Ukraine_Odesa_EBA_Catacomb_Yamnaya_possible', 3), ('Romania_EBA_Yamnaya-oSouth', 3), ('Serbia_EBA_Yamnaya', 2)]
+[Ganj|Iran.*N] [('Iran_GanjDareh_N', 17), ('Iran_HajjiFiruz_N', 6), ('Iran_SehGabi_LN', 3), ('Iran_TepeAbdulHosein_N', 3), ('Iran_TepeGuran_EN_PPN', 2), ('Iran_GanjDareh_Historic', 1), ('Iran_WezmehCave_N', 1), ('Iran_TepeGuran_PPN', 1)]
+[Kotias|CHG|Satsurblia] [('Georgia_KotiasKlde_Mesolithic', 2), ('Georgia_Satsurblia_LateUP', 1), ('Georgia_KotiasKlde_UP', 1)]
+[Natufian] [('Israel_Natufian', 17)]
+[French] [('French', 31), ('France_FrenchAlps', 10), ('FrenchPolynesia_200BP', 2), ('FrenchPolynesia_400BP', 1), ('French-Discovery', 1)]
+[English|GBR|CEU] [('CEU', 99), ('GBR', 79), ('English', 12)]
+[Sardinian] [('Sardinian', 31), ('Sardinian-Discovery', 1)]
+[Mota] [('Ethiopia_MotaCave_4500BP', 4)]
+[Mixe|Pima|Surui] [('Pima', 15), ('Surui', 10), ('Spain_ImperialRoman-oMixed', 3), ('Mixe', 3), ('Spain_LateArchaic_Classical_Hellenistic-oMixedDup', 1), ('Spain_Roman_LateAntiquity-oMixed', 1)]
+[Sintashta] [('Russia_Chelyabinsk_MLBA_Sintashta', 43), ('Russia_Chelyabinsk_MLBA_Sintashta-1', 4), ('Russia_Chelyabinsk_MLBA_Sintashta-2', 4), ('Russia_MLBA_Sintashta', 4), ('Russia_Chelyabinsk_MLBA_Sintashta-3', 1), ('Kazakhstan_MLBA_Sintashta-o', 1)]
