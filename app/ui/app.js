@@ -1299,8 +1299,9 @@ const DETAIL = {
       ["Testing company", escapeHtml(r.vendor)],
       ["Markers in the file", r.markers.toLocaleString() + ` (${pct(r.call_rate, 1)} with a call)`],
       ["Genome build", escapeHtml(m.build || "")],
-      ["Used for ancestry", (m.used || 0).toLocaleString() + " markers" + (m.strand_flipped ? `, ${m.strand_flipped.toLocaleString()} strand-flipped to match the reference` : "")],
-      ["Left out", `${(m.ambiguous_dropped || 0).toLocaleString()} where the strand cannot be checked, ${(m.allele_mismatch_dropped || 0).toLocaleString()} whose alleles do not match the reference`],
+      ["Used for ancestry", (m.used || 0).toLocaleString() + " markers" + (m.strand_flipped ? `, ${m.strand_flipped.toLocaleString()} flipped to the reference strand` : "")],
+      ["Strand", escapeHtml(m.strand || "")],
+      ["Left out", `${(m.ambiguous_dropped || 0).toLocaleString()} whose strand could not be settled, ${(m.allele_mismatch_dropped || 0).toLocaleString()} whose alleles do not match the reference`],
       ["Genetic sex", `${escapeHtml(r.genetic_sex)} <small>(${escapeHtml(r.genetic_sex_basis)})</small>`],
     ]);
   },

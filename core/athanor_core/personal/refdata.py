@@ -165,19 +165,35 @@ def align(g: RawGenotypes, ref: RefData) -> dict:
     a1 = g.a1[auto_or_x][hit]
     a2 = g.a2[auto_or_x][hit]
     r, a = s["ref"][sidx], s["alt"][sidx]
-    ambiguous = (COMP[r] == a)
+    ambiguous = (COMP[r] == a)        # A/T and C/G: the alleles alone cannot show the strand
     direct = np.isin(a1, [0, 1, 2, 3]) & (((a1 == r) | (a1 == a)) & ((a2 == r) | (a2 == a)))
     c1, c2 = COMP[a1], COMP[a2]
     flipped = ~direct & (((c1 == r) | (c1 == a)) & ((c2 == r) | (c2 == a)))
-    use = (direct | flipped) & ~ambiguous
-    b1 = np.where(flipped, c1, a1)
-    b2 = np.where(flipped, c2, a2)
+    # Decide the file's strand from the markers that do show it. The testing
+    # companies report the reference's + strand, so almost all of those should
+    # match directly; when they do, the ambiguous markers can be used as they
+    # are instead of being thrown away (about one marker in six).
+    d_n, f_n = int((direct & ~ambiguous).sum()), int((flipped & ~ambiguous).sum())
+    decided = d_n + f_n
+    same_strand = decided >= 1000 and d_n / decided > 0.99
+    other_strand = decided >= 1000 and f_n / decided > 0.99
+    amb_ok = np.isin(a1, [0, 1, 2, 3]) & ambiguous & (
+        (((a1 == r) | (a1 == a)) & ((a2 == r) | (a2 == a))) if same_strand else
+        ((((c1 == r) | (c1 == a)) & ((c2 == r) | (c2 == a))) if other_strand else False))
+    use = ((direct | flipped) & ~ambiguous) | amb_ok
+    flip_it = np.where(ambiguous, other_strand, flipped)
+    b1 = np.where(flip_it, c1, a1)
+    b2 = np.where(flip_it, c2, a2)
     dos = np.full(len(s["pos"]), -1, dtype=np.int8)
     dos[sidx[use]] = (b1[use] == a[use]).astype(np.int8) + (b2[use] == a[use]).astype(np.int8)
+    strand = ("the reference's + strand" if same_strand else
+              "the opposite strand" if other_strand else "mixed or undetermined")
     stats = {"build": build, **info, "markers_on_reference": int(hit.sum()),
-             "used": int(use.sum()), "strand_flipped": int((flipped & use).sum()),
-             "ambiguous_dropped": int((ambiguous & (direct | flipped)).sum()),
-             "allele_mismatch_dropped": int((~direct & ~flipped).sum())}
+             "used": int(use.sum()), "strand": strand,
+             "strand_flipped": int((flip_it & use).sum()),
+             "ambiguous_used": int(amb_ok.sum()),
+             "ambiguous_dropped": int((ambiguous & ~amb_ok & (direct | flipped | ambiguous)).sum()),
+             "allele_mismatch_dropped": int((~direct & ~flipped & ~ambiguous).sum())}
     return {"dosage": dos, "positions37": pos37, "stats": stats}
 
 
