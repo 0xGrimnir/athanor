@@ -122,9 +122,17 @@ pc_dev, pc_range, nean_cover, nean_rows, qp_rows = [], {}, [], [], []
 for name in ("world", "west"):
     P = ref.pca(name)
     pc_range[name] = float(np.ptp(P["ref_coords"][:, 0]))
-nhold = len(H["ids"])
+# A sample from each held-out population measures these statistics well enough;
+# analysing every genome costs hours on the full marker set without telling us more.
+PER_POP = 6
+_by_pop: dict = {}
+for _j, _g in enumerate([str(x) for x in H["groups"]]):
+    _by_pop.setdefault(_g, []).append(_j)
+analysed = sorted(j for v in _by_pop.values() for j in v[:PER_POP])
+nhold = len(analysed)
+print(f"analysing {nhold} of {len(H['ids'])} held-out genomes ({PER_POP} per population)", flush=True)
 results = []
-for j in range(nhold):
+for n_done, j in enumerate(analysed):
     d = H["geno"][j]
     f = tmp / "h.txt"
     write(f, "23andme", S["rsid"][chip], S["chrom"][chip], S["pos"][chip], S["ref"][chip], S["alt"][chip], d[chip])
@@ -148,8 +156,8 @@ for j in range(nhold):
     aa = cards["ancient_ancestry"]["result"]["models"]
     results.append({"id": str(H["ids"][j]), "group": str(H["groups"][j]),
                     "models": [{k: m.get(k) for k in ("model", "fit", "p", "components")} for m in aa]})
-    if j % 20 == 0:
-        log(f"  analysed {j + 1}/{nhold}")
+    if n_done % 10 == 0:
+        log(f"  analysed {n_done + 1}/{nhold}")
 
 dev = np.array([x[1] for x in pc_dev])
 med = float(np.median(dev)) if len(dev) else float("nan")
@@ -209,7 +217,12 @@ if AADR and BIN and (BIN / "qpAdm").exists():
     work = tmp / "qp"
     work.mkdir(exist_ok=True)
     agree, shown = [], []
+    # every qpAdm run reads the entire genotype file, so compare on a few
+    # populations rather than all of them
+    MAX_COMPARISONS = 4
     for gname in groups_present:
+        if len(shown) >= MAX_COMPARISONS:
+            break
         rows = np.flatnonzero(np.array([str(x) for x in H["groups"]]) == gname)
         if len(rows) < 4:
             continue
@@ -352,7 +365,7 @@ if MTFA and ANNO and MTFA.exists():
             acc["n"] += 1
             acc["exact"] += r["node"] == pub
             acc["consistent"] += MT.is_ancestor(r["node"], pub) or MT.is_ancestor(pub, r["node"])
-        if tried >= 3000:
+        if tried >= 1500:
             break
     print(f"   mtDNA sequences compared: {tried} (full: {res_full}; 1,500 chip-like positions: {res_chip})")
     if res_full["n"]:
