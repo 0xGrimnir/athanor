@@ -1,0 +1,29 @@
+version 14 0 2026-06-08T20:36:49Z
+license {"name": "CC0 1.0", "uri": "http://creativecommons.org/publicdomain/zero/1.0", "iconUri": "https://licensebuttons.net/p/zero/1.0/88x31.png", "rightsIdentifier": "CC0-1.0", "rightsIdentifierScheme": "SPDX", "schemeUri": "https://spdx.org/licenses/", "languageCode": "en"} terms 
+13994530 aadr_v66.p1__README.docx 271752 f92df8d4b1fb863bcc7601208153ed34 None
+13994512 aadr_v66.p1__README_MT.docx 14751 2e981be4d7a677097b4a58b00d30ce33 None
+13994857 mtdna_uncompress_v66.p1.py 19803 55241ce7ab4680252161bc5ed7495660 None
+13994829 v66.p1_1240K.aadr.patch.PUB.geno 7117276654 5ea1d2675a271c81e55b8f8b08b3ff3b None
+13994513 v66.p1_1240K.aadr.patch.PUB.ind 1017460 19a434ac954bcd10dbb8dba1d1188a09 None
+13994514 v66.p1_1240K.aadr.patch.PUB.snp 77679819 50f66178fc81b8aa087cc4b135317e59 None
+13994515 v66.p1_1240K.aadr.PUB.anno 13443726 a2db1ac16f0f3558ed66fb251e1d5c7d None
+13994830 v66.p1_2M.aadr.patch.PUB.geno 12373763120 e5a5eae1e5781b07ee35c85c6c9d7760 None
+13994516 v66.p1_2M.aadr.patch.PUB.ind 1018119 7b928ecf2c101bdb281f7f0f859fb1a4 None
+13994517 v66.p1_2M.aadr.patch.PUB.snp 134963073 743edf26fef3b7ef4f69fff3739b9a00 None
+13994518 v66.p1_2M.aadr.PUB.anno 13450350 02a75f75de319829e89dd10a0d0f62c5 None
+13994828 v66.p1_2M_compatibility.aadr.patch.PUB.geno 7180775582 19cfab7fcd83ee1ee01b6949ed81af45 None
+13994519 v66.p1_2M_compatibility.aadr.patch.PUB.ind 1017856 0da2c8a5ece85071057918aff690090e None
+13994520 v66.p1_2M_compatibility.aadr.patch.PUB.snp 78342453 124c6733c020b552e522fbef6a0d9570 None
+13994521 v66.p1_2M_compatibility.aadr.PUB.anno 13447758 a4ac7144cb8d1929d5a0153f90e7fb64 None
+13994522 v66.p1_compatibility_HO.aadr.patch.PUB.geno 1909008156 880194e511ec97848d72c4778c307d9f None
+13994523 v66.p1_compatibility_HO.aadr.patch.PUB.ind 1176253 a14985ffae6dd33a00f4fd5bfefe58c5 None
+13994524 v66.p1_compatibility_HO.aadr.patch.PUB.snp 17433675 900b317b81b249593b20b2fe15dcbf70 None
+13994525 v66.p1_compatibility_HO.aadr.PUB.anno 15465906 548b011b4adbcd46f0ff66b957c59c3f None
+13995422 v66.p1__files.md5sum 1769 ef9e9d78750808e28d33b4074098c5e8 None
+13994808 v66.p1_HO.aadr.patch.PUB.geno 4029634650 9f9f0629f803835985bc38856e989995 None
+13994526 v66.p1_HO.aadr.patch.PUB.ind 1176253 a14985ffae6dd33a00f4fd5bfefe58c5 None
+13994527 v66.p1_HO.aadr.patch.PUB.snp 36800253 fbd2cfe09ec6bad794f7607768b57a3a None
+13994528 v66.p1_HO.aadr.PUB.anno 15465906 548b011b4adbcd46f0ff66b957c59c3f None
+13994529 v66.p1_MT.repo.fa.gz 5550269 4e9e6f3d1deb148bc4cd3c5ed4e45184 None
+== reichdata index
+ ERROR HTTP Error 404: Not Found
