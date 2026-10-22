@@ -169,7 +169,13 @@ ROLES = {
     "Vindija": single_best(["VindijaCave_Neanderthal"]),
     "Chagyrskaya": single_best(["ChagyrskayaCave_Neanderthal"]),
     "Denisova": single_best(["Russia_Denisova"]),
-    "WHG": members(regex_groups(r"^(Luxembourg_Loschbour_Mesolithic|Italy_North_Villabruna_HG|Italy_.*Villabruna.*|Switzerland_Bichon.*|Spain_.*LaBrana.*|Hungary_EN_HG_Koros)$")),
+    # Western hunter-gatherers: the western European Mesolithic groups. The
+    # eastern (Karelia, Latvia, Ukraine) and Scandinavian groups carry eastern
+    # hunter-gatherer ancestry as well, and the Iron Gates groups carry early
+    # farmer ancestry, so none of those belong in this source.
+    "WHG": members(["Luxembourg_Loschbour_Mesolithic", "France_Mesolithic", "Spain_Mesolithic",
+                    "Belgium_Mesolithic", "England_Mesolithic", "Netherlands_Mesolithic",
+                    "Germany_GrossFredenwalde_Mesolithic"], min_snps=30000),
     "Anatolia_N": members(["Turkey_N"]),
     "Yamnaya": members(["Russia_Samara_EBA_Yamnaya"]),
     "Iran_N": members(["Iran_GanjDareh_N"]),
@@ -186,9 +192,11 @@ ROLES = {
     "Natufian": members(["Israel_Natufian"]),
     "Mota": members(["Ethiopia_MotaCave_4500BP"]),
 }
+MIN_MEMBERS = {"WHG": 15, "Anatolia_N": 15, "Yamnaya": 10, "Iran_N": 5, "YRI": 20, "Mbuti": 5}
 for k, v in ROLES.items():
     log(f"role {k}: {len(v)} individuals: {sorted({group[i] for i in v})} e.g. {[ids[i] for i in v[:3]]}")
     assert v, f"no individuals for {k}"
+    assert len(v) >= MIN_MEMBERS.get(k, 1), f"{k}: only {len(v)} individuals, expected at least {MIN_MEMBERS[k]}"
     assert len(v) <= 127, f"too many individuals for uint8 counts in {k}"
 
 MODELS = [
