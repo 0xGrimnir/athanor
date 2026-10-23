@@ -21,12 +21,14 @@ How the panels are made:
      Each calibration individual's regional composition is estimated with
      that individual removed from its own panel, on 80,000 random SNPs (the
      low end of what consumer files share with the reference). A region whose
-     members are assigned on average under 60% to their own region is merged
+     members are assigned on average under 65% to their own region is merged
      into the region on the same continent that absorbs most of the rest;
      repeat until every region passes.
   4. Detection floors: for each region and continent, the 99th percentile of
-     the proportion assigned to it among calibration individuals
-     from elsewhere. Smaller proportions are reported as not distinguishable
+     the proportion assigned to it among calibration individuals from other
+     continents whose own ancestry is unambiguous (at least 90% assigned to
+     their own continent), and at least 1%. The average result of each
+     region's calibration individuals ships as that region's typical profile. Smaller proportions are reported as not distinguishable
      from noise.
   5. Chromosome painting's down-weighting of correlated SNPs is fitted on
      simulated genomes built from left-out individuals' chromosomes.
@@ -67,7 +69,7 @@ def log(*a):
 
 CONTINENTS = [("africa", "Sub-Saharan Africa"), ("europe", "Europe"), ("west_asia", "West Asia and North Africa"),
               ("south_asia", "South Asia"), ("east_asia", "East and Southeast Asia"),
-              ("north_asia", "North Asia and Siberia"), ("oceania", "Oceania"), ("americas", "Indigenous Americas")]
+              ("north_asia", "Siberia"), ("oceania", "Oceania"), ("americas", "Indigenous Americas")]
 # (id, title, continent, AADR group labels). Labels with "-o" (outliers flagged by
 # the AADR) and duplicate "Discovery" versions are not listed and so not used.
 REGIONS = [
@@ -96,13 +98,15 @@ REGIONS = [
     ("gujarat", "Gujarat", "south_asia", ["GIH"]),
     ("bengal", "Bengal", "south_asia", ["BEB"]),
     ("south_india", "South India and Sri Lanka", "south_asia", ["ITU", "STU"]),
-    ("north_china", "Northern China", "east_asia", ["CHB", "Han", "Tu"]),
+    ("north_china", "Northern and Northeast China", "east_asia",
+     ["CHB", "Han", "Tu", "Hezhen", "Oroqen", "Daur", "Xibo", "Mongola"]),
     ("south_china", "Southern China", "east_asia", ["CHS", "She", "Tujia", "Miao", "Yi", "Naxi"]),
     ("japan_korea", "Japan and Korea", "east_asia", ["JPT", "Japanese", "Korean"]),
     ("se_asia", "Mainland Southeast Asia", "east_asia",
      ["CDX", "KHV", "Dai", "Kinh_Vietnamese", "Cambodian", "Thai", "Burmese", "China_Lahu"]),
-    ("north_asia", "Northeast Asia and Siberia", "north_asia",
-     ["Yakut", "Hezhen", "Oroqen", "Daur", "Xibo", "Mongola", "Even", "Buryat", "Ulchi", "Koryak", "Chukchi", "Itelmen"]),
+    ("north_asia", "Siberia", "north_asia",
+     ["Yakut", "Yakut_1", "Yakut_2", "Even", "Buryat", "Ulchi", "Koryak", "Chukchi", "Itelmen",
+      "Eskimo_ChaplinSireniki", "Eskimo_Naukan"]),
     ("papua", "Papua New Guinea, Melanesia and Australia", "oceania", ["Papuan", "Nasioi", "Australian"]),
     ("americas", "Indigenous Americas", "americas",
      ["Karitiana", "Surui", "Piapoco", "Pima", "Mayan", "Mixe", "Quechua", "Aymara", "Huichol", "Nahua", "Mexico_Zapotec",
@@ -127,7 +131,7 @@ MIN_REGION = 8 if synthetic else 15      # smaller panels estimate frequencies t
 LOO_SNPS = 80_000
 CAL_PER_REGION = 16
 VAL_PER_REGION = 12
-OWN_MIN = 0.6
+OWN_MIN = 0.65         # with margin: the validation set must still reach 0.6
 log("AADR", A.nind, "individuals", A.nsnp, "SNPs", "(synthetic stand-in)" if synthetic else "")
 
 keep = (A.chrom >= 1) & (A.chrom <= 22) & (A.a1 < 4) & (A.a2 < 4)
@@ -289,20 +293,27 @@ rids = list(reg_members)
 col = {r: k for k, r in enumerate(rids)}
 reg_cont_now = {r[0]: r[2] for r in regions}
 rc = np.array([cont_index[reg_cont_now[r]] for r in rids])
-# detection floors from the calibration estimates
-floors = {}
-for r in rids:
-    k = col[r]
-    others = Q[who != k, k]
-    floors[r] = float(np.percentile(others, 99)) if len(others) else 0.0
 Qc = np.zeros((len(people), len(cont_ids)))
 for k in range(len(rids)):
     Qc[:, rc[k]] += Q[:, k]
+# "Clean" calibration people: assigned at least 90% to their own continent.
+# Many reference groups are themselves mixed (Bedouins and Mozabites carry
+# African ancestry, some Maya European ancestry), so people from those groups
+# legitimately get shares elsewhere; the detection floors measure the noise
+# seen in people whose ancestry is unambiguous.
+clean = Qc[np.arange(len(people)), rc[who]] >= 0.9
+floors = {}
+for r in rids:
+    k = col[r]
+    others = Q[clean & (rc[who] != rc[k]), k]
+    floors[r] = max(0.01, float(np.percentile(others, 99))) if len(others) else 0.01
 cfloors = {}
 for c in cont_ids:
     k = cont_index[c]
-    others = Qc[rc[who] != k, k]
-    cfloors[c] = float(np.percentile(others, 99)) if len(others) else 0.0
+    others = Qc[clean & (rc[who] != k), k]
+    cfloors[c] = max(0.01, float(np.percentile(others, 99))) if len(others) else 0.01
+# typical result of reference people from each region (left out of their own panel)
+PROFILE = np.array([Q[who == k].mean(0) for k in range(len(rids))])
 log("detection floors:", {r: round(v, 3) for r, v in floors.items()}, {c: round(v, 3) for c, v in cfloors.items()})
 
 # ---------------------------------------------------------------- final panel frequencies
@@ -338,7 +349,7 @@ chrom = snps["chrom"].astype(np.int64)
 cal_people = {}
 for c in cont_ids:
     rs_ = [r for r in rids if reg_cont_now[r] == c]
-    pool = [i for r in rs_ for i in cal_sample[r]]
+    pool = [i for r in rs_ for i in cal_sample[r] if clean[people.index(i)]] or [i for r in rs_ for i in cal_sample[r]]
     cal_people[c] = [int(x) for x in rng.choice(pool, min(4, len(pool)), replace=False)]
 hold = {i for v in cal_people.values() for i in v}
 alt_c = np.zeros((len(cont_ids), S)); tot_c = np.zeros((len(cont_ids), S))
@@ -404,6 +415,7 @@ log("ROH reference groups", len(roh_ref))
 xs = X_idx
 xblock = blocks_from_cm(A.chrom[xs], A.cm[xs], 5.0) if len(xs) else np.zeros(0, np.int32)
 np.savez_compressed(PACK / "modern.npz", region_ids=np.array(rids), P=encode_freq(P), n_individuals=n_ind,
+                    profile=PROFILE.astype(np.float32),
                     continent=np.array([cont_index[reg_cont_now[r]] for r in rids], np.int8),
                     continent_ids=np.array(cont_ids),
                     x_pos=A.pos[xs].astype(np.int32), x_ref=A.a1[xs], x_alt=A.a2[xs], x_rsid=A.rsid[xs],

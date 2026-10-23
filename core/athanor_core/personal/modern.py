@@ -304,59 +304,59 @@ ROH_DEFAULTS = {"window_snp": 50, "window_het": 1, "window_missing": 5, "window_
 
 
 def roh(chrom: np.ndarray, pos: np.ndarray, het: np.ndarray, missing: np.ndarray, **kw) -> list[dict]:
-    """PLINK 1.9 --homozyg. chrom/pos sorted; het/missing boolean per SNP.
+    """PLINK 1.9 --homozyg (without 'extend'), following plink_homozyg.c.
 
-    Each run of SNPs with no gap above max_gap_kb is scanned with windows of
-    window_snp consecutive SNPs; a window is homozygous if it has at most
-    window_het heterozygous and window_missing missing calls. A SNP is a
-    candidate when at least window_threshold of the windows covering it are
-    homozygous; consecutive candidates form a segment, kept if it has at least
-    min_snp SNPs, spans at least min_kb, averages no more than max_density_kb
-    per SNP and has at most max_het heterozygous calls.
+    Per chromosome, windows of window_snp consecutive SNPs slide one SNP at a
+    time; a window is homozygous if it has at most window_het heterozygous and
+    window_missing missing calls. A SNP is a hit when the number of
+    homozygous windows covering it exceeds window_threshold times the number
+    of windows covering it. A run of consecutive hits is a segment; it also
+    ends where two consecutive SNPs are more than max_gap_kb apart. Segments
+    are kept if they have at least min_snp SNPs (missing calls included),
+    span at least min_kb (end - start + 1 bases) and average no more than
+    max_density_kb per SNP.
     """
     p = {**ROH_DEFAULTS, **kw}
     W = p["window_snp"]
+    gap = p["max_gap_kb"] * 1000
     out = []
     for c in np.unique(chrom):
         idx = np.flatnonzero(chrom == c)
+        L = len(idx)
+        if L < W:
+            continue
         cp = pos[idx]
-        # split at large gaps
-        brk = np.flatnonzero(np.diff(cp) > p["max_gap_kb"] * 1000) + 1
-        for part in np.split(np.arange(len(idx)), brk):
-            L = len(part)
-            if L < W:
+        h = het[idx].astype(np.int32)
+        ms = missing[idx].astype(np.int32)
+        ch = np.r_[0, np.cumsum(h)]
+        cmi = np.r_[0, np.cumsum(ms)]
+        nw = L - W + 1
+        hom_w = (((ch[W:W + nw] - ch[:nw]) <= p["window_het"]) & ((cmi[W:W + nw] - cmi[:nw]) <= p["window_missing"])).astype(np.int32)
+        cw = np.r_[0, np.cumsum(hom_w)]
+        i = np.arange(L)
+        lo = np.maximum(0, i - W + 1)
+        hi = np.minimum(i, nw - 1)
+        cover = hi - lo + 1
+        hits = cw[hi + 1] - cw[lo]
+        need = np.floor(cover * p["window_threshold"] + 1.0 - 1e-9).astype(np.int64)
+        cand = hits >= need
+        brk = np.r_[False, np.diff(cp) > gap]            # a gap ends a run before the far SNP
+        j = 0
+        while j < L:
+            if not cand[j]:
+                j += 1
                 continue
-            h = het[idx[part]].astype(np.int32)
-            ms = missing[idx[part]].astype(np.int32)
-            ch = np.r_[0, np.cumsum(h)]
-            cmi = np.r_[0, np.cumsum(ms)]
-            nw = L - W + 1
-            wh = ch[W:W + nw] - ch[:nw]
-            wm = cmi[W:W + nw] - cmi[:nw]
-            hom_w = ((wh <= p["window_het"]) & (wm <= p["window_missing"])).astype(np.int32)
-            # windows covering SNP i: starts max(0, i-W+1) .. min(i, nw-1)
-            cw = np.r_[0, np.cumsum(hom_w)]
-            i = np.arange(L)
-            lo = np.maximum(0, i - W + 1)
-            hi = np.minimum(i, nw - 1)
-            cover = hi - lo + 1
-            frac = (cw[hi + 1] - cw[lo]) / cover
-            cand = frac >= p["window_threshold"] - 1e-12
-            # PLINK only counts called SNPs at the segment's ends
-            st = np.flatnonzero(np.diff(np.r_[0, cand.astype(np.int8), 0]) == 1)
-            en = np.flatnonzero(np.diff(np.r_[0, cand.astype(np.int8), 0]) == -1)
-            for s, e in zip(st, en):
-                seg = part[s:e]
-                called = ~missing[idx[seg]]
-                if not called.any():
-                    continue
-                cs = seg[called]
-                n = len(cs)
-                start, end = int(cp[cs[0]]), int(cp[cs[-1]])
-                kb = (end - start + 1) / 1000
-                nhet = int(het[idx[seg]].sum())
-                if n >= p["min_snp"] and kb >= p["min_kb"] and kb / n <= p["max_density_kb"] and nhet <= p["max_het"]:
-                    out.append({"chrom": int(c), "start": start, "end": end, "kb": kb, "snps": n, "het": nhet})
+            k = j
+            while k + 1 < L and cand[k + 1] and not brk[k + 1]:
+                k += 1
+            n = k - j + 1
+            start, end = int(cp[j]), int(cp[k])
+            base = end - start + 1
+            nhet = int(h[j:k + 1].sum())
+            if n >= p["min_snp"] and base >= p["min_kb"] * 1000 and n * p["max_density_kb"] * 1000 >= base \
+                    and nhet <= p["max_het"]:
+                out.append({"chrom": int(c), "start": start, "end": end, "kb": base / 1000, "snps": int(n), "het": nhet})
+            j = k + 1
     return out
 
 

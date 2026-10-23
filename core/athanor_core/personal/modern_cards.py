@@ -78,11 +78,26 @@ def modern_cards(ref, g: RawGenotypes, al: dict, fc: dict, make_card, step=lambd
     if undetected_c > 0.005:
         summary_c += f"; {_pct(undetected_c)} spread across other continents below the detection limits"
     common_limits = [
+        "Neighbouring regions share ancestry, so even reference people get shares outside their own region (for example, Levantine and Southern European reference people get some of each other's). Compare your result with the typical result of reference people from your main region, shown below the table.",
         "Proportions describe which present-day reference populations your DNA most resembles, not where your ancestors lived at any particular time.",
         "Each region is defined by its reference genomes (listed below); places without reference genomes cannot appear: " + "; ".join(man.get("not_covered", [])) + ".",
         f"Results for {res['snps']:,} SNPs shared with the reference." + (
             f" That is fewer than the {man['loo']['snps']:,} the validation tested, so the intervals may understate the uncertainty." if low else "")]
-    result = {"continents": conts, "regions": regions, "snps": res["snps"], "iterations": res["iterations"]}
+    # what reference people from your main regions typically get (left out of their own panel)
+    typical = []
+    if "profile" in M:
+        prof = M["profile"].astype(float)
+        for r in [x for x in regions if x["detected"]][:2]:
+            k = rids.index(r["id"])
+            row = sorted(((rmeta[rids[j]]["title"], float(prof[k, j])) for j in range(len(rids)) if prof[k, j] >= 0.01),
+                         key=lambda x: -x[1])
+            cont_row = {}
+            for j in range(len(rids)):
+                cont_row[ctitle[cont_ids[rcont[j]]]] = cont_row.get(ctitle[cont_ids[rcont[j]]], 0.0) + float(prof[k, j])
+            typical.append({"region": r["title"], "regions": row,
+                            "continents": sorted(((c, v) for c, v in cont_row.items() if v >= 0.01), key=lambda x: -x[1])})
+    result = {"continents": conts, "regions": regions, "snps": res["snps"], "iterations": res["iterations"],
+              "typical": typical}
     cards.append(make_card("continental_ancestry", "Continental ancestry", "Modern ancestry", "A", summary_c, result,
                            common_limits,
                            "Supervised admixture (as in ADMIXTURE's projection mode): the mixture of reference populations' allele frequencies that best explains your genotypes, by maximum likelihood. Each panel's frequencies are shrunk towards the pooled frequency of all panels, so that panels of different sizes compete fairly. 95% intervals from 100 bootstrap resamples of ~5 cM blocks. A proportion below a region's detection floor (the 99th percentile assigned to that region in left-out people from elsewhere) is not reported as found.",

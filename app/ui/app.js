@@ -1378,7 +1378,8 @@ const DETAIL = {
       ${cs.map((x) => `<tr class="${x.detected ? "" : "dim"}"><td><i class="dot" style="background:${CONT_COLOR[x.id] || "#7f9fb3"}"></i>${escapeHtml(x.title)}</td>
         <td class="n">${x.detected ? pct(x.proportion, 1) : "not detected"}</td><td class="n">${x.detected ? `${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}` : "—"}</td>
         <td class="n">${pct(x.floor, 1)}</td></tr>`).join("")}</tbody></table>
-      <p class="note">Estimated from ${(c.result.snps || 0).toLocaleString()} SNPs. "Not detected" means the estimate is below what people with no ancestry from there are sometimes assigned.</p>`;
+      <p class="note">Estimated from ${(c.result.snps || 0).toLocaleString()} SNPs. "Not detected" means the estimate is below what people with no ancestry from there are sometimes assigned.</p>`
+      + typicalHtml(c.result.typical, "continents");
   },
   regional_ancestry(el, c) {
     const rs = c.result.regions || [];
@@ -1387,6 +1388,7 @@ const DETAIL = {
       <table><thead><tr><th>Region</th><th>Share</th><th>95% interval</th></tr></thead><tbody>
       ${det.map((x) => `<tr><td><i class="dot" style="background:${CONT_COLOR[x.continent] || "#7f9fb3"}"></i>${escapeHtml(x.title)}</td>
         <td class="n">${pct(x.proportion, 1)}</td><td class="n">${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}</td></tr>`).join("")}</tbody></table>
+      ${typicalHtml(c.result.typical, "regions")}
       <details><summary class="note">Reference populations behind each region</summary><table><thead><tr><th>Region</th><th>Reference groups</th><th>People</th></tr></thead><tbody>
       ${rs.map((x) => `<tr><td>${escapeHtml(x.title)}</td><td>${x.reference_groups.map((gname) => escapeHtml(x.group_names[gname] ? `${gname} (${x.group_names[gname]})` : gname)).join(", ")}</td>
         <td class="n">${x.reference_individuals}</td></tr>`).join("")}</tbody></table></details>`;
@@ -1431,6 +1433,12 @@ const DETAIL = {
       <p class="note">${(r.snps || 0).toLocaleString()} X-chromosome SNPs.</p>`;
   },
 };
+
+function typicalHtml(typ, key) {
+  if (!typ || !typ.length) return "";
+  return typ.map((t) => `<p class="note">For comparison, reference people from <b>${escapeHtml(t.region)}</b>, analysed the same way, typically get:
+    ${t[key].map(([n, v]) => `${escapeHtml(n)} ${pct(v, 0)}`).join(" · ")}</p>`).join("");
+}
 
 const TRAIT_CARDS = ["eye_colour", "red_hair", "freckles", "blond_hair", "skin_pigmentation", "earwax", "hair_thickness", "hair_curl",
   "lactose", "alcohol_flush", "caffeine", "bitter_taste", "vitamin_d", "vitamin_b12", "omega3", "celiac_hla", "actn3"];
