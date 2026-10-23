@@ -41,7 +41,7 @@ jobs:
         with:
           environment-name: pg
           create-args: >-
-            python=3.12 numpy scipy msprime admixtools=8.0.2
+            python=3.12 numpy scipy msprime admixtools=8.0.2 admixture=1.3.0 plink=1.90b6.21
           condarc: |
             channels: [conda-forge, bioconda]
           cache-environment: true
@@ -131,6 +131,24 @@ jobs:
           if [ $rc -ne 0 ]; then echo "::error title=pack build failed::$(tail -c 2000 build.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
           exit $rc
 
+      - name: Trait variants (Ensembl, GWAS Catalog, PubMed)
+        run: |
+          set +e
+          python tools/pgdata/build_traits.py pack > traits.txt 2>&1
+          rc=$?
+          cat traits.txt
+          if [ $rc -ne 0 ]; then echo "::error title=trait variants::$(grep -E '^FAIL' traits.txt | tail -c 2500 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc
+
+      - name: Modern ancestry panels
+        run: |
+          set +e
+          python tools/pgdata/build_modern.py aadr/aadr aadr/v66.p1_1240K.aadr.PUB.anno pack valdata > modern.txt 2>&1
+          rc=$?
+          cut -c1-1500 modern.txt
+          if [ $rc -ne 0 ]; then echo "::error title=modern panels failed::$(tail -c 2000 modern.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc
+
       - name: Validate
         env:
           ATHANOR_CROSSCHECK: cc/crosscheck.json
@@ -145,14 +163,24 @@ jobs:
           if [ $rc -eq 0 ]; then echo "::notice title=pgdata validation::$msg"; else echo "::error title=pgdata validation failed::$msg"; fi
           exit $rc
 
+      - name: Validate modern ancestry and traits
+        run: |
+          set +e
+          python tools/pgdata/validate_modern.py pack valdata "$CONDA_PREFIX/bin" > validate_modern.txt 2>&1
+          rc=$?
+          cat validate_modern.txt
+          msg=$(grep -E "^\[(PASS|FAIL)\]" validate_modern.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=modern validation::$msg"; else echo "::error title=modern validation failed::$msg"; fi
+          exit $rc
+
       - name: Publish the logs to ci-results
         if: always()
         run: |
           git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/pgdata/${GITHUB_SHA}" && \
-            cp crosscheck.txt build.txt validate.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
-            cp pack/manifest.json pack/validation.json "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
+            cp crosscheck.txt build.txt validate.txt traits.txt modern.txt validate_modern.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
+            cp pack/manifest.json pack/validation.json pack/validation_modern.json pack/traits.json "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
             (cd "$d" && git add -A && git commit -qm "pgdata ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
 
       - name: Package and publish to the release feed
@@ -161,6 +189,13 @@ jobs:
           set -euo pipefail
           v="${{ inputs.version }}"
           [[ "$v" =~ ^[0-9]+$ ]] || { echo "::error::pack version must be an integer"; exit 1; }
+          python - <<PY
+          import json
+          m = json.load(open("pack/manifest.json"))
+          m["pack_version"] = int("$v")
+          json.dump(m, open("pack/manifest.json", "w"), indent=1)
+          PY
+          rm -f pack/validation_modern.json
           ( cd pack && tar -czf ../pgdata-$v.tar.gz . )
           python - <<PY
           import hashlib, json, os

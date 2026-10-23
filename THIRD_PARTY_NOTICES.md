@@ -81,6 +81,10 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | msprime | Simulated genomes with known answers for the CI gates (not shipped) | GPL-3.0 | Verified |
 | ENA PRJEB103048 reads and GenBank PZ244049–PZ244060 (Hohle Fels mammoth ivory, Scientific Reports 2026) | CI reproduction test only: downloaded at test time, never redistributed | INSDC public data | Verified source |
 | Ensembl (release 110) | Gene coordinates and transcript models | No restrictions on use | To verify |
+| Ensembl GRCh37 REST (variation, VEP) and 1000 Genomes phase 3 frequencies | Personal Genome trait table: variant positions, alleles, the amino acid each allele codes, population frequencies (resolved in CI; only the resulting facts ship) | EMBL-EBI Terms of Use; 1000 Genomes data are open | To verify |
+| GWAS Catalog (REST API v2) | Effect alleles, directions and effect sizes recorded for some trait variants (resolved in CI) | EMBL-EBI Terms of Use | To verify |
+| NCBI PubMed (E-utilities) | Titles, journals and DOIs of the trait reports' references | NCBI: no general restrictions on bibliographic data | Verified source |
+| ADMIXTURE 1.3.0, PLINK 1.9 | Independent cross-checks of the ancestry estimator and of runs of homozygosity in CI (not shipped) | ADMIXTURE: free for use, own licence; PLINK 1.9: GPL-3.0 | Verified |
 
 ## Compute pack note
 

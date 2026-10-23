@@ -1177,16 +1177,17 @@ async function initPersonal() {
 
 function renderPgPack() {
   const st = PG.status || {};
-  $("pgInstall").hidden = !!st.installed;
+  $("pgInstall").hidden = !!st.installed && !st.outdated;
+  $("pgInstall").textContent = st.outdated ? "Update reference data" : "Download reference data";
   $("pgRemove").hidden = !st.installed;
   $("pgRun").disabled = !(st.installed && PG.path) || PG.busy;
   if (!st.installed) {
-    $("pgPack").innerHTML = `Not downloaded yet. The reference data (about 150 MB) holds published ancient genomes, present-day reference populations and the haplogroup trees. It is downloaded once and checked against its checksum.`;
+    $("pgPack").innerHTML = `Not downloaded yet. The reference data holds published ancient genomes, present-day reference populations, the haplogroup trees and the trait variants. It is downloaded once and checked against its checksum.`;
     $("pgEmpty").textContent = "Download the reference data, then choose your DNA file.";
     return;
   }
   const src = st.sources || {};
-  $("pgPack").innerHTML = kvTable([
+  $("pgPack").innerHTML = (st.outdated ? `<p class="note"><b>A newer version of the reference data is available.</b> It adds modern ancestry and the appearance, food and drink and fitness reports. Click Update reference data.</p>` : "") + kvTable([
     ["Version", `${escapeHtml(st.pack || "")} · built ${escapeHtml((st.built || "").slice(0, 10))}`],
     ["Reference SNPs", (st.snps || 0).toLocaleString()],
     ["Ancient genomes", (st.ancients || 0).toLocaleString()],
@@ -1369,11 +1370,146 @@ const DETAIL = {
   },
   mt_haplogroup(el, c) { haploDetail(el, c, "mtDNA"); },
   y_haplogroup(el, c) { haploDetail(el, c, "Y"); },
+  continental_ancestry(el, c) {
+    const cs = c.result.continents || [];
+    const shown = cs.filter((x) => x.detected);
+    el.innerHTML = `<div class="stack">${shown.map((x) => `<i style="width:${(100 * x.proportion).toFixed(1)}%;background:${CONT_COLOR[x.id] || "#7f9fb3"}" title="${escapeHtml(x.title)}"></i>`).join("")}</div>
+      <table><thead><tr><th>Continent</th><th>Share</th><th>95% interval</th><th>Detection limit</th></tr></thead><tbody>
+      ${cs.map((x) => `<tr class="${x.detected ? "" : "dim"}"><td><i class="dot" style="background:${CONT_COLOR[x.id] || "#7f9fb3"}"></i>${escapeHtml(x.title)}</td>
+        <td class="n">${x.detected ? pct(x.proportion, 1) : "not detected"}</td><td class="n">${x.detected ? `${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}` : "—"}</td>
+        <td class="n">${pct(x.floor, 1)}</td></tr>`).join("")}</tbody></table>
+      <p class="note">Estimated from ${(c.result.snps || 0).toLocaleString()} SNPs. "Not detected" means the estimate is below what people with no ancestry from there are sometimes assigned.</p>`;
+  },
+  regional_ancestry(el, c) {
+    const rs = c.result.regions || [];
+    const det = rs.filter((x) => x.detected);
+    el.innerHTML = `<div class="stack">${det.map((x) => `<i style="width:${(100 * x.proportion).toFixed(1)}%;background:${CONT_COLOR[x.continent] || "#7f9fb3"}" title="${escapeHtml(x.title)}"></i>`).join("")}</div>
+      <table><thead><tr><th>Region</th><th>Share</th><th>95% interval</th></tr></thead><tbody>
+      ${det.map((x) => `<tr><td><i class="dot" style="background:${CONT_COLOR[x.continent] || "#7f9fb3"}"></i>${escapeHtml(x.title)}</td>
+        <td class="n">${pct(x.proportion, 1)}</td><td class="n">${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}</td></tr>`).join("")}</tbody></table>
+      <details><summary class="note">Reference populations behind each region</summary><table><thead><tr><th>Region</th><th>Reference groups</th><th>People</th></tr></thead><tbody>
+      ${rs.map((x) => `<tr><td>${escapeHtml(x.title)}</td><td>${x.reference_groups.map((gname) => escapeHtml(x.group_names[gname] ? `${gname} (${x.group_names[gname]})` : gname)).join(", ")}</td>
+        <td class="n">${x.reference_individuals}</td></tr>`).join("")}</tbody></table></details>`;
+  },
+  chromosome_painting(el, c) {
+    const r = c.result;
+    el.innerHTML = `<div class="plotwrap"><canvas id="pgpaint" style="height:${22 * 17 + 40}px"></canvas></div>
+      <p class="note">Each chromosome is drawn as two stripes, one per copy. Where the two copies differ, which colour belongs to which copy is not known.</p>
+      <p class="note">${(r.continents || []).map((x) => `<i class="dot" style="background:${CONT_COLOR[x.id] || "#7f9fb3"}"></i>${escapeHtml(x.title)}`).join(" &nbsp; ")}</p>`;
+    drawPainting($("pgpaint"), r);
+  },
+  indigenous_american(el, c) {
+    const r = c.result;
+    el.innerHTML = kvTable([
+      ["Estimate", `${pct(r.proportion, 1)} (95% interval ${pct(r.ci95[0], 1)} – ${pct(r.ci95[1], 1)})`],
+      ["Detection limit", pct(r.floor, 1)],
+      ["Painted segments", `${(r.segments || []).length} (${(r.segment_mb || 0).toFixed(0)} Mb of chromosome copies)`],
+      ["Reference groups", escapeHtml((r.reference_groups || []).join(", "))],
+    ]);
+  },
+  roh(el, c) {
+    const r = c.result;
+    const ref = Object.entries(r.reference_groups || {}).sort((a, b) => b[1].froh_median - a[1].froh_median);
+    el.innerHTML = kvTable([
+      ["Total in runs of homozygosity", `${r.total_mb.toFixed(0)} Mb in ${r.segments} runs (${pct(r.froh, 2)} of the autosomes)`],
+      ["By run length", Object.entries(r.by_length_mb).map(([k, v]) => `${k} Mb: ${v.toFixed(0)}`).join(" · ")],
+      ["Longest run", `${r.longest_mb.toFixed(1)} Mb`],
+      ["Markers used", (r.markers || 0).toLocaleString()],
+    ]) + `<div class="plotwrap"><canvas id="pgroh" style="height:${22 * 12 + 34}px"></canvas></div>
+      <details><summary class="note">Expected share in long runs when parents are related</summary><table><thead><tr><th>Parents</th><th>Expected share of the genome</th></tr></thead><tbody>
+      ${r.relationships.map((x) => `<tr><td>${escapeHtml(x.parents)}</td><td class="n">${pct(x.expected_froh, 1)}</td></tr>`).join("")}</tbody></table>
+      <p class="note">These are averages; the actual share varies widely between children of the same parents.</p></details>
+      <details><summary class="note">Reference groups, measured the same way</summary><table><thead><tr><th>Group</th><th>Typical share</th><th>Long runs (10 Mb+), typical</th><th>People</th></tr></thead><tbody>
+      ${ref.map(([gname, v]) => `<tr><td>${escapeHtml(v.label || gname)}</td><td class="n">${pct(v.froh_median, 2)}</td><td class="n">${v.long_mb_median.toFixed(0)} Mb</td><td class="n">${v.n}</td></tr>`).join("")}</tbody></table></details>`;
+    drawRoh($("pgroh"), r.segments_list || []);
+  },
+  x_ancestry(el, c) {
+    const r = c.result; if (!r.continents) return;
+    el.innerHTML = `<table><thead><tr><th>Continent</th><th>X chromosome</th><th>95% interval</th><th>Autosomes</th></tr></thead><tbody>
+      ${r.continents.filter((x) => x.proportion >= 0.01 || x.autosomal >= 0.01).map((x) => `<tr><td><i class="dot" style="background:${CONT_COLOR[x.id] || "#7f9fb3"}"></i>${escapeHtml(x.title)}</td>
+        <td class="n">${pct(x.proportion, 1)}</td><td class="n">${pct(x.ci95[0], 1)} – ${pct(x.ci95[1], 1)}</td><td class="n">${pct(x.autosomal, 1)}</td></tr>`).join("")}</tbody></table>
+      <p class="note">${(r.snps || 0).toLocaleString()} X-chromosome SNPs.</p>`;
+  },
 };
+
+const TRAIT_CARDS = ["eye_colour", "red_hair", "freckles", "blond_hair", "skin_pigmentation", "earwax", "hair_thickness", "hair_curl",
+  "photic_sneeze", "lactose", "alcohol_flush", "caffeine", "bitter_taste", "vitamin_d", "vitamin_b12", "omega3", "celiac_hla", "actn3"];
+for (const id of TRAIT_CARDS) DETAIL[id] = traitDetail;
+
+function traitDetail(el, c) {
+  const vs = (c.result.variants || []).filter((v, i, a) => a.findIndex((w) => w.rsid === v.rsid) === i);
+  const POPS = [["EUR", "Europe"], ["EAS", "East Asia"], ["SAS", "South Asia"], ["AFR", "Africa"], ["AMR", "Americas"]];
+  el.innerHTML = `<table><thead><tr><th>Variant</th><th>Your genotype</th><th>Copies of the effect allele</th><th>How common the effect allele is</th></tr></thead><tbody>
+    ${vs.map((v) => `<tr><td>${escapeHtml(v.variant)}<br><small>${escapeHtml(v.rsid)} · ${escapeHtml(v.gene)} · effect allele ${escapeHtml(v.effect_allele)}</small></td>
+      <td class="n">${v.genotype ? escapeHtml(v.genotype) : "—"}</td>
+      <td class="n">${v.copies == null ? `<small>${escapeHtml(v.note || "not read")}</small>` : v.copies}</td>
+      <td><small>${v.freq ? POPS.filter(([k]) => v.freq[k] != null).map(([k, n]) => `${n} ${pct(v.freq[k], 0)}`).join(" · ") : ""}</small>
+      ${v.gwas ? `<br><small>GWAS Catalog: ${escapeHtml(v.gwas.trait)} (${escapeHtml(v.gwas.first_author || "")}, p = ${Number(v.gwas.p).toExponential(0)})</small>` : ""}</td></tr>`).join("")}
+    </tbody></table><p class="note">Genotypes on the forward strand of the GRCh37 reference; frequencies from 1000 Genomes.</p>`;
+}
+
+const CONT_COLOR = { africa: "#ff6a57", europe: "#62d6ff", west_asia: "#ffb34a", south_asia: "#b98cff", east_asia: "#52f0b0",
+  north_asia: "#9fd4ff", oceania: "#ff8fd0", americas: "#ffe066" };
+const CHR_LEN37 = [249250621, 243199373, 198022430, 191154276, 180915260, 171115067, 159138663, 146364022, 141213431, 135534747,
+  135006516, 133851895, 115169878, 107349540, 102531392, 90354753, 81195210, 78077248, 59128983, 63025520, 48129895, 51304566];
+
+function drawPainting(cv, r) {
+  const { g, w, h } = plotFrame(cv);
+  const L = 34, R = w - 10, row = 17, top = 10, maxLen = CHR_LEN37[0];
+  const X = (p) => L + (p / maxLen) * (R - L);
+  g.font = "10px JetBrains Mono, monospace";
+  for (let c = 1; c <= 22; c++) {
+    const y = top + (c - 1) * row;
+    g.fillStyle = "#7f9fb3"; g.fillText(String(c), 6, y + 10);
+    g.fillStyle = "rgba(110,205,255,.10)"; g.fillRect(L, y, X(CHR_LEN37[c - 1]) - L, 12);
+  }
+  for (const sg of r.segments || []) {
+    const y = top + (sg.chrom - 1) * row;
+    const x0 = X(sg.start), x1 = Math.max(X(sg.end), x0 + 1);
+    g.fillStyle = CONT_COLOR[sg.a] || "#7f9fb3"; g.fillRect(x0, y, x1 - x0, 6);
+    g.fillStyle = CONT_COLOR[sg.b] || "#7f9fb3"; g.fillRect(x0, y + 6, x1 - x0, 6);
+  }
+}
+
+function drawRoh(cv, segs) {
+  const { g, w } = plotFrame(cv);
+  const L = 34, R = w - 10, row = 12, top = 8, maxLen = CHR_LEN37[0];
+  const X = (p) => L + (p / maxLen) * (R - L);
+  g.font = "10px JetBrains Mono, monospace";
+  for (let c = 1; c <= 22; c++) {
+    const y = top + (c - 1) * row;
+    g.fillStyle = "#7f9fb3"; g.fillText(String(c), 6, y + 8);
+    g.fillStyle = "rgba(110,205,255,.10)"; g.fillRect(L, y, X(CHR_LEN37[c - 1]) - L, 8);
+  }
+  for (const s of segs) {
+    const y = top + (s.chrom - 1) * row;
+    g.fillStyle = s.kb >= 10000 ? "#ffb34a" : "#62d6ff";
+    g.fillRect(X(s.start), y, Math.max(1, X(s.end) - X(s.start)), 8);
+  }
+  g.fillStyle = "#7f9fb3"; g.fillText("blue: runs under 10 Mb · orange: 10 Mb or longer", L, top + 22 * row + 12);
+}
+
+// Consecutive branches whose oldest known carrier is the same genome are shown as one row ("ROOT → K2").
+function collapseTimeline(tl) {
+  const out = [];
+  for (const t of tl.filter((x) => x.oldest)) {
+    const last = out[out.length - 1];
+    if (last && last.oldest.id === t.oldest.id) { last.branch = `${last.first} → ${t.branch}`; continue; }
+    out.push({ ...t, first: t.branch });
+  }
+  return out;
+}
 
 function haploDetail(el, c, kind) {
   const r = c.result;
-  if (!r.call) { el.innerHTML = `<p class="note">${escapeHtml(r.reason || "No call.")}</p>`; return; }
+  if (!r.call) {
+    const sc = r.strand_check;
+    el.innerHTML = `<p class="note">${escapeHtml(r.reason || "No call.")}</p>` + (sc ? kvTable([
+      ["Markers in your file on this tree", (sc.on_tree || 0).toLocaleString()],
+      ["Matched the tree's alleles", `${sc.direct} directly, ${sc.complemented} after switching strand`],
+      ["Matched neither allele", (sc.unmatched || 0).toLocaleString()]]) : "");
+    return;
+  }
   const path = r.path || [], tl = r.timeline || [], car = r.carriers || [];
   el.innerHTML = kvTable([
     ["Haplogroup", `<b>${escapeHtml(r.call)}</b>`],
@@ -1383,7 +1519,7 @@ function haploDetail(el, c, kind) {
   ]) + `<p class="note">Your lineage from the root: ${path.map((p) => escapeHtml(p.name)).join(" → ")}</p>`
     + (tl.length ? `<details open><summary class="note">Oldest dated genome known to carry each branch of your line</summary>
       <table><thead><tr><th>Branch</th><th>Oldest carrier</th><th>When</th><th>Where</th></tr></thead><tbody>
-      ${tl.filter((t) => t.oldest).map((t) => `<tr><td class="n">${escapeHtml(t.branch)}</td><td>${escapeHtml(t.oldest.group || t.oldest.id)}</td>
+      ${collapseTimeline(tl).map((t) => `<tr><td class="n">${escapeHtml(t.branch)}</td><td>${escapeHtml(t.oldest.group || t.oldest.id)}</td>
         <td class="n">${escapeHtml(BP(t.oldest.date_bp))}</td><td>${escapeHtml([t.oldest.locality, t.oldest.country].filter(Boolean).join(", "))}</td></tr>`).join("")}
       </tbody></table><p class="note">Each row gives a minimum age for that branch: the lineage existed at least that long ago.</p></details>` : "")
     + (car.length ? `<details><summary class="note">${car.length} ancient genomes carry this ${kind} branch or one below it</summary>
@@ -1411,8 +1547,21 @@ function drawPca(cv, m) {
   const Y = (v) => b - ((v - y0 + dy) / (y1 - y0 + 2 * dy)) * (b - t);
   g.strokeRect(l, t, r - l, b - t);
   pts.forEach((p, i) => { g.fillStyle = (REGION_COLOR[reg[i]] || "#7f9fb3") + "88"; g.beginPath(); g.arc(X(p[0]), Y(p[1]), 2.4, 0, 7); g.fill(); });
+  // reference group labels at each group's centre
+  const cen = {};
+  pts.forEach((p, i) => { const k = m.reference.group[i]; (cen[k] = cen[k] || [0, 0, 0]); cen[k][0] += p[0]; cen[k][1] += p[1]; cen[k][2]++; });
+  g.font = "9px JetBrains Mono, monospace";
+  for (const [k, v] of Object.entries(cen)) {
+    if (v[2] < 5) continue;
+    g.fillStyle = "rgba(220,235,245,.55)"; g.fillText(k, X(v[0] / v[2]) + 3, Y(v[1] / v[2]) - 3);
+  }
+  // your closest ancient individuals, projected onto the same axes
   g.fillStyle = "#ffffff";
-  anc.forEach((a) => { if (a.pc) return; });
+  for (const a of anc) {
+    if (!a.pc) continue;
+    const x = X(a.pc[0]), y = Y(a.pc[1]);
+    g.beginPath(); g.moveTo(x, y - 4); g.lineTo(x + 4, y); g.lineTo(x, y + 4); g.lineTo(x - 4, y); g.closePath(); g.fill();
+  }
   g.strokeStyle = "#fff"; g.lineWidth = 2;
   g.beginPath(); g.arc(X(m.coords[0]), Y(m.coords[1]), 6, 0, 7); g.stroke();
   g.fillStyle = "#fff"; g.font = "12px JetBrains Mono, monospace";
@@ -1421,6 +1570,8 @@ function drawPca(cv, m) {
   g.font = "10px JetBrains Mono, monospace";
   regs.forEach((rr, i) => { g.fillStyle = REGION_COLOR[rr] || "#7f9fb3"; g.fillText(rr, l + 6, t + 12 + 12 * i); });
   g.fillStyle = "#7f9fb3"; g.fillText("component 1", (l + r) / 2 - 30, b + 16);
+  g.save(); g.translate(l - 8, (t + b) / 2 + 30); g.rotate(-Math.PI / 2); g.fillText("component 2", 0, 0); g.restore();
+  if (anc.some((a) => a.pc)) g.fillText("◆ your closest ancient individuals", r - 230, b + 16);
 }
 
 let WORLD = null;

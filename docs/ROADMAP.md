@@ -8,7 +8,7 @@ Every module ships only after its benchmark suite reproduces published reference
 
 ## Order of work
 
-1. **Now:** Personal Genome, build step 2 (modern ancestry, appearance, food and drink, fitness and sleep)
+1. **Now:** Personal Genome, build step 2 (modern ancestry, appearance, food and drink, fitness)
 2. **Next:** DNA Structure, first release
 3. **Then:** Deep Time, starting with ancient nuclear genomes and then traits from ancient genomes, interleaved with Personal Genome steps 3–5
 4. **Later:** Populations, RNA and proteins, Radiocarbon dating, and the research problems
@@ -57,7 +57,7 @@ Open questions:
 - mapDamage2's δs differs from gargammel's single-stranded deamination parameter on every reference (≈ 0.55 vs 0.3): likely different parameterisations
 - Residual overconfidence at single-read sites; candidate fix: a site-heterogeneous divergence prior
 
-## Personal Genome (first release working; 0.5.0)
+## Personal Genome (working; 0.5.0–0.6.0)
 
 Load a consumer raw DNA file and get a library of reports, each graded for evidence, validated against data with known answers, and computed on the user's computer. The file never leaves the machine.
 
@@ -74,15 +74,15 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 
 **Deep ancestry (10), done.** Ancient ancestry proportions (qpAdm on AADR). Closest ancient individuals on a map. Neanderthal and Denisovan ancestry. Neanderthal-derived variants. mtDNA and Y haplogroups. Ancient individuals who shared them. Haplogroup timeline.
 
-**Modern ancestry (7).** Continental and regional composition. Chromosome painting. Placement among reference populations. Indigenous American ancestry, stating the reference-panel limits plainly and that it is not tribal membership. Runs of homozygosity. X-chromosome ancestry.
+**Modern ancestry (6), done.** Continental and regional composition (supervised admixture against present-day genomes in the AADR, with panel frequencies shrunk towards the pooled frequency so panels of different sizes compete fairly). Chromosome painting (continental). Indigenous American ancestry, with a measured detection limit, stating the reference-panel limits plainly and that it is not tribal membership. Runs of homozygosity. X-chromosome ancestry. (Placement among reference populations is the PCA in Deep ancestry.)
 
 **Relatives: two files (4).** Relationship estimate from shared DNA. Shared-segment chromosome browser. X-chromosome sharing. Parent–child check.
 
-**Appearance (12).** Eye, hair and skin colour (HIrisPlex-S). Freckling. Red hair (MC1R). Earwax type (ABCC11). Hair thickness and curl (EDAR, TCHH). Male-pattern baldness. Height. Unusual-trait corner: photic sneeze, asparagus smell, cilantro taste (grade C, labelled as such).
+**Appearance (9 done, 2 with imputation).** Done: eye colour (HERC2, OCA2), red hair (MC1R), freckling (IRF4, MC1R), the KITLG blond-hair variant, skin pigmentation variants (SLC24A5, SLC45A2), earwax type (ABCC11), hair thickness (EDAR), hair form (TCHH), photic sneeze (grade C). HIrisPlex-S is not used: its model parameters are not published (its web tool re-estimates them), its terms reserve all rights, and part of it is patented. Asparagus smell and cilantro taste were dropped: the GWAS Catalog has no association for the cilantro variant, and its asparagus record does not say which allele impairs smelling. With imputation (step 4): male-pattern baldness and height.
 
-**Food and drink (11).** Lactose tolerance. Alcohol flush (ALDH2, ADH1B). Caffeine metabolism. Bitter taste (TAS2R38). Vitamin D, B12 and omega-3 conversion. Celiac-compatible HLA types. Body-mass polygenic score, showing how little it determines. Coffee and alcohol intake tendencies.
+**Food and drink (8 done, 2 with imputation).** Done: lactose tolerance (LCT, with the African and Arabian variants), alcohol flush (ALDH2, ADH1B), caffeine metabolism (CYP1A2, AHR), bitter taste (TAS2R38), vitamin D (GC, CYP2R1), vitamin B12 and secretor status (FUT2), omega-3 and omega-6 conversion (FADS1), celiac-compatible HLA types (mainly useful to rule out). With imputation (step 4): body-mass polygenic score, coffee and alcohol intake tendencies.
 
-**Fitness and sleep (3).** ACTN3. Chronotype. Sleep duration.
+**Fitness and sleep (1 done, 2 with imputation).** Done: ACTN3. With imputation (step 4): chronotype and sleep duration.
 
 **Medicines: pharmacogenomics (11).** CPIC level-A gene–drug pairs only: CYP2C19, CYP2C9 and VKORC1, CYP2D6 (copy-number limits stated), SLCO1B1, DPYD, TPMT and NUDT15, UGT1A1, CYP3A5, G6PD, HLA-B tag variants. Framed as something to show a clinician, never a reason to change a medicine.
 
@@ -101,10 +101,14 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 
 ### Build order
 1. **Done (0.5.0):** foundations, file check, deep ancestry, haplogroups, Neanderthal and Denisovan
-2. Modern ancestry, appearance, food and drink, fitness and sleep
+2. **Done (0.6.0):** modern ancestry, appearance, food and drink, fitness. Every trait variant's effect allele is checked in CI against the amino acid it codes (Ensembl VEP), its population frequencies (1000 Genomes) or the direction recorded in the GWAS Catalog
 3. Pharmacogenomics
-4. Relatives and imputation
+4. Relatives, imputation, and the polygenic reports that need it (height, baldness, body mass, chronotype, sleep duration, coffee and alcohol intake). A raw chip file covers well under half of a modern score's variants, and the PGS Catalog's own calculator (pgsc_calc) by default refuses to score below 75% overlap, so these wait for imputation
 5. Health reports (opt-in)
+
+### Open questions
+- Regional ancestry is limited by reference panels of a few dozen people per region; finer regions need larger panels
+- Several world regions have too few reference genomes to report (listed on the report cards)
 
 ## DNA Structure (new)
 
@@ -177,5 +181,5 @@ Planned:
 - Choose Athanor's licence (open source is required for a JOSS paper and for scientific trust); review GPL/LGPL components and NVIDIA CUDA redistribution terms together
 - The Y-chromosome tree ships via Yleaf (GPL-3); the underlying YFull tree's terms need checking, and an alternative tree may be needed
 - The UCSC liftOver chain is free for academic use only; a commercial release needs a licence or a different chain
-- Data and tool licences to check before shipping: SNPedia (CC BY-NC-SA; avoided if Athanor is sold), PharmGKB (CC BY-SA 4.0), CPIC, ClinVar, gnomAD, PGS Catalog (per score), HIrisPlex-S model terms, Beagle and PLINK 2 (GPL-3), DNAshape, ViennaRNA, SLiM (GPL-3), IntCal20, 4D Nucleome data use, AlphaFold DB (CC BY 4.0)
+- Data and tool licences to check before shipping: SNPedia (CC BY-NC-SA; avoided if Athanor is sold), PharmGKB (CC BY-SA 4.0), CPIC, ClinVar, gnomAD, PGS Catalog (per score), Ensembl and GWAS Catalog data (used to build the trait table), Beagle and PLINK 2 (GPL-3); ADMIXTURE and PLINK 1.9 are used only in CI and not shipped, DNAshape, ViennaRNA, SLiM (GPL-3), IntCal20, 4D Nucleome data use, AlphaFold DB (CC BY 4.0)
 - Code-signing certificate for the installer

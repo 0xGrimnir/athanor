@@ -254,3 +254,6 @@ table.kv td.n { text-align: left; }
 i.s0, .dot.s0 { background: #62d6ff; } i.s1, .dot.s1 { background: #ffb34a; }
 i.s2, .dot.s2 { background: #52f0b0; } i.s3, .dot.s3 { background: #b98cff; }
 .dot.s0, .dot.s1, .dot.s2, .dot.s3 { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; }
+
+/* Personal Genome: rows below the detection limit */
+#view-personal tr.dim td { opacity: .5; }

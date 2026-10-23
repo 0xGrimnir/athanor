@@ -1,4 +1,4 @@
-"""Personal Genome, first release: file check and deep ancestry.
+"""Personal Genome: file check, deep ancestry, modern ancestry and trait reports.
 
 Every report is a card with an evidence grade (A established, B moderate,
 C weak or for fun), the result, what it cannot tell you, the method, sources,
@@ -13,11 +13,14 @@ import numpy as np
 
 from . import fstats
 from .haplo import Tree
+from .modern_cards import modern_cards
+from .traits import Genotyper, trait_cards
 from .pca import nearest, normalise, project
 from .rawfile import RawGenotypes, file_check, parse
 from .refdata import RefData, align, chromosome_calls
 
 Z95 = 1.959964
+MIN_SUPPORT = 5        # matching markers along the called lineage needed to report a haplogroup
 
 SRC = {
     "aadr": {"title": "Mallick et al., The Allen Ancient DNA Resource (AADR), Sci. Data 11, 182 (2024)",
@@ -49,6 +52,20 @@ SRC = {
     "yfull": {"title": "YFull YTree", "url": "https://www.yfull.com/tree/"},
     "1000g": {"title": "The 1000 Genomes Project Consortium, A global reference for human genetic variation, Nature 526, 68 (2015)",
               "url": "https://doi.org/10.1038/nature15393"},
+    "hgdp": {"title": "Bergström et al., Insights into human genetic variation and population history from 929 diverse genomes, Science 367, eaay5012 (2020)",
+             "url": "https://doi.org/10.1126/science.aay5012"},
+    "alexander2009": {"title": "Alexander, Novembre & Lange, Fast model-based estimation of ancestry in unrelated individuals, Genome Res. 19, 1655 (2009)",
+                      "url": "https://doi.org/10.1101/gr.094052.109"},
+    "maples2013": {"title": "Maples et al., RFMix: a discriminative modeling approach for rapid and robust local-ancestry inference, Am. J. Hum. Genet. 93, 278 (2013)",
+                   "url": "https://doi.org/10.1016/j.ajhg.2013.06.020"},
+    "sankararaman2008": {"title": "Sankararaman et al., Estimating local ancestry in admixed populations, Am. J. Hum. Genet. 82, 290 (2008)",
+                         "url": "https://doi.org/10.1016/j.ajhg.2007.09.022"},
+    "reich2012": {"title": "Reich et al., Reconstructing Native American population history, Nature 488, 370 (2012)",
+                  "url": "https://doi.org/10.1038/nature11258"},
+    "purcell2007": {"title": "Purcell et al., PLINK: a tool set for whole-genome association and population-based linkage analyses, Am. J. Hum. Genet. 81, 559 (2007)",
+                    "url": "https://doi.org/10.1086/519795"},
+    "ceballos2018": {"title": "Ceballos et al., Runs of homozygosity: windows into population history and trait architecture, Nat. Rev. Genet. 19, 220 (2018)",
+                     "url": "https://doi.org/10.1038/nrg.2017.109"},
 }
 
 
@@ -56,7 +73,8 @@ def _card(cid, title, group, grade, summary, result, limits, method, sources, re
     val = (ref.manifest.get("validation") or {}).get(cid)
     return {"id": cid, "title": title, "group": group, "grade": grade, "ok": ok, "summary": summary,
             "result": result, "limits": limits, "method": method,
-            "sources": [SRC[s] for s in sources if s in SRC], "validation": val}
+            "sources": [s if isinstance(s, dict) else SRC[s] for s in sources if isinstance(s, dict) or s in SRC],
+            "validation": val}
 
 
 def _freq_matrix(ref: RefData, names: list[str], user: np.ndarray, snp_mask: np.ndarray):
@@ -136,7 +154,7 @@ def pca_cards(ref: RefData, dos: np.ndarray) -> tuple[dict, dict]:
         vidx = np.flatnonzero(valid)
         near = [{**{k2: anc[vidx[i]][k2] for k2 in ("id", "group", "date_bp", "date_sd", "locality", "country", "lat", "lon",
                                                     "mt", "y", "publication", "doi")},
-                 "distance": float(d)} for i, d in zip(ii, dd)]
+                 "distance": float(d), "pc": coords[vidx[i]].tolist()} for i, d in zip(ii, dd)]
         out[name["id"]] = {"title": name["title"], "coords": x.tolist(), "snps": n,
                            "eigvals": ev.tolist(),
                            "reference": {"coords": P["ref_coords"][:, :k].tolist(), "group": P["ref_group"].tolist(),
@@ -198,14 +216,18 @@ def archaic_cards(ref: RefData, dos: np.ndarray, auto: np.ndarray) -> list[dict]
     try:
         d = fstats.d_stat(F, block, 0, 3, 1, 2)
         den = {**d, "reference_groups": stats_ref.get("denisovan", [])}
-        summary = f"D = {d['D']:+.4f} (Z {d['z']:+.1f}); compare with the reference groups"
+        regs = (stats_ref.get("denisovan") or {}).get("regions", [])
+        fits = [r["region"] for r in regs if r.get("sd") and r["n"] >= 3 and abs(d["D"] - r["mean"]) <= 2 * r["sd"]]
+        summary = (f"D = {d['D']:+.4f} (Z {d['z']:+.1f}): " +
+                   (f"within the usual range of {', '.join(fits)}." if fits else "outside the usual range of every reference region.")
+                   + " Lower values than your region's would point to Denisovan ancestry.")
         ok = True
     except Exception as e:  # noqa: BLE001
         den, summary, ok = {"error": str(e)}, "Not enough overlapping SNPs.", False
     cards.append(_card("denisovan", "Denisovan affinity", "Deep ancestry", "B", summary, den,
-                       ["This is an affinity statistic, not a percentage. Neanderthal ancestry pulls it negative, Denisovan ancestry positive, so its meaning comes from where you sit relative to the reference groups.",
+                       ["This is an affinity statistic, not a percentage. Neanderthal ancestry pushes it up and Denisovan ancestry pulls it down, so on its own it mixes the two; its meaning comes from where you sit relative to the reference groups. Oceanian groups, with the most Denisovan ancestry, have the lowest values among non-Africans.",
                         "Detectable Denisovan ancestry is concentrated in Oceania and, at lower levels, in Asia and the Americas."],
-                       "D-statistic D(Africans, you; Denisovan, Neanderthal) with a 5 cM block jackknife: whether you share more derived alleles with the Denisovan or the Neanderthal genome.",
+                       "D-statistic D(Africans, you; Denisovan, Neanderthal) with a 5 cM block jackknife: positive when you share more derived alleles with the Neanderthal genome than with the Denisovan genome, relative to Africans.",
                        ["meyer2012", "patterson2012", "aadr"], ref, ok))
     # Neanderthal-derived alleles you carry
     A = ref.archaic
@@ -245,9 +267,19 @@ def haplogroup_cards(ref: RefData, g: RawGenotypes, pos37: np.ndarray, sex: str)
                                {"call": None}, [], "", srcs, ref))
             continue
         T = Tree(ref.tree(which))
-        obs = chromosome_calls(g, chrom, pos37)
+        obs, orient = T.orient(chromosome_calls(g, chrom, pos37))
         res = T.call(obs)
-        node = res.get("node")
+        res["strand_check"] = orient
+        # A call resting on a handful of markers is not reported as a haplogroup
+        weak = res.get("call") is not None and res.get("node") is not None and res.get("path_derived", 0) < MIN_SUPPORT
+        if weak:
+            res = {**res, "weak_call": res["call"], "call": None,
+                   "reason": (f"Not enough evidence: the best-supported branch, {res['call']}, rests on only "
+                              f"{res['path_derived']} matching marker{'s' if res['path_derived'] != 1 else ''} "
+                              f"of {res['typed_mutations']} typed. Of the {orient['on_tree']} markers in your file at "
+                              f"positions on this tree, {orient['direct']} matched the tree's alleles directly, "
+                              f"{orient['complemented']} after switching strand, and {orient['unmatched']} matched neither.")}
+        node = res.get("node") if not weak else None
         carriers, timeline = [], []
         if node is not None:
             key = f"{which}_node"
@@ -280,6 +312,12 @@ def haplogroup_cards(ref: RefData, g: RawGenotypes, pos37: np.ndarray, sex: str)
         cid = f"{which}_haplogroup"
         if res.get("call") is None:
             summary = res.get("reason", "No call")
+            cards.append(_card(cid, title, "Deep ancestry", "A", summary,
+                               {**res, "tree": T.name, "carriers": [], "timeline": [], "markers_in_file": len(obs)},
+                               ["Chip files type a limited set of these positions; a whole-genome or dedicated mtDNA/Y test resolves the lineage."],
+                               "Your genotypes at the positions defining each branch of the tree; a lineage is reported only when at least "
+                               f"{MIN_SUPPORT} markers along it match.", srcs, ref, ok=False))
+            continue
         else:
             summary = (f"{res['call']} ({res['path_derived']} supporting and {res['path_ancestral']} conflicting markers "
                        f"of {res['typed_mutations']} typed); {len(carriers)} ancient genomes carry it or a branch below it")
@@ -294,7 +332,7 @@ def haplogroup_cards(ref: RefData, g: RawGenotypes, pos37: np.ndarray, sex: str)
     return cards
 
 
-def analyse(path: str, ref: RefData | None = None, on_step=None) -> dict:
+def analyse(path: str, ref: RefData | None = None, on_step=None, include=("deep", "modern", "traits")) -> dict:
     ref = ref or RefData()
     t0 = time.time()
 
@@ -318,15 +356,24 @@ def analyse(path: str, ref: RefData | None = None, on_step=None) -> dict:
                    [], ref)]
     if auto.sum() < 20000:
         raise ValueError(f"only {int(auto.sum())} autosomal SNPs match the reference; the file may be incomplete or not a genotype file")
-    step("ancient ancestry models (qpAdm)", 0.2)
+    step("ancient ancestry models (qpAdm)", 0.15)
     cards.append(ancient_ancestry(ref, dos, auto))
-    step("principal components and closest ancient individuals", 0.45)
+    step("principal components and closest ancient individuals", 0.25)
     cards.extend(pca_cards(ref, dos))
-    step("Neanderthal and Denisovan ancestry", 0.65)
+    step("Neanderthal and Denisovan ancestry", 0.33)
     cards.extend(archaic_cards(ref, dos, auto))
-    step("haplogroups", 0.85)
+    step("haplogroups", 0.4)
     cards.extend(haplogroup_cards(ref, g, al["positions37"], fc["genetic_sex"]))
+
+    def make(cid, title, group, grade, summary, result, limits, method, sources, ok=True):
+        return _card(cid, title, group, grade, summary, result, limits, method, sources, ref, ok)
+
+    if "modern" in include:
+        cards.extend(modern_cards(ref, g, al, fc, make, step))
+    if "traits" in include and ref.traits:
+        step("appearance, food and drink, fitness", 0.9)
+        cards.extend(trait_cards(ref.traits, Genotyper(g, al["positions37"], al["stats"]["strand"]), make))
     step("done", 1.0)
-    return {"version": 1, "file": {k: fc[k] for k in ("vendor", "file", "sha256", "markers")},
+    return {"version": 2, "file": {k: fc[k] for k in ("vendor", "file", "sha256", "markers")},
             "reference_pack": {k: ref.manifest.get(k) for k in ("name", "built", "sources")},
             "seconds": round(time.time() - t0, 1), "cards": cards}

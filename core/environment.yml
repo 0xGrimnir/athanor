@@ -7,6 +7,7 @@ dependencies:
   - python=3.12
   - numpy
   - scipy
+  - threadpoolctl
   - rdkit
   - xtb>=6.7.1        # the GFN2-xTB engine; older builds write different output formats
   - psi4

@@ -135,7 +135,7 @@ for n_done, j in enumerate(analysed):
     d = H["geno"][j]
     f = tmp / "h.txt"
     write(f, "23andme", S["rsid"][chip], S["chrom"][chip], S["pos"][chip], S["ref"][chip], S["alt"][chip], d[chip])
-    r = analyse(str(f), ref)
+    r = analyse(str(f), ref, include=("deep",))     # modern ancestry and traits are validated in validate_modern.py
     cards = {c["id"]: c for c in r["cards"]}
     maps = cards["pca"]["result"]["maps"]
     for name, full in (("world", H["pc_world"][j]), ("west", H["pc_west"][j])):
@@ -434,7 +434,7 @@ if cc and Path(cc).exists():
 # the pack rather than sitting in a separate file.
 mpath = PACK / "manifest.json"
 man = json.loads(mpath.read_text())
-man["validation"] = {k: v for k, v in summary.items() if v}
+man["validation"] = {**(man.get("validation") or {}), **{k: v for k, v in summary.items() if v}}
 man["validated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 mpath.write_text(json.dumps(man, indent=1))
 print("   validation summaries written into the pack manifest:", sorted(man["validation"]))

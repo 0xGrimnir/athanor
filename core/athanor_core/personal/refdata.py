@@ -16,6 +16,11 @@ downloaded once by the app. It holds:
   reference_stats.json  archaic-ancestry statistics of present-day groups
   mt_tree.json.gz, y_tree.json.gz  haplogroup trees
   hg38ToHg19.over.chain.gz  UCSC chain for GRCh38 files
+  modern.npz      regional reference-panel allele frequencies (autosomes and
+                  X) for modern ancestry
+  roh_reference.json  runs of homozygosity in present-day reference groups
+  traits.json     trait-report variants, checked against Ensembl and the
+                  GWAS Catalog, with their references
 """
 from __future__ import annotations
 
@@ -93,6 +98,24 @@ class RefData:
     def tree(self, which: str) -> dict:
         with gzip.open(self.root / f"{which}_tree.json.gz", "rt") as fh:
             return json.load(fh)
+
+    @cached_property
+    def modern(self) -> dict | None:
+        f = self.root / "modern.npz"
+        if not f.exists():
+            return None
+        d = np.load(f, allow_pickle=False)
+        return {k: d[k] for k in d.files}
+
+    @cached_property
+    def roh_reference(self) -> dict:
+        f = self.root / "roh_reference.json"
+        return json.loads(f.read_text()) if f.exists() else {"groups": {}}
+
+    @cached_property
+    def traits(self) -> dict | None:
+        f = self.root / "traits.json"
+        return json.loads(f.read_text()) if f.exists() else None
 
     def chain(self) -> Path:
         return self.root / "hg38ToHg19.over.chain.gz"

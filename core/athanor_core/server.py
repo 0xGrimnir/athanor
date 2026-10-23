@@ -178,7 +178,7 @@ def m_adna_export(p):
 
 # ------------------------------------------------------------------ Personal Genome
 PG_FEED = "https://github.com/0xGrimnir/athanor-releases/releases/download/pgdata-{v}/"
-PG_VERSION = 3
+PG_VERSION = 4
 
 
 def m_personal_status(_):
@@ -190,14 +190,16 @@ def m_personal_status(_):
     except FileNotFoundError:
         return {"installed": False, "path": str(d), "pack": PACK_NAME, "version": PG_VERSION}
     m = ref.manifest
+    have = int(m.get("pack_version") or 3)
     return {"installed": True, "path": str(d), "pack": PACK_NAME, "version": PG_VERSION,
+            "pack_version": have, "outdated": have < PG_VERSION,
             "built": m.get("built"), "sources": m.get("sources"), "snps": m.get("snps"),
             "ancients": m.get("ancients"), "models": [{"id": x["id"], "title": x["title"]} for x in m.get("models", [])],
             "validation": m.get("validation")}
 
 
 def m_personal_install(p):
-    """Download and unpack the reference data (about 150 MB), verifying its checksum."""
+    """Download and unpack the reference data, verifying its checksum; replaces an older version."""
     import hashlib
     import json as _json
     import tarfile
@@ -231,6 +233,9 @@ def m_personal_install(p):
         os.unlink(path)
         raise RuntimeError("the downloaded reference data did not match its checksum; nothing was installed")
     notify({"task": "pgdata", "stage": "unpacking", "fraction": 0.95})
+    import shutil
+    shutil.rmtree(dest, ignore_errors=True)          # replace an older pack completely
+    dest.mkdir(parents=True, exist_ok=True)
     with tarfile.open(path) as tf:
         tf.extractall(dest, filter="data")
     os.unlink(path)

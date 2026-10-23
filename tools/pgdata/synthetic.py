@@ -27,11 +27,11 @@ POPS = [("Chimp", False, 1, "chimp", 0), ("Altai_Neanderthal", False, 1, "nea", 
         ("ONG", True, 4, "asi", 0), ("Russia_UstIshim_IUP", False, 1, "basal", 2500),
         ("Russia_Kostenki_UP", False, 1, "basal", 2200), ("Russia_Malta_UP", False, 3, "ane", 1600),
         ("Han", True, 8, "eas", 0), ("CHB", True, 12, "eas", 0), ("JPT", True, 12, "eas", 0),
-        ("Papuan", True, 6, "pap", 0), ("Chukchi", True, 1, "eas", 0), ("Karitiana", True, 6, "amr", 0),
+        ("Papuan", True, 16, "pap", 0), ("Chukchi", True, 1, "eas", 0), ("Karitiana", True, 16, "amr", 0),
         ("Israel_Natufian", False, 4, "nat", 420), ("Ethiopia_MotaCave_4500BP", False, 2, "afr", 155),
         ("GBR", True, 36, "eur", 0), ("CEU", True, 36, "eur", 0), ("FIN", True, 28, "eur", 0),
         ("IBS", True, 28, "eur", 0), ("TSI", True, 28, "eur", 0), ("French", True, 8, "eur", 0),
-        ("Sardinian", True, 10, "anf_pop", 0), ("Druze", True, 10, "irn", 0),
+        ("Sardinian", True, 16, "anf_pop", 0), ("Druze", True, 16, "irn", 0),
         ("GIH", True, 12, "sas", 0), ("PJL", True, 12, "sas", 0), ("PEL", True, 10, "amr", 0),
         ("MXL", True, 10, "amr", 0), ("PUR", True, 10, "eur", 0),
         ("Germany_BellBeaker", False, 6, "eur", 100), ("hg19ref", True, 1, "chimp", 0)]
@@ -74,7 +74,7 @@ for lab, present, n, br, t in POPS:
     groups[(br, t)] += n
 samples = [msprime.SampleSet(n, population=br, time=t, ploidy=2) for (br, t), n in groups.items()]
 G, POS, CH = [], [], []
-for c in range(1, 23):
+for c in range(1, 24):                      # 23 = X (simulated like an autosome; men made hemizygous below)
     ts = msprime.sim_ancestry(samples=samples, demography=d, sequence_length=7_000_000, recombination_rate=1e-8,
                               random_seed=c)
     ts = msprime.sim_mutations(ts, rate=2e-8, random_seed=50 + c, model=msprime.BinaryMutationModel())
@@ -83,8 +83,14 @@ for c in range(1, 23):
     keep = rng.random(len(p)) < 0.3
     gm = gm[keep]
     # collapse to per-individual allele counts straight away to keep memory down
-    G.append((gm[:, 0::2] + gm[:, 1::2]).astype(np.int8))
-    POS.append(p[keep] + 1); CH.append(np.full(keep.sum(), c))
+    if c == 23:
+        XH0 = gm[:, 0::2].astype(np.int8)        # first copy of each individual, for men's single X
+        G.append((gm[:, 0::2] + gm[:, 1::2]).astype(np.int8))
+        POS.append(p[keep] + 1 + 3_000_000)     # clear of the pseudo-autosomal region
+    else:
+        G.append((gm[:, 0::2] + gm[:, 1::2]).astype(np.int8))
+        POS.append(p[keep] + 1)
+    CH.append(np.full(keep.sum(), c))
     del gm, ts
 G = np.vstack(G); POS = np.concatenate(POS); CH = np.concatenate(CH)
 # haplotype columns grouped by branch in sample order
@@ -104,6 +110,12 @@ for i, (_, lab, present, h, t) in enumerate(inds):
     alt = G[:, h[0] // 2].astype(np.int64)
     if lab == "hg19ref":
         alt = np.zeros(nsnp, int)
+    elif present and i % 2 == 0:
+        # men carry one X; the AADR records their X calls as homozygous
+        alt = alt.copy()
+        alt[CH == 23] = 2 * XH0[:, h[0] // 2]
+    if lab == "hg19ref":
+        pass
     elif not present and lab not in ("Altai_Neanderthal", "VindijaCave_Neanderthal", "ChagyrskayaCave_Neanderthal", "Chimp"):
         # ancient: pseudo-haploid with missing data
         # pseudo-haploid: one allele drawn at random at heterozygous sites,

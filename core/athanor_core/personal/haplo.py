@@ -132,6 +132,34 @@ class Tree:
             b = int(self.parent[b])
         return False
 
+    def orient(self, observed: dict[int, str]) -> tuple[dict[int, str], dict]:
+        """Put each observed base on the tree's strand.
+
+        Genotyping chips report some probes on the opposite strand (Illumina's
+        TOP/BOT convention), so a base that matches neither allele the tree
+        knows at that position, but whose complement does, is complemented.
+        mtDNA and Y branch mutations are almost all transitions, for which the
+        complement can never be mistaken for the other allele."""
+        comp = {"A": "T", "C": "G", "G": "C", "T": "A"}
+        known: dict[int, set] = {}
+        for node in self.nodes:
+            for m in node["muts"]:
+                known.setdefault(m[0], set()).update((m[1], m[2]))
+        out, st = {}, {"on_tree": 0, "direct": 0, "complemented": 0, "unmatched": 0}
+        for p, b in observed.items():
+            k = known.get(p)
+            if k is None:
+                out[p] = b
+                continue
+            st["on_tree"] += 1
+            if b in k:
+                out[p] = b; st["direct"] += 1
+            elif comp.get(b) in k and not ({b, comp.get(b)} <= k):
+                out[p] = comp[b]; st["complemented"] += 1
+            else:
+                st["unmatched"] += 1
+        return out, st
+
     def call(self, observed: dict[int, str]) -> dict:
         """observed: position -> base (on the + strand of the tree's reference)."""
         n = len(self.nodes)
