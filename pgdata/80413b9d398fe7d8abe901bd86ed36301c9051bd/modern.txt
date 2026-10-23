@@ -1,41 +1,46 @@
-[    0.5s] AADR 463 individuals 453101 SNPs (synthetic stand-in)
-[    0.5s] autosomal SNPs 433252 X SNPs (outside the pseudo-autosomal regions) 19849
-[    0.5s] region east_africa: only 6 individuals; left out
-[    0.5s] region south_central_africa: only 0 individuals; left out
-[    0.5s] region rainforest_hg: only 6 individuals; left out
-[    0.5s] region san: only 0 individuals; left out
-[    0.5s] region east_europe: only 0 individuals; left out
-[    0.5s] region basque: only 0 individuals; left out
-[    0.5s] region balkans: only 0 individuals; left out
-[    0.5s] region levant: only 0 individuals; left out
-[    0.5s] region arabia: only 0 individuals; left out
-[    0.5s] region caucasus: only 0 individuals; left out
-[    0.5s] region north_africa: only 0 individuals; left out
-[    0.5s] region bengal: only 0 individuals; left out
-[    0.5s] region south_india: only 0 individuals; left out
-[    0.5s] region south_china: only 0 individuals; left out
-[    0.5s] region se_asia: only 0 individuals; left out
-[    0.5s] region north_asia: only 1 individuals; left out
-[    0.5s] regions 14 panel individuals 320
-[    0.5s] genotype rows in memory: 0.04 GB
-[    0.6s] subset dosages (320, 80000)
-[   20.3s] outliers removed: 0 []
-[   94.8s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.38, 'france': 0.04, 'finland': 0.16, 'iberia': 0.2, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
-[   94.8s] merged france into nw_europe (own share of france was 0.04)
-[  166.0s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.42, 'finland': 0.17, 'iberia': 0.21, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
-[  166.0s] merged finland into nw_europe (own share of finland was 0.17)
-[  226.5s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.53, 'iberia': 0.24, 'italy': 0.23, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.96}
-[  226.5s] merged italy into nw_europe (own share of italy was 0.23)
-[  318.1s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.7, 'iberia': 0.28, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.96}
-[  318.1s] merged iberia into nw_europe (own share of iberia was 0.28)
-[  343.5s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.98, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.32, 'papua': 1.0, 'americas': 0.96}
-[  343.5s] merged japan_korea into north_china (own share of japan_korea was 0.32)
-[  354.5s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.98, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.98, 'papua': 1.0, 'americas': 0.94}
-[  354.5s] merged nw_south_asia into gujarat (own share of nw_south_asia was 0.44)
-[  362.2s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.98, 'sardinia': 0.96, 'druze': 0.98, 'gujarat': 0.92, 'north_china': 0.98, 'papua': 1.0, 'americas': 0.94}
-[  362.2s] detection floors: {'west_africa': 0.01, 'nw_europe': 0.01, 'sardinia': 0.01, 'druze': 0.059, 'gujarat': 0.03, 'north_china': 0.068, 'papua': 0.01, 'americas': 0.03} {'africa': 0.01, 'europe': 0.01, 'west_asia': 0.059, 'south_asia': 0.03, 'east_asia': 0.068, 'oceania': 0.01, 'americas': 0.03}
-[  363.2s] panel frequencies done
-[  363.2s] X frequencies done
-[  526.0s] painting calibration (temper -> accuracy, mean posterior): {0.25: (0.984, 0.983), 0.35: (0.984, 0.986), 0.5: (0.985, 0.989), 0.7: (0.984, 0.99), 1.0: (0.983, 0.99)} chosen 0.25
-[  536.6s] ROH reference groups 19
-[  541.1s] done
+[    1.4s] AADR 23089 individuals 1233013 SNPs 
+[    1.4s] autosomal SNPs 1150639 X SNPs (outside the pseudo-autosomal regions) 49617
+[    1.4s] region south_central_africa: only 9 individuals; left out
+[    1.4s] region san: only 8 individuals; left out
+[    1.5s] region balkans: only 7 individuals; left out
+[    1.5s] regions 27 panel individuals 2943
+[    1.9s] genotype rows in memory: 0.91 GB
+[    2.9s] subset dosages (2943, 80000)
+[   86.1s] outliers removed: 25 [('HG03767.DG', 'PJL', 0.743), ('HG03625.DG', 'PJL', 0.772), ('HG03619.DG', 'PJL', 0.766), ('HG03238.DG', 'PJL', 0.746), ('NA20870.DG', 'GIH', 0.769), ('HG02648.DG', 'PJL', 0.774), ('YPKP395.SG', 'Pakistani', 0.234), ('YPKP400.SG', 'Pakistani', 0.308), ('S_Hezhen-1.DG', 'Hezhen', 0.553), ('S_Oroqen-1.DG', 'Oroqen', 0.403), ('S_Oroqen-2.DG', 'Oroqen', 0.386), ('HGDP00013.DG', 'Brahui', 0.436), ('HGDP00214.DG', 'Pathan', 0.511), ('HGDP00544.DG', 'Papuan', 0.825), ('HGDP00860.DG', 'Mayan', 0.675), ('HGDP00871.DG', 'Mayan', 0.712), ('HGDP00876.DG', 'Mayan', 0.707), ('HGDP01229.DG', 'Mongola', 0.446), ('HGDP01230.DG', 'Mongola', 0.455), ('HGDP01255.DG', 'Mozabite', 0.59), ('HGDP01261.DG', 'Mozabite', 0.578), ('HGDP01270.DG', 'Mozabite', 0.23), ('HGDP01271.DG', 'Mozabite', 0.383), ('HGDP01388.DG', 'Adygei', 0.095), ('HGDP01396.DG', 'Adygei', 0.135)]
+[  211.3s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.51, 'france': 0.07, 'finland': 0.72, 'east_europe': 0.24, 'iberia': 0.3, 'basque': 0.4, 'italy': 0.3, 'sardinia': 0.46, 'levant': 0.44, 'druze': 0.57, 'arabia': 0.64, 'caucasus': 0.29, 'north_africa': 0.62, 'nw_south_asia': 0.48, 'gujarat': 0.55, 'bengal': 0.35, 'south_india': 0.67, 'north_china': 0.36, 'south_china': 0.41, 'japan_korea': 0.81, 'se_asia': 0.77, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  211.3s] merged france into nw_europe (own share of france was 0.07)
+[  336.6s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.52, 'finland': 0.72, 'east_europe': 0.24, 'iberia': 0.31, 'basque': 0.4, 'italy': 0.33, 'sardinia': 0.46, 'levant': 0.44, 'druze': 0.57, 'arabia': 0.65, 'caucasus': 0.29, 'north_africa': 0.62, 'nw_south_asia': 0.49, 'gujarat': 0.55, 'bengal': 0.34, 'south_india': 0.67, 'north_china': 0.38, 'south_china': 0.41, 'japan_korea': 0.81, 'se_asia': 0.77, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  336.6s] merged east_europe into finland (own share of east_europe was 0.24)
+[  447.4s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.54, 'finland': 0.65, 'iberia': 0.31, 'basque': 0.4, 'italy': 0.34, 'sardinia': 0.46, 'levant': 0.44, 'druze': 0.57, 'arabia': 0.64, 'caucasus': 0.29, 'north_africa': 0.63, 'nw_south_asia': 0.47, 'gujarat': 0.55, 'bengal': 0.34, 'south_india': 0.67, 'north_china': 0.38, 'south_china': 0.41, 'japan_korea': 0.81, 'se_asia': 0.78, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  447.4s] merged caucasus into druze (own share of caucasus was 0.29)
+[  535.5s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.54, 'finland': 0.65, 'iberia': 0.3, 'basque': 0.4, 'italy': 0.35, 'sardinia': 0.46, 'levant': 0.44, 'druze': 0.5, 'arabia': 0.65, 'north_africa': 0.62, 'nw_south_asia': 0.48, 'gujarat': 0.55, 'bengal': 0.33, 'south_india': 0.66, 'north_china': 0.38, 'south_china': 0.42, 'japan_korea': 0.81, 'se_asia': 0.78, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  535.5s] merged iberia into nw_europe (own share of iberia was 0.30)
+[  639.5s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.57, 'finland': 0.67, 'basque': 0.41, 'italy': 0.4, 'sardinia': 0.47, 'levant': 0.44, 'druze': 0.49, 'arabia': 0.65, 'north_africa': 0.63, 'nw_south_asia': 0.51, 'gujarat': 0.55, 'bengal': 0.34, 'south_india': 0.66, 'north_china': 0.38, 'south_china': 0.42, 'japan_korea': 0.81, 'se_asia': 0.78, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  639.5s] merged bengal into south_india (own share of bengal was 0.34)
+[  731.6s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.56, 'finland': 0.67, 'basque': 0.41, 'italy': 0.39, 'sardinia': 0.47, 'levant': 0.44, 'druze': 0.5, 'arabia': 0.65, 'north_africa': 0.63, 'nw_south_asia': 0.5, 'gujarat': 0.56, 'south_india': 0.72, 'north_china': 0.38, 'south_china': 0.4, 'japan_korea': 0.81, 'se_asia': 0.78, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  731.6s] merged south_china into north_china (own share of north_china was 0.38)
+[  820.9s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.57, 'finland': 0.67, 'basque': 0.41, 'italy': 0.4, 'sardinia': 0.47, 'levant': 0.44, 'druze': 0.5, 'arabia': 0.65, 'north_africa': 0.63, 'nw_south_asia': 0.5, 'gujarat': 0.56, 'south_india': 0.73, 'north_china': 0.63, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  820.9s] merged italy into nw_europe (own share of italy was 0.40)
+[  890.7s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.73, 'finland': 0.69, 'basque': 0.41, 'sardinia': 0.49, 'levant': 0.46, 'druze': 0.52, 'arabia': 0.65, 'north_africa': 0.63, 'nw_south_asia': 0.5, 'gujarat': 0.56, 'south_india': 0.71, 'north_china': 0.63, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  890.7s] merged basque into nw_europe (own share of basque was 0.41)
+[  971.2s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.82, 'finland': 0.69, 'sardinia': 0.49, 'levant': 0.46, 'druze': 0.51, 'arabia': 0.65, 'north_africa': 0.63, 'nw_south_asia': 0.49, 'gujarat': 0.56, 'south_india': 0.72, 'north_china': 0.62, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[  971.2s] merged levant into druze (own share of levant was 0.46)
+[ 1048.5s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.81, 'finland': 0.69, 'sardinia': 0.49, 'druze': 0.59, 'arabia': 0.66, 'north_africa': 0.63, 'nw_south_asia': 0.5, 'gujarat': 0.56, 'south_india': 0.71, 'north_china': 0.64, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1048.5s] merged sardinia into nw_europe (own share of sardinia was 0.49)
+[ 1111.4s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.87, 'finland': 0.69, 'druze': 0.6, 'arabia': 0.66, 'north_africa': 0.63, 'nw_south_asia': 0.48, 'gujarat': 0.56, 'south_india': 0.71, 'north_china': 0.61, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1111.4s] merged nw_south_asia into south_india (own share of nw_south_asia was 0.48)
+[ 1160.8s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.87, 'finland': 0.69, 'druze': 0.61, 'arabia': 0.66, 'north_africa': 0.63, 'gujarat': 0.59, 'south_india': 0.69, 'north_china': 0.62, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1160.8s] merged gujarat into south_india (own share of gujarat was 0.59)
+[ 1209.1s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.87, 'finland': 0.69, 'druze': 0.61, 'arabia': 0.66, 'north_africa': 0.63, 'south_india': 0.89, 'north_china': 0.61, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1209.1s] merged arabia into druze (own share of druze was 0.61)
+[ 1251.1s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.87, 'finland': 0.69, 'druze': 0.72, 'north_africa': 0.64, 'south_india': 0.89, 'north_china': 0.63, 'japan_korea': 0.81, 'se_asia': 0.8, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1251.1s] merged se_asia into north_china (own share of north_china was 0.63)
+[ 1285.6s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.87, 'finland': 0.69, 'druze': 0.72, 'north_africa': 0.64, 'south_india': 0.89, 'north_china': 0.89, 'japan_korea': 0.83, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1285.6s] merged north_africa into druze (own share of north_africa was 0.64)
+[ 1316.0s] own-region means: {'west_africa': 0.94, 'east_africa': 0.71, 'rainforest_hg': 0.82, 'nw_europe': 0.87, 'finland': 0.69, 'druze': 0.72, 'south_india': 0.89, 'north_china': 0.89, 'japan_korea': 0.83, 'north_asia': 0.71, 'papua': 0.92, 'americas': 0.96}
+[ 1316.0s] detection floors: {'west_africa': 0.01, 'east_africa': 0.01, 'rainforest_hg': 0.01, 'nw_europe': 0.023, 'finland': 0.01, 'druze': 0.085, 'south_india': 0.03, 'north_china': 0.017, 'japan_korea': 0.014, 'north_asia': 0.039, 'papua': 0.027, 'americas': 0.014} {'africa': 0.012, 'europe': 0.029, 'west_asia': 0.085, 'south_asia': 0.03, 'east_asia': 0.024, 'north_asia': 0.039, 'oceania': 0.027, 'americas': 0.014}
+[ 1330.4s] panel frequencies done
+[ 1331.1s] X frequencies done
+[ 1465.3s] painting calibration (temper -> accuracy, mean posterior): {0.25: (0.881, 0.871), 0.35: (0.886, 0.887), 0.5: (0.881, 0.899), 0.7: (0.871, 0.907), 1.0: (0.85, 0.908)} chosen 0.35
+[ 1524.9s] ROH reference groups 89
+[ 1579.7s] done
