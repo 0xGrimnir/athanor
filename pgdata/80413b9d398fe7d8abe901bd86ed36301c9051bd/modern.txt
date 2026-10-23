@@ -1,0 +1,41 @@
+[    0.5s] AADR 463 individuals 453101 SNPs (synthetic stand-in)
+[    0.5s] autosomal SNPs 433252 X SNPs (outside the pseudo-autosomal regions) 19849
+[    0.5s] region east_africa: only 6 individuals; left out
+[    0.5s] region south_central_africa: only 0 individuals; left out
+[    0.5s] region rainforest_hg: only 6 individuals; left out
+[    0.5s] region san: only 0 individuals; left out
+[    0.5s] region east_europe: only 0 individuals; left out
+[    0.5s] region basque: only 0 individuals; left out
+[    0.5s] region balkans: only 0 individuals; left out
+[    0.5s] region levant: only 0 individuals; left out
+[    0.5s] region arabia: only 0 individuals; left out
+[    0.5s] region caucasus: only 0 individuals; left out
+[    0.5s] region north_africa: only 0 individuals; left out
+[    0.5s] region bengal: only 0 individuals; left out
+[    0.5s] region south_india: only 0 individuals; left out
+[    0.5s] region south_china: only 0 individuals; left out
+[    0.5s] region se_asia: only 0 individuals; left out
+[    0.5s] region north_asia: only 1 individuals; left out
+[    0.5s] regions 14 panel individuals 320
+[    0.5s] genotype rows in memory: 0.04 GB
+[    0.6s] subset dosages (320, 80000)
+[   20.3s] outliers removed: 0 []
+[   94.8s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.38, 'france': 0.04, 'finland': 0.16, 'iberia': 0.2, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[   94.8s] merged france into nw_europe (own share of france was 0.04)
+[  166.0s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.42, 'finland': 0.17, 'iberia': 0.21, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[  166.0s] merged finland into nw_europe (own share of finland was 0.17)
+[  226.5s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.53, 'iberia': 0.24, 'italy': 0.23, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.96}
+[  226.5s] merged italy into nw_europe (own share of italy was 0.23)
+[  318.1s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.7, 'iberia': 0.28, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.96}
+[  318.1s] merged iberia into nw_europe (own share of iberia was 0.28)
+[  343.5s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.98, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.32, 'papua': 1.0, 'americas': 0.96}
+[  343.5s] merged japan_korea into north_china (own share of japan_korea was 0.32)
+[  354.5s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.98, 'sardinia': 0.96, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.98, 'papua': 1.0, 'americas': 0.94}
+[  354.5s] merged nw_south_asia into gujarat (own share of nw_south_asia was 0.44)
+[  362.2s] own-region means: {'west_africa': 1.0, 'nw_europe': 0.98, 'sardinia': 0.96, 'druze': 0.98, 'gujarat': 0.92, 'north_china': 0.98, 'papua': 1.0, 'americas': 0.94}
+[  362.2s] detection floors: {'west_africa': 0.01, 'nw_europe': 0.01, 'sardinia': 0.01, 'druze': 0.059, 'gujarat': 0.03, 'north_china': 0.068, 'papua': 0.01, 'americas': 0.03} {'africa': 0.01, 'europe': 0.01, 'west_asia': 0.059, 'south_asia': 0.03, 'east_asia': 0.068, 'oceania': 0.01, 'americas': 0.03}
+[  363.2s] panel frequencies done
+[  363.2s] X frequencies done
+[  526.0s] painting calibration (temper -> accuracy, mean posterior): {0.25: (0.984, 0.983), 0.35: (0.984, 0.986), 0.5: (0.985, 0.989), 0.7: (0.984, 0.99), 1.0: (0.983, 0.99)} chosen 0.25
+[  536.6s] ROH reference groups 19
+[  541.1s] done

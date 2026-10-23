@@ -1,0 +1,1577 @@
+{
+ "built": "2026-10-23T03:55:54Z",
+ "sources": [
+  "Ensembl GRCh37 REST (variation, VEP)",
+  "1000 Genomes phase 3",
+  "GWAS Catalog REST API v2",
+  "NCBI PubMed"
+ ],
+ "variants": {
+  "rs12913832": {
+   "rsid": "rs12913832",
+   "gene": "HERC2",
+   "label": "HERC2 rs12913832 (blue-eye allele)",
+   "chrom": 15,
+   "pos37": 28365618,
+   "ref": "A",
+   "alts": [
+    "C",
+    "G"
+   ],
+   "effect": "G",
+   "other": "A",
+   "freq": {
+    "AFR": 0.0279878971255673,
+    "AMR": 0.201729106628242,
+    "EAS": 0.00198412698412698,
+    "EUR": 0.636182902584493,
+    "SAS": 0.0705521472392638
+   }
+  },
+  "rs1800407": {
+   "rsid": "rs1800407",
+   "gene": "OCA2",
+   "label": "OCA2 R419Q",
+   "chrom": 15,
+   "pos37": 28230318,
+   "ref": "C",
+   "alts": [
+    "T"
+   ],
+   "amino_acids": {
+    "C": [
+     "R"
+    ],
+    "T": [
+     "Q"
+    ]
+   },
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.00151285930408472,
+    "AMR": 0.031700288184438,
+    "EAS": 0.000992063492063492,
+    "EUR": 0.0755467196819085,
+    "SAS": 0.0265848670756646
+   }
+  },
+  "rs1805007": {
+   "rsid": "rs1805007",
+   "gene": "MC1R",
+   "label": "MC1R R151C",
+   "chrom": 16,
+   "pos37": 89986117,
+   "ref": "C",
+   "alts": [
+    "A",
+    "G",
+    "T"
+   ],
+   "amino_acids": {
+    "C": [
+     "R"
+    ],
+    "A": [
+     "S"
+    ],
+    "G": [
+     "G"
+    ],
+    "T": [
+     "C"
+    ]
+   },
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.00302571860816944,
+    "AMR": 0.015850144092219,
+    "EAS": 0.000992063492063492,
+    "EUR": 0.0715705765407555,
+    "SAS": 0.00511247443762781
+   }
+  },
+  "rs1805008": {
+   "rsid": "rs1805008",
+   "gene": "MC1R",
+   "label": "MC1R R160W",
+   "chrom": 16,
+   "pos37": 89986144,
+   "ref": "C",
+   "alts": [
+    "T"
+   ],
+   "amino_acids": {
+    "C": [
+     "R"
+    ],
+    "T": [
+     "W"
+    ]
+   },
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.0037821482602118,
+    "AMR": 0.00288184438040346,
+    "EAS": 0.0,
+    "EUR": 0.0616302186878728,
+    "SAS": 0.00408997955010225
+   }
+  },
+  "rs1805009": {
+   "rsid": "rs1805009",
+   "gene": "MC1R",
+   "label": "MC1R D294H",
+   "chrom": 16,
+   "pos37": 89986546,
+   "ref": "G",
+   "alts": [
+    "A",
+    "C"
+   ],
+   "amino_acids": {
+    "G": [
+     "D"
+    ],
+    "A": [
+     "N"
+    ],
+    "C": [
+     "H"
+    ]
+   },
+   "effect": "C",
+   "other": "G",
+   "freq": {
+    "AFR": 0.00151285930408472,
+    "AMR": 0.0100864553314121,
+    "EAS": 0.0,
+    "EUR": 0.00795228628230616,
+    "SAS": 0.0
+   }
+  },
+  "rs1805006": {
+   "rsid": "rs1805006",
+   "gene": "MC1R",
+   "label": "MC1R D84E",
+   "chrom": 16,
+   "pos37": 89985918,
+   "ref": "C",
+   "alts": [
+    "A",
+    "G"
+   ],
+   "amino_acids": {
+    "C": [
+     "D"
+    ],
+    "A": [
+     "E"
+    ],
+    "G": [
+     "E"
+    ]
+   },
+   "effect": "A",
+   "other": "C",
+   "freq": {
+    "AFR": 0.00075642965204236,
+    "AMR": 0.00144092219020173,
+    "EAS": 0.0,
+    "EUR": 0.0099403578528827,
+    "SAS": 0.00102249488752556
+   }
+  },
+  "rs11547464": {
+   "rsid": "rs11547464",
+   "gene": "MC1R",
+   "label": "MC1R R142H",
+   "chrom": 16,
+   "pos37": 89986091,
+   "ref": "G",
+   "alts": [
+    "A"
+   ],
+   "amino_acids": {
+    "G": [
+     "R"
+    ],
+    "A": [
+     "H"
+    ]
+   },
+   "effect": "A",
+   "other": "G",
+   "freq": {
+    "AFR": 0.00075642965204236,
+    "AMR": 0.00576368876080692,
+    "EAS": 0.0,
+    "EUR": 0.00894632206759443,
+    "SAS": 0.0
+   }
+  },
+  "rs12203592": {
+   "rsid": "rs12203592",
+   "gene": "IRF4",
+   "label": "IRF4 rs12203592",
+   "chrom": 6,
+   "pos37": 396321,
+   "ref": "C",
+   "alts": [
+    "G",
+    "T"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "T",
+     "direction": "increase",
+     "beta": "1.61 unit increase",
+     "or": null,
+     "p": 2e-91,
+     "trait": "Freckling",
+     "efo": [
+      "freckles"
+     ],
+     "pubmed_id": "20585627",
+     "first_author": "Eriksson N",
+     "accession": "GCST000708"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "increase",
+     "beta": "0.458651 unit increase",
+     "or": null,
+     "p": 6.9999999999999995e-40,
+     "trait": "Freckles",
+     "efo": [
+      "freckles"
+     ],
+     "pubmed_id": "36672889",
+     "first_author": "Farre X",
+     "accession": "GCST90255685"
+    }
+   ],
+   "direction": "increase",
+   "gwas_agreement": "2 of 2 matching associations agree in direction",
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.00832072617246596,
+    "AMR": 0.0720461095100865,
+    "EAS": 0.0,
+    "EUR": 0.116302186878728,
+    "SAS": 0.00613496932515337
+   }
+  },
+  "rs12821256": {
+   "rsid": "rs12821256",
+   "gene": "KITLG",
+   "label": "KITLG rs12821256 (blond-hair allele)",
+   "chrom": 12,
+   "pos37": 89328335,
+   "ref": "T",
+   "alts": [
+    "A",
+    "C",
+    "G"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "C",
+     "direction": "increase",
+     "beta": null,
+     "or": 1.659,
+     "p": 2e-308,
+     "trait": "Blond vs. brown/black hair color",
+     "efo": [
+      "hair color"
+     ],
+     "pubmed_id": "30531825",
+     "first_author": "Morgan MD",
+     "accession": "GCST006988"
+    },
+    {
+     "effect_allele": "C",
+     "direction": "increase",
+     "beta": null,
+     "or": 2.32,
+     "p": 4e-30,
+     "trait": "Blond vs. brown hair color",
+     "efo": [
+      "hair color"
+     ],
+     "pubmed_id": "17952075",
+     "first_author": "Sulem P",
+     "accession": "GCST000118"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.4662 decrease",
+     "or": null,
+     "p": 9e-11,
+     "trait": "Blond vs. brown/black hair color",
+     "efo": [
+      "hair color"
+     ],
+     "pubmed_id": "34737440",
+     "first_author": "Lona-Durazo F",
+     "accession": "GCST90095476"
+    }
+   ],
+   "direction": "increase",
+   "gwas_agreement": "3 of 3 matching associations agree in direction",
+   "effect": "C",
+   "other": "T",
+   "freq": {
+    "AFR": 0.00226928895612708,
+    "AMR": 0.0259365994236311,
+    "EAS": 0.0,
+    "EUR": 0.121272365805169,
+    "SAS": 0.016359918200409
+   }
+  },
+  "rs1426654": {
+   "rsid": "rs1426654",
+   "gene": "SLC24A5",
+   "label": "SLC24A5 A111T",
+   "chrom": 15,
+   "pos37": 48426484,
+   "ref": "A",
+   "alts": [
+    "G",
+    "T"
+   ],
+   "amino_acids": {
+    "A": [
+     "T"
+    ],
+    "G": [
+     "A"
+    ],
+    "T": [
+     "S"
+    ]
+   },
+   "effect": "A",
+   "other": "G",
+   "freq": {
+    "AFR": 0.0741301059001513,
+    "AMR": 0.589337175792507,
+    "EAS": 0.0119047619047619,
+    "EUR": 0.997017892644135,
+    "SAS": 0.685071574642127
+   }
+  },
+  "rs16891982": {
+   "rsid": "rs16891982",
+   "gene": "SLC45A2",
+   "label": "SLC45A2 L374F",
+   "chrom": 5,
+   "pos37": 33951693,
+   "ref": "C",
+   "alts": [
+    "A",
+    "G"
+   ],
+   "amino_acids": {
+    "C": [
+     "L"
+    ],
+    "A": [
+     "F"
+    ],
+    "G": [
+     "F"
+    ]
+   },
+   "effect": "G",
+   "other": "C",
+   "freq": {
+    "AFR": 0.0355521936459909,
+    "AMR": 0.463976945244957,
+    "EAS": 0.00595238095238095,
+    "EUR": 0.938369781312127,
+    "SAS": 0.0593047034764826
+   }
+  },
+  "rs17822931": {
+   "rsid": "rs17822931",
+   "gene": "ABCC11",
+   "label": "ABCC11 G180R (dry-earwax allele)",
+   "chrom": 16,
+   "pos37": 48258198,
+   "ref": "C",
+   "alts": [
+    "G",
+    "T"
+   ],
+   "amino_acids": {
+    "C": [
+     "G"
+    ],
+    "G": [
+     "R"
+    ],
+    "T": [
+     "R"
+    ]
+   },
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.0121028744326778,
+    "AMR": 0.139769452449568,
+    "EAS": 0.779761904761905,
+    "EUR": 0.136182902584493,
+    "SAS": 0.48159509202454
+   }
+  },
+  "rs3827760": {
+   "rsid": "rs3827760",
+   "gene": "EDAR",
+   "label": "EDAR V370A",
+   "chrom": 2,
+   "pos37": 109513601,
+   "ref": "A",
+   "alts": [
+    "C",
+    "G"
+   ],
+   "amino_acids": {
+    "A": [
+     "V"
+    ],
+    "C": [
+     "G"
+    ],
+    "G": [
+     "A"
+    ]
+   },
+   "effect": "G",
+   "other": "A",
+   "freq": {
+    "AFR": 0.00302571860816944,
+    "AMR": 0.39193083573487,
+    "EAS": 0.873015873015873,
+    "EUR": 0.010934393638171,
+    "SAS": 0.0132924335378323
+   }
+  },
+  "rs11803731": {
+   "rsid": "rs11803731",
+   "gene": "TCHH",
+   "label": "TCHH L790M",
+   "chrom": 1,
+   "pos37": 152083325,
+   "ref": "A",
+   "alts": [
+    "C",
+    "G",
+    "T"
+   ],
+   "amino_acids": {
+    "A": [
+     "L"
+    ],
+    "C": [
+     "V"
+    ],
+    "G": [
+     "L"
+    ],
+    "T": [
+     "M"
+    ]
+   },
+   "gwas": [
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.23 unit decrease",
+     "or": null,
+     "p": 2e-82,
+     "trait": "Hair shape",
+     "efo": [
+      "strand of hair shape"
+     ],
+     "pubmed_id": "29220522",
+     "first_author": "Liu F",
+     "accession": "GCST005191"
+    },
+    {
+     "effect_allele": "A",
+     "direction": "decrease",
+     "beta": "0.2351 unit decrease",
+     "or": null,
+     "p": 2e-17,
+     "trait": "Hair curvature (observational)",
+     "efo": [
+      "coat/hair morphology trait"
+     ],
+     "pubmed_id": "33190678",
+     "first_author": "Ho YYW",
+     "accession": "GCST011640"
+    }
+   ],
+   "direction": "decrease",
+   "gwas_agreement": "1 of 2 matching associations agree in direction",
+   "effect": "T",
+   "other": "A",
+   "freq": {
+    "AFR": 0.00453857791225416,
+    "AMR": 0.0936599423631124,
+    "EAS": 0.000992063492063492,
+    "EUR": 0.228628230616302,
+    "SAS": 0.0633946830265849
+   }
+  },
+  "rs4988235": {
+   "rsid": "rs4988235",
+   "gene": "MCM6/LCT",
+   "label": "LCT -13910 C>T (European lactase persistence)",
+   "chrom": 2,
+   "pos37": 136608646,
+   "ref": "G",
+   "alts": [
+    "A",
+    "C",
+    "T"
+   ],
+   "effect": "A",
+   "other": "G",
+   "freq": {
+    "AFR": 0.027231467473525,
+    "AMR": 0.216138328530259,
+    "EAS": 0.0,
+    "EUR": 0.507952286282306,
+    "SAS": 0.113496932515337
+   }
+  },
+  "rs41380347": {
+   "rsid": "rs41380347",
+   "gene": "MCM6/LCT",
+   "label": "LCT -13915 T>G (Arabian lactase persistence)",
+   "chrom": 2,
+   "pos37": 136608651,
+   "ref": "A",
+   "alts": [
+    "C",
+    "G"
+   ],
+   "effect": "C",
+   "other": "A",
+   "freq": {
+    "AFR": 0.0,
+    "AMR": 0.00432276657060519,
+    "EAS": 0.0,
+    "EUR": 0.0,
+    "SAS": 0.0
+   }
+  },
+  "rs145946881": {
+   "rsid": "rs145946881",
+   "gene": "MCM6/LCT",
+   "label": "LCT -14010 G>C (East African lactase persistence)",
+   "chrom": 2,
+   "pos37": 136608746,
+   "ref": "C",
+   "alts": [
+    "G",
+    "T"
+   ],
+   "effect": "G",
+   "other": "C",
+   "freq": {
+    "AFR": 0.0128593040847201,
+    "AMR": 0.0,
+    "EAS": 0.0,
+    "EUR": 0.0,
+    "SAS": 0.0
+   }
+  },
+  "rs41525747": {
+   "rsid": "rs41525747",
+   "gene": "MCM6/LCT",
+   "label": "LCT -13907 C>G (East African lactase persistence)",
+   "chrom": 2,
+   "pos37": 136608643,
+   "ref": "G",
+   "alts": [
+    "C"
+   ],
+   "effect": "C",
+   "other": "G",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs869051967": {
+   "rsid": "rs869051967",
+   "gene": "MCM6/LCT",
+   "label": "LCT -14009 T>G (East African lactase persistence)",
+   "chrom": 2,
+   "pos37": 136608745,
+   "ref": "A",
+   "alts": [
+    "C"
+   ],
+   "effect": "C",
+   "other": "A",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs671": {
+   "rsid": "rs671",
+   "gene": "ALDH2",
+   "label": "ALDH2 E504K (ALDH2*2)",
+   "chrom": 12,
+   "pos37": 112241766,
+   "ref": "G",
+   "alts": [
+    "A"
+   ],
+   "amino_acids": {
+    "G": [
+     "E"
+    ],
+    "A": [
+     "K"
+    ]
+   },
+   "effect": "A",
+   "other": "G",
+   "freq": {
+    "AFR": 0.00151285930408472,
+    "AMR": 0.00288184438040346,
+    "EAS": 0.173611111111111,
+    "EUR": 0.0,
+    "SAS": 0.0
+   }
+  },
+  "rs1229984": {
+   "rsid": "rs1229984",
+   "gene": "ADH1B",
+   "label": "ADH1B R48H (ADH1B*2)",
+   "chrom": 4,
+   "pos37": 100239319,
+   "ref": "T",
+   "alts": [
+    "A",
+    "C",
+    "G"
+   ],
+   "amino_acids": {
+    "T": [
+     "H"
+    ],
+    "A": [
+     "L"
+    ],
+    "C": [
+     "R"
+    ],
+    "G": [
+     "P"
+    ]
+   },
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.00151285930408472,
+    "AMR": 0.0576368876080692,
+    "EAS": 0.697420634920635,
+    "EUR": 0.0288270377733598,
+    "SAS": 0.0204498977505112
+   }
+  },
+  "rs762551": {
+   "rsid": "rs762551",
+   "gene": "CYP1A2",
+   "label": "CYP1A2*1F (-163C>A)",
+   "chrom": 15,
+   "pos37": 75041917,
+   "ref": "C",
+   "alts": [
+    "A",
+    "G"
+   ],
+   "effect": "A",
+   "other": "C",
+   "freq": {
+    "AFR": 0.562027231467474,
+    "AMR": 0.757925072046109,
+    "EAS": 0.672619047619048,
+    "EUR": 0.679920477137177,
+    "SAS": 0.534764826175869
+   }
+  },
+  "rs2472297": {
+   "rsid": "rs2472297",
+   "gene": "CYP1A1/CYP1A2",
+   "label": "rs2472297",
+   "chrom": 15,
+   "pos37": 75027880,
+   "ref": "C",
+   "alts": [
+    "A",
+    "T"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.25 unit decrease",
+     "or": null,
+     "p": 1e-32,
+     "trait": "Caffeine levels",
+     "efo": [
+      "caffeine metabolite measurement"
+     ],
+     "pubmed_id": "35347128",
+     "first_author": "Yin X",
+     "accession": "GCST90140932"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "increase",
+     "beta": "9.58 Z-score increase",
+     "or": null,
+     "p": 9e-22,
+     "trait": "Caffeine metabolism (plasma 1,7-dimethylxanthine (paraxanthine) to 1,3,7-trimethylxanthine (caffeine) ratio)",
+     "efo": [
+      "caffeine metabolite measurement"
+     ],
+     "pubmed_id": "27702941",
+     "first_author": "Cornelis MC",
+     "accession": "GCST003851"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "9.34 Z-score decrease",
+     "or": null,
+     "p": 1e-20,
+     "trait": "Caffeine metabolism (plasma 1,3,7-trimethylxanthine (caffeine) level)",
+     "efo": [
+      "caffeine metabolite measurement"
+     ],
+     "pubmed_id": "27702941",
+     "first_author": "Cornelis MC",
+     "accession": "GCST003846"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.142 unit decrease",
+     "or": null,
+     "p": 8e-12,
+     "trait": "Metabolite levels (caffeine)",
+     "efo": [
+      "caffeine measurement"
+     ],
+     "pubmed_id": "37253714",
+     "first_author": "Feofanova EV",
+     "accession": "GCST90299557"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "5.27 Z-score decrease",
+     "or": null,
+     "p": 1e-07,
+     "trait": "Caffeine metabolism (plasma 1,3-dimethylxanthine (theophylline) level)",
+     "efo": [
+      "caffeine metabolite measurement"
+     ],
+     "pubmed_id": "27702941",
+     "first_author": "Cornelis MC",
+     "accession": "GCST003848"
+    }
+   ],
+   "direction": "decrease",
+   "gwas_agreement": "4 of 5 matching associations agree in direction",
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.0143721633888048,
+    "AMR": 0.0893371757925072,
+    "EAS": 0.0,
+    "EUR": 0.214711729622266,
+    "SAS": 0.032719836400818
+   }
+  },
+  "rs4410790": {
+   "rsid": "rs4410790",
+   "gene": "AHR",
+   "label": "rs4410790",
+   "chrom": 7,
+   "pos37": 17284577,
+   "ref": "T",
+   "alts": [
+    "C"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.08137 unit decrease",
+     "or": null,
+     "p": 2e-249,
+     "trait": "Caffeine consumption from coffee or tea",
+     "efo": [
+      "coffee consumption measurement",
+      "tea consumption measurement"
+     ],
+     "pubmed_id": "33287642",
+     "first_author": "Said MA",
+     "accession": "GCST011126"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.0568791 unit decrease",
+     "or": null,
+     "p": 1e-150,
+     "trait": "Coffee consumption (cups per day)",
+     "efo": [
+      "coffee consumption measurement"
+     ],
+     "pubmed_id": "32193382",
+     "first_author": "Cole JB",
+     "accession": "GCST90132984"
+    },
+    {
+     "effect_allele": "C",
+     "direction": "increase",
+     "beta": "0.0387 unit increase",
+     "or": null,
+     "p": 4e-142,
+     "trait": "Coffee consumption",
+     "efo": [
+      "coffee consumption measurement"
+     ],
+     "pubmed_id": "31046077",
+     "first_author": "Zhong VW",
+     "accession": "GCST008526"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.05171 unit decrease",
+     "or": null,
+     "p": 2.9999999999999996e-104,
+     "trait": "Caffeine consumption from coffee",
+     "efo": [
+      "coffee consumption measurement"
+     ],
+     "pubmed_id": "33287642",
+     "first_author": "Said MA",
+     "accession": "GCST011125"
+    },
+    {
+     "effect_allele": "C",
+     "direction": "increase",
+     "beta": "0.108 cups per day increase",
+     "or": null,
+     "p": 6e-70,
+     "trait": "Coffee consumption (cups per day)",
+     "efo": [
+      "cups of coffee per day measurement"
+     ],
+     "pubmed_id": "31837886",
+     "first_author": "Kennedy OJ",
+     "accession": "GCST010108"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.15 mg/day decrease",
+     "or": null,
+     "p": 2e-19,
+     "trait": "Caffeine consumption",
+     "efo": [
+      "coffee consumption"
+     ],
+     "pubmed_id": "21490707",
+     "first_author": "Cornelis MC",
+     "accession": "GCST001032"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.1 unit decrease",
+     "or": null,
+     "p": 3e-17,
+     "trait": "Coffee consumption (cups per day)",
+     "efo": [
+      "coffee consumption",
+      "cups of coffee per day measurement"
+     ],
+     "pubmed_id": "25288136",
+     "first_author": "Cornelis MC",
+     "accession": "GCST002650"
+    },
+    {
+     "effect_allele": "C",
+     "direction": "increase",
+     "beta": "0.0176278 unit increase",
+     "or": null,
+     "p": 2e-12,
+     "trait": "Weekly coffee intake",
+     "efo": [
+      "coffee consumption"
+     ],
+     "pubmed_id": "40436827",
+     "first_author": "Jee YH",
+     "accession": "GCST90662891"
+    }
+   ],
+   "direction": "increase",
+   "gwas_agreement": "9 of 9 matching associations agree in direction",
+   "effect": "C",
+   "other": "T",
+   "freq": {
+    "AFR": 0.440242057488654,
+    "AMR": 0.373198847262248,
+    "EAS": 0.413690476190476,
+    "EUR": 0.615308151093439,
+    "SAS": 0.47239263803681
+   }
+  },
+  "rs713598": {
+   "rsid": "rs713598",
+   "gene": "TAS2R38",
+   "label": "TAS2R38 A49P",
+   "chrom": 7,
+   "pos37": 141673345,
+   "ref": "C",
+   "alts": [
+    "A",
+    "G",
+    "T"
+   ],
+   "amino_acids": {
+    "C": [
+     "A"
+    ],
+    "A": [
+     "S"
+    ],
+    "G": [
+     "P"
+    ],
+    "T": [
+     "T"
+    ]
+   },
+   "effect": "G",
+   "other": "C",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs1726866": {
+   "rsid": "rs1726866",
+   "gene": "TAS2R38",
+   "label": "TAS2R38 V262A",
+   "chrom": 7,
+   "pos37": 141672705,
+   "ref": "G",
+   "alts": [
+    "A"
+   ],
+   "amino_acids": {
+    "G": [
+     "A"
+    ],
+    "A": [
+     "V"
+    ]
+   },
+   "effect": "G",
+   "other": "A",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs10246939": {
+   "rsid": "rs10246939",
+   "gene": "TAS2R38",
+   "label": "TAS2R38 I296V",
+   "chrom": 7,
+   "pos37": 141672604,
+   "ref": "T",
+   "alts": [
+    "C"
+   ],
+   "amino_acids": {
+    "T": [
+     "I"
+    ],
+    "C": [
+     "V"
+    ]
+   },
+   "effect": "C",
+   "other": "T",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs2282679": {
+   "rsid": "rs2282679",
+   "gene": "GC",
+   "label": "GC rs2282679",
+   "chrom": 4,
+   "pos37": 72608383,
+   "ref": "T",
+   "alts": [
+    "G"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "T",
+     "direction": "increase",
+     "beta": "16.628 (z-score) increase",
+     "or": null,
+     "p": 4e-63,
+     "trait": "Serum 25-Hydroxyvitamin D levels",
+     "efo": [
+      "vitamin D level"
+     ],
+     "pubmed_id": "29325163",
+     "first_author": "Hong J",
+     "accession": "GCST005782"
+    },
+    {
+     "effect_allele": "G",
+     "direction": "decrease",
+     "beta": "0.38 unit decrease",
+     "or": null,
+     "p": 2e-49,
+     "trait": "Vitamin D levels",
+     "efo": [
+      "vitamin D level"
+     ],
+     "pubmed_id": "20418485",
+     "first_author": "Ahn J",
+     "accession": "GCST000664"
+    },
+    {
+     "effect_allele": "G",
+     "direction": "decrease",
+     "beta": "0.1477 unit decrease",
+     "or": null,
+     "p": 3e-38,
+     "trait": "25-hydroxyvitamin D (D2+D3) in pregnancy",
+     "efo": [
+      "vitamin D level"
+     ],
+     "pubmed_id": "42509370",
+     "first_author": "Liu S",
+     "accession": "GCST90837321"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "increase",
+     "beta": "4.9 (z-score) increase",
+     "or": null,
+     "p": 1e-06,
+     "trait": "Serum 25-Hydroxyvitamin D levels",
+     "efo": [
+      "vitamin D level"
+     ],
+     "pubmed_id": "29325163",
+     "first_author": "Hong J",
+     "accession": "GCST005782"
+    }
+   ],
+   "direction": "lower",
+   "gwas_agreement": "4 of 4 matching associations agree in direction",
+   "effect": "G",
+   "other": "T",
+   "freq": {
+    "AFR": 0.0499243570347958,
+    "AMR": 0.208933717579251,
+    "EAS": 0.260912698412698,
+    "EUR": 0.246520874751491,
+    "SAS": 0.296523517382413
+   }
+  },
+  "rs10741657": {
+   "rsid": "rs10741657",
+   "gene": "CYP2R1",
+   "label": "CYP2R1 rs10741657",
+   "chrom": 11,
+   "pos37": 14914878,
+   "ref": "A",
+   "alts": [
+    "C",
+    "G"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "A",
+     "direction": "increase",
+     "beta": "0.031 unit increase",
+     "or": null,
+     "p": 2e-46,
+     "trait": "Vitamin D levels",
+     "efo": [
+      "vitamin D level"
+     ],
+     "pubmed_id": "29343764",
+     "first_author": "Jiang X",
+     "accession": "GCST005367"
+    },
+    {
+     "effect_allele": "A",
+     "direction": "increase",
+     "beta": "2.1 mmol/L increase",
+     "or": null,
+     "p": 3e-11,
+     "trait": "Serum 25-Hydroxyvitamin D levels",
+     "efo": [
+      "vitamin D level"
+     ],
+     "pubmed_id": "33382404",
+     "first_author": "Sallinen RJ",
+     "accession": "GCST012014"
+    }
+   ],
+   "direction": "lower",
+   "gwas_agreement": "2 of 2 matching associations agree in direction",
+   "effect": "C",
+   "other": "A",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs601338": {
+   "rsid": "rs601338",
+   "gene": "FUT2",
+   "label": "FUT2 W143X (non-secretor)",
+   "chrom": 19,
+   "pos37": 49206674,
+   "ref": "G",
+   "alts": [
+    "A"
+   ],
+   "amino_acids": {
+    "G": [
+     "W"
+    ],
+    "A": [
+     "*"
+    ]
+   },
+   "effect": "A",
+   "other": "G",
+   "freq": {
+    "AFR": 0.490922844175492,
+    "AMR": 0.34149855907781,
+    "EAS": 0.00396825396825397,
+    "EUR": 0.441351888667992,
+    "SAS": 0.283231083844581
+   }
+  },
+  "rs174537": {
+   "rsid": "rs174537",
+   "gene": "FADS1",
+   "label": "FADS1 rs174537",
+   "chrom": 11,
+   "pos37": 61552680,
+   "ref": "G",
+   "alts": [
+    "C",
+    "T"
+   ],
+   "gwas": [
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.5254 unit decrease",
+     "or": null,
+     "p": 4e-164,
+     "trait": "Plasma omega-6 polyunsaturated fatty acid levels (gamma-linolenic acid)",
+     "efo": [
+      "gamma-linolenic acid measurement"
+     ],
+     "pubmed_id": "26584805",
+     "first_author": "Dorajoo R",
+     "accession": "GCST003238"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.35 unit decrease",
+     "or": null,
+     "p": 9e-79,
+     "trait": "Linoleoyl-arachidonoyl-glycerol (18:2/20:4) [2] levels",
+     "efo": [
+      "linoleoyl-arachidonoyl-glycerol (18:2/20:4) [2] measurement"
+     ],
+     "pubmed_id": "35347128",
+     "first_author": "Yin X",
+     "accession": "GCST90140062"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.33 unit decrease",
+     "or": null,
+     "p": 3e-66,
+     "trait": "Oleoyl-arachidonoyl-glycerol (18:1/20:4) [2] levels",
+     "efo": [
+      "oleoyl-arachidonoyl-glycerol (18:1/20:4) [2] measurement"
+     ],
+     "pubmed_id": "35347128",
+     "first_author": "Yin X",
+     "accession": "GCST90140070"
+    },
+    {
+     "effect_allele": "T",
+     "direction": "decrease",
+     "beta": "0.22 unit decrease",
+     "or": null,
+     "p": 3.0000000000000003e-30,
+     "trait": "1-myristoyl-2-eicosapentaenoyl-GPC (14:0/20:5) levels",
+     "efo": [
+      "1-myristoyl-2-eicosapentaenoyl-GPC (14:0/20:5) measurement"
+     ],
+     "pubmed_id": "35347128",
+     "first_author": "Yin X",
+     "accession": "GCST90140054"
+    }
+   ],
+   "direction": "lower",
+   "gwas_agreement": "4 of 4 matching associations agree in direction",
+   "effect": "T",
+   "other": "G",
+   "freq": {
+    "AFR": 0.0249621785173979,
+    "AMR": 0.587896253602305,
+    "EAS": 0.567460317460317,
+    "EUR": 0.348906560636183,
+    "SAS": 0.156441717791411
+   }
+  },
+  "rs2187668": {
+   "rsid": "rs2187668",
+   "gene": "HLA-DQ",
+   "label": "HLA-DQ2.5 tag (rs2187668)",
+   "chrom": 6,
+   "pos37": 32605884,
+   "ref": "C",
+   "alts": [
+    "T"
+   ],
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.0537065052950076,
+    "AMR": 0.118155619596542,
+    "EAS": 0.0515873015873016,
+    "EUR": 0.106361829025845,
+    "SAS": 0.0787321063394683
+   }
+  },
+  "rs7454108": {
+   "rsid": "rs7454108",
+   "gene": "HLA-DQ",
+   "label": "HLA-DQ8 tag (rs7454108)",
+   "chrom": 6,
+   "pos37": 32681483,
+   "ref": "T",
+   "alts": [
+    "C"
+   ],
+   "effect": "C",
+   "other": "T",
+   "freq": {
+    "AFR": null,
+    "AMR": null,
+    "EAS": null,
+    "EUR": null,
+    "SAS": null
+   }
+  },
+  "rs1815739": {
+   "rsid": "rs1815739",
+   "gene": "ACTN3",
+   "label": "ACTN3 R577X",
+   "chrom": 11,
+   "pos37": 66328095,
+   "ref": "T",
+   "alts": [
+    "C",
+    "A"
+   ],
+   "effect": "T",
+   "other": "C",
+   "freq": {
+    "AFR": 0.114977307110439,
+    "AMR": 0.572046109510086,
+    "EAS": 0.443452380952381,
+    "EUR": 0.434393638170974,
+    "SAS": 0.586912065439673
+   }
+  }
+ },
+ "references": {
+  "enattah2002": {
+   "pmid": "11788828",
+   "title": "Identification of a variant associated with adult-type hypolactasia",
+   "journal": "Nat Genet",
+   "year": "2002",
+   "first_author": "Enattah NS",
+   "doi": "10.1038/ng826",
+   "url": "https://doi.org/10.1038/ng826"
+  },
+  "tishkoff2007": {
+   "pmid": "17159977",
+   "title": "Convergent adaptation of human lactase persistence in Africa and Europe",
+   "journal": "Nat Genet",
+   "year": "2007",
+   "first_author": "Tishkoff SA",
+   "doi": "10.1038/ng1946",
+   "url": "https://doi.org/10.1038/ng1946"
+  },
+  "brooks2009": {
+   "pmid": "19320537",
+   "title": "The alcohol flushing response: an unrecognized risk factor for esophageal cancer from alcohol consumption",
+   "journal": "PLoS Med",
+   "year": "2009",
+   "first_author": "Brooks PJ",
+   "doi": "10.1371/journal.pmed.1000050",
+   "url": "https://doi.org/10.1371/journal.pmed.1000050"
+  },
+  "edenberg2007": {
+   "pmid": "17718394",
+   "title": "The genetics of alcohol metabolism: role of alcohol dehydrogenase and aldehyde dehydrogenase variants",
+   "journal": "Alcohol Res Health",
+   "year": "2007",
+   "first_author": "Edenberg HJ",
+   "doi": null,
+   "url": "https://pubmed.ncbi.nlm.nih.gov/17718394/"
+  },
+  "sachse1999": {
+   "pmid": "10233211",
+   "title": "Functional significance of a C-->A polymorphism in intron 1 of the cytochrome P450 CYP1A2 gene tested with caffeine",
+   "journal": "Br J Clin Pharmacol",
+   "year": "1999",
+   "first_author": "Sachse C",
+   "doi": "10.1046/j.1365-2125.1999.00898.x",
+   "url": "https://doi.org/10.1046/j.1365-2125.1999.00898.x"
+  },
+  "cornelis2011": {
+   "pmid": "21490707",
+   "title": "Genome-wide meta-analysis identifies regions on 7p21 (AHR) and 15q24 (CYP1A2) as determinants of habitual caffeine consumption",
+   "journal": "PLoS Genet",
+   "year": "2011",
+   "first_author": "Cornelis MC",
+   "doi": "10.1371/journal.pgen.1002033",
+   "url": "https://doi.org/10.1371/journal.pgen.1002033"
+  },
+  "kim2003": {
+   "pmid": "12595690",
+   "title": "Positional cloning of the human quantitative trait locus underlying taste sensitivity to phenylthiocarbamide",
+   "journal": "Science",
+   "year": "2003",
+   "first_author": "Kim UK",
+   "doi": "10.1126/science.1080190",
+   "url": "https://doi.org/10.1126/science.1080190"
+  },
+  "yoshiura2006": {
+   "pmid": "16444273",
+   "title": "A SNP in the ABCC11 gene is the determinant of human earwax type",
+   "journal": "Nat Genet",
+   "year": "2006",
+   "first_author": "Yoshiura K",
+   "doi": "10.1038/ng1733",
+   "url": "https://doi.org/10.1038/ng1733"
+  },
+  "north1999": {
+   "pmid": "10192379",
+   "title": "A common nonsense mutation results in alpha-actinin-3 deficiency in the general population",
+   "journal": "Nat Genet",
+   "year": "1999",
+   "first_author": "North KN",
+   "doi": "10.1038/7675",
+   "url": "https://doi.org/10.1038/7675"
+  },
+  "yang2003": {
+   "pmid": "12879365",
+   "title": "ACTN3 genotype is associated with human elite athletic performance",
+   "journal": "Am J Hum Genet",
+   "year": "2003",
+   "first_author": "Yang N",
+   "doi": "10.1086/377590",
+   "url": "https://doi.org/10.1086/377590"
+  },
+  "fujimoto2008": {
+   "pmid": "18065779",
+   "title": "A scan for genetic determinants of human hair morphology: EDAR is associated with Asian hair thickness",
+   "journal": "Hum Mol Genet",
+   "year": "2008",
+   "first_author": "Fujimoto A",
+   "doi": "10.1093/hmg/ddm355",
+   "url": "https://doi.org/10.1093/hmg/ddm355"
+  },
+  "kamberov2013": {
+   "pmid": "23415220",
+   "title": "Modeling recent human evolution in mice by expression of a selected EDAR variant",
+   "journal": "Cell",
+   "year": "2013",
+   "first_author": "Kamberov YG",
+   "doi": "10.1016/j.cell.2013.01.016",
+   "url": "https://doi.org/10.1016/j.cell.2013.01.016"
+  },
+  "medland2009": {
+   "pmid": "19896111",
+   "title": "Common variants in the trichohyalin gene are associated with straight hair in Europeans",
+   "journal": "Am J Hum Genet",
+   "year": "2009",
+   "first_author": "Medland SE",
+   "doi": "10.1016/j.ajhg.2009.10.009",
+   "url": "https://doi.org/10.1016/j.ajhg.2009.10.009"
+  },
+  "valverde1995": {
+   "pmid": "7581459",
+   "title": "Variants of the melanocyte-stimulating hormone receptor gene are associated with red hair and fair skin in humans",
+   "journal": "Nat Genet",
+   "year": "1995",
+   "first_author": "Valverde P",
+   "doi": "10.1038/ng1195-328",
+   "url": "https://doi.org/10.1038/ng1195-328"
+  },
+  "sturm2008": {
+   "pmid": "18252222",
+   "title": "A single SNP in an evolutionary conserved region within intron 86 of the HERC2 gene determines human blue-brown eye color",
+   "journal": "Am J Hum Genet",
+   "year": "2008",
+   "first_author": "Sturm RA",
+   "doi": "10.1016/j.ajhg.2007.11.005",
+   "url": "https://doi.org/10.1016/j.ajhg.2007.11.005"
+  },
+  "eiberg2008": {
+   "pmid": "18172690",
+   "title": "Blue eye color in humans may be caused by a perfectly associated founder mutation in a regulatory element located within the HERC2 gene inhibiting OCA2 expression",
+   "journal": "Hum Genet",
+   "year": "2008",
+   "first_author": "Eiberg H",
+   "doi": "10.1007/s00439-007-0460-x",
+   "url": "https://doi.org/10.1007/s00439-007-0460-x"
+  },
+  "lamason2005": {
+   "pmid": "16357253",
+   "title": "SLC24A5, a putative cation exchanger, affects pigmentation in zebrafish and humans",
+   "journal": "Science",
+   "year": "2005",
+   "first_author": "Lamason RL",
+   "doi": "10.1126/science.1116238",
+   "url": "https://doi.org/10.1126/science.1116238"
+  },
+  "han2008": {
+   "pmid": "18483556",
+   "title": "A genome-wide association study identifies novel alleles associated with hair color and skin pigmentation",
+   "journal": "PLoS Genet",
+   "year": "2008",
+   "first_author": "Han J",
+   "doi": "10.1371/journal.pgen.1000074",
+   "url": "https://doi.org/10.1371/journal.pgen.1000074"
+  },
+  "sulem2007": {
+   "pmid": "17952075",
+   "title": "Genetic determinants of hair, eye and skin pigmentation in Europeans",
+   "journal": "Nat Genet",
+   "year": "2007",
+   "first_author": "Sulem P",
+   "doi": "10.1038/ng.2007.13",
+   "url": "https://doi.org/10.1038/ng.2007.13"
+  },
+  "eriksson2010": {
+   "pmid": "20585627",
+   "title": "Web-based, participant-driven studies yield novel genetic associations for common traits",
+   "journal": "PLoS Genet",
+   "year": "2010",
+   "first_author": "Eriksson N",
+   "doi": "10.1371/journal.pgen.1000993",
+   "url": "https://doi.org/10.1371/journal.pgen.1000993"
+  },
+  "wang2010": {
+   "pmid": "20541252",
+   "title": "Common genetic determinants of vitamin D insufficiency: a genome-wide association study",
+   "journal": "Lancet",
+   "year": "2010",
+   "first_author": "Wang TJ",
+   "doi": "10.1016/S0140-6736(10)60588-0",
+   "url": "https://doi.org/10.1016/S0140-6736(10)60588-0"
+  },
+  "hazra2008": {
+   "pmid": "18776911",
+   "title": "Common variants of FUT2 are associated with plasma vitamin B12 levels",
+   "journal": "Nat Genet",
+   "year": "2008",
+   "first_author": "Hazra A",
+   "doi": "10.1038/ng.210",
+   "url": "https://doi.org/10.1038/ng.210"
+  },
+  "tanaka2009": {
+   "pmid": "19148276",
+   "title": "Genome-wide association study of plasma polyunsaturated fatty acids in the InCHIANTI Study",
+   "journal": "PLoS Genet",
+   "year": "2009",
+   "first_author": "Tanaka T",
+   "doi": "10.1371/journal.pgen.1000338",
+   "url": "https://doi.org/10.1371/journal.pgen.1000338"
+  },
+  "monsuur2008": {
+   "pmid": "18509540",
+   "title": "Effective detection of human leukocyte antigen risk alleles in celiac disease using tag single nucleotide polymorphisms",
+   "journal": "PLoS One",
+   "year": "2008",
+   "first_author": "Monsuur AJ",
+   "doi": "10.1371/journal.pone.0002270",
+   "url": "https://doi.org/10.1371/journal.pone.0002270"
+  },
+  "praetorius2013": {
+   "pmid": "24267888",
+   "title": "A polymorphism in IRF4 affects human pigmentation through a tyrosinase-dependent MITF/TFAP2A pathway",
+   "journal": "Cell",
+   "year": "2013",
+   "first_author": "Praetorius C",
+   "doi": "10.1016/j.cell.2013.10.022",
+   "url": "https://doi.org/10.1016/j.cell.2013.10.022"
+  }
+ }
+}

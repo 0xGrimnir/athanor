@@ -1,0 +1,61 @@
+[   49.5s] LOO at 80000: continents {'africa': 1.0, 'europe': 0.997, 'west_asia': 0.981, 'south_asia': 0.907, 'east_asia': 0.99, 'oceania': 1.0, 'americas': 0.954}
+[   49.5s] LOO at 80000: regions {'west_africa': 1.0, 'nw_europe': 0.992, 'sardinia': 0.957, 'druze': 0.981, 'gujarat': 0.907, 'north_china': 0.99, 'papua': 1.0, 'americas': 0.954}
+[  205.0s] LOO at 250000: continents {'africa': 1.0, 'europe': 0.999, 'west_asia': 0.974, 'south_asia': 0.904, 'east_asia': 0.987, 'oceania': 1.0, 'americas': 0.953}
+[  205.0s] LOO at 250000: regions {'west_africa': 1.0, 'nw_europe': 0.994, 'sardinia': 0.951, 'druze': 0.974, 'gujarat': 0.904, 'north_china': 0.987, 'papua': 1.0, 'americas': 0.953}
+   own-continent shares (250,000 SNPs): lowest 0.904
+[PASS] left-out individuals assigned to their own region (mean >= 0.6 per region, 80,000 SNPs): lowest 0.907 (gujarat)
+   65 of 68 validation people are 'clean' (>= 90% own continent)
+[  217.4s] mosaic 0 (clean sources): ['oceania', 'europe', 'west_asia'] pieces [0.232 0.552 0.217] expected [0.232 0.551 0.212] est [0.222 0.542 0.232]
+[  218.3s] mosaic 1 (any sources): ['east_asia', 'americas'] pieces [0.425 0.575] expected [0.436 0.564] est [0.439 0.561]
+[  224.8s] mosaic 2 (clean sources): ['europe', 'africa'] pieces [0.273 0.727] expected [0.273 0.727] est [0.265 0.735]
+[  235.6s] mosaic 3 (any sources): ['south_asia', 'west_asia', 'americas'] pieces [0.432 0.109 0.459] expected [0.394 0.145 0.426] est [0.409 0.136 0.435]
+[  245.0s] mosaic 4 (clean sources): ['americas', 'africa'] pieces [0.2 0.8] expected [0.193 0.8  ] est [0.199 0.8  ]
+[  247.1s] mosaic 5 (any sources): ['east_asia', 'europe'] pieces [0.852 0.148] expected [0.847 0.148] est [0.86  0.131]
+[  248.5s] mosaic 6 (clean sources): ['africa', 'oceania', 'west_asia'] pieces [0.839 0.106 0.056] expected [0.839 0.106 0.054] est [0.856 0.111 0.033]
+[  252.3s] mosaic 7 (any sources): ['europe', 'americas'] pieces [0.869 0.131] expected [0.869 0.122] est [0.863 0.128]
+[  259.6s] mosaic 8 (clean sources): ['west_asia', 'east_asia'] pieces [0.831 0.169] expected [0.804 0.167] est [0.798 0.169]
+[  261.7s] mosaic 9 (any sources): ['south_asia', 'oceania', 'africa'] pieces [0.177 0.189 0.634] expected [0.164 0.189 0.634] est [0.159 0.184 0.651]
+[  271.6s] mosaic 10 (clean sources): ['americas', 'west_asia'] pieces [0.821 0.179] expected [0.802 0.175] est [0.824 0.159]
+[  273.4s] mosaic 11 (any sources): ['west_asia', 'africa'] pieces [0.612 0.388] expected [0.597 0.388] est [0.607 0.384]
+[  283.5s] mosaic 12 (clean sources): ['europe', 'east_asia', 'oceania'] pieces [0.419 0.449 0.133] expected [0.418 0.437 0.133] est [0.413 0.444 0.134]
+[  292.3s] mosaic 13 (any sources): ['americas', 'west_asia'] pieces [0.278 0.722] expected [0.259 0.707] est [0.255 0.703]
+[  301.3s] mosaic 14 (clean sources): ['oceania', 'europe'] pieces [0.703 0.297] expected [0.703 0.297] est [0.717 0.283]
+[  304.5s] mosaic 15 (any sources): ['west_asia', 'oceania', 'east_asia'] pieces [0.754 0.134 0.112] expected [0.738 0.134 0.111] est [0.745 0.12  0.114]
+[  311.4s] mosaic 16 (clean sources): ['west_asia', 'east_asia'] pieces [0.743 0.257] expected [0.719 0.255] est [0.737 0.229]
+[  313.0s] mosaic 17 (any sources): ['africa', 'americas'] pieces [0.043 0.957] expected [0.043 0.923] est [0.029 0.943]
+[  321.4s] mosaic 18 (clean sources): ['south_asia', 'europe', 'africa'] pieces [0.087 0.396 0.518] expected [0.079 0.395 0.518] est [0.07  0.39  0.533]
+[  322.4s] mosaic 19 (any sources): ['americas', 'east_asia'] pieces [0.453 0.547] expected [0.424 0.576] est [0.404 0.596]
+[  331.9s] mosaic 20 (clean sources): ['oceania', 'south_asia'] pieces [0.466 0.534] expected [0.467 0.484] est [0.479 0.486]
+[  337.7s] mosaic 21 (any sources): ['americas', 'oceania', 'africa'] pieces [0.166 0.479 0.356] expected [0.161 0.479 0.356] est [0.163 0.468 0.361]
+[  340.0s] mosaic 22 (clean sources): ['africa', 'east_asia'] pieces [0.94 0.06] expected [0.94  0.059] est [0.954 0.045]
+[  343.8s] mosaic 23 (any sources): ['americas', 'europe'] pieces [0.291 0.709] expected [0.281 0.709] est [0.294 0.705]
+[  351.2s] mosaic 24 (clean sources): ['west_asia', 'africa', 'east_asia'] pieces [0.14  0.694 0.166] expected [0.137 0.694 0.164] est [0.127 0.712 0.158]
+[  355.4s] mosaic 25 (any sources): ['west_asia', 'east_asia'] pieces [0.591 0.409] expected [0.579 0.406] est [0.575 0.398]
+[  363.2s] mosaic 26 (clean sources): ['europe', 'west_asia'] pieces [0.216 0.784] expected [0.216 0.768] est [0.195 0.786]
+[  369.8s] mosaic 27 (any sources): ['south_asia', 'europe', 'east_asia'] pieces [0.257 0.5   0.243] expected [0.228 0.506 0.239] est [0.224 0.519 0.237]
+[  379.1s] mosaic 28 (clean sources): ['south_asia', 'west_asia'] pieces [0.708 0.292] expected [0.651 0.345] est [0.701 0.299]
+[  385.3s] mosaic 29 (any sources): ['africa', 'east_asia'] pieces [0.161 0.839] expected [0.161 0.804] est [0.155 0.817]
+[  394.7s] mosaic 30 (clean sources): ['africa', 'americas', 'europe'] pieces [0.726 0.218 0.056] expected [0.726 0.207 0.055] est [0.74  0.212 0.044]
+[  395.8s] mosaic 31 (any sources): ['south_asia', 'africa'] pieces [0.087 0.913] expected [0.08  0.913] est [0.069 0.931]
+[PASS] simulated admixed genomes from unambiguous sources: continental proportions within 0.02 on average and 0.06 at worst: mean error 0.0124, worst 0.0474
+[PASS] simulated admixed genomes from any sources: proportions match the sources' own compositions within 0.03 on average and 0.08 at worst: mean error 0.0114, worst 0.0497
+   bootstrap 95% intervals contain the simulated proportion in 100% of cases
+[PASS] chromosome painting: per-SNP accuracy >= 0.85 and mean posterior within 0.05 of it: accuracy 0.975, mean posterior 0.982 over 14 genomes
+[  546.6s] Indigenous American detection rate by simulated level: {0.0: 0.0, 0.02: 0.16666666666666666, 0.05: 0.5, 0.1: 1.0, 0.25: 1.0} East Asian false positives: 0.08333333333333333
+[FAIL (synthetic stand-in, not enforced)] Indigenous American: proportion within 0.03 from 5% up; <= 5% false detections at 0% and in East Asians: worst error 0.030; detected at 0/2/5/10/25%: [0.0, 0.17, 0.5, 1.0, 1.0]; East Asian false positives 0.08333333333333333
+   ADMIXTURE projection with P as the frequency of the alt allele: log-likelihood -14425790.5
+   ADMIXTURE projection with P as the frequency of the ref allele: log-likelihood -62467.7
+[PASS] ADMIXTURE projection (-P) agrees within 0.01: largest difference 0.0004 over 12 genomes
+[PASS] inserted homozygous stretches found (>= 95% of their length): 100.0%
+[PASS] runs of homozygosity match PLINK 1.9 (total within 2%, overlap >= 0.95): largest total-length difference 0.00%, lowest overlap 1.000 over 10 genomes
+[  562.0s] X leave-one-out own-continent means: {'africa': 1.0, 'europe': 0.987, 'west_asia': 0.894, 'south_asia': 0.775, 'east_asia': 0.98, 'oceania': 0.995, 'americas': 0.926}
+[FAIL (synthetic stand-in, not enforced)] X chromosome: left-out individuals with unambiguous ancestry assigned to their own continent (mean >= 0.8): lowest 0.775
+   23andme file 0: 32 cards in 3 s; missing []; trait variants read wrongly []; not found []
+   ancestry file 0: 32 cards in 3 s; missing []; trait variants read wrongly []; not found []
+   23andme file 1: 32 cards in 8 s; missing []; trait variants read wrongly []; not found []
+   ancestry file 1: 32 cards in 8 s; missing []; trait variants read wrongly []; not found []
+   23andme file 2: 32 cards in 4 s; missing []; trait variants read wrongly []; not found []
+   ancestry file 2: 32 cards in 4 s; missing []; trait variants read wrongly []; not found []
+[PASS] end to end: full analysis runs and every trait variant is read with the right genotype: see lines above
+   validation summaries written into the pack manifest: ['chromosome_painting', 'continental_ancestry', 'indigenous_american', 'regional_ancestry', 'roh', 'x_ancestry']
+total 595 s; 0 gate(s) failed: []
