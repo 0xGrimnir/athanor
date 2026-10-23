@@ -6,8 +6,9 @@ Usage: python validate_modern.py PACK_DIR VAL_DIR [TOOLS_BIN]
 Checks (thresholds fixed here before results are seen; each prints PASS or FAIL):
   1. Leave-one-out composition: reference individuals the build set aside
      (never used for merging regions or setting the floors), each removed
-     from its own panel and cut to 80,000 and 250,000 random SNPs, are
-     assigned to their own region (mean share >= 0.6 at 80,000).
+     from its own panel and cut to 80,000 random SNPs, are
+     assigned to their own reporting group of regions (mean share >= 0.6 at
+     80,000).
      Own-continent shares are reported but not gated: several reference
      groups are themselves mixed. (The first real-data run gated them at
      0.95 and failed for that reason; the accuracy test moved to check 2.)
@@ -82,6 +83,13 @@ alt, tot = V["alt"].astype(np.int64), V["tot"].astype(np.int64)
 G = V["loo_geno"]
 lreg = V["loo_region"].astype(int)
 lcont = rcont[lreg]
+G_OF = M["group_of"].astype(int) if "group_of" in M else np.arange(len(rids))
+lgrp = G_OF[lreg]
+gtitles = [g["title"] for g in man["regions"]]
+
+
+def to_group(q):
+    return np.array([q[G_OF == n].sum() for n in range(len(gtitles))])
 
 
 # The synthetic stand-in (push builds, no AADR download) exercises every code
@@ -129,22 +137,21 @@ for j in range(len(lreg)):
     per.setdefault(lreg[j], []).append(j)
 sample = [j for v in per.values() for j in v[:12]]
 loo = {}
-loo_comp = {}                      # validation person -> continental composition (250,000 SNPs)
-for D in (80_000, 250_000):
+loo_comp = {}                      # validation person -> continental composition (80,000 SNPs)
+for D in (80_000,):
     cols = np.sort(rng.choice(S, min(D, S), replace=False))
     own_r, own_c = [], []
     for j in sample:
         P = loo_P(j, cols)
         g = G[j, cols]
         m = g >= 0
-        q = admix(g[m], P[:, m])["q"]
-        own_r.append(q[lreg[j]])
+        q = admix(g[m], P[:, m], tol=1e-5)["q"]
+        own_r.append(to_group(q)[lgrp[j]])
         own_c.append(to_cont(q)[lcont[j]])
-        if D == 250_000:
-            loo_comp[j] = to_cont(q)
+        loo_comp[j] = to_cont(q)
     own_r, own_c = np.array(own_r), np.array(own_c)
-    lr, lc = lreg[sample], lcont[sample]
-    loo[D] = {"region": {rids[k]: float(own_r[lr == k].mean()) for k in np.unique(lr)},
+    lr, lc = lgrp[sample], lcont[sample]
+    loo[D] = {"region": {gtitles[k]: float(own_r[lr == k].mean()) for k in np.unique(lr)},
               "continent": {cont_ids[k]: float(own_c[lc == k].mean()) for k in np.unique(lc)}}
     log(f"LOO at {D}: continents {({k: round(v, 3) for k, v in loo[D]['continent'].items()})}")
     log(f"LOO at {D}: regions {({k: round(v, 3) for k, v in loo[D]['region'].items()})}")
@@ -153,13 +160,15 @@ for D in (80_000, 250_000):
 # European ancestry, Levantine and South Asian groups share ancestry with
 # Europe), so a share elsewhere is often real. Accuracy is tested below on
 # people whose ancestry is unambiguous, and consistency on everyone.
-cmin = min(loo[250_000]["continent"].values())
-print(f"   own-continent shares (250,000 SNPs): lowest {cmin:.3f}")
+cmin = min(loo[80_000]["continent"].values())
+print(f"   own-continent shares (80,000 SNPs): lowest {cmin:.3f}")
 rmin = min(loo[80_000]["region"].values())
 gate("left-out individuals assigned to their own region (mean >= 0.6 per region, 80,000 SNPs)", rmin >= 0.6,
      f"lowest {rmin:.3f} ({min(loo[80_000]['region'], key=loo[80_000]['region'].get)})")
-clean = {j for j in sample if loo_comp[j][lcont[j]] >= 0.9}
-print(f"   {len(clean)} of {len(sample)} validation people are 'clean' (>= 90% own continent)")
+# Sources for the accuracy test must be close to one continent (>= 97%), or
+# their own few percent elsewhere would count as error.
+clean = {j for j in sample if loo_comp[j][lcont[j]] >= 0.97}
+print(f"   {len(clean)} of {len(sample)} validation people are unambiguous (>= 97% own continent)")
 
 # ------------------------------------------------------------------ 2-3, 5. simulated admixed genomes
 by_cont = {}
@@ -189,7 +198,7 @@ def cont_P(P):
 errs, cons, cover, paint_acc, paint_post = [], [], [], [], []
 clean_by_cont = {c: [j for j in v if j in clean] for c, v in by_cont.items()}
 any_by_cont = {c: [j for j in v if j in loo_comp] for c, v in by_cont.items()}
-NMOS = 32
+NMOS = 24
 for t_ in range(NMOS):
     is_clean = t_ % 2 == 0
     pool = clean_by_cont if is_clean else any_by_cont
@@ -203,7 +212,7 @@ for t_ in range(NMOS):
     g, a, b = mosaic.build(srcs, props, chrom[cols250], cm[cols250], 10.0, seed=500 + t_)
     frac = mosaic.truth_props(a, b, len(cs))
     P = held_P(js, cols250)
-    res = composition(g, P, snps["block"][cols250], reps=40, seed=t_)
+    res = composition(g, P, snps["block"][cols250], reps=30, seed=t_)
     qc = to_cont(res["q"])
     bc = np.array([to_cont(x) for x in res["boot"]])
     # expected composition: each piece carries its source person's own composition

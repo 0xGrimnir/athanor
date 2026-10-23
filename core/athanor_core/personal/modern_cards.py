@@ -55,20 +55,27 @@ def modern_cards(ref, g: RawGenotypes, al: dict, fc: dict, make_card, step=lambd
     step("regional ancestry (supervised admixture)", 0.5)
     res = composition(dos[idx], P, s["block"][idx], reps=100)
     q, boot = res["q"], res["boot"]
+    # Reporting groups: regions the validation could not tell apart are
+    # reported together, as the sum of their regions' shares.
+    gmeta = man["regions"]
+    G_OF = M["group_of"].astype(int) if "group_of" in M else np.arange(len(rids))
+    ng = len(gmeta)
+    qg = np.array([q[G_OF == n].sum() for n in range(ng)])
+    bg = np.stack([boot[:, G_OF == n].sum(1) for n in range(ng)], 1) if len(boot) else np.zeros((0, ng))
     regions = []
-    for k, r in enumerate(rids):
-        fl = rmeta[r]["detection_floor"]
-        regions.append({"id": r, "title": rmeta[r]["title"], "continent": cont_ids[rcont[k]],
-                        "proportion": float(q[k]), "ci95": _ci(boot[:, k]), "floor": fl,
-                        "detected": bool(q[k] >= max(fl, 0.005)),
-                        "reference_groups": rmeta[r]["groups"], "group_names": rmeta[r].get("group_names", {}),
-                        "reference_individuals": rmeta[r]["individuals"]})
+    for n, gm in enumerate(gmeta):
+        fl = gm["detection_floor"]
+        regions.append({"id": gm["id"], "index": n, "title": gm["title"], "continent": gm["continent"],
+                        "proportion": float(qg[n]), "ci95": _ci(bg[:, n]), "floor": fl,
+                        "detected": bool(qg[n] >= max(fl, 0.01)),
+                        "reference_groups": gm["groups"], "group_names": gm.get("group_names", {}),
+                        "reference_individuals": gm["individuals"]})
     conts = []
     for c, cid in enumerate(cont_ids):
         cols = np.flatnonzero(rcont == c)
         v = float(q[cols].sum())
         conts.append({"id": cid, "title": ctitle[cid], "proportion": v, "ci95": _ci(boot[:, cols].sum(1)),
-                      "floor": cfloor[cid], "detected": bool(v >= max(cfloor[cid], 0.005))})
+                      "floor": cfloor[cid], "detected": bool(v >= max(cfloor[cid], 0.01))})
     conts.sort(key=lambda x: -x["proportion"])
     regions.sort(key=lambda x: -x["proportion"])
     low = res["snps"] < man["loo"]["snps"]
@@ -86,14 +93,15 @@ def modern_cards(ref, g: RawGenotypes, al: dict, fc: dict, make_card, step=lambd
     # what reference people from your main regions typically get (left out of their own panel)
     typical = []
     if "profile" in M:
-        prof = M["profile"].astype(float)
+        prof = M["profile"].astype(float)                     # group x group
         for r in [x for x in regions if x["detected"]][:2]:
-            k = rids.index(r["id"])
-            row = sorted(((rmeta[rids[j]]["title"], float(prof[k, j])) for j in range(len(rids)) if prof[k, j] >= 0.01),
+            n = r["index"]
+            row = sorted(((gmeta[j]["title"], float(prof[n, j])) for j in range(ng) if prof[n, j] >= 0.01),
                          key=lambda x: -x[1])
             cont_row = {}
-            for j in range(len(rids)):
-                cont_row[ctitle[cont_ids[rcont[j]]]] = cont_row.get(ctitle[cont_ids[rcont[j]]], 0.0) + float(prof[k, j])
+            for j in range(ng):
+                t = ctitle[gmeta[j]["continent"]]
+                cont_row[t] = cont_row.get(t, 0.0) + float(prof[n, j])
             typical.append({"region": r["title"], "regions": row,
                             "continents": sorted(((c, v) for c, v in cont_row.items() if v >= 0.01), key=lambda x: -x[1])})
     result = {"continents": conts, "regions": regions, "snps": res["snps"], "iterations": res["iterations"],
@@ -111,7 +119,7 @@ def modern_cards(ref, g: RawGenotypes, al: dict, fc: dict, make_card, step=lambd
                            common_limits + [
                                "Neighbouring regions share much of their history, so splits between them are less certain than continental totals; regions that the validation could not tell apart have been merged.",
                                "The regional reference sets are small (tens of people each), so a region stands for its reference groups, not a whole country."],
-                           "The same model at regional level: each region's own reference panel. Regions that people left out of the panels could not be assigned back to (on average under 60%, on 80,000 SNPs) were merged with their nearest neighbour.",
+                           "The same model, read at regional level: every region keeps its own reference panel, and regions that people left out of the panels could not be told apart (under 65% assigned back to their own group, on 80,000 SNPs) are reported together as the sum of their shares.",
                            ["alexander2009", "1000g", "hgdp", "aadr"]))
 
     # ------------------------------------------------------------ painting

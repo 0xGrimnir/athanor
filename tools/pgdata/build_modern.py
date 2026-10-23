@@ -20,10 +20,11 @@ How the panels are made:
      set and a validation set (the latter is used only by validate_modern.py).
      Each calibration individual's regional composition is estimated with
      that individual removed from its own panel, on 80,000 random SNPs (the
-     low end of what consumer files share with the reference). A region whose
-     members are assigned on average under 65% to their own region is merged
-     into the region on the same continent that absorbs most of the rest;
-     repeat until every region passes.
+     low end of what consumer files share with the reference). Every region
+     keeps its own panel in the model; for reporting, a group whose members
+     are assigned on average under 65% to it is joined with the group on the
+     same continent that absorbs most of the rest, and a group's share is the
+     sum of its regions' shares. Repeat until every group passes.
   4. Detection floors: for each region and continent, the 99th percentile of
      the proportion assigned to it among calibration individuals from other
      continents whose own ancestry is unambiguous (at least 90% assigned to
@@ -238,12 +239,18 @@ for r in list(reg_members):
 regions = [r for r in regions if r[0] in reg_members]
 log(f"outliers removed: {len(dropped)}", dropped[:40])
 
-# ---------------------------------------------------------------- 3. merge regions that cannot be told apart
-# Left-out individuals are split once: a calibration set (merging, the
-# small-panel correction and detection floors) and a validation set that the
-# build never looks at (validate_modern.py measures accuracy on it).
+# ---------------------------------------------------------------- 3. group regions that cannot be told apart
+# Every region keeps its own panel in the model; regions that cannot be told
+# apart are grouped for reporting only, and a group's share is the sum of its
+# regions' shares. (Pooling them into one panel instead fits mixed and
+# heterogeneous groups badly: a Levantine person compared with a single
+# "Levant + Caucasus + Arabia + North Africa" panel is split across
+# continents.)
+#
+# Left-out individuals are split once: a calibration set (grouping and
+# detection floors) and a validation set the build never looks at
+# (validate_modern.py measures accuracy on it).
 merges = []
-titles: dict[str, list[str]] = {}
 cal_sample, val_sample = {}, {}
 for r, v in reg_members.items():
     perm = [int(x) for x in rng.permutation(v)]
@@ -251,70 +258,84 @@ for r, v in reg_members.items():
     cal_sample[r] = sorted(perm[:nc])
     val_sample[r] = sorted(perm[nc:nc + VAL_PER_REGION])
 
-
-while True:
-    rids = list(reg_members)
-    col = {r: k for k, r in enumerate(rids)}
-    people = [i for r in rids for i in cal_sample[r]]
-    who = np.array([col[r] for r in rids for _ in cal_sample[r]])
-    Q = loo_q(reg_members, col, len(rids), people)
-    own = np.array([Q[who == k, k].mean() for k in range(len(rids))])
-    conf = np.array([Q[who == k].mean(0) for k in range(len(rids))])
-    reg_cont_now = {r[0]: r[2] for r in regions}
-    log("own-region means:", {r: round(float(own[col[r]]), 2) for r in rids})
-    worst = sorted([r for r in rids if own[col[r]] < OWN_MIN], key=lambda r: own[col[r]])
-    cand = None
-    for r in worst:
-        sibs = [x for x in rids if x != r and reg_cont_now[x] == reg_cont_now[r]]
-        if sibs:
-            cand = (r, max(sibs, key=lambda x: conf[col[r], col[x]]))
-            break
-    if cand is None:
-        break
-    r, s_ = cand
-    # merge the smaller into the larger; the merged region keeps the larger one's id and a combined title
-    small, big = sorted((r, s_), key=lambda x: len(reg_members[x]))
-    rb = next(x for x in regions if x[0] == big)
-    rs_ = next(x for x in regions if x[0] == small)
-    parts = titles.get(big, [rb[1]]) + titles.get(small, [rs_[1]])
-    titles[big] = parts
-    name = (" and ".join(parts) if len(parts) == 2 else ", ".join(parts[:-1]) + " and " + parts[-1]) if len(parts) <= 3 \
-        else f"{dict(CONTINENTS)[rb[2]]} ({len(parts)} regions combined)"
-    merged = (big, name, rb[2], rb[3] + rs_[3])
-    regions = [merged if x[0] == big else x for x in regions if x[0] != small]
-    reg_members[big] = sorted(reg_members[big] + reg_members[small])
-    cal_sample[big] = sorted(cal_sample[big] + cal_sample[small])
-    val_sample[big] = sorted(val_sample[big] + val_sample[small])
-    del reg_members[small], cal_sample[small], val_sample[small]
-    merges.append({"merged": small, "into": big, "own_share": round(float(own[col[r]]), 3)})
-    log(f"merged {small} into {big} (own share of {r} was {own[col[r]]:.2f})")
-
 rids = list(reg_members)
 col = {r: k for k, r in enumerate(rids)}
 reg_cont_now = {r[0]: r[2] for r in regions}
+rtitle = {r[0]: r[1] for r in regions}
 rc = np.array([cont_index[reg_cont_now[r]] for r in rids])
-Qc = np.zeros((len(people), len(cont_ids)))
+people = [i for r in rids for i in cal_sample[r]]
+who = np.array([col[r] for r in rids for _ in cal_sample[r]])
+Q = loo_q(reg_members, col, len(rids), people)
+log("leave-one-out estimates for", len(people), "calibration people")
+
+group_of = np.arange(len(rids))                   # region -> group (a region index names its group)
+
+
+def gshare(g):
+    return Q[:, group_of == g].sum(1)
+
+
+while True:
+    gs = sorted(set(group_of.tolist()))
+    own = {g: float(gshare(g)[group_of[who] == g].mean()) for g in gs}
+    log("own-group means:", {"+".join(rids[k] for k in np.flatnonzero(group_of == g)): round(v, 2) for g, v in own.items()})
+    worst = sorted([g for g in gs if own[g] < OWN_MIN], key=lambda g: own[g])
+    cand = None
+    for g in worst:
+        sibs = [h for h in gs if h != g and rc[h] == rc[g]]
+        if sibs:
+            cand = (g, max(sibs, key=lambda h: float(gshare(h)[group_of[who] == g].mean())))
+            break
+    if cand is None:
+        break
+    g, h = cand
+    keep, gone = sorted((g, h), key=lambda x: -sum(len(reg_members[rids[k]]) for k in np.flatnonzero(group_of == x)))
+    group_of[group_of == gone] = keep
+    merges.append({"merged": [rids[k] for k in np.flatnonzero(group_of == keep)], "own_share_before": round(own[g], 3)})
+    log(f"grouped {rids[gone]} with {rids[keep]} (own share {own[g]:.2f})")
+
+gs = sorted(set(group_of.tolist()))
+gindex = {g: n for n, g in enumerate(gs)}
+G_OF = np.array([gindex[g] for g in group_of])    # region -> group number 0..ngroups-1
+ng = len(gs)
+
+
+def gname(n):
+    parts = [rtitle[rids[k]] for k in np.flatnonzero(G_OF == n)]
+    if len(parts) <= 3:
+        return " / ".join(parts)
+    return f"{dict(CONTINENTS)[reg_cont_now[rids[np.flatnonzero(G_OF == n)[0]]]]} ({len(parts)} regions)"
+
+
+gtitle = [gname(n) for n in range(ng)]
+gcont = np.array([rc[np.flatnonzero(G_OF == n)[0]] for n in range(ng)])
+QG = np.zeros((len(people), ng))
 for k in range(len(rids)):
-    Qc[:, rc[k]] += Q[:, k]
+    QG[:, G_OF[k]] += Q[:, k]
+pg = G_OF[who]                                    # each calibration person's group
+Qc = np.zeros((len(people), len(cont_ids)))
+for n in range(ng):
+    Qc[:, gcont[n]] += QG[:, n]
+own_g = [float(QG[pg == n, n].mean()) for n in range(ng)]
 # "Clean" calibration people: assigned at least 90% to their own continent.
 # Many reference groups are themselves mixed (Bedouins and Mozabites carry
 # African ancestry, some Maya European ancestry), so people from those groups
 # legitimately get shares elsewhere; the detection floors measure the noise
 # seen in people whose ancestry is unambiguous.
-clean = Qc[np.arange(len(people)), rc[who]] >= 0.9
-floors = {}
-for r in rids:
-    k = col[r]
-    others = Q[clean & (rc[who] != rc[k]), k]
-    floors[r] = max(0.01, float(np.percentile(others, 99))) if len(others) else 0.01
+clean = Qc[np.arange(len(people)), gcont[pg]] >= 0.9
+gfloors = []
+for n in range(ng):
+    others = QG[clean & (gcont[pg] != gcont[n]), n]
+    gfloors.append(max(0.01, float(np.percentile(others, 99))) if len(others) else 0.01)
 cfloors = {}
 for c in cont_ids:
     k = cont_index[c]
-    others = Qc[clean & (rc[who] != k), k]
+    others = Qc[clean & (gcont[pg] != k), k]
     cfloors[c] = max(0.01, float(np.percentile(others, 99))) if len(others) else 0.01
-# typical result of reference people from each region (left out of their own panel)
-PROFILE = np.array([Q[who == k].mean(0) for k in range(len(rids))])
-log("detection floors:", {r: round(v, 3) for r, v in floors.items()}, {c: round(v, 3) for c, v in cfloors.items()})
+# typical result of reference people from each group (left out of their own panel)
+PROFILE = np.array([QG[pg == n].mean(0) for n in range(ng)])
+log("groups:", gtitle)
+log("detection floors:", dict(zip(gtitle, np.round(gfloors, 3))), {c: round(v, 3) for c, v in cfloors.items()})
 
 # ---------------------------------------------------------------- final panel frequencies
 alt, tot = region_counts(reg_members, S_idx)
@@ -395,7 +416,7 @@ roh_groups = {g: v for g, v in roh_groups.items() if len(v) >= 8 and "-o" not in
 thin = np.sort(rng.choice(S, S // 2, replace=False))
 pos = snps["pos"].astype(np.int64)
 roh_ref = {}
-for gname, v in sorted(roh_groups.items()):
+for gname_, v in sorted(roh_groups.items()):
     pick = sorted(int(x) for x in rng.choice(v, min(20, len(v)), replace=False))
     D = A.dosage(A.rows(pick), S_idx[thin])
     res = []
@@ -404,8 +425,8 @@ for gname, v in sorted(roh_groups.items()):
         res.append(roh_summary(segs))
     fr = np.array([x["froh"] for x in res])
     lm = np.array([x["by_length_mb"]["10+"] for x in res])
-    reg = next((r[1] for r in regions if gname in r[3]), None)
-    roh_ref[gname] = {"n": len(res), "region": reg, "label": GROUP_NAMES.get(gname, gname),
+    reg = next((gtitle[G_OF[col[r[0]]]] for r in regions if gname_ in r[3]), None)
+    roh_ref[gname_] = {"n": len(res), "region": reg, "label": GROUP_NAMES.get(gname_, gname_),
                       "froh_median": float(np.median(fr)), "froh_p90": float(np.percentile(fr, 90)),
                       "long_mb_median": float(np.median(lm)), "long_mb_p90": float(np.percentile(lm, 90))}
 (PACK / "roh_reference.json").write_text(json.dumps({"snps_used": int(len(thin)), "groups": roh_ref}, indent=1))
@@ -415,7 +436,7 @@ log("ROH reference groups", len(roh_ref))
 xs = X_idx
 xblock = blocks_from_cm(A.chrom[xs], A.cm[xs], 5.0) if len(xs) else np.zeros(0, np.int32)
 np.savez_compressed(PACK / "modern.npz", region_ids=np.array(rids), P=encode_freq(P), n_individuals=n_ind,
-                    profile=PROFILE.astype(np.float32),
+                    profile=PROFILE.astype(np.float32), group_of=G_OF.astype(np.int16),
                     continent=np.array([cont_index[reg_cont_now[r]] for r in rids], np.int8),
                     continent_ids=np.array(cont_ids),
                     x_pos=A.pos[xs].astype(np.int32), x_ref=A.a1[xs], x_alt=A.a2[xs], x_rsid=A.rsid[xs],
@@ -423,12 +444,15 @@ np.savez_compressed(PACK / "modern.npz", region_ids=np.array(rids), P=encode_fre
                     Px=encode_freq(panel_freqs(xalt, xtot)))
 manifest = json.loads((PACK / "manifest.json").read_text())
 manifest["modern"] = {
-    "regions": [{"id": r, "title": next(x[1] for x in regions if x[0] == r), "continent": reg_cont_now[r],
-                 "groups": sorted({A.group[i] for i in reg_members[r]}),
-                 "group_names": {g: GROUP_NAMES[g] for g in sorted({A.group[i] for i in reg_members[r]}) if g in GROUP_NAMES},
-                 "individuals": len(reg_members[r]), "detection_floor": floors[r],
-                 "own_share_loo": float(own[col[r]])}
-                for r in rids],
+    # reporting groups (one or more regions each; the model keeps every region's own panel)
+    "regions": [{"id": rids[np.flatnonzero(G_OF == n)[0]], "title": gtitle[n], "continent": cont_ids[gcont[n]],
+                 "components": [rids[k] for k in np.flatnonzero(G_OF == n)],
+                 "groups": sorted({A.group[i] for k in np.flatnonzero(G_OF == n) for i in reg_members[rids[k]]}),
+                 "group_names": {g: GROUP_NAMES[g] for g in sorted({A.group[i] for k in np.flatnonzero(G_OF == n)
+                                                                     for i in reg_members[rids[k]]}) if g in GROUP_NAMES},
+                 "individuals": int(sum(len(reg_members[rids[k]]) for k in np.flatnonzero(G_OF == n))),
+                 "detection_floor": gfloors[n], "own_share_loo": own_g[n]}
+                for n in range(ng)],
     "continents": [{"id": c, "title": dict(CONTINENTS)[c], "detection_floor": cfloors[c]} for c in cont_ids],
     "outliers_removed": len(dropped), "merges": merges,
     "loo": {"snps": int(len(sub)), "calibration_per_region": CAL_PER_REGION, "validation_per_region": VAL_PER_REGION,
