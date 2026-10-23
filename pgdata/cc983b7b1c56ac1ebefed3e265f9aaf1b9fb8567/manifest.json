@@ -1,6 +1,6 @@
 {
  "name": "pgdata-1",
- "built": "2026-10-23T01:14:53Z",
+ "built": "2026-10-23T01:30:54Z",
  "sources": {
   "aadr": {
    "name": "Allen Ancient DNA Resource v66.p1 (1240K)",
@@ -28,15 +28,16 @@
  "roles": {
   "Mbuti": {
    "groups": [
-    "Mbuti"
+    "Mbuti",
+    "MbutiPygmy"
    ],
-   "individuals": 6
+   "individuals": 13
   },
   "YRI": {
    "groups": [
     "YRI"
    ],
-   "individuals": 30
+   "individuals": 102
   },
   "Chimp": {
    "groups": [
@@ -70,45 +71,52 @@
   },
   "WHG": {
    "groups": [
-    "Luxembourg_Loschbour_Mesolithic"
+    "Belgium_Mesolithic",
+    "England_Mesolithic",
+    "France_Mesolithic",
+    "Germany_GrossFredenwalde_Mesolithic",
+    "Luxembourg_Loschbour_Mesolithic",
+    "Netherlands_Mesolithic",
+    "Spain_Mesolithic"
    ],
-   "individuals": 16
+   "individuals": 51
   },
   "Anatolia_N": {
    "groups": [
     "Turkey_N"
    ],
-   "individuals": 20
+   "individuals": 48
   },
   "Yamnaya": {
    "groups": [
     "Russia_Samara_EBA_Yamnaya"
    ],
-   "individuals": 20
+   "individuals": 30
   },
   "Iran_N": {
    "groups": [
     "Iran_GanjDareh_N"
    ],
-   "individuals": 6
+   "individuals": 10
   },
   "CHG": {
    "groups": [
-    "Georgia_KotiasKlde_Mesolithic"
+    "Georgia_KotiasKlde_Mesolithic",
+    "Georgia_Satsurblia_LateUP"
    ],
-   "individuals": 4
+   "individuals": 3
   },
   "Steppe_MLBA": {
    "groups": [
     "Russia_Chelyabinsk_MLBA_Sintashta"
    ],
-   "individuals": 6
+   "individuals": 41
   },
   "Onge": {
    "groups": [
     "ONG"
    ],
-   "individuals": 4
+   "individuals": 6
   },
   "UstIshim": {
    "groups": [
@@ -120,25 +128,25 @@
    "groups": [
     "Russia_Kostenki_UP"
    ],
-   "individuals": 1
+   "individuals": 2
   },
   "MA1": {
    "groups": [
     "Russia_Malta_UP"
    ],
-   "individuals": 3
+   "individuals": 1
   },
   "Han": {
    "groups": [
     "Han"
    ],
-   "individuals": 8
+   "individuals": 43
   },
   "Papuan": {
    "groups": [
     "Papuan"
    ],
-   "individuals": 16
+   "individuals": 17
   },
   "Chukchi": {
    "groups": [
@@ -150,19 +158,19 @@
    "groups": [
     "Karitiana"
    ],
-   "individuals": 16
+   "individuals": 13
   },
   "Natufian": {
    "groups": [
     "Israel_Natufian"
    ],
-   "individuals": 4
+   "individuals": 6
   },
   "Mota": {
    "groups": [
     "Ethiopia_MotaCave_4500BP"
    ],
-   "individuals": 2
+   "individuals": 1
   }
  },
  "models": [
@@ -263,18 +271,18 @@
   {
    "id": "world",
    "title": "Worldwide",
-   "reference_individuals": 168
+   "reference_individuals": 1681
   },
   {
    "id": "west",
    "title": "West Eurasia",
-   "reference_individuals": 84
+   "reference_individuals": 595
   }
  ],
- "snps": 433252,
- "ancients": 89,
- "mt_matched": 89,
- "y_matched": 26,
+ "snps": 1150639,
+ "ancients": 14175,
+ "mt_matched": 12037,
+ "y_matched": 7150,
  "modern": {
   "regions": [
    {
@@ -282,189 +290,424 @@
     "title": "West Africa",
     "continent": "africa",
     "groups": [
+     "ESN",
+     "GWD",
+     "Gambian",
+     "Igbo",
+     "MSL",
+     "Mandenka",
+     "Mende",
      "YRI",
      "Yoruba"
     ],
     "group_names": {
+     "ESN": "Esan in Nigeria",
+     "GWD": "Gambian in Western Division, The Gambia",
+     "MSL": "Mende in Sierra Leone",
      "YRI": "Yoruba in Ibadan, Nigeria"
     },
-    "individuals": 36,
-    "detection_floor": 0.0007652177933382057,
-    "own_share_loo": 0.9999999830116473
+    "individuals": 443,
+    "detection_floor": 0.264960601446627,
+    "own_share_loo": 0.9439765849422475
+   },
+   {
+    "id": "east_africa",
+    "title": "East Africa (Bantu-speaking)",
+    "continent": "africa",
+    "groups": [
+     "BantuKenya",
+     "LWK",
+     "Luhya"
+    ],
+    "group_names": {
+     "LWK": "Luhya in Webuye, Kenya"
+    },
+    "individuals": 113,
+    "detection_floor": 0.10103368527791208,
+    "own_share_loo": 0.713340439660302
+   },
+   {
+    "id": "rainforest_hg",
+    "title": "Central African rainforest hunter-gatherers",
+    "continent": "africa",
+    "groups": [
+     "Biaka",
+     "Mbuti",
+     "MbutiPygmy"
+    ],
+    "group_names": {},
+    "individuals": 35,
+    "detection_floor": 0.04308321596956507,
+    "own_share_loo": 0.819076231528288
    },
    {
     "id": "nw_europe",
-    "title": "Europe (5 regions combined)",
+    "title": "Europe (6 regions combined)",
     "continent": "europe",
     "groups": [
+     "Basque",
      "CEU",
-     "FIN",
+     "English",
      "French",
      "GBR",
      "IBS",
+     "Icelandic",
+     "Italian_North",
+     "Norwegian",
+     "Orcadian",
+     "Sardinian",
+     "Scottish",
+     "Spanish",
+     "Spanish_North",
      "TSI"
     ],
     "group_names": {
      "CEU": "Utah residents with Northern and Western European ancestry",
-     "FIN": "Finnish in Finland",
      "GBR": "British in England and Scotland",
      "IBS": "Iberian populations in Spain",
      "TSI": "Toscani in Italy"
     },
-    "individuals": 164,
-    "detection_floor": 0.05311628013784422,
-    "own_share_loo": 0.9800662347386127
+    "individuals": 519,
+    "detection_floor": 0.4145473513361128,
+    "own_share_loo": 0.8693086216496326
    },
    {
-    "id": "sardinia",
-    "title": "Sardinia",
+    "id": "finland",
+    "title": "Finland and Eastern Europe",
     "continent": "europe",
     "groups": [
-     "Sardinian"
+     "Czech",
+     "Estonian",
+     "FIN",
+     "Finnish",
+     "Hungarian",
+     "Mari",
+     "Polish",
+     "Russian"
     ],
-    "group_names": {},
-    "individuals": 16,
-    "detection_floor": 0.04199568799456384,
-    "own_share_loo": 0.9591900051009945
+    "group_names": {
+     "FIN": "Finnish in Finland"
+    },
+    "individuals": 129,
+    "detection_floor": 0.20178648816187328,
+    "own_share_loo": 0.6918276071550742
    },
    {
     "id": "druze",
-    "title": "Druze",
+    "title": "Druze, Caucasus and Levant",
     "continent": "west_asia",
     "groups": [
-     "Druze"
+     "Abkhasian",
+     "Adygei",
+     "Armenian",
+     "Avar",
+     "Chechen",
+     "Druze",
+     "Georgian",
+     "Jordanian",
+     "Lezgin",
+     "Ossetian",
+     "Palestinian",
+     "Samaritan"
     ],
     "group_names": {},
-    "individuals": 16,
-    "detection_floor": 0.12226113710184094,
-    "own_share_loo": 0.980061556892028
+    "individuals": 118,
+    "detection_floor": 0.3337185755765907,
+    "own_share_loo": 0.6143597422003947
+   },
+   {
+    "id": "arabia",
+    "title": "Arabian Peninsula and Bedouin",
+    "continent": "west_asia",
+    "groups": [
+     "BedouinA",
+     "BedouinB",
+     "BedouinB_1",
+     "BedouinB_2",
+     "Jew_Yemenite"
+    ],
+    "group_names": {},
+    "individuals": 48,
+    "detection_floor": 0.2051559344378725,
+    "own_share_loo": 0.6588335350657831
+   },
+   {
+    "id": "north_africa",
+    "title": "North Africa",
+    "continent": "west_asia",
+    "groups": [
+     "Mozabite",
+     "Saharawi"
+    ],
+    "group_names": {},
+    "individuals": 25,
+    "detection_floor": 0.058007049163481865,
+    "own_share_loo": 0.6339806237869184
    },
    {
     "id": "gujarat",
-    "title": "Gujarat and Northwestern South Asia",
+    "title": "Gujarat",
     "continent": "south_asia",
     "groups": [
-     "GIH",
-     "PJL"
+     "GIH"
     ],
     "group_names": {
-     "GIH": "Gujarati Indians in Houston, Texas",
-     "PJL": "Punjabi in Lahore, Pakistan"
+     "GIH": "Gujarati Indians in Houston, Texas"
     },
-    "individuals": 24,
-    "detection_floor": 0.029843939717101132,
-    "own_share_loo": 0.9165588545054011
+    "individuals": 87,
+    "detection_floor": 0.2858325237983817,
+    "own_share_loo": 0.6032639688759625
+   },
+   {
+    "id": "south_india",
+    "title": "South India and Sri Lanka, Bengal and Northwestern South Asia",
+    "continent": "south_asia",
+    "groups": [
+     "BEB",
+     "Balochi",
+     "Brahui",
+     "Burusho",
+     "ITU",
+     "PJL",
+     "Pakistani",
+     "Pathan",
+     "Punjabi",
+     "STU",
+     "Sindhi_Pakistan"
+    ],
+    "group_names": {
+     "BEB": "Bengali in Bangladesh",
+     "ITU": "Indian Telugu in the UK",
+     "PJL": "Punjabi in Lahore, Pakistan",
+     "STU": "Sri Lankan Tamil in the UK"
+    },
+    "individuals": 553,
+    "detection_floor": 0.5222931786781535,
+    "own_share_loo": 0.7007436675730165
    },
    {
     "id": "north_china",
-    "title": "Northern China and Japan and Korea",
+    "title": "Northern China and Southern China",
     "continent": "east_asia",
     "groups": [
      "CHB",
+     "CHS",
      "Han",
-     "JPT"
+     "Miao",
+     "Naxi",
+     "She",
+     "Tu",
+     "Tujia",
+     "Yi"
     ],
     "group_names": {
      "CHB": "Han Chinese in Beijing",
+     "CHS": "Southern Han Chinese"
+    },
+    "individuals": 306,
+    "detection_floor": 0.27941311503540595,
+    "own_share_loo": 0.6893641423776349
+   },
+   {
+    "id": "japan_korea",
+    "title": "Japan and Korea",
+    "continent": "east_asia",
+    "groups": [
+     "JPT",
+     "Japanese",
+     "Korean"
+    ],
+    "group_names": {
      "JPT": "Japanese in Tokyo"
     },
-    "individuals": 32,
-    "detection_floor": 0.06756933766580978,
-    "own_share_loo": 0.9808838724505635
+    "individuals": 133,
+    "detection_floor": 0.1739624564926899,
+    "own_share_loo": 0.811405371475234
+   },
+   {
+    "id": "se_asia",
+    "title": "Mainland Southeast Asia",
+    "continent": "east_asia",
+    "groups": [
+     "Burmese",
+     "CDX",
+     "Cambodian",
+     "China_Lahu",
+     "Dai",
+     "KHV",
+     "Kinh_Vietnamese",
+     "Thai"
+    ],
+    "group_names": {
+     "CDX": "Chinese Dai in Xishuangbanna",
+     "KHV": "Kinh in Ho Chi Minh City, Vietnam"
+    },
+    "individuals": 221,
+    "detection_floor": 0.352723073831006,
+    "own_share_loo": 0.8199581898299916
+   },
+   {
+    "id": "north_asia",
+    "title": "Northeast Asia and Siberia",
+    "continent": "north_asia",
+    "groups": [
+     "Buryat",
+     "Chukchi",
+     "Daur",
+     "Even",
+     "Hezhen",
+     "Itelmen",
+     "Koryak",
+     "Mongola",
+     "Oroqen",
+     "Ulchi",
+     "Xibo",
+     "Yakut"
+    ],
+    "group_names": {},
+    "individuals": 77,
+    "detection_floor": 0.12302454074151818,
+    "own_share_loo": 0.7372776507934967
    },
    {
     "id": "papua",
     "title": "Papua New Guinea, Melanesia and Australia",
     "continent": "oceania",
     "groups": [
+     "Australian",
+     "Nasioi",
      "Papuan"
     ],
     "group_names": {},
-    "individuals": 16,
-    "detection_floor": 0.0012256332467540777,
-    "own_share_loo": 0.9992046994107655
+    "individuals": 29,
+    "detection_floor": 0.02667442319836286,
+    "own_share_loo": 0.9400465199579604
    },
    {
     "id": "americas",
     "title": "Indigenous Americas",
     "continent": "americas",
     "groups": [
-     "Karitiana"
+     "Aymara",
+     "Huichol",
+     "Karitiana",
+     "Mayan",
+     "Mexico_Zapotec",
+     "Mixe",
+     "Mixtec_1",
+     "Mixtec_2",
+     "Nahua",
+     "Piapoco",
+     "Pima",
+     "Quechua",
+     "Surui",
+     "Tsimshian",
+     "Yukpa"
     ],
     "group_names": {},
-    "individuals": 16,
-    "detection_floor": 0.029612906973548382,
-    "own_share_loo": 0.9427960038048528
+    "individuals": 75,
+    "detection_floor": 0.028072655263983115,
+    "own_share_loo": 0.9669301988087238
    }
   ],
   "continents": [
    {
     "id": "africa",
     "title": "Sub-Saharan Africa",
-    "detection_floor": 0.0007652177933382057
+    "detection_floor": 0.10753103971744819
    },
    {
     "id": "europe",
     "title": "Europe",
-    "detection_floor": 0.03129990343867714
+    "detection_floor": 0.45135809187277676
    },
    {
     "id": "west_asia",
     "title": "West Asia and North Africa",
-    "detection_floor": 0.12226113710184094
+    "detection_floor": 0.2419198615406644
    },
    {
     "id": "south_asia",
     "title": "South Asia",
-    "detection_floor": 0.029843939717101132
+    "detection_floor": 0.1567515586503172
    },
    {
     "id": "east_asia",
     "title": "East and Southeast Asia",
-    "detection_floor": 0.06756933766580978
+    "detection_floor": 0.35293816365458075
+   },
+   {
+    "id": "north_asia",
+    "title": "North Asia and Siberia",
+    "detection_floor": 0.12302454074151818
    },
    {
     "id": "oceania",
     "title": "Oceania",
-    "detection_floor": 0.0012256332467540777
+    "detection_floor": 0.02667442319836286
    },
    {
     "id": "americas",
     "title": "Indigenous Americas",
-    "detection_floor": 0.029612906973548382
+    "detection_floor": 0.028072655263983115
    }
   ],
-  "outliers_removed": 0,
+  "outliers_removed": 22,
   "merges": [
    {
     "merged": "france",
     "into": "nw_europe",
-    "own_share": 0.04
+    "own_share": 0.071
    },
    {
-    "merged": "finland",
-    "into": "nw_europe",
-    "own_share": 0.167
+    "merged": "east_europe",
+    "into": "finland",
+    "own_share": 0.239
    },
    {
-    "merged": "italy",
-    "into": "nw_europe",
-    "own_share": 0.231
+    "merged": "caucasus",
+    "into": "druze",
+    "own_share": 0.292
    },
    {
     "merged": "iberia",
     "into": "nw_europe",
-    "own_share": 0.282
+    "own_share": 0.3
    },
    {
-    "merged": "japan_korea",
+    "merged": "bengal",
+    "into": "south_india",
+    "own_share": 0.338
+   },
+   {
+    "merged": "south_china",
     "into": "north_china",
-    "own_share": 0.324
+    "own_share": 0.368
+   },
+   {
+    "merged": "italy",
+    "into": "nw_europe",
+    "own_share": 0.395
+   },
+   {
+    "merged": "basque",
+    "into": "nw_europe",
+    "own_share": 0.414
    },
    {
     "merged": "nw_south_asia",
-    "into": "gujarat",
-    "own_share": 0.436
+    "into": "south_india",
+    "own_share": 0.454
+   },
+   {
+    "merged": "levant",
+    "into": "druze",
+    "own_share": 0.458
+   },
+   {
+    "merged": "sardinia",
+    "into": "nw_europe",
+    "own_share": 0.486
    }
   ],
   "loo": {
@@ -478,28 +721,28 @@
    "temper": 0.25,
    "calibration": {
     "0.25": {
-     "accuracy": 0.9839379999999999,
-     "mean_posterior": 0.9831123550732931
+     "accuracy": 0.8142826666666666,
+     "mean_posterior": 0.850866953531901
     },
     "0.35": {
-     "accuracy": 0.9842520000000001,
-     "mean_posterior": 0.9862079421679179
+     "accuracy": 0.8151046666666666,
+     "mean_posterior": 0.8676852782567342
     },
     "0.5": {
-     "accuracy": 0.985242,
-     "mean_posterior": 0.9890127082665762
+     "accuracy": 0.8116706666666667,
+     "mean_posterior": 0.8814930220444998
     },
     "0.7": {
-     "accuracy": 0.9841133333333333,
-     "mean_posterior": 0.9904109239578247
+     "accuracy": 0.8028466666666666,
+     "mean_posterior": 0.8910698890686035
     },
     "1.0": {
-     "accuracy": 0.9834360000000001,
-     "mean_posterior": 0.9901643991470337
+     "accuracy": 0.7861319999999999,
+     "mean_posterior": 0.8968782524267832
     }
    }
   },
-  "x_snps": 19849,
+  "x_snps": 49617,
   "not_covered": [
    "Central Asia (its populations are themselves mixtures of West and East Eurasian ancestry)",
    "Iran (too few reference genomes)",
@@ -512,44 +755,62 @@
    "loo": {
     "80000": {
      "region": {
-      "west_africa": 0.9999999995637562,
-      "nw_europe": 0.9915639814070262,
-      "sardinia": 0.9569718082113429,
-      "druze": 0.9807881885469621,
-      "gujarat": 0.9074691145616245,
-      "north_china": 0.9898802262485978,
-      "papua": 0.9999998696567616,
-      "americas": 0.9535723307241736
+      "west_africa": 0.9332791766547266,
+      "east_africa": 0.7138288252342733,
+      "rainforest_hg": 0.8245156203153918,
+      "nw_europe": 0.8257789051462162,
+      "finland": 0.8622314908844567,
+      "druze": 0.60155016166034,
+      "arabia": 0.49866022299363005,
+      "north_africa": 0.6036750898745841,
+      "gujarat": 0.5018395434522813,
+      "south_india": 0.7724991444443693,
+      "north_china": 0.7551482556800148,
+      "japan_korea": 0.8072951784677241,
+      "se_asia": 0.8144694633013468,
+      "north_asia": 0.7839564405549041,
+      "papua": 0.9387257417718153,
+      "americas": 0.9163604506490616
      },
      "continent": {
-      "africa": 0.9999999995637562,
-      "europe": 0.9970248512010111,
-      "west_asia": 0.9807881885469621,
-      "south_asia": 0.9074691145616245,
-      "east_asia": 0.9898802262485978,
-      "oceania": 0.9999998696567616,
-      "americas": 0.9535723307241736
+      "africa": 0.995066544347482,
+      "europe": 0.9174535625015782,
+      "west_asia": 0.7504339620096181,
+      "south_asia": 0.9364011007068918,
+      "east_asia": 0.975126074030054,
+      "north_asia": 0.7839564405549041,
+      "oceania": 0.9387257417718153,
+      "americas": 0.9163604506490616
      }
     },
     "250000": {
      "region": {
-      "west_africa": 0.99999999990923,
-      "nw_europe": 0.9939502875944334,
-      "sardinia": 0.9513938109814492,
-      "druze": 0.9742429093442291,
-      "gujarat": 0.9040800120023333,
-      "north_china": 0.9873444086978739,
-      "papua": 0.9999998487217426,
-      "americas": 0.9530584860081227
+      "west_africa": 0.928784713665627,
+      "east_africa": 0.7159807742556991,
+      "rainforest_hg": 0.8283541075132524,
+      "nw_europe": 0.834001044874821,
+      "finland": 0.8773320981554572,
+      "druze": 0.6014681642485858,
+      "arabia": 0.5031587264631698,
+      "north_africa": 0.5994926039600834,
+      "gujarat": 0.5166897774516536,
+      "south_india": 0.7799077259056291,
+      "north_china": 0.7550563664488591,
+      "japan_korea": 0.802050765003577,
+      "se_asia": 0.8209808976660936,
+      "north_asia": 0.7783170697952984,
+      "papua": 0.940241101122311,
+      "americas": 0.9140321911623293
      },
      "continent": {
-      "africa": 0.99999999990923,
-      "europe": 0.9987119871537011,
-      "west_asia": 0.9742429093442291,
-      "south_asia": 0.9040800120023333,
-      "east_asia": 0.9873444086978739,
-      "oceania": 0.9999998487217426,
-      "americas": 0.9530584860081227
+      "africa": 0.9955071659607074,
+      "europe": 0.9213998337518122,
+      "west_asia": 0.7493992229557487,
+      "south_asia": 0.9360164122396476,
+      "east_asia": 0.9753674473234282,
+      "north_asia": 0.7783170697952984,
+      "oceania": 0.940241101122311,
+      "americas": 0.9140321911623293
      }
     }
    }
@@ -557,15 +818,17 @@
  },
  "validation": {
   "file_check": "Raw files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF) are read back with every genotype exact.",
-  "pca": "Genomes reduced to about 95,358 SNPs (a genotyping chip's worth) land a median 0.95% of the map's width from where the same genomes land with all 1.15 million SNPs (168 placements of 84 held-out genomes).",
-  "neanderthal": "On 84 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
-  "ancient_ancestry": "Athanor's qpAdm reproduces ADMIXTOOLS qpAdm [0.524, 0.282, 0.195] with [0.524, 0.282, 0.194] on a well-powered simulation: every weight agrees to within 0.0006 and every standard error to within 0.0003, and both recover the simulated proportions [0.5, 0.3, 0.2] to within 0.024. On simulated populations whose true proportions are known, the fitted proportions were within two standard errors of the truth for all 6 populations (largest deviation 0.152).",
-  "continental_ancestry": "Reference individuals left out of their own panel are assigned on average at least 90% to their own continent (250,000 SNPs; 91% with 80,000). On 24 simulated genomes mixing two or three continents, built from left-out individuals' chromosomes, the proportions were within 1.5 percentage points on average (7.7 at worst), and the 95% intervals contained the true value 100% of the time. ADMIXTURE's projection mode gives the same proportions to within 0.000.",
-  "regional_ancestry": "With 80,000 SNPs, people left out of the reference panels are assigned on average 97% to their own region (lowest region 91%); regions that could not be told apart were merged before the pack was built (6 merges).",
-  "chromosome_painting": "On simulated genomes with known ancestry segments, the pair of ancestries was right at 97% of SNPs, and the average confidence the method reported was 98%.",
-  "indigenous_american": "Detection limit 3.0%. On simulated genomes with known Indigenous American ancestry the proportion was recovered within 3.5 points from 5% upwards; detection rates at 2%, 5% and 10% were 17%, 50% and 100%; 0% of genomes with none, and 8% of left-out East Asian genomes, were reported as having some.",
-  "roh": "Segments match PLINK 1.9's --homozyg on the same genotypes (total length within 0.0%, overlap at least 1.00), and homozygous stretches of known length inserted into real genomes were found over 100% of their length.",
-  "x_ancestry": "From X-chromosome SNPs alone, people left out of the reference panels are assigned on average at least 78% to their own continent."
+  "pca": "Genomes reduced to about 252,881 SNPs (a genotyping chip's worth) land a median 0.29% of the map's width from where the same genomes land with all 1.15 million SNPs (186 placements of 93 held-out genomes).",
+  "neanderthal": "On 93 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
+  "ancient_ancestry": "Athanor's qpAdm reproduces ADMIXTOOLS qpAdm [0.524, 0.282, 0.195] with [0.524, 0.282, 0.194] on a well-powered simulation: every weight agrees to within 0.0006 and every standard error to within 0.0003, and both recover the simulated proportions [0.5, 0.3, 0.2] to within 0.024. On 1 of 1 held-out present-day population targets, Athanor's qpAdm agrees with ADMIXTOOLS qpAdm (v8.0.2) to within two standard errors (largest difference 0.047).",
+  "y_haplogroup": "On 600 ancient men with published Y haplogroups, Athanor's call from the 1240K Y-chromosome SNPs was on the same lineage in 98% and identical in 34%.",
+  "mt_haplogroup": "On 1500 ancient mitogenomes with published haplogroups, Athanor's call was on the same lineage in 98% and identical in 83%; from only 1,500 positions, of the kind a genotyping chip reads, on the same lineage in 94%.",
+  "continental_ancestry": "Reference individuals left out of their own panel are assigned on average at least 75% to their own continent (250,000 SNPs; 75% with 80,000). On 24 simulated genomes mixing two or three continents, built from left-out individuals' chromosomes, the proportions were within 4.8 percentage points on average (23.5 at worst), and the 95% intervals contained the true value 43% of the time.",
+  "regional_ancestry": "With 80,000 SNPs, people left out of the reference panels are assigned on average 76% to their own region (lowest region 50%); regions that could not be told apart were merged before the pack was built (11 merges).",
+  "chromosome_painting": "On simulated genomes with known ancestry segments, the pair of ancestries was right at 84% of SNPs, and the average confidence the method reported was 87%.",
+  "indigenous_american": "Detection limit 2.8%. On simulated genomes with known Indigenous American ancestry the proportion was recovered within 4.9 points from 5% upwards; detection rates at 2%, 5% and 10% were 0%, 100% and 100%; 0% of genomes with none, and 0% of left-out East Asian genomes, were reported as having some.",
+  "roh": "Segments match PLINK 1.9's --homozyg on the same genotypes (total length within 8.5%, overlap at least 0.91), and homozygous stretches of known length inserted into real genomes were found over 99% of their length.",
+  "x_ancestry": "From X-chromosome SNPs alone, people left out of the reference panels are assigned on average at least 61% to their own continent."
  },
- "validated": "2026-10-23T01:29:33Z"
+ "validated": "2026-10-23T02:34:52Z"
 }
