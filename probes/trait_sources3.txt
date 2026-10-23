@@ -1,0 +1,629 @@
+== rs174537: 180
+   ['rs174537-G'] beta=0.03383 unit increase OR=None p=2e-35 | Alanine transaminase (ALT, mean, inv-norm transformed) | serum alanine aminotransferase amount | Verma A 39024449
+   ['rs174537-G'] beta=0.03283 unit increase OR=None p=6e-35 | Alanine transaminase (ALT, maximum, inv-norm transformed) | serum alanine aminotransferase amount | Verma A 39024449
+   ['rs174537-G'] beta=0.03088 unit increase OR=None p=7e-34 | Alanine transaminase (ALT, mean, inv-norm transformed) | serum alanine aminotransferase amount | Verma A 39024449
+   ['rs174537-G'] beta=0.03164 unit increase OR=None p=8e-36 | Alanine transaminase (ALT, maximum, inv-norm transformed) | serum alanine aminotransferase amount | Verma A 39024449
+   ['rs174537-T'] beta=0.0643 unit decrease OR=None p=2e-21 | Colorectal cancer | colorectal cancer | Fernandez-Rozadilla C 36539618
+   ['rs174537-?'] beta=0.050646 unit increase OR=None p=8.999999999999999e-38 | Circulating MEP1B levels | level of meprin A subunit beta in blood | Koprulu M 42097137
+   ['rs174537-?'] beta=0.0517406 unit increase OR=None p=2e-21 | Circulating FLT4 levels | amount of vascular endothelial growth factor receptor 3 (hum | Koprulu M 42097137
+   ['rs174537-?'] beta=0.1201968 unit increase OR=None p=2e-78 | Circulating CD99L2 levels | amount of CD99 antigen-like protein 2 (human) in blood | Koprulu M 42097137
+   ['rs174537-?'] beta=0.061192 unit increase OR=None p=1e-31 | Circulating NOMO1 levels | level of nodal modulator 1 in blood | Koprulu M 42097137
+   ['rs174537-T'] beta=0.201174 unit increase OR=None p=2e-25 | Triglycerides to Total Lipids in Very Large VLDL percentage | triglycerides to total lipids in very large VLDL percentage | Farashi S 39091897
+   ['rs174537-T'] beta=0.0722552 unit decrease OR=None p=8.999999999999999e-39 | Free Cholesterol to Total Lipids in Very Large VLDL percentage | free cholesterol to total lipids in very large VLDL percenta | Farashi S 39091897
+   ['rs174537-T'] beta=0.119475 unit decrease OR=None p=2e-29 | Cholesterol to Total Lipids in Large VLDL percentage | cholesterol to total lipids in large VLDL percentage | Farashi S 39091897
+   ['rs174537-T'] beta=0.085 unit decrease OR=None p=3e-17 | Plasma 1-stearoyl-2-docosahexaenoyl-GPC (18:0/22:6) levels in chronic  | 1-stearoyl-2-docosahexaenoyl-GPC (18:0/22:6) measurement | Schlosser P 37277652
+   ['rs174537-T'] beta=0.03 mmol/L increase OR=None p=4e-56 | Tyrosine levels | tyrosine measurement | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.04 mmol/L decrease OR=None p=1e-86 | Phospholipids in small LDL | phospholipids in small LDL measurement | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.101843 % increase OR=None p=1e-273 | Triglycerides to Total Lipids in Very Small VLDL percentage | triglycerides to total lipids in very small VLDL percentage | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.0997531 % decrease OR=None p=2e-264 | Cholesteryl Esters to Total Lipids in Very Small VLDL percentage | cholesteryl esters to total lipids in very small VLDL percen | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.0922058 % increase OR=None p=4e-229 | Triglycerides to Total Lipids in IDL percentage | triglycerides to total lipids in IDL percentage | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.0759708 % increase OR=None p=1e-128 | Triglycerides to Total Lipids in Very Small VLDL percentage | triglycerides to total lipids in very small VLDL percentage | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.07128 % decrease OR=None p=1e-114 | Cholesteryl Esters to Total Lipids in Very Small VLDL percentage | cholesteryl esters to total lipids in very small VLDL percen | Zoodsma M 41044249
+   ['rs174537-T'] beta=0.0681547 % increase OR=None p=6e-107 | Triglycerides to Total Lipids in IDL percentage | triglycerides to total lipids in IDL percentage | Zoodsma M 41044249
+   ['rs174537-?'] beta=- OR=0.962232 p=2e-13 | Asthma or chronic rhinosinusitis | asthma,chronic rhinosinusitis | Saarentaus EC 41213931
+   ['rs174537-T'] beta=- OR=0.92 p=7e-06 | Colorectal cancer | colorectal cancer | Sato G 37340002
+   ['rs174537-T'] beta=- OR=None p=1e-300 | Polyunsaturated fatty acids to total fatty acids percentage | polyunsaturated fatty acids to total fatty acids percentage | Sun Y 40545721
+   ['rs174537-T'] beta=0.03722233 unit increase OR=None p=2e-13 | PLA2G1B protein levels | level of phospholipase A2 in blood | Loya H 39789286
+   ['rs174537-T'] beta=0.06166118 unit increase OR=None p=1e-27 | NOMO1 protein levels | level of nodal modulator 1 in blood | Loya H 39789286
+   ['rs174537-T'] beta=0.10530766 unit increase OR=None p=5e-73 | CD99L2 protein levels | blood protein amount | Loya H 39789286
+   ['rs174537-T'] beta=4.573E-4 unit decrease OR=None p=7e-23 | HDL x low social support interaction (2df test) | depressive symptom measurement,non-high density lipoprotein  | Bentley AR 40537477
+   ['rs174537-T'] beta=0.002654 unit increase OR=None p=4e-08 | HDL x depression interaction (2df test) | depressive symptom measurement,non-high density lipoprotein  | Bentley AR 40537477
+   ['rs174537-T'] beta=0.005715 unit decrease OR=None p=3e-17 | HDL x low social support interaction (2df test) | depressive symptom measurement,non-high density lipoprotein  | Bentley AR 40537477
+   ['rs174537-?'] beta=0.012 unit decrease OR=None p=2e-08 | Pain intensity (without opioid use disorder) | pain measurement | Toikumo S 38429522
+   ['rs174537-T'] beta=0.139 unit increase OR=None p=1e-14 | Metabolite levels (oleoyl-linoleoyl-glycerol (18:1/18:2) [1]; C36:3 DA | blood metabolite level | Feofanova EV 37253714
+   ['rs174537-T'] beta=0.124 unit increase OR=None p=5e-12 | Metabolite levels (linoleoyl-linoleoyl-glycerol (18:2/18:2) [1]; C36:4 | linoleoyl-linoleoyl-glycerol (18:2/18:2) [1] measurement | Feofanova EV 37253714
+   ['rs174537-T'] beta=0.136401 unit decrease OR=None p=3e-12 | Phosphatidylinositol (16:0_20:4) levels | level of Phosphatidylinositol (16:0_20:4) in blood serum | Ottensmann L 37907536
+   ['rs174537-T'] beta=0.188337 unit decrease OR=None p=1e-28 | Phosphatidylethanolamine (18:0_20:4) levels | level of Phosphatidylethanolamine (18:0_20:4) in blood serum | Ottensmann L 37907536
+   ['rs174537-T'] beta=0.175871 unit decrease OR=None p=2e-21 | Phosphatidylcholine (O-18:2_20:4) levels | level of Phosphatidylcholine (O-18:2_20:4) in blood serum | Ottensmann L 37907536
+   ['rs174537-T'] beta=0.507503 unit decrease OR=None p=4.9999999999999995e-207 | Phosphatidylcholine (18:1_20:4) levels | level of Phosphatidylcholine (18:1_20:4) in blood serum | Ottensmann L 37907536
+   ['rs174537-T'] beta=0.676794 unit decrease OR=None p=0.0 | Phosphatidylcholine (18:0_20:4) levels | level of Phosphatidylcholine (18:0_20:4) in blood serum | Ottensmann L 37907536
+   ['rs174537-T'] beta=0.0842836 unit decrease OR=None p=7e-70 | Free cholesterol to total lipids in large LDL percentage (UKB data fie | free cholesterol to total lipids in large LDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0993263 unit increase OR=None p=3e-97 | Triglycerides to total lipids in very small VLDL percentage (UKB data  | triglycerides to total lipids in very small VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0777323 unit increase OR=None p=1e-60 | Triglycerides to total lipids in medium VLDL percentage (UKB data fiel | triglycerides to total lipids in medium VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0915771 unit decrease OR=None p=4e-82 | Free cholesterol to total lipids in medium VLDL percentage (UKB data f | free cholesterol to total lipids in medium VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0752724 unit decrease OR=None p=1e-57 | Cholesteryl esters to total lipids in medium VLDL percentage (UKB data | cholesteryl esters to total lipids in medium VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0803296 unit decrease OR=None p=5e-65 | Cholesterol to total lipids in medium VLDL percentage (UKB data field  | cholesterol to total lipids in medium VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0626892 unit decrease OR=None p=5.999999999999999e-39 | Phospholipids to total lipids in medium VLDL percentage (UKB data fiel | Phospholipids:total lipids ratio | Davyson E 36764567
+   ['rs174537-T'] beta=0.0579754 unit decrease OR=None p=8.999999999999999e-34 | Cholesteryl esters to total lipids in large VLDL percentage (UKB data  | cholesteryl esters to total lipids in large VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0371136 unit decrease OR=None p=3e-14 | Cholesterol to total lipids in large VLDL percentage (UKB data field 2 | cholesterol to total lipids in large VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0582644 unit increase OR=None p=2e-33 | Triglycerides to total lipids in very large VLDL percentage (UKB data  | triglycerides to total lipids in very large VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.0665631 unit decrease OR=None p=3.0000000000000004e-43 | Free cholesterol to total lipids in very large VLDL percentage (UKB da | free cholesterol to total lipids in very large VLDL percenta | Davyson E 36764567
+   ['rs174537-T'] beta=0.0591515 unit decrease OR=None p=4e-35 | Cholesteryl esters to total lipids in very large VLDL percentage (UKB  | cholesteryl esters to total lipids in very large VLDL percen | Davyson E 36764567
+   ['rs174537-T'] beta=0.0621922 unit decrease OR=None p=1e-38 | Cholesterol to total lipids in very large VLDL percentage (UKB data fi | cholesterol to total lipids in very large VLDL percentage | Davyson E 36764567
+   ['rs174537-T'] beta=0.2516 unit decrease OR=None p=2e-29 | Phosphatidylinositol (18:0_20:4) levels | level of Phosphatidylinositol (18:0_20:4) in blood serum | Tabassum R 36193934
+   ['rs174537-T'] beta=0.1408 unit decrease OR=None p=3.0000000000000004e-08 | Phosphatidylinositol (16:0_20:4) levels | level of Phosphatidylinositol (16:0_20:4) in blood serum | Tabassum R 36193934
+   ['rs174537-T'] beta=0.1722 unit increase OR=None p=4e-14 | Phosphatidylethanolamine (O-18:1_18:2) levels | level of Phosphatidylethanolamine (O-18:1_18:2) in blood ser | Tabassum R 36193934
+   ['rs174537-T'] beta=0.506 unit decrease OR=None p=8e-120 | Phosphatidylcholine (18:1_20:4) levels | level of Phosphatidylcholine (18:1_20:4) in blood serum | Tabassum R 36193934
+   ['rs174537-T'] beta=0.6086 unit decrease OR=None p=7e-178 | Phosphatidylcholine (16:0_20:4) levels | level of Phosphatidylcholine (16:0_20:4) in blood serum | Tabassum R 36193934
+   ['rs174537-T'] beta=0.241433 unit increase OR=None p=2e-16 | Phosphatidylcholine (O-18:1_18:2) levels | level of Phosphatidylcholine (O-18:1_18:2) in blood serum | Tabassum R 36193934
+   ['rs174537-?'] beta=0.85925263 mg/dL decrease OR=None p=3e-16 | High density lipoprotein cholesterol levels | high density lipoprotein cholesterol measurement | Selvaraj MS 36220816
+   ['rs174537-T'] beta=0.0356 unit increase OR=None p=3e-19 | Phosphatidylcholine diacyl C36:2 levels | phosphatidylcholine diacyl C36:2 measurement | Draisma HHM 26068415
+   ['rs174537-T'] beta=0.33 unit decrease OR=None p=3e-66 | Oleoyl-arachidonoyl-glycerol (18:1/20:4) [2] levels | oleoyl-arachidonoyl-glycerol (18:1/20:4) [2] measurement | Yin X 35347128
+   ['rs174537-T'] beta=0.35 unit decrease OR=None p=9e-79 | Linoleoyl-arachidonoyl-glycerol (18:2/20:4) [2] levels | linoleoyl-arachidonoyl-glycerol (18:2/20:4) [2] measurement | Yin X 35347128
+   ['rs174537-T'] beta=0.22 unit decrease OR=None p=3.0000000000000003e-30 | 1-myristoyl-2-eicosapentaenoyl-GPC (14:0/20:5) levels | 1-myristoyl-2-eicosapentaenoyl-GPC (14:0/20:5) measurement | Yin X 35347128
+   ['rs174537-T'] beta=0.0239 unit decrease OR=None p=5e-14 | QRS duration | QRS duration | Young WJ 36050321
+   ['rs174537-T'] beta=0.0344 unit decrease OR=None p=5e-28 | QT interval | QT interval | Young WJ 36050321
+   ['rs174537-T'] beta=0.227 unit decrease OR=None p=3e-23 | Total free cholesterol levels | free cholesterol measurement | Cadby G 35668104
+   ['rs174537-T'] beta=0.359 unit increase OR=None p=7.0000000000000005e-56 | Phosphatidylethanolamine (16:0_18:2) levels | level of phosphatidylethanolamine | Cadby G 35668104
+   ['rs174537-T'] beta=0.236 unit decrease OR=None p=6.0000000000000005e-25 | Phosphatidylcholine (34:5) levels | phosphatidylcholine 34:5 measurement | Cadby G 35668104
+   ['rs174537-T'] beta=0.224 unit decrease OR=None p=3e-22 | Phosphatidylcholine (16:0_18:0) levels | level of phosphatidylcholine | Cadby G 35668104
+   ['rs174537-T'] beta=0.281 unit decrease OR=None p=1e-34 | Phosphatidylcholine (14:0_20:4) levels | level of phosphatidylcholine | Cadby G 35668104
+   ['rs174537-T'] beta=0.227 unit decrease OR=None p=3e-23 | Free cholesterol levels | free cholesterol measurement | Cadby G 35668104
+   ['rs174537-T'] beta=0.214 unit increase OR=None p=1e-20 | Total Phosphatidylethanolamine levels | level of phosphatidylethanolamine | Cadby G 35668104
+   ['rs174537-T'] beta=0.222 unit decrease OR=None p=1e-23 | Total free cholesterol levels | free cholesterol measurement | Cadby G 35668104
+   ['rs174537-T'] beta=0.414 unit increase OR=None p=2e-74 | Phosphatidylethanolamine (16:0_18:2) levels | level of phosphatidylethanolamine | Cadby G 35668104
+   ['rs174537-T'] beta=0.192 unit increase OR=None p=5.0000000000000005e-17 | Phosphatidylethanolamine (16:0_18:1) levels | level of phosphatidylethanolamine | Cadby G 35668104
+   ['rs174537-T'] beta=0.244 unit decrease OR=None p=9e-27 | Phosphatidylcholine (34:5) levels | phosphatidylcholine 34:5 measurement | Cadby G 35668104
+   ['rs174537-T'] beta=0.231 unit decrease OR=None p=9e-24 | Phosphatidylcholine (16:0_18:0) levels | level of phosphatidylcholine | Cadby G 35668104
+   ['rs174537-T'] beta=0.309 unit decrease OR=None p=5e-42 | Phosphatidylcholine (14:0_20:4) levels | level of phosphatidylcholine | Cadby G 35668104
+   ['rs174537-T'] beta=0.11 unit decrease OR=None p=2e-06 | Lysophosphatidylcholine (22:0) [sn1] levels | lysophosphatidylcholine 22:0 measurement | Cadby G 35668104
+   ['rs174537-T'] beta=0.222 unit decrease OR=None p=1e-23 | Free cholesterol levels | free cholesterol measurement | Cadby G 35668104
+   ['rs174537-?'] beta=8.039 z score decrease OR=None p=9e-16 | Sex hormone-binding globulin levels | sex hormone-binding globulin measurement | Haas CB 35192695
+   ['rs174537-T'] beta=0.0229542 unit decrease OR=None p=2e-06 | Sex hormone-binding globulin levels in postmenopausal women | sex hormone-binding globulin measurement | Haas CB 35192695
+   ['rs174537-T'] beta=0.0269487 unit decrease OR=None p=9e-16 | Sex hormone-binding globulin levels | sex hormone-binding globulin measurement | Haas CB 35192695
+   ['rs174537-T'] beta=12.6 (zscore) increase OR=None p=2e-36 | Phosphatidylcholine diacyl C36:2 levels | level of phosphatidylcholine | Lotta LA 33414548
+   ['rs174537-G'] beta=0.0979477 unit decrease OR=None p=4.9999999999999994e-126 | Triglycerides to total lipids ratio in very small VLDL | Triglycerides:total lipids ratio,blood VLDL cholesterol amou | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0594007 unit decrease OR=None p=2e-45 | Triglycerides to total lipids ratio in very large VLDL | Triglycerides:total lipids ratio,blood VLDL cholesterol amou | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0686296 unit increase OR=None p=5e-60 | Free cholesterol to total lipids ratio in very large VLDL | Free cholesterol:total lipids ratio,blood VLDL cholesterol a | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0636735 unit increase OR=None p=3e-53 | Cholesterol to total lipids ratio in very large VLDL | Cholesterol:total lipids ratio,blood VLDL cholesterol amount | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0647702 unit decrease OR=None p=5e-54 | Triglycerides to total lipids ratio in small VLDL | Triglycerides:total lipids ratio,blood VLDL cholesterol amou | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0832173 unit increase OR=None p=1e-90 | Free cholesterol to total lipids ratio in small VLDL | Free cholesterol:total lipids ratio,blood VLDL cholesterol a | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0291804 unit increase OR=None p=9e-12 | Cholesteryl esters to total lipids ratio in small VLDL | Cholesteryl esters:total lipids ratio,blood VLDL cholesterol | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0568835 unit increase OR=None p=1e-41 | Cholesterol to total lipids ratio in small VLDL | Cholesterol:total lipids ratio,blood VLDL cholesterol amount | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0781644 unit decrease OR=None p=2e-81 | Triglycerides to total lipids ratio in medium VLDL | Triglycerides:total lipids ratio,blood VLDL cholesterol amou | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0629678 unit increase OR=None p=1e-51 | Phospholipids to total lipids ratio in medium VLDL | Phospholipids:total lipids ratio,blood VLDL cholesterol amou | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0916644 unit increase OR=None p=2.9999999999999997e-109 | Free cholesterol to total lipids ratio in medium VLDL | Free cholesterol:total lipids ratio,blood VLDL cholesterol a | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0760072 unit increase OR=None p=3e-78 | Cholesteryl esters to total lipids ratio in medium VLDL | Cholesteryl esters:total lipids ratio,blood VLDL cholesterol | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0808446 unit increase OR=None p=2e-87 | Cholesterol to total lipids ratio in medium VLDL | Cholesterol:total lipids ratio,blood VLDL cholesterol amount | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0592558 unit increase OR=None p=4e-46 | Cholesteryl esters to total lipids ratio in large VLDL | Cholesteryl esters:total lipids ratio,blood VLDL cholesterol | Richardson TG 35213538
+   ['rs174537-G'] beta=0.0386689 unit increase OR=None p=8e-20 | Cholesterol to total lipids ratio in large VLDL | Cholesterol:total lipids ratio,blood VLDL cholesterol amount | Richardson TG 35213538
+   ['rs174537-A'] beta=0.1163 unit increase OR=None p=4e-20 | Triacylglycerol(58:9)_[M+NH4]1+ levels | triglyceride measurement | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0858 unit decrease OR=None p=4e-20 | Triacylglycerol(56:7)_[M+NH4]1+ levels | triglyceride measurement | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.064 unit increase OR=None p=4e-20 | Triacylglycerol(56:6)_[M+NH4]1+ levels | triglyceride measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0758 unit decrease OR=None p=5e-20 | Triacylglycerol(56:4)_[M+NH4]1+ levels | triglyceride measurement | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0537 unit decrease OR=None p=5e-20 | Triacylglycerol(54:3)_[M+NH4]1+ levels | triglyceride measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0983 unit decrease OR=None p=2.9999999999999997e-20 | Sphingomyelin(44:9)_[M+H]1- levels | sphingomyelin measurement | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0771 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylserine(44:6)_[M+OAc]1- levels | phosphatidylserines measurement | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0782 unit increase OR=None p=4e-20 | Phosphatidylserine(42:7)_[M+OAc]1- levels | phosphatidylserines measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0873 unit decrease OR=None p=4e-20 | Phosphatidylserine(42:5)_[M+OAc]1- levels | phosphatidylserines measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.1006 unit decrease OR=None p=5e-20 | Phosphatidylserine(35:2)_[M+OAc]1- levels | phosphatidylserines measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0825 unit decrease OR=None p=4e-20 | Phosphatidylinositol(38:4)_[M-H]1- levels | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0537 unit decrease OR=None p=4e-20 | Phosphatidylinositol(36:4)_[M-H]1- levels | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0769 unit decrease OR=None p=4e-20 | Phosphatidylinositol(36:2)_[M-H]1- levels | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0969 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylinositol(36:1)_[M+OAc]1- levels | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.1163 unit increase OR=None p=4e-20 | Phosphatidylinositol(36:0)_[M+OAc]1- levels | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.1243 unit decrease OR=None p=4e-20 | Phosphatidylinositol(34:2)_[M-H]1- levels | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0713 unit decrease OR=None p=4e-20 | Phosphatidylinositol-O(36:0)_[M-H]1-/Phosphatidylglycerol(37:0)_[M+OAc | level of phosphatidylinositol | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0545 unit decrease OR=None p=4e-20 | Phosphatidylglycerol(36:0)_[M-H]1- levels | glycerophospholipid measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0709 unit decrease OR=None p=4e-20 | Phosphatidylglycerol(34:0)_[M-H]1- levels | glycerophospholipid measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0875 unit decrease OR=None p=4e-20 | Phosphatidylethanolamine(38:5)_[M-H]1- levels | level of phosphatidylethanolamine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0981 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylethanolamine(34:2)_[M+H]1+ levels | level of phosphatidylethanolamine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0904 unit decrease OR=None p=4e-20 | Phosphatidylethanolamine-O(38:6)_[M+H]1+/Phosphatidylcholine-P(35:5)_[ | level of phosphatidylethanolamine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0606 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylethanolamine-O(38:4)_[M-H]1-/Phosphatidylcholine-O(35:4)_[ | level of phosphatidylethanolamine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.1058 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(42:4)_[M+OAc]1- levels | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0827 unit decrease OR=None p=4e-20 | Phosphatidylcholine(40:6)_[M+H]1+/Phosphatidylethanolamine(43:6)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0751 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(40:5)_[M+OAc]1-/Phosphatidylserine(44:4)_[M-H]1- l | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0698 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(40:5)_[M+H]1+ levels | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0972 unit increase OR=None p=4e-20 | Phosphatidylcholine(40:4)_[M+OAc]1-/Phosphatidylserine(44:3)_[M-H]1- l | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0876 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(38:5)_[M+H]1+/Phosphatidylethanolamine(41:5)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.1022 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(38:4)_[M+OAc]1-/Phosphatidylserine(42:3)_[M-H]1- l | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.1748 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(38:4)_[M+H]1+/Phosphatidylethanolamine(41:4)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.1164 unit increase OR=None p=4e-20 | Phosphatidylcholine(38:3)_[M+OAc]1-/Phosphatidylserine(42:2)_[M-H]1- l | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.09 unit increase OR=None p=4e-20 | Phosphatidylcholine(38:3)_[M+H]1+/Phosphatidylethanolamine(41:3)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0768 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(37:4)_[M+H]1+/Phosphatidylethanolamine(40:4)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0783 unit decrease OR=None p=4e-20 | Phosphatidylcholine(37:4)_[M+H]1+/Phosphatidylethanolamine(40:3)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0688 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(36:5)_[M+OAc]1-/Phosphatidylserine(40:4)_[M-H]1- l | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0757 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(36:3)_[M+OAc]1-/Phosphatidylserine(40:2)_[M-H]1- l | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0682 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(36:3)_[M+H]1+/Phosphatidylethanolamine(39:3)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.1161 unit increase OR=None p=4e-20 | Phosphatidylcholine(36:2)_[M+H]1+/Phosphatidylethanolamine(39:2)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0826 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(35:4)_[M+H]1+/Phosphatidylethanolamine(38:4)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.1147 unit decrease OR=None p=4e-20 | Phosphatidylcholine(34:2)_[M+H]1+/Phosphatidylethanolamine(37:2)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0676 unit increase OR=None p=4e-20 | Phosphatidylcholine(33:3)_[M+H]1+/Phosphatidylethanolamine(36:3)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0967 unit increase OR=None p=2.9999999999999997e-20 | Phosphatidylcholine(33:2)_[M+H]1+/Phosphatidylethanolamine(36:2)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0733 unit increase OR=None p=4e-20 | Phosphatidylcholine(32:0)_[M+H]1+/Phosphatidylethanolamine(35:0)_[M+H] | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0396 unit increase OR=None p=4e-20 | Phosphatidylcholine-O(40:6)_[M+H]1+/Phosphatidylcholine-P(40:5)_[M+H]1 | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0539 unit decrease OR=None p=4e-20 | Phosphatidylcholine-O(40:5)_[M+H]1+/Phosphatidylcholine-P(40:4)_[M+H]1 | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0842 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine-O(38:5)_[M+H]1+/Phosphatidylcholine-P(38:4)_[M+H]1 | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0825 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine-O(36:5)_[M+H]1+/Phosphatidylcholine-P(36:4)_[M+H]1 | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.1001 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidylcholine-O(36:3)_M+H]1+/Phosphatidylcholine-P(36:2)_M+H]1+  | level of phosphatidylcholine | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.0753 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidate(43:4)_[M-H]1- levels | phosphatidate measurement | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0997 unit decrease OR=None p=4e-20 | Phosphatidate(41:2)_[M+H]1+ levels | phosphatidate measurement | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.105 unit decrease OR=None p=2.9999999999999997e-20 | Phosphatidate(39:1)_[M+H]1+ levels | phosphatidate measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0691 unit decrease OR=None p=5e-20 | Phosphatidate(34:2)_[M-H]1- levels | phosphatidate measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0705 unit decrease OR=None p=2.9999999999999997e-20 | Lysophosphatidylcholine(20:4)_[M+H]1+ levels | lysophosphatidylcholine measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.0705 unit decrease OR=None p=4e-20 | Fatty acid(22:5)_[M-H]1- levels | fatty acid amount | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0713 unit decrease OR=None p=4e-20 | Fatty acid(22:4)_[M-H]1- levels | fatty acid amount | Harshfield EL 34503513
+   ['rs174537-C'] beta=0.1002 unit decrease OR=None p=2.9999999999999997e-20 | Fatty acid(20:4)_[M-H]1- levels | fatty acid amount | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0709 unit decrease OR=None p=5e-20 | Diacylglycerol(36:3)_[M+H-H2O]1+ levels | diacylglycerol 36:3 measurement | Harshfield EL 34503513
+   ['rs174537-A'] beta=0.1169 unit decrease OR=None p=5e-20 | Diacylglycerol(36:2)_[M+H-H2O]1+ levels | diacylglycerol 36:2 measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0919 unit decrease OR=None p=2.9999999999999997e-20 | Cholesteryl ester(20:5)_[M+NH4]1+ levels | cholesteryl ester 20:5 measurement | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0959 unit decrease OR=None p=2.9999999999999997e-20 | Cholesteryl ester(20:4)_[M+NH4]1+ levels | cholesteryl ester 20:4 measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0596 unit decrease OR=None p=4e-20 | Cholesteryl ester(18:3)_[M+NH4]1+ levels | cholesteryl ester 18:3 measurement | Harshfield EL 34503513
+   ['rs174537-G'] beta=0.0709 unit decrease OR=None p=5e-20 | Cholesteryl ester(16:0)_[M+NH4]1+ levels | cholesteryl ester 16:0 measurement | Harshfield EL 34503513
+   ['rs174537-T'] beta=0.0305 mg dl-1 decrease OR=None p=2e-22 | HDL cholesterol | high density lipoprotein cholesterol measurement | Klarin D 30275531
+   ['rs174537-T'] beta=0.0617 mg dl-1 increase OR=None p=2e-86 | Triglycerides | triglyceride measurement | Klarin D 30275531
+   ['rs174537-G'] beta=0.0122602 unit increase OR=None p=5.999999999999999e-21 | Sex hormone-binding globulin levels adjusted for BMI | sex hormone-binding globulin measurement | Ruth KS 32042192
+   ['rs174537-G'] beta=0.0139815 unit increase OR=None p=2e-21 | Sex hormone-binding globulin levels | sex hormone-binding globulin measurement | Ruth KS 32042192
+   ['rs174537-?'] beta=- OR=None p=1e-11 | Electrocardiographic traits (multivariate) | electrocardiography | Baldassari AR 32602732
+   ['rs174537-?'] beta=0.02276 unit increase OR=None p=1e-24 | Triglyceride levels x long total sleep time interaction (2df test) | triglyceride measurement,sleep duration trait | Noordam R 31719535
+   ['rs174537-A'] beta=- OR=1.0922968 p=2e-12 | Crohn's disease | Crohn disease | Liu JZ 26192919
+   ['rs174537-G'] beta=- OR=1.1 p=8e-12 | Colorectal cancer | colorectal cancer | Lu Y 30529582
+   ['rs174537-T'] beta=0.32504 unit decrease OR=None p=7e-14 | Serum metabolite ratios in chronic kidney disease | serum metabolite level | Li Y 29545352
+   ['rs174537-T'] beta=0.389852 unit decrease OR=None p=2e-19 | Serum metabolite ratios in chronic kidney disease | serum metabolite level | Li Y 29545352
+   ['rs174537-T'] beta=0.357607 unit decrease OR=None p=1e-16 | Serum metabolite concentrations in chronic kidney disease | serum metabolite level | Li Y 29545352
+   ['rs174537-T'] beta=0.336305 unit decrease OR=None p=2e-14 | Serum metabolite concentrations in chronic kidney disease | serum metabolite level | Li Y 29545352
+   ['rs174537-T'] beta=0.317125 unit decrease OR=None p=9e-13 | Serum metabolite concentrations in chronic kidney disease | serum metabolite level | Li Y 29545352
+   ['rs174537-T'] beta=0.272908 unit decrease OR=None p=5e-10 | Serum metabolite concentrations in chronic kidney disease | serum metabolite level | Li Y 29545352
+   ['rs174537-G'] beta=- OR=1.111 p=2e-07 | Colorectal cancer | colorectal cancer | Tanikawa C 29471430
+   ['rs174537-G'] beta=- OR=1.16 p=9e-21 | Colorectal cancer | colorectal cancer | Zeng C 26965516
+   ['rs174537-T'] beta=0.5254 unit decrease OR=None p=4e-164 | Plasma omega-6 polyunsaturated fatty acid levels (gamma-linolenic acid | gamma-linolenic acid measurement | Dorajoo R 26584805
+   ['rs174537-T'] beta=0.0031 unit increase OR=None p=8e-14 | Trans fatty acid levels | cis/trans-18:2 fatty acid measurement,trans fatty acid measu | Mozaffarian D 25646338
+   ['rs174537-G'] beta=- OR=1.16 p=9e-21 | Colorectal cancer | colorectal cancer | Zhang B 24836286
+== rs10427255: 5
+   ['rs10427255-T'] beta=0.0198 unit decrease OR=None p=8.999999999999999e-145 | Smoking initiation | smoking initiation | Saunders GRB 36477530
+   ['rs10427255-C'] beta=0.012 unit increase OR=None p=3e-26 | Externalizing behaviour (multivariate analysis) | social inhibition quality,substance abuse,attention deficit- | Karlsson Linner R 34446935
+   ['rs10427255-T'] beta=- OR=1.68 p=5.999999999999999e-20 | Photic sneeze reflex | autosomal dominant compelling helio-ophthalmic outburst synd | Wang M 30899065
+   ['rs10427255-T'] beta=0.0166 unit decrease OR=None p=3e-22 | Smoking initiation | smoking initiation | Erzurumluoglu AM 30617275
+   ['rs10427255-C'] beta=- OR=1.32 p=1e-11 | Common traits (Other) | Sneeze | Eriksson N 20585627
+== rs2472297: 95
+   ['rs2472297-C'] beta=0.02537 unit increase OR=None p=4e-14 | Sodium (mean, inv-norm transformed) | sodium measurement | Verma A 39024449
+   ['rs2472297-C'] beta=0.02317 unit increase OR=None p=1e-13 | sodium (maximum, inv-norm transformed) | sodium measurement | Verma A 39024449
+   ['rs2472297-C'] beta=0.04502 unit increase OR=None p=3e-11 | Chronic renal failure [CKD] (PheCode 585.3) | chronic kidney disease | Verma A 39024449
+   ['rs2472297-C'] beta=0.03684 unit increase OR=None p=4e-29 | Blood urea nitrogen (BUN, mean, inv-norm transformed) | blood urea nitrogen amount | Verma A 39024449
+   ['rs2472297-C'] beta=0.0293 unit increase OR=None p=2e-21 | Blood urea nitrogen (BUN, maximum, inv-norm transformed) | blood urea nitrogen amount | Verma A 39024449
+   ['rs2472297-C'] beta=0.03034 unit decrease OR=None p=2e-19 | estimated glomerular filtration rate (eGFR, minimum, inv-norm transfor | glomerular filtration rate | Verma A 39024449
+   ['rs2472297-C'] beta=0.03556 unit decrease OR=None p=7e-24 | estimated glomerular filtration rate (eGFR, mean, inv-norm transformed | glomerular filtration rate | Verma A 39024449
+   ['rs2472297-C'] beta=0.03421 unit decrease OR=None p=8e-23 | estimated glomerular filtration rate (eGFR, maximum, inv-norm transfor | glomerular filtration rate | Verma A 39024449
+   ['rs2472297-C'] beta=0.03012 unit increase OR=None p=6e-19 | creatinine (maximum, inv-norm transformed) | serum creatinine amount | Verma A 39024449
+   ['rs2472297-C'] beta=0.02025 unit increase OR=None p=2e-12 | sodium (minimum, inv-norm transformed) | sodium measurement | Verma A 39024449
+   ['rs2472297-C'] beta=0.02873 unit increase OR=None p=2e-22 | Sodium (mean, inv-norm transformed) | sodium measurement | Verma A 39024449
+   ['rs2472297-C'] beta=0.02392 unit increase OR=None p=3.0000000000000002e-15 | chloride  (mean, inv-norm transformed) | chloride level | Verma A 39024449
+   ['rs2472297-C'] beta=0.01947 unit increase OR=None p=2e-11 | chloride  (maximum, inv-norm transformed) | chloride level | Verma A 39024449
+   ['rs2472297-?'] beta=- OR=None p=4e-08 | Estimated glomerular filtration rate | glomerular filtration rate | Argoty-Pantoja AD 42302930
+   ['rs2472297-T'] beta=0.0162 unit increase OR=None p=3.0000000000000004e-08 | Total bilirubin levels | bilirubin measurement | Jee YH 40436827
+   ['rs2472297-T'] beta=0.022755748 unit decrease OR=None p=3.0000000000000002e-25 | Urea levels (UKB data field 30670) | serum urea amount | Loya H 39789286
+   ['rs2472297-T'] beta=0.018484253 unit decrease OR=None p=2e-24 | Urate levels (UKB data field 30880) | urate measurement | Loya H 39789286
+   ['rs2472297-T'] beta=0.022416586 unit decrease OR=None p=7e-37 | Creatinine levels (UKB data field 30700) | serum creatinine amount | Loya H 39789286
+   ['rs2472297-T'] beta=0.0278 unit decrease OR=None p=1e-17 | Serum urate levels | urate measurement | Cho C 38658550
+   ['rs2472297-T'] beta=0.0278 unit decrease OR=None p=3.0000000000000002e-18 | Serum urate levels | urate measurement | Cho C 38658550
+   ['rs2472297-T'] beta=0.11982 unit increase OR=None p=4e-10 | 5-hydroxy-2-methylpyridine sulfate levels | 5-hydroxy-2-methylpyridine sulfate measurement | Chen Y 36635386
+   ['rs2472297-T'] beta=0.148933 unit increase OR=None p=2e-16 | 1-methylxanthine levels | 1-methylxanthine measurement | Chen Y 36635386
+   ['rs2472297-T'] beta=0.121476 unit increase OR=None p=2e-11 | 5-acetylamino-6-amino-3-methyluracil levels | 5-acetylamino-6-amino-3-methyluracil measurement | Chen Y 36635386
+   ['rs2472297-T'] beta=0.11672428 unit decrease OR=None p=1e-24 | X-21286 levels | X-21286 measurement | Surendran P 36357675
+   ['rs2472297-T'] beta=0.07977563 unit increase OR=None p=3e-12 | 7-methylxanthine levels | 7-methylxanthine measurement | Surendran P 36357675
+   ['rs2472297-T'] beta=0.09017382 unit increase OR=None p=2e-14 | 5-acetylamino-6-formylamino-3-methyluracil levels | 5-acetylamino-6-formylamino-3-methyluracil measurement | Surendran P 36357675
+   ['rs2472297-T'] beta=0.11014052 unit increase OR=None p=5.0000000000000005e-22 | 5-acetylamino-6-amino-3-methyluracil levels | 5-acetylamino-6-amino-3-methyluracil measurement | Surendran P 36357675
+   ['rs2472297-T'] beta=0.12830855 unit increase OR=None p=2.9999999999999997e-29 | 1-methylxanthine levels | 1-methylxanthine measurement | Surendran P 36357675
+   ['rs2472297-T'] beta=0.13960607 unit increase OR=None p=4e-32 | 1-methylurate levels | 1-methylurate measurement | Surendran P 36357675
+   ['rs2472297-T'] beta=0.142 unit decrease OR=None p=8e-12 | Metabolite levels (caffeine) | caffeine measurement | Feofanova EV 37253714
+   ['rs2472297-C'] beta=0.0140716 unit decrease OR=None p=1e-10 | Body mass index | body mass index | Hawkes G 37280435
+   ['rs2472297-?'] beta=- OR=None p=8e-10 | Peak expiratory flow | peak expiratory flow | Sinkala M 36641522
+   ['rs2472297-C'] beta=0.0102 unit decrease OR=None p=2e-11 | Body mass index | body mass index | Huang J 36581621
+   ['rs2472297-?'] beta=- OR=None p=2e-09 | Plasma norclozapine levels in treatment-resistant schizophrenia | plasma N-desmethylclozapine measurement | Pardinas AF 36804072
+   ['rs2472297-?'] beta=- OR=None p=4e-11 | Plasma clozapine levels in treatment-resistant schizophrenia | plasma clozapine measurement | Pardinas AF 36804072
+   ['rs2472297-T'] beta=0.25 unit decrease OR=None p=1e-32 | Caffeine levels | caffeine metabolite measurement | Yin X 35347128
+   ['rs2472297-T'] beta=0.15 unit decrease OR=None p=2e-13 | 1,7-dimethylurate levels | 1,7-dimethylurate measurement | Yin X 35347128
+   ['rs2472297-T'] beta=0.16 unit decrease OR=None p=2e-12 | 1,3,7-trimethylurate levels | 1,3,7-trimethylurate measurement | Yin X 35347128
+   ['rs2472297-T'] beta=0.14 unit decrease OR=None p=4.9999999999999995e-11 | Paraxanthine levels | paraxanthine measurement | Yin X 35347128
+   ['rs2472297-T'] beta=0.2 unit decrease OR=None p=5e-21 | Theophylline levels | theophylline measurement | Yin X 35347128
+   ['rs2472297-T'] beta=0.16 unit decrease OR=None p=4e-14 | X-21286 levels | X-21286 measurement | Yin X 35347128
+   ['rs2472297-?'] beta=- OR=None p=2e-06 | Dietary macronutrient intake (multi-trait analysis) | diet measurement | Merino J 34426670
+   ['rs2472297-?'] beta=- OR=None p=7e-07 | Relative carbohydrate intake | carbohydrate intake measurement | Merino J 34426670
+   ['rs2472297-C'] beta=0.0685684 unit decrease OR=None p=1e-182 | Coffee consumption (cups per day) | coffee consumption measurement | Cole JB 32193382
+   ['rs2472297-T'] beta=0.08673 unit decrease OR=None p=2e-09 | Milky sweets liking | taste liking measurement | May-Wilson S 35585065
+   ['rs2472297-T'] beta=0.02307 unit decrease OR=None p=9.000000000000001e-09 | Milk chocolate liking | taste liking measurement | May-Wilson S 35585065
+   ['rs2472297-T'] beta=0.045975 unit increase OR=None p=3.0000000000000003e-30 | Coffee max liking | taste liking measurement | May-Wilson S 35585065
+   ['rs2472297-T'] beta=0.09294 unit increase OR=None p=2e-09 | F-coffee/alcohol liking (derived food-liking factor) | taste liking measurement | May-Wilson S 35585065
+   ['rs2472297-T'] beta=0.20304 unit increase OR=None p=1e-33 | F-chocolate/coffee liking (derived food-liking factor) | taste liking measurement | May-Wilson S 35585065
+   ['rs2472297-T'] beta=14.747 z score increase OR=None p=2.9999999999999996e-49 | Estimated glomerular filtration rate (creatinine) | glomerular filtration rate | Liu H 35710981
+   ['rs2472297-C'] beta=0.0171971 unit decrease OR=None p=2e-36 | Tea consumption | tea consumption measurement | Pirastu N 35653391
+   ['rs2472297-C'] beta=0.00302852 unit decrease OR=None p=5.999999999999999e-24 | Estimated glomerular filtration rate (creatinine) | glomerular filtration rate | Stanzick KJ 34272381
+   ['rs2472297-C'] beta=0.0039 unit decrease OR=None p=6e-35 | Estimated glomerular filtration rate (creatinine) | glomerular filtration rate | Stanzick KJ 34272381
+   ['rs2472297-T'] beta=0.0332 unit decrease OR=None p=4.999999999999999e-34 | Creatinine levels | serum creatinine amount | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.0293 unit decrease OR=None p=4e-26 | Urinary creatinine levels | serum creatinine amount | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.0199 unit decrease OR=None p=3.0000000000000003e-13 | Cystatin C levels | cystatin c measurement | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.0323 unit increase OR=None p=2e-32 | Estimated glomerular filtration rate | glomerular filtration rate | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.024 unit increase OR=None p=5.0000000000000005e-17 | Serum phosphate levels | blood phosphate measurement | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.0209 unit decrease OR=None p=5e-14 | Urinary sodium excretion | sodium measurement | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.0255 unit decrease OR=None p=1e-20 | Urate levels | urate measurement | Sinnott-Armstrong N 33462484
+   ['rs2472297-T'] beta=0.0268 unit decrease OR=None p=1e-22 | Urea levels | serum urea amount | Sinnott-Armstrong N 33462484
+   ['rs2472297-C'] beta=0.05411 unit decrease OR=None p=3e-102 | Caffeine consumption from tea | tea consumption measurement | Said MA 33287642
+   ['rs2472297-C'] beta=0.06521 unit decrease OR=None p=2.9999999999999997e-140 | Caffeine consumption from coffee | coffee consumption measurement | Said MA 33287642
+   ['rs2472297-C'] beta=0.10487 unit decrease OR=None p=0.0 | Caffeine consumption from coffee or tea | coffee consumption measurement,tea consumption measurement | Said MA 33287642
+   ['rs2472297-T'] beta=0.011993645 unit increase OR=None p=3.0000000000000004e-08 | Alcohol consumption (drinks per week) (MTAG) | alcohol consumption quality | Zhou H 32451486
+   ['rs2472297-T'] beta=0.073 unit increase OR=None p=4e-10 | Clozapine concentration in schizophrenia | serum clozapine amount | Smith RL 32555152
+   ['rs2472297-?'] beta=0.018 unit decrease OR=None p=3.0000000000000004e-08 | Relative carbohydrate intake | carbohydrate intake measurement | Meddens SFW 32393786
+   ['rs2472297-T'] beta=0.136 cups per day increase OR=None p=2e-95 | Coffee consumption (cups per day) | cups of coffee per day measurement | Kennedy OJ 31837886
+   ['rs2472297-T'] beta=0.027 unit increase OR=None p=2e-32 | Urinary albumin-to-creatinine ratio | urinary albumin to creatinine ratio | Casanova F 31630189
+   ['rs2472297-T'] beta=0.0279 mg/dL decrease OR=None p=8e-09 | Urate levels | urate measurement | Tin A 31578528
+   ['rs2472297-T'] beta=0.027944 mg/dL decrease OR=None p=2e-08 | Urate levels | urate measurement | Tin A 31578528
+   ['rs2472297-T'] beta=0.0384 mg/dL decrease OR=None p=9e-06 | Urate levels | urate measurement | Tin A 31578528
+   ['rs2472297-T'] beta=0.441 unit increase OR=None p=2e-12 | Estimated glomerular filtration rate in non-diabetics | glomerular filtration rate | Hellwege JN 31451708
+   ['rs2472297-T'] beta=0.0039 unit increase OR=None p=8e-20 | Estimated glomerular filtration rate | glomerular filtration rate | Hellwege JN 31451708
+   ['rs2472297-T'] beta=0.0039 unit increase OR=None p=2e-18 | Estimated glomerular filtration rate | glomerular filtration rate | Hellwege JN 31451708
+   ['rs2472297-T'] beta=0.016565675 unit increase OR=None p=3.0000000000000004e-09 | Predicted visceral adipose tissue | visceral adipose tissue quantity | Karlsson T 31501611
+   ['rs2472297-C'] beta=0.0106514 unit increase OR=None p=4e-15 | Urinary potassium excretion | potassium measurement | Pazoki R 31409800
+   ['rs2472297-C'] beta=0.0138093 unit increase OR=None p=7e-23 | Urinary sodium excretion | sodium measurement | Pazoki R 31409800
+   ['rs2472297-C'] beta=0.0102 unit increase OR=None p=6e-07 | Sweet beverage consumption | sweet beverage consumption measurement | Zhong VW 31046077
+   ['rs2472297-T'] beta=0.0247 unit increase OR=None p=1e-45 | Tea consumption | tea consumption measurement | Zhong VW 31046077
+   ['rs2472297-T'] beta=0.0447 unit increase OR=None p=9e-157 | Coffee consumption | coffee consumption measurement | Zhong VW 31046077
+   ['rs2472297-T'] beta=0.0385 unit increase OR=None p=1e-97 | Bitter non-alcoholic beverage consumption | bitter non-alcoholic beverage consumption measurement | Zhong VW 31046077
+   ['rs2472297-T'] beta=0.0334 unit increase OR=None p=4e-74 | Bitter beverage consumption | bitter beverage consumption measurement | Zhong VW 31046077
+   ['rs2472297-T'] beta=0.0039 unit increase OR=None p=8e-34 | Estimated glomerular filtration rate | glomerular filtration rate | Wuttke M 31152163
+   ['rs2472297-T'] beta=0.0039 unit increase OR=None p=1e-34 | Estimated glomerular filtration rate | glomerular filtration rate | Wuttke M 31152163
+   ['rs2472297-T'] beta=- OR=None p=4e-10 | Plasma clozapine levels in treatment-resistant schizophrenia | plasma clozapine measurement | Pardinas AF 30922102
+   ['rs2472297-T'] beta=0.026 unit increase OR=None p=3e-16 | Urinary albumin-to-creatinine ratio | urinary albumin to creatinine ratio | Zanetti D 30910378
+   ['rs2472297-T'] beta=0.010606047 unit increase OR=None p=3e-10 | Alcohol consumption (drinks per week) | alcohol consumption quality | Liu M 30643251
+   ['rs2472297-T'] beta=0.00996419 unit increase OR=None p=9e-11 | Alcohol consumption (drinks per week) (MTAG) | alcohol consumption quality | Liu M 30643251
+   ['rs2472297-T'] beta=0.01812 unit increase OR=None p=5.0000000000000005e-22 | Urinary albumin excretion | albuminuria | Haas ME 30220432
+   ['rs2472297-T'] beta=9.58 Z-score increase OR=None p=9e-22 | Caffeine metabolism (plasma 1,7-dimethylxanthine (paraxanthine) to 1,3 | caffeine metabolite measurement | Cornelis MC 27702941
+   ['rs2472297-T'] beta=5.27 Z-score decrease OR=None p=1e-07 | Caffeine metabolism (plasma 1,3-dimethylxanthine (theophylline) level) | caffeine metabolite measurement | Cornelis MC 27702941
+   ['rs2472297-T'] beta=9.34 Z-score decrease OR=None p=1e-20 | Caffeine metabolism (plasma 1,3,7-trimethylxanthine (caffeine) level) | caffeine metabolite measurement | Cornelis MC 27702941
+   ['rs2472297-T'] beta=0.14 unit increase OR=None p=2e-24 | Coffee consumption (cups per day) | coffee consumption,cups of coffee per day measurement | Cornelis MC 25288136
+   ['rs2472297-T'] beta=0.31 cups per day increase OR=None p=5e-14 | Coffee consumption | coffee consumption | Sulem P 21357676
+== rs12203592: 231
+   ['rs12203592-C'] beta=0.3333 unit decrease OR=None p=4e-76 | Dermatitis due to solar radiation (PheCode 938) | phototoxic dermatitis | Verma A 39024449
+   ['rs12203592-C'] beta=0.3226 unit decrease OR=None p=2e-43 | Chronic dermatitis due to solar radiation (PheCode 938.2) | phototoxic dermatitis | Verma A 39024449
+   ['rs12203592-C'] beta=0.2192 unit decrease OR=None p=2e-39 | Biological Sibling:  Cancer, Skin | family history of cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.3257 unit decrease OR=None p=2.9999999999999997e-44 | Chronic dermatitis due to solar radiation (PheCode 938.2) | phototoxic dermatitis | Verma A 39024449
+   ['rs12203592-C'] beta=0.3384 unit decrease OR=None p=8.999999999999999e-80 | Dermatitis due to solar radiation (PheCode 938) | phototoxic dermatitis | Verma A 39024449
+   ['rs12203592-C'] beta=0.1953 unit decrease OR=None p=2e-41 | Other specified diseases of sebaceous glands (PheCode 706.8) | sebaceous gland disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.1033 unit decrease OR=None p=1e-19 | Sebaceous cyst (PheCode 706.2) | Epidermal Inclusion Cyst | Verma A 39024449
+   ['rs12203592-C'] beta=0.1285 unit decrease OR=None p=2.9999999999999997e-47 | Diseases of sebaceous glands (PheCode 706) | sebaceous gland disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.2019 unit decrease OR=None p=3e-158 | Seborrheic keratosis (PheCode 702.2) | seborrheic keratosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.4454 unit decrease OR=None p=1e-323 | Actinic keratosis (PheCode 702.1) | actinic keratosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.497 unit decrease OR=None p=6.999999999999999e-21 | Actinic keratosis (PheCode 702.1) | actinic keratosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.3109 unit decrease OR=None p=1e-323 | Degenerative skin conditions and other dermatoses (PheCode 702) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.2573 unit decrease OR=None p=3e-12 | Degenerative skin conditions and other dermatoses (PheCode 702) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.2659 unit decrease OR=None p=9e-74 | Benign neoplasm of eye (PheCode 224) | benign neoplasm of eye | Verma A 39024449
+   ['rs12203592-C'] beta=0.2812 unit decrease OR=None p=2e-79 | Benign neoplasm of eye, uveal (PheCode 224.1) | benign neoplasm of eye | Verma A 39024449
+   ['rs12203592-C'] beta=0.1916 unit decrease OR=None p=2e-26 | Screening for malignant neopla (PheCode 216.1) | encounter with health service | Verma A 39024449
+   ['rs12203592-C'] beta=0.2859 unit decrease OR=None p=3e-236 | Neoplasm of uncertain behavior of skin (PheCode 173) | skin neoplasm | Verma A 39024449
+   ['rs12203592-C'] beta=0.4675 unit decrease OR=None p=3e-238 | Squamous cell carcinoma (PheCode 172.22) | squamous cell carcinoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.3656 unit decrease OR=None p=3.0000000000000004e-233 | Basal cell carcinoma (PheCode 172.21) | basal cell carcinoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.2619 unit decrease OR=None p=7e-72 | Benign neoplasm of eye (PheCode 224) | benign neoplasm of eye | Verma A 39024449
+   ['rs12203592-C'] beta=0.2011 unit decrease OR=None p=4e-29 | Screening for malignant neopla (PheCode 216.1) | encounter with health service | Verma A 39024449
+   ['rs12203592-C'] beta=0.394 unit decrease OR=None p=1e-323 | Other non-epithelial cancer of skin (PheCode 172.2) | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.07357 unit decrease OR=None p=3.0000000000000002e-15 | Screening for malignant neoplasms (PheCode 1010.2) | encounter with health service | Verma A 39024449
+   ['rs12203592-C'] beta=0.09564 unit decrease OR=None p=2e-11 | Viral warts & HPV (PheCode 78) | hpv seropositivity,common wart | Verma A 39024449
+   ['rs12203592-C'] beta=0.264 unit decrease OR=None p=2e-41 | Melanomas of skin (PheCode 172.11) | cutaneous melanoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.356 unit decrease OR=None p=2e-298 | Melanomas of skin, dx or hx (PheCode 172.1) | cutaneous melanoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.1103 unit decrease OR=None p=9e-13 | Neoplasm of uncertain behavior (PheCode 199) | neoplasm | Verma A 39024449
+   ['rs12203592-C'] beta=0.2561 unit decrease OR=None p=5e-18 | Malignant neoplasm of head, face, and neck (PheCode 195.3) | head and neck cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.1696 unit decrease OR=None p=2e-11 | Malignant neoplasm, other (PheCode 195.1) | cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.3766 unit decrease OR=None p=1e-323 | Skin cancer | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.2744 unit decrease OR=None p=1e-75 | Benign neoplasm of eye, uveal (PheCode 224.1) | benign neoplasm of eye | Verma A 39024449
+   ['rs12203592-C'] beta=0.3587 unit decrease OR=None p=8e-12 | Skin cancer | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.2052 unit decrease OR=None p=5e-32 | Biological Mother:  Cancer, Skin | family history of cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.2228 unit decrease OR=None p=1e-39 | Biological Sibling:  Cancer, Skin | family history of cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.1142 unit decrease OR=None p=1e-35 | Diseases of sebaceous glands (PheCode 706) | sebaceous gland disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.1754 unit decrease OR=None p=6e-35 | Other specified diseases of sebaceous glands (PheCode 706.8) | sebaceous gland disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.09725 unit decrease OR=None p=1e-15 | Sebaceous cyst (PheCode 706.2) | Epidermal Inclusion Cyst | Verma A 39024449
+   ['rs12203592-C'] beta=0.1565 unit decrease OR=None p=2e-19 | Rosacea (PheCode 695.3) | rosacea | Verma A 39024449
+   ['rs12203592-C'] beta=0.252 unit decrease OR=None p=5e-54 | Dyschromia and Vitiligo (PheCode 694) | vitiligo | Verma A 39024449
+   ['rs12203592-C'] beta=0.283 unit decrease OR=None p=8e-61 | Other dyschromia (PheCode 694.2) | pigmentation disease | Verma A 39024449
+   ['rs12203592-C'] beta=0.3044 unit decrease OR=None p=3e-291 | Degenerative skin conditions and other dermatoses (PheCode 702) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.1973 unit decrease OR=None p=6e-57 | Erythematosquamous dermatosis (PheCode 690) | erythematosquamous dermatosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.1973 unit decrease OR=None p=9e-105 | Seborrheic keratosis (PheCode 702.2) | seborrheic keratosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.1972 unit decrease OR=None p=4e-57 | Seborrheic dermatitis (PheCode 690.1) | seborrheic dermatitis | Verma A 39024449
+   ['rs12203592-C'] beta=0.1384 unit decrease OR=None p=3e-37 | Disorder of skin and subcutaneous tissue NO (PheCode 689) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.4464 unit decrease OR=None p=1e-323 | Actinic keratosis (PheCode 702.1) | actinic keratosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.2092 unit decrease OR=None p=2e-18 | Scar conditions and fibrosis of skin (PheCode 701.2) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.375 unit decrease OR=None p=1e-323 | Skin cancer | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.2481 unit decrease OR=None p=2e-17 | Malignant neoplasm of head, face, and neck (PheCode 195.3) | head and neck cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.3905 unit decrease OR=None p=1e-323 | Other non-epithelial cancer of skin (PheCode 172.2) | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.461 unit decrease OR=None p=1e-207 | Squamous cell carcinoma (PheCode 172.22) | squamous cell carcinoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.3668 unit decrease OR=None p=2e-179 | Basal cell carcinoma (PheCode 172.21) | basal cell carcinoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.357 unit decrease OR=None p=4e-234 | Melanomas of skin, dx or hx (PheCode 172.1) | cutaneous melanoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.1659 unit decrease OR=None p=4e-29 | Biological Father:  Cancer, Skin | family history of cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.2667 unit decrease OR=None p=1e-39 | Melanomas of skin (PheCode 172.11) | cutaneous melanoma | Verma A 39024449
+   ['rs12203592-C'] beta=0.284 unit decrease OR=None p=6.000000000000001e-181 | Neoplasm of uncertain behavior of skin (PheCode 173) | skin neoplasm | Verma A 39024449
+   ['rs12203592-C'] beta=0.06085 unit decrease OR=None p=1e-11 | Screening for malignant neoplasms (PheCode 1010.2) | encounter with health service | Verma A 39024449
+   ['rs12203592-C'] beta=0.1001 unit decrease OR=None p=1e-12 | Viral warts & HPV (PheCode 78) | hpv seropositivity,common wart | Verma A 39024449
+   ['rs12203592-C'] beta=0.2041 unit decrease OR=None p=3.0000000000000003e-31 | Biological Mother:  Cancer, Skin | family history of cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.3714 unit decrease OR=None p=3e-265 | Skin cancer | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.3929 unit decrease OR=None p=2e-51 | Takes medication for skin cancer? | skin cancer,drug use measurement | Verma A 39024449
+   ['rs12203592-C'] beta=0.2178 unit decrease OR=None p=3e-19 | Scar conditions and fibrosis of skin (PheCode 701.2) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.07555 unit decrease OR=None p=1e-12 | Other hypertrophic and atrophic conditions (PheCode 701) | secondary hypertrophic osteoarthropathy | Verma A 39024449
+   ['rs12203592-C'] beta=0.1536 unit decrease OR=None p=7e-20 | Rosacea (PheCode 695.3) | rosacea | Verma A 39024449
+   ['rs12203592-C'] beta=0.08334 unit decrease OR=None p=4e-12 | Erythematous conditions (PheCode 695) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.2863 unit decrease OR=None p=3e-59 | Other dyschromia (PheCode 694.2) | pigmentation disease | Verma A 39024449
+   ['rs12203592-C'] beta=0.2538 unit decrease OR=None p=3e-52 | Dyschromia and Vitiligo (PheCode 694) | vitiligo | Verma A 39024449
+   ['rs12203592-C'] beta=0.2064 unit decrease OR=None p=4e-71 | Seborrheic dermatitis (PheCode 690.1) | seborrheic dermatitis | Verma A 39024449
+   ['rs12203592-C'] beta=0.2064 unit decrease OR=None p=1e-71 | Erythematosquamous dermatosis (PheCode 690) | erythematosquamous dermatosis | Verma A 39024449
+   ['rs12203592-C'] beta=0.1415 unit decrease OR=None p=2e-40 | Disorder of skin and subcutaneous tissue NO (PheCode 689) | skin disorder | Verma A 39024449
+   ['rs12203592-C'] beta=0.4016 unit decrease OR=None p=2e-53 | Takes medication for skin cancer? | skin cancer,drug use measurement | Verma A 39024449
+   ['rs12203592-C'] beta=0.3709 unit decrease OR=None p=1e-323 | Skin cancer | skin cancer | Verma A 39024449
+   ['rs12203592-C'] beta=0.1656 unit decrease OR=None p=2e-30 | Biological Father:  Cancer, Skin | family history of cancer | Verma A 39024449
+   ['rs12203592-T'] beta=8.59974 unit decrease OR=None p=8e-39 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.26374 unit increase OR=None p=7.000000000000001e-09 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.23457 unit decrease OR=None p=2e-09 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=6.29926 unit decrease OR=None p=9e-16 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=4.64731 unit increase OR=None p=4e-09 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.41572 unit increase OR=None p=5.999999999999999e-21 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.73029 unit increase OR=None p=2e-13 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=7.95537 unit decrease OR=None p=3e-12 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=9.42728 unit increase OR=None p=6e-10 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.69229 unit decrease OR=None p=9e-10 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=6.41935 unit decrease OR=None p=3.0000000000000002e-18 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.98326 unit decrease OR=None p=4e-12 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=9.42728 unit increase OR=None p=6e-10 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.73029 unit increase OR=None p=2e-13 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=7.95537 unit decrease OR=None p=3e-12 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.69229 unit decrease OR=None p=9e-10 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.25779 unit decrease OR=None p=9.000000000000001e-17 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.5798 unit increase OR=None p=5.999999999999999e-20 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.64494 unit increase OR=None p=4e-13 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.75947 unit decrease OR=None p=6e-11 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=8.05162 unit decrease OR=None p=1e-09 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=4.14599 unit increase OR=None p=1e-10 | Right eye retinal fundus image self-supervised embedding endophenotype | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.26374 unit increase OR=None p=7.000000000000001e-09 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=8.59974 unit decrease OR=None p=8e-39 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.23457 unit decrease OR=None p=2e-09 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=6.29926 unit decrease OR=None p=9e-16 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=4.64731 unit increase OR=None p=4e-09 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.41572 unit increase OR=None p=5.999999999999999e-21 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=8.05162 unit decrease OR=None p=1e-09 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.75947 unit decrease OR=None p=6e-11 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=4.14599 unit increase OR=None p=1e-10 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=6.41935 unit decrease OR=None p=3.0000000000000002e-18 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.98326 unit decrease OR=None p=4e-12 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.25779 unit decrease OR=None p=9.000000000000001e-17 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=5.5798 unit increase OR=None p=5.999999999999999e-20 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-T'] beta=3.64494 unit increase OR=None p=4e-13 | Left eye retinal fundus image self-supervised embedding endophenotype  | eye measurement | Xie Z 38728357
+   ['rs12203592-?'] beta=0.0687353 unit decrease OR=None p=4e-20 | Circulating GPNMB levels (id: OID00749_OID20173) | transmembrane glycoprotein NMB measurement | Koprulu M 42097137
+   ['rs12203592-?'] beta=0.1043008 unit decrease OR=None p=7e-48 | Circulating KIT levels | blood protein amount | Koprulu M 42097137
+   ['rs12203592-?'] beta=0.0700584 unit decrease OR=None p=5.999999999999999e-21 | Circulating GPNMB levels (id: OID05139_OID20173) | transmembrane glycoprotein NMB measurement | Koprulu M 42097137
+   ['rs12203592-?'] beta=0.0484193 unit decrease OR=None p=3e-11 | Circulating HPGDS levels | amount of prostaglandin-H2 D-isomerase (human) in blood | Koprulu M 42097137
+   ['rs12203592-?'] beta=0.0665638 unit decrease OR=None p=6e-19 | Circulating DSG4 levels | amount of desmoglein-4 (human) in blood | Koprulu M 42097137
+   ['rs12203592-?'] beta=0.0411977 unit decrease OR=None p=1e-11 | Circulating TMPRSS5 levels | amount of transmembrane protease serine 5 (human) in blood | Koprulu M 42097137
+   ['rs12203592-?'] beta=- OR=1.39 p=3e-22 | Other non-epithelial cancer of skin (PheCode 172.2) | skin cancer | Koyama S 41298473
+   ['rs12203592-?'] beta=- OR=1.23 p=7e-20 | Degenerative skin conditions and other dermatoses (PheCode 702) | skin disorder | Koyama S 41298473
+   ['rs12203592-?'] beta=- OR=1.44 p=6e-12 | Carcinoma in situ of skin (PheCode 172.3) | skin carcinoma in situ | Koyama S 41298473
+   ['rs12203592-?'] beta=- OR=1.34 p=7e-22 | Skin cancer | skin cancer | Koyama S 41298473
+   ['rs12203592-?'] beta=- OR=1.4 p=2.9999999999999998e-40 | Actinic keratosis | actinic keratosis | Koyama S 41298473
+   ['rs12203592-T'] beta=0.158185 unit decrease OR=None p=5e-46 | Grade of retinal pigmentation | eye measurement | Yuan J 41477839
+   ['rs12203592-T'] beta=- OR=None p=6.999999999999999e-19 | Uveal melanoma | uveal melanoma | Mies G 40495383
+   ['rs12203592-T'] beta=0.19 decrease OR=None p=2e-06 | Melanoma (in situ vs invasive) | melanoma | Ingold N 39141363
+   ['rs12203592-T'] beta=0.26 unit increase OR=None p=8e-15 | Melanoma in situ | melanoma | Ingold N 39141363
+   ['rs12203592-T'] beta=0.050239988 unit decrease OR=None p=9e-12 | TYRP1 protein levels | level of 5,6-dihydroxyindole-2-carboxylic acid oxidase in bl | Loya H 39789286
+   ['rs12203592-T'] beta=0.04946923 unit increase OR=None p=2e-13 | KRT5 protein levels | keratin, type II cytoskeletal 5 measurement | Loya H 39789286
+   ['rs12203592-T'] beta=0.08234919 unit decrease OR=None p=3e-42 | KIT protein levels | blood protein amount | Loya H 39789286
+   ['rs12203592-T'] beta=0.041070018 unit decrease OR=None p=5e-12 | HPGDS protein levels | hematopoietic prostaglandin D synthase measurement | Loya H 39789286
+   ['rs12203592-T'] beta=0.06612853 unit decrease OR=None p=2.9999999999999995e-21 | GPNMB protein levels | transmembrane glycoprotein NMB measurement | Loya H 39789286
+   ['rs12203592-T'] beta=0.051753767 unit decrease OR=None p=2e-19 | DSG4 protein levels | level of desmoglein-4 in blood serum | Loya H 39789286
+   ['rs12203592-T'] beta=0.048673086 unit increase OR=None p=6e-14 | CD5L protein levels | CD5 antigen-like measurement | Loya H 39789286
+   ['rs12203592-T'] beta=0.2835415 unit increase OR=None p=8e-32 | Basal cell carcinoma | basal cell carcinoma | Loya H 39789286
+   ['rs12203592-T'] beta=0.016954828 unit decrease OR=None p=2e-13 | Monocyte percentage (UKB data field 30190) | monocyte percentage of leukocytes | Loya H 39789286
+   ['rs12203592-T'] beta=0.02 unit decrease OR=None p=1e-08 | Gut microbial network clusters (Salmon (at 1 year) x Any Breastfeeding | gut microbiome measurement,breastfeeding duration | Stickley SA 40187613
+   ['rs12203592-T'] beta=0.2828 unit decrease OR=None p=1e-13 | L-dopachrome tautomerase levels | protein measurement | Western D 39528825
+   ['rs12203592-C'] beta=0.004630386 unit decrease OR=None p=6e-06 | Neuroticism general factor | neuroticism measurement | Kim Y 37783279
+   ['rs12203592-C'] beta=0.010844371 unit increase OR=None p=7e-12 | Aging | aging | Rosoff DB 37550455
+   ['rs12203592-T'] beta=- OR=1.6021 p=1e-234 | Cutaneous squamous cell carcinoma | cutaneous squamous cell carcinoma | Choquet H 38182794
+   ['rs12203592-C'] beta=0.0159452 unit decrease OR=None p=2e-10 | Childhood body mass index | body mass index | Hawkes G 37280435
+   ['rs12203592-C'] beta=0.034645826 years increase OR=None p=1e-15 | Male puberty timing (age at voice breaking MTAG) | puberty onset measurement | Hollis B 32210231
+   ['rs12203592-C'] beta=0.0152773 years increase OR=None p=5e-29 | Male puberty timing (late vs. average onset facial hair) | puberty onset measurement | Hollis B 32210231
+   ['rs12203592-C'] beta=0.00663402 years decrease OR=None p=7.000000000000001e-10 | Male puberty timing (early vs. average onset facial hair) | puberty onset measurement | Hollis B 32210231
+   ['rs12203592-T'] beta=0.173248 unit increase OR=None p=4e-14 | Skin color | skin pigmentation | Farre X 36672889
+   ['rs12203592-T'] beta=0.225739 unit decrease OR=None p=8e-20 | Ease of skin tanning | skin sensitivity to sun | Farre X 36672889
+   ['rs12203592-T'] beta=0.242777 unit increase OR=None p=8e-11 | Ease of sunburn | skin sensitivity to sun | Farre X 36672889
+   ['rs12203592-T'] beta=0.458651 unit increase OR=None p=6.9999999999999995e-40 | Freckles | freckles | Farre X 36672889
+   ['rs12203592-T'] beta=0.209556 unit decrease OR=None p=3e-11 | Eye color | eye color | Farre X 36672889
+   ['rs12203592-T'] beta=1.03405 unit decrease OR=None p=3.0000000000000003e-46 | Brown vs. black hair color | hair color | Farre X 36672889
+   ['rs12203592-T'] beta=0.015 unit increase OR=None p=2.9999999999999997e-47 | Skin reflectance | skin pigmentation | Vollenbrock CE 36536295
+   ['rs12203592-T'] beta=0.00775 unit decrease OR=None p=1e-11 | Drinks per week | alcohol consumption quality | Saunders GRB 36477530
+   ['rs12203592-T'] beta=0.00739 unit decrease OR=None p=7.000000000000001e-10 | Drinks per week | alcohol consumption quality | Saunders GRB 36477530
+   ['rs12203592-T'] beta=0.1 unit increase OR=None p=3e-12 | Lung cancer | lung carcinoma | Byun J 35915169
+   ['rs12203592-T'] beta=- OR=1.57 p=8e-33 | Actinic keratosis | actinic keratosis | Kim Y 35449187
+   ['rs12203592-T'] beta=- OR=1.52 p=7.999999999999999e-184 | Actinic keratosis | actinic keratosis | Kim Y 35449187
+   ['rs12203592-?'] beta=- OR=None p=3.0000000000000002e-25 | Melanoma | melanoma | Liyanage U 34813871
+   ['rs12203592-T'] beta=0.385 unit decrease OR=None p=1.996e-321 | Eye color | eye color | Simcoe M 33692100
+   ['rs12203592-C'] beta=1.13807 increase OR=None p=2e-50 | Brown vs. black hair color | hair color | Lona-Durazo F 34737440
+   ['rs12203592-C'] beta=0.896658 increase OR=None p=2e-52 | Blond vs. brown/black hair color | hair color | Lona-Durazo F 34737440
+   ['rs12203592-T'] beta=0.047862 unit decrease OR=None p=3.0000000000000004e-08 | Retinal vascular fractal density | retinal vasculature measurement | Zekavat SM 34743558
+   ['rs12203592-T'] beta=0.064238 unit decrease OR=None p=4e-14 | Retinal vascular fractal dimension | retinal vasculature measurement | Zekavat SM 34743558
+   ['rs12203592-T'] beta=- OR=1.76 p=4e-08 | Uveal melanoma | uveal melanoma | Mobuchon L 34424336
+   ['rs12203592-T'] beta=- OR=1.3 p=1e-49 | Cancer (additive model) | cancer | Guindo-Martinez M 33893285
+   ['rs12203592-T'] beta=- OR=1.38 p=3e-12 | Acute myeloid leukemia or myelodysplastic syndrome (pleiotropy) | acute myeloid leukemia,myelodysplastic syndrome | Wang J 34220922
+   ['rs12203592-?'] beta=- OR=1.38859 p=4e-148 | Non-melanoma skin cancer | non-melanoma skin carcinoma | Brandes N 34290314
+   ['rs12203592-?'] beta=- OR=1.12836 p=8e-47 | Cancer | cancer | Brandes N 34290314
+   ['rs12203592-C'] beta=0.0140214 unit decrease OR=None p=4e-08 | Age at first sexual intercourse | age at first sexual intercourse measurement | Mills MC 34211149
+   ['rs12203592-C'] beta=- OR=1.2234626 p=0.0 | Youthful appearance (self-reported) | aging rate | Roberts V 32339537
+   ['rs12203592-T'] beta=0.020848839 unit increase OR=None p=1e-13 | Lymphocyte count | lymphocyte count | Vuckovic D 32888494
+   ['rs12203592-T'] beta=0.022975089 unit increase OR=None p=2e-18 | White blood cell count | leukocyte quantity | Vuckovic D 32888494
+   ['rs12203592-T'] beta=0.022394 SD unit increase OR=None p=2e-21 | White blood cell count | myeloid leukocyte count | Chen MH 32888493
+   ['rs12203592-T'] beta=- OR=None p=3e-19 | White blood cell count | myeloid leukocyte count | Chen MH 32888493
+   ['rs12203592-C'] beta=- OR=None p=8e-26 | Aging traits (healthspan, parental lifespan or longevity) (multivariat | healthspan,life span determination trait,parental longevity | Timmers PRHJ 32678081
+   ['rs12203592-T'] beta=0.44 unit increase OR=None p=1e-221 | Cutaneous squamous cell carcinoma | cutaneous squamous cell carcinoma | Sarin KY 32041948
+   ['rs12203592-T'] beta=- OR=1.45 p=2e-302 | Keratinocyte cancer (MTAG) | keratinocyte carcinoma | Liyanage UE 31174203
+   ['rs12203592-T'] beta=- OR=1.41 p=6e-270 | Basal cell carcinoma | basal cell carcinoma | Liyanage UE 31174203
+   ['rs12203592-T'] beta=- OR=1.62 p=1e-169 | Squamous cell carcinoma | squamous cell carcinoma | Liyanage UE 31174203
+   ['rs12203592-T'] beta=0.2 unit increase OR=None p=2e-11 | Male-pattern baldness | balding measurement | Heilmann-Heimbach S 28272467
+   ['rs12203592-?'] beta=0.3258 unit decrease OR=None p=5e-45 | Hair morphology traits | strand of hair color,coat/hair morphology trait | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=1.915 unit increase OR=None p=3e-57 | Hair morphology traits | strand of hair color,coat/hair morphology trait | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.71931726 unit decrease OR=None p=1e-27 | Hair morphology traits | strand of hair color,coat/hair morphology trait | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=1.0489297 unit increase OR=None p=8e-48 | Hair morphology traits | strand of hair color,coat/hair morphology trait | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.2438 unit decrease OR=None p=6.999999999999999e-11 | Skin pigmentation traits | suntan,Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.7418 unit decrease OR=None p=4e-10 | Skin pigmentation traits | suntan,Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.39813748 unit increase OR=None p=2e-09 | Skin pigmentation traits | suntan,Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.1762 unit increase OR=None p=2e-14 | Skin pigmentation traits | Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.8223 unit decrease OR=None p=4e-13 | Skin pigmentation traits | Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.4661 unit decrease OR=None p=2e-41 | Skin pigmentation traits | freckles,Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.9847 unit decrease OR=None p=2e-51 | Skin pigmentation traits | freckles,Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.73500735 unit increase OR=None p=1e-10 | Skin pigmentation traits | freckles,Abnormal skin pigmentation | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.2115 unit increase OR=None p=2e-11 | Eye color traits | eye color | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.6112 unit decrease OR=None p=7.000000000000001e-10 | Eye color traits | eye color | Galvan-Femenia I 30166351
+   ['rs12203592-?'] beta=0.46824425 unit decrease OR=None p=5e-13 | Eye color traits | eye color | Galvan-Femenia I 30166351
+   ['rs12203592-T'] beta=0.02920926 unit decrease OR=None p=1e-08 | Smoking cessation | smoking cessation | Liu M 30643251
+   ['rs12203592-T'] beta=0.0116721 unit decrease OR=None p=9.000000000000001e-09 | Smoking cessation (MTAG) | smoking cessation | Liu M 30643251
+   ['rs12203592-?'] beta=- OR=None p=4e-43 | Skin, hair and eye pigmentation (multivariate analysis) | eye colour measurement,strand of hair color,skin pigmentatio | Adhikari K 30664655
+   ['rs12203592-?'] beta=- OR=None p=3e-14 | Eye color (brightness) | eye colour measurement | Adhikari K 30664655
+   ['rs12203592-?'] beta=- OR=None p=2e-13 | Hair color | strand of hair color | Adhikari K 30664655
+   ['rs12203592-?'] beta=- OR=None p=1e-12 | Eye color | eye colour measurement | Adhikari K 30664655
+   ['rs12203592-?'] beta=- OR=None p=3e-10 | Skin pigmentation | skin pigmentation | Adhikari K 30664655
+   ['rs12203592-?'] beta=- OR=None p=4e-19 | White blood cell count | leukocyte quantity | Kichaev G 30595370
+   ['rs12203592-?'] beta=- OR=None p=1e-300 | Sunburns | sunburn | Kichaev G 30595370
+   ['rs12203592-?'] beta=- OR=None p=7e-105 | Balding type 1 | balding measurement | Kichaev G 30595370
+   ['rs12203592-T'] beta=0.109244 unit increase OR=None p=2.9999999999999996e-49 | Male-pattern baldness | alopecia | Hagenaars SP 28196072
+   ['rs12203592-?'] beta=- OR=None p=4e-67 | Nevus count | nevus count | Duffy DL 30429480
+   ['rs12203592-T'] beta=5.58 z score increase OR=None p=2e-08 | Feeling nervous | feeling nervous measurement | Nagel M 29500382
+   ['rs12203592-T'] beta=0.545 unit increase OR=None p=0.0 | Low tan response | suntan | Visconti A 29739929
+   ['rs12203592-T'] beta=0.221037 unit increase OR=None p=2e-17 | Rosacea symptom severity | rosacea severity measurement | Aponte JL 29771307
+   ['rs12203592-T'] beta=0.375 unit increase OR=None p=1e-100 | Hair color | strand of hair color | Hysi PG 29662168
+   ['rs12203592-C'] beta=0.262639 unit increase OR=None p=2e-52 | Male-pattern baldness | androgenetic alopecia | Pirastu N 29146897
+   ['rs12203592-C'] beta=- OR=1.2629452 p=3e-10 | Vitiligo | vitiligo | Jin Y 27723757
+   ['rs12203592-G'] beta=0.1295 unit decrease OR=None p=9e-13 | Skin aging (microtopography measurement) | aging rate | Law MH 28502801
+   ['rs12203592-?'] beta=- OR=1.22 p=4e-11 | Male-pattern baldness | androgenetic alopecia | Pickrell JK 27182965
+   ['rs12203592-?'] beta=0.031 unit increase OR=None p=1e-10 | Monobrow | synophrys measurement | Pickrell JK 27182965
+   ['rs12203592-?'] beta=- OR=None p=1e-13 | Hair color | strand of hair color | Adhikari K 26926045
+   ['rs12203592-?'] beta=- OR=None p=3.0000000000000003e-13 | Hair greying | strand of hair color | Adhikari K 26926045
+   ['rs12203592-T'] beta=- OR=1.48 p=2e-152 | Basal cell carcinoma | basal cell carcinoma | Chahal HS 27539887
+   ['rs12203592-T'] beta=- OR=1.62 p=3.0000000000000004e-111 | Cutaneous squamous cell carcinoma | cutaneous squamous cell carcinoma | Chahal HS 27424798
+   ['rs12203592-T'] beta=0.010126092 unit decrease OR=None p=3.0000000000000004e-09 | Skin colour saturation | Abnormal skin pigmentation | Liu F 25963972
+   ['rs12203592-T'] beta=- OR=1.56 p=8e-97 | Squamous cell carcinoma | squamous cell carcinoma | Asgari MM 26829030
+   ['rs12203592-T'] beta=24.95 unit increase OR=None p=2e-27 | Facial pigmentation | facial pigmentation | Jacobs LC 25705849
+   ['rs12203592-T'] beta=1.13 unit increase OR=None p=2e-06 | Sunburns | sunburn | Zhang M 23548203
+   ['rs12203592-C'] beta=0.35 unit increase OR=None p=1e-28 | Hair color | hair color | Zhang M 23548203
+   ['rs12203592-C'] beta=0.35 unit decrease OR=None p=3e-23 | Tanning | suntan | Zhang M 23548203
+   ['rs12203592-T'] beta=0.21 unit increase OR=None p=7e-14 | Non-melanoma skin cancer | Abnormal skin pigmentation | Zhang M 23548203
+   ['rs12203592-?'] beta=- OR=1.48 p=6.0000000000000005e-15 | Progressive supranuclear palsy | progressive supranuclear palsy | Hoglinger GU 21685912
+   ['rs12203592-?'] beta=- OR=None p=4e-07 | Hair color | hair color | Eriksson N 20585627
+   ['rs12203592-T'] beta=1.61 unit increase OR=None p=2e-91 | Freckling | freckles | Eriksson N 20585627
+   ['rs12203592-T'] beta=0.42 unit decrease OR=None p=2e-15 | Eye color | eye color | Eriksson N 20585627
+   ['rs12203592-T'] beta=0.59 unit increase OR=None p=2e-28 | Hair color | hair color | Eriksson N 20585627
+   ['rs12203592-T'] beta=0.31 hair color score decrease OR=None p=9e-28 | Black vs. red hair color | hair color | Han J 18483556
+   ['rs12203592-T'] beta=0.35 hair color score decrease OR=None p=7.000000000000001e-127 | Black vs. blond hair color | hair color | Han J 18483556
+== rs12821256: 9
+   ['rs12821256-T'] beta=0.4662 decrease OR=None p=9e-11 | Blond vs. brown/black hair color | hair color | Lona-Durazo F 34737440
+   ['rs12821256-C'] beta=- OR=1.446 p=1e-62 | Brown vs. black hair color | hair color | Morgan MD 30531825
+   ['rs12821256-C'] beta=- OR=1.659 p=2e-308 | Blond vs. brown/black hair color | hair color | Morgan MD 30531825
+   ['rs12821256-T'] beta=0.197 unit increase OR=None p=1e-100 | Hair color | strand of hair color | Hysi PG 29662168
+   ['rs12821256-?'] beta=- OR=1.4829 p=1e-10 | Light vs. dark hair color | hair color | Lin BD 26184321
+   ['rs12821256-?'] beta=- OR=1.4366 p=1e-09 | Brown vs. non-brown hair color | hair color | Lin BD 26184321
+   ['rs12821256-?'] beta=- OR=1.4892032 p=1e-10 | Blond vs non-blond hair color | hair color | Lin BD 26184321
+   ['rs12821256-C'] beta=0.18 unit increase OR=None p=6.999999999999999e-19 | Hair color | hair color | Zhang M 23548203
+   ['rs12821256-C'] beta=- OR=2.32 p=4e-30 | Blond vs. brown hair color | hair color | Sulem P 17952075
+== rs11803731: 5
+   ['rs11803731-A'] beta=0.2351 unit decrease OR=None p=2e-17 | Hair curvature (observational) | coat/hair morphology trait | Ho YYW 33190678
+   ['rs11803731-?'] beta=- OR=None p=1e-23 | Balding type 1 | balding measurement | Kichaev G 30595370
+   ['rs11803731-T'] beta=0.23 unit decrease OR=None p=2e-82 | Hair shape | strand of hair shape | Liu F 29220522
+   ['rs11803731-?'] beta=- OR=None p=3e-12 | Scalp hair shape | strand of hair shape | Adhikari K 26926045
+   ['rs11803731-A'] beta=6.11 OR=None p=3.0000000000000003e-31 | Hair morphology | hair morphology | Medland SE 19896111
+== rs4410790: 75
+   ['rs4410790-T'] beta=0.05163 unit increase OR=None p=8e-13 | Urinary calculus (PheCode 594) | bladder calculus | Verma A 39024449
+   ['rs4410790-T'] beta=0.01586 unit increase OR=None p=3e-11 | Blood urea nitrogen (BUN, minimum, inv-norm transformed) | blood urea nitrogen amount | Verma A 39024449
+   ['rs4410790-T'] beta=0.01741 unit increase OR=None p=6.000000000000001e-13 | Blood urea nitrogen (BUN, mean, inv-norm transformed) | blood urea nitrogen amount | Verma A 39024449
+   ['rs4410790-T'] beta=- OR=0.96 p=9e-12 | Metabolic syndrome (inferred from medication usage records) | metabolic syndrome | Wu CX 42472903
+   ['rs4410790-T'] beta=- OR=0.96 p=3e-11 | Metabolic syndrome | metabolic syndrome | Wu CX 42472903
+   ['rs4410790-?'] beta=0.0349995 unit decrease OR=None p=4e-11 | Circulating SSC4D levels | level of scavenger receptor cysteine-rich domain-containing  | Koprulu M 42097137
+   ['rs4410790-C'] beta=0.02 mmol/L decrease OR=None p=2e-16 | Triglycerides in very small VLDL | triglycerides in very small VLDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 % decrease OR=None p=6.0000000000000004e-18 | Triglycerides to Total Lipids in Very Large HDL percentage | triglycerides to total lipids in very large HDL percentage | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 mmol/L decrease OR=None p=1e-12 | Total triglycerides levels | triglyceride measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 mmol/L decrease OR=None p=2e-14 | Triglycerides in small VLDL | triglycerides in small VLDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 mmol/L decrease OR=None p=6.999999999999999e-11 | Triglycerides in small LDL | triglycerides in small LDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 mmol/L decrease OR=None p=4e-19 | Triglycerides in small HDL | triglycerides in small HDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 ratio increase OR=None p=1e-13 | Polyunsaturated fatty acids to monounsaturated fatty acids ratio | polyunsaturated fatty acids to monounsaturated fatty acids r | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 % decrease OR=None p=6.000000000000001e-13 | Monounsaturated fatty acids to total fatty acids percentage | saturated fatty acids to total fatty acids percentage | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 mmol/L decrease OR=None p=8e-11 | Triglycerides in medium VLDL | triglycerides in medium VLDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 % decrease OR=None p=6e-11 | Cholesteryl Esters to Total Lipids in Medium LDL percentage | cholesteryl esters to total lipids in medium LDL percentage | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 mmol/L decrease OR=None p=9e-16 | Triglycerides in medium HDL | triglycerides in medium HDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 mmol/L decrease OR=None p=9e-11 | Cholesterol in Large VLDL | cholesterol in large VLDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 % decrease OR=None p=2.9999999999999995e-21 | Triglycerides to Total Lipids in Large HDL percentage | triglycerides to total lipids in large HDL percentage | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 % increase OR=None p=4e-22 | Cholesteryl Esters to Total Lipids in Large HDL percentage | cholesteryl esters to total lipids in large HDL percentage | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 % increase OR=None p=2.9999999999999997e-20 | Cholesterol to Total Lipids in Large HDL percentage | cholesterol to total lipids in large HDL percentage | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.01 mmol/L decrease OR=None p=1e-12 | Triglycerides in IDL | triglycerides in IDL measurement | Zoodsma M 41044249
+   ['rs4410790-C'] beta=0.02 mmol/L decrease OR=None p=4e-15 | Triglycerides in HDL | triglycerides in HDL measurement | Zoodsma M 41044249
+   ['rs4410790-T'] beta=0.0318 unit increase OR=None p=5e-83 | Total bilirubin levels | bilirubin measurement | Jee YH 40436827
+   ['rs4410790-T'] beta=0.0088 unit decrease OR=None p=4e-09 | Gamma glutamyl transferase levels | serum gamma-glutamyl transferase measurement | Jee YH 40436827
+   ['rs4410790-T'] beta=0.0162 unit decrease OR=None p=1e-23 | Triglyceride levels | triglyceride measurement | Jee YH 40436827
+   ['rs4410790-C'] beta=0.0176278 unit increase OR=None p=2e-12 | Weekly coffee intake | coffee consumption | Jee YH 40436827
+   ['rs4410790-C'] beta=0.0308095 unit decrease OR=None p=4e-17 | Total bilirubin levels | bilirubin measurement | Jee YH 40436827
+   ['rs4410790-T'] beta=- OR=None p=1e-09 | Polyunsaturated fatty acids to total fatty acids percentage | polyunsaturated fatty acids to total fatty acids percentage | Sun Y 40545721
+   ['rs4410790-T'] beta=- OR=None p=8e-10 | Polyunsaturated fatty acids to monounsaturated fatty acids ratio | polyunsaturated fatty acids to monounsaturated fatty acids r | Sun Y 40545721
+   ['rs4410790-T'] beta=- OR=None p=2e-10 | Omega-6 fatty acids to total fatty acids percentage | fatty acid amount | Sun Y 40545721
+   ['rs4410790-T'] beta=- OR=None p=3.0000000000000004e-09 | Monounsaturated fatty acids to total fatty acids percentage | fatty acid amount | Sun Y 40545721
+   ['rs4410790-T'] beta=- OR=None p=1e-08 | Monounsaturated fatty acid levels | fatty acid amount | Sun Y 40545721
+   ['rs4410790-C'] beta=0.024441987 unit decrease OR=None p=5e-56 | Total bilirubin levels (UKB data field 30840) | bilirubin measurement | Loya H 39789286
+   ['rs4410790-C'] beta=0.015332183 unit increase OR=None p=1e-13 | Phosphate levels (UKB data field 30810) | phosphate measurement | Loya H 39789286
+   ['rs4410790-?'] beta=- OR=None p=5.999999999999999e-20 | Total bilirubin levels | bilirubin measurement | Chen CY 38116116
+   ['rs4410790-T'] beta=0.09903301 unit increase OR=None p=2e-21 | X-21286 levels | X-21286 measurement | Surendran P 36357675
+   ['rs4410790-C'] beta=0.0252 unit increase OR=None p=2e-11 | Triglyceride to HDL cholesterol ratio | triglyceride:HDL cholesterol ratio | Oliveri A 38200128
+   ['rs4410790-C'] beta=0.0183 unit increase OR=None p=3e-06 | Triglyceride to HDL cholesterol ratio | triglyceride:HDL cholesterol ratio | Oliveri A 38200128
+   ['rs4410790-C'] beta=0.0245 unit increase OR=None p=6e-14 | Triglyceride to HDL cholesterol ratio | triglyceride:HDL cholesterol ratio | Oliveri A 38200128
+   ['rs4410790-C'] beta=0.0097 unit increase OR=None p=1e-12 | Body mass index | body mass index | Huang J 36581621
+   ['rs4410790-C'] beta=0.0123447 unit increase OR=None p=5e-10 | Non-HDL cholesterol levels | non-high density lipoprotein cholesterol measurement | Graham SE 34887591
+   ['rs4410790-?'] beta=- OR=None p=6e-11 | Non-HDL cholesterol levels | non-high density lipoprotein cholesterol measurement | Graham SE 34887591
+   ['rs4410790-C'] beta=0.0131573 unit increase OR=None p=8e-14 | Triglyceride levels | triglyceride measurement | Graham SE 34887591
+   ['rs4410790-C'] beta=0.17 unit decrease OR=None p=2e-17 | Caffeine levels | caffeine metabolite measurement | Yin X 35347128
+   ['rs4410790-T'] beta=0.0568791 unit decrease OR=None p=1e-150 | Coffee consumption (cups per day) | coffee consumption measurement | Cole JB 32193382
+   ['rs4410790-T'] beta=0.0114382 unit decrease OR=None p=5.999999999999999e-20 | Tea consumption | tea consumption measurement | Pirastu N 35653391
+   ['rs4410790-C'] beta=0.0141 unit decrease OR=None p=7e-13 | Blood urea nitrogen levels | blood urea nitrogen amount | Sakaue S 34594039
+   ['rs4410790-T'] beta=0.04033 unit decrease OR=None p=1e-67 | Caffeine consumption from tea | tea consumption measurement | Said MA 33287642
+   ['rs4410790-T'] beta=0.05171 unit decrease OR=None p=2.9999999999999996e-104 | Caffeine consumption from coffee | coffee consumption measurement | Said MA 33287642
+   ['rs4410790-T'] beta=0.08137 unit decrease OR=None p=2e-249 | Caffeine consumption from coffee or tea | coffee consumption measurement,tea consumption measurement | Said MA 33287642
+   ['rs4410790-T'] beta=0.0110975 unit increase OR=None p=2e-08 | HDL cholesterol levels | high density lipoprotein cholesterol measurement | Richardson TG 32203549
+   ['rs4410790-C'] beta=0.108 cups per day increase OR=None p=6e-70 | Coffee consumption (cups per day) | cups of coffee per day measurement | Kennedy OJ 31837886
+   ['rs4410790-?'] beta=0.213 unit increase OR=None p=8e-68 | Coffee consumption | coffee consumption measurement | Matoba N 31959922
+   ['rs4410790-C'] beta=0.024 unit increase OR=None p=2e-30 | Urinary albumin-to-creatinine ratio | urinary albumin to creatinine ratio | Casanova F 31630189
+   ['rs4410790-C'] beta=- OR=1.0425817 p=1e-09 | Microalbuminuria | Moderate albuminuria | Teumer A 31511532
+   ['rs4410790-T'] beta=0.0219239 unit decrease OR=None p=2e-26 | Urinary albumin-to-creatinine ratio | urinary albumin to creatinine ratio | Teumer A 31511532
+   ['rs4410790-T'] beta=0.0209 unit decrease OR=None p=7e-25 | Urinary albumin-to-creatinine ratio | urinary albumin to creatinine ratio | Teumer A 31511532
+   ['rs4410790-T'] beta=0.00874545 unit increase OR=None p=2e-12 | Urinary potassium excretion | potassium measurement | Pazoki R 31409800
+   ['rs4410790-T'] beta=0.0108651 unit increase OR=None p=2e-17 | Urinary sodium excretion | sodium measurement | Pazoki R 31409800
+   ['rs4410790-T'] beta=0.0096 unit increase OR=None p=2e-07 | Sweet beverage consumption | sweet beverage consumption measurement | Zhong VW 31046077
+   ['rs4410790-C'] beta=0.018 unit increase OR=None p=3.0000000000000003e-30 | Tea consumption | tea consumption measurement | Zhong VW 31046077
+   ['rs4410790-C'] beta=0.0387 unit increase OR=None p=4e-142 | Coffee consumption | coffee consumption measurement | Zhong VW 31046077
+   ['rs4410790-C'] beta=0.0305 unit increase OR=None p=3e-75 | Bitter non-alcoholic beverage consumption | bitter non-alcoholic beverage consumption measurement | Zhong VW 31046077
+   ['rs4410790-C'] beta=0.0267 unit increase OR=None p=5.0000000000000005e-58 | Bitter beverage consumption | bitter beverage consumption measurement | Zhong VW 31046077
+   ['rs4410790-?'] beta=0.03071323 unit increase OR=None p=6e-16 | Coffee consumption (cups per day) | cups of coffee per day measurement | Wojcik GL 31217584
+   ['rs4410790-T'] beta=0.0023 unit decrease OR=None p=1e-13 | Estimated glomerular filtration rate | glomerular filtration rate | Wuttke M 31152163
+   ['rs4410790-C'] beta=0.023 unit increase OR=None p=2e-14 | Urinary albumin-to-creatinine ratio | urinary albumin to creatinine ratio | Zanetti D 30910378
+   ['rs4410790-C'] beta=0.01595 unit increase OR=None p=1e-18 | Urinary albumin excretion (no hypertensive medication) | albuminuria | Haas ME 30220432
+   ['rs4410790-C'] beta=0.01798 unit increase OR=None p=3.0000000000000002e-25 | Urinary albumin excretion | albuminuria | Haas ME 30220432
+   ['rs4410790-C'] beta=0.102 cups per day increase OR=None p=5e-07 | Coffee consumption | cups of coffee per day measurement | Nakagawa-Senda H 29367735
+   ['rs4410790-T'] beta=8.07 Z-score decrease OR=None p=6.999999999999999e-16 | Caffeine metabolism (plasma 1,7-dimethylxanthine (paraxanthine) to 1,3 | caffeine metabolite measurement | Cornelis MC 27702941
+   ['rs4410790-T'] beta=7.36 Z-score increase OR=None p=2e-13 | Caffeine metabolism (plasma 1,3,7-trimethylxanthine (caffeine) level) | caffeine metabolite measurement | Cornelis MC 27702941
+   ['rs4410790-T'] beta=0.1 unit decrease OR=None p=3e-17 | Coffee consumption (cups per day) | coffee consumption,cups of coffee per day measurement | Cornelis MC 25288136
+   ['rs4410790-T'] beta=0.15 mg/day decrease OR=None p=2e-19 | Caffeine consumption | coffee consumption | Cornelis MC 21490707
+== rs2282679: 14
+   ['rs2282679-G'] beta=0.1477 unit decrease OR=None p=3e-38 | 25-hydroxyvitamin D (D2+D3) in pregnancy | vitamin D level | Liu S 42509370
+   ['rs2282679-T'] beta=- OR=None p=3e-14 | Neutrophil count | neutrophil count | Kachuri L 34469753
+   ['rs2282679-G'] beta=0.01534382 unit decrease OR=None p=3e-10 | Monocyte count | monocyte count | Vuckovic D 32888494
+   ['rs2282679-G'] beta=0.429 unit increase OR=None p=1e-200 | Vitamin D insufficiency | vitamin D deficiency | Amin HA 34308111
+   ['rs2282679-G'] beta=0.029189374 unit decrease OR=None p=4e-33 | Neutrophil count | neutrophil count | Vuckovic D 32888494
+   ['rs2282679-G'] beta=0.032452706 unit decrease OR=None p=1e-40 | White blood cell count | leukocyte quantity | Vuckovic D 32888494
+   ['rs2282679-G'] beta=- OR=None p=4e-10 | Lymphocyte count | lymphocyte count | Chen MH 32888493
+   ['rs2282679-T'] beta=- OR=None p=4e-62 | Serum 25-Hydroxyvitamin D levels | vitamin D level | Hong J 29325163
+   ['rs2282679-T'] beta=4.9 (z-score) increase OR=None p=1e-06 | Serum 25-Hydroxyvitamin D levels | vitamin D level | Hong J 29325163
+   ['rs2282679-T'] beta=16.628 (z-score) increase OR=None p=4e-63 | Serum 25-Hydroxyvitamin D levels | vitamin D level | Hong J 29325163
+   ['rs2282679-T'] beta=- OR=None p=1e-187 | Vitamin D levels (dietary vitamin D intake interaction) | vitamin D dietary intake measurement,vitamin D level | Jiang X 29343764
+   ['rs2282679-?'] beta=- OR=None p=2e-14 | Vitamin D levels | vitamin D level | Lasky-Su J 22673963
+   ['rs2282679-?'] beta=- OR=None p=2e-109 | Vitamin D insufficiency | vitamin D deficiency | Wang TJ 20541252
+   ['rs2282679-C'] beta=0.38 unit decrease OR=None p=2e-49 | Vitamin D levels | vitamin D level | Ahn J 20418485
+== rs10741657: 6
+   ['rs10741657-?'] beta=0.3111676 unit increase OR=None p=6e-06 | Sphingomyelin (d18:0/18:0, d19:0/17:0) levels in elite athletes | lipid measurement | Al-Khelaifi F 31882771
+   ['rs10741657-A'] beta=2.1 mmol/L increase OR=None p=3e-11 | Serum 25-Hydroxyvitamin D levels | vitamin D level | Sallinen RJ 33382404
+   ['rs10741657-A'] beta=- OR=None p=2e-06 | Serum 25-Hydroxyvitamin D levels | vitamin D level | Hong J 29325163
+   ['rs10741657-A'] beta=- OR=None p=2e-38 | Vitamin D levels (dietary vitamin D intake interaction) | vitamin D dietary intake measurement,vitamin D level | Jiang X 29343764
+   ['rs10741657-A'] beta=0.031 unit increase OR=None p=2e-46 | Vitamin D levels | vitamin D level | Jiang X 29343764
+   ['rs10741657-?'] beta=- OR=None p=2.9999999999999997e-20 | Vitamin D insufficiency | vitamin D deficiency | Wang TJ 20541252
