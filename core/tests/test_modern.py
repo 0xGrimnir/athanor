@@ -146,7 +146,7 @@ def test_trait_cards_cover_every_variant():
         return {"id": cid, "group": group, "grade": grade, "summary": summary, "result": result, "ok": ok}
 
     cards = trait_cards(traits, Genotyper(g, g.pos, "the reference's + strand"), make)
-    assert len(cards) == 18
+    assert len(cards) == 17
     seen = {v["rsid"] for c in cards for v in c["result"]["variants"]}
     assert seen == set(VARIANTS)
     assert all(v["copies"] is not None for c in cards for v in c["result"]["variants"])

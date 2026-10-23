@@ -179,8 +179,8 @@ jobs:
           git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/pgdata/${GITHUB_SHA}" && \
-            cp crosscheck.txt build.txt validate.txt traits.txt modern.txt validate_modern.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
-            cp pack/manifest.json pack/validation.json pack/validation_modern.json pack/traits.json "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null; \
+            cp crosscheck.txt build.txt validate.txt traits.txt modern.txt validate_modern.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null || true; \
+            cp pack/manifest.json pack/validation.json pack/validation_modern.json pack/traits.json "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "pgdata ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
 
       - name: Package and publish to the release feed

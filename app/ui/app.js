@@ -1433,7 +1433,7 @@ const DETAIL = {
 };
 
 const TRAIT_CARDS = ["eye_colour", "red_hair", "freckles", "blond_hair", "skin_pigmentation", "earwax", "hair_thickness", "hair_curl",
-  "photic_sneeze", "lactose", "alcohol_flush", "caffeine", "bitter_taste", "vitamin_d", "vitamin_b12", "omega3", "celiac_hla", "actn3"];
+  "lactose", "alcohol_flush", "caffeine", "bitter_taste", "vitamin_d", "vitamin_b12", "omega3", "celiac_hla", "actn3"];
 for (const id of TRAIT_CARDS) DETAIL[id] = traitDetail;
 
 function traitDetail(el, c) {

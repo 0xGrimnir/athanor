@@ -222,18 +222,6 @@ def trait_cards(traits: dict, gt: Genotyper, make_card) -> list[dict]:
         "TCHH L790M in trichohyalin, a protein of the hair follicle, associated with straight hair in Europeans (Medland et al. 2009); direction checked against the GWAS Catalog. " + std_method,
         _ref(traits, ["medland2009"]) + _gwas_refs([V.get("rs11803731", {})]), ok=k is not None)
 
-    rows, c = look("rs10427255")
-    k = c.get("rs10427255")
-    rec = V.get("rs10427255", {})
-    orv = ((rec.get("gwas") or [{}])[0]).get("or")
-    s = ("Not on your chip." if k is None else
-         f"{k} {_plural(k, 'copy', 'copies')} of the allele linked to the photic sneeze reflex (sneezing on stepping into bright light)"
-         + (f"; each copy raises the odds by about {100 * (float(orv) - 1):.0f}%." if orv not in (None, '-') else "."))
-    add("photic_sneeze", "Sneezing in bright light", "Appearance", "C", s, rows,
-        ["A modest effect from a single online-survey study; most people with the allele do not have the reflex."],
-        "Genome-wide association in self-reported survey data (Eriksson et al. 2010). " + std_method,
-        _ref(traits, ["eriksson2010"]), ok=k is not None)
-
     # ---------------------------------------------------------------- food and drink
     lct = ["rs4988235", "rs41380347", "rs145946881", "rs41525747", "rs869051967"]
     rows, c = look(*lct)
@@ -333,9 +321,8 @@ def trait_cards(traits: dict, gt: Genotyper, make_card) -> list[dict]:
     rows, c = look("rs174537")
     k = c.get("rs174537")
     rec = V.get("rs174537", {})
-    trait = ((rec.get("gwas") or [{}])[0]).get("trait", "long-chain polyunsaturated fatty acid levels")
     s = ("Not on your chip." if k is None else
-         f"{k} {_plural(k, 'copy', 'copies')} of the FADS1 allele linked to lower {trait.lower()}: the body converts plant omega-6 and omega-3 fats to their long-chain forms less efficiently with each copy.")
+         f"{k} {_plural(k, 'copy', 'copies')} of the FADS1 allele linked to lower blood levels of long-chain omega-6 and omega-3 fats such as arachidonic acid: the body makes these from plant fats less efficiently with each copy.")
     add("omega3", "Omega-3 and omega-6 conversion (FADS1)", "Food and drink", "B", s, rows,
         ["An effect on blood fatty-acid levels, not a dietary recommendation; eating oily fish supplies long-chain omega-3 directly."],
         "FADS1 encodes the delta-5 desaturase that makes arachidonic acid and EPA; rs174537 is the strongest genetic influence on their blood levels (Tanaka et al. 2009). The lowering allele is taken from the GWAS Catalog. " + std_method,

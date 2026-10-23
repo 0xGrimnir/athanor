@@ -4,6 +4,28 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-23
+
+### Added
+- **Personal Genome: modern ancestry.**
+  - **Continental and regional ancestry:** supervised admixture against present-day reference genomes in the AADR (1000 Genomes, HGDP and others), with 95% intervals from a block bootstrap and a measured detection limit for every region. Regions that could not be told apart in validation were merged automatically.
+  - **Chromosome painting:** the pair of continental ancestries along each of your 22 chromosomes.
+  - **Indigenous American ancestry,** with its detection limit and plain statements of what it cannot show (it is not tribal membership; the references are mostly Central and South American).
+  - **Runs of homozygosity,** shown against reference groups measured the same way and against the expected values for related parents.
+  - **X-chromosome ancestry,** compared with your autosomes.
+- **Personal Genome: trait reports (17).** Appearance: eye colour, red hair, freckles, the KITLG blond-hair variant, skin pigmentation variants, earwax type, hair thickness, hair form. Food and drink: lactose tolerance, alcohol flush, caffeine metabolism, bitter taste, vitamin D, vitamin B12 and secretor status, omega-3 and omega-6 conversion, celiac HLA types. Fitness: ACTN3. Each shows your genotype, how common the variant is, the evidence grade and what it cannot tell you.
+- Every trait variant's effect allele is checked when the reference data are built: against the amino acid it codes (Ensembl VEP), its frequencies in 1000 Genomes, or the direction recorded in the GWAS Catalog. References are looked up in PubMed.
+- The PCA maps now label the reference populations and show your closest ancient individuals.
+
+### Fixed
+- The maternal-line card could report a haplogroup supported by a single marker. AncestryDNA reports some mtDNA markers on the opposite strand; those are now read on the right strand, and a haplogroup is reported only when at least 5 markers along its lineage agree. Otherwise the card shows how many of your markers matched.
+- The Denisovan card said Denisovan ancestry raises the statistic; it lowers it, and Neanderthal ancestry raises it. The summary now says which reference regions your value matches.
+- Haplogroup timelines no longer repeat the same ancient genome on many rows.
+
+### Changed
+- Reference data version 4 (download it again from the Personal Genome tab; the app offers the update).
+- Polygenic reports (height, baldness, body mass, chronotype, sleep, coffee and alcohol intake) move to the imputation step: a raw chip file covers too few of a modern score's variants.
+
 ## [0.5.0] - 2026-10-22
 
 ### Added
