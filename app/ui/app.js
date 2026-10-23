@@ -1188,7 +1188,7 @@ function renderPgPack() {
   }
   const src = st.sources || {};
   $("pgPack").innerHTML = (st.outdated ? `<p class="note"><b>A newer version of the reference data is available.</b> It adds modern ancestry and the appearance, food and drink and fitness reports. Click Update reference data.</p>` : "") + kvTable([
-    ["Version", `${escapeHtml(st.pack || "")} · built ${escapeHtml((st.built || "").slice(0, 10))}`],
+    ["Version", `${st.pack_version ? `pack ${st.pack_version}` : escapeHtml(st.pack || "")} · built ${escapeHtml((st.built || "").slice(0, 10))}`],
     ["Reference SNPs", (st.snps || 0).toLocaleString()],
     ["Ancient genomes", (st.ancients || 0).toLocaleString()],
     ["Built from", Object.values(src).map((x) => escapeHtml(x.name || "")).join("<br>")],
@@ -1504,10 +1504,11 @@ function haploDetail(el, c, kind) {
   const r = c.result;
   if (!r.call) {
     const sc = r.strand_check;
-    el.innerHTML = `<p class="note">${escapeHtml(r.reason || "No call.")}</p>` + (sc ? kvTable([
+    el.innerHTML = (sc && sc.on_tree ? kvTable([
       ["Markers in your file on this tree", (sc.on_tree || 0).toLocaleString()],
       ["Matched the tree's alleles", `${sc.direct} directly, ${sc.complemented} after switching strand`],
-      ["Matched neither allele", (sc.unmatched || 0).toLocaleString()]]) : "");
+      ["Matched neither allele", (sc.unmatched || 0).toLocaleString()]]) : "")
+      + (r.weak_call ? `<p class="note">Best-supported branch, not reported: ${escapeHtml(r.weak_call)}.</p>` : "");
     return;
   }
   const path = r.path || [], tl = r.timeline || [], car = r.carriers || [];

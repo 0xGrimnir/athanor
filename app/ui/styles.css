@@ -257,3 +257,4 @@ i.s2, .dot.s2 { background: #52f0b0; } i.s3, .dot.s3 { background: #b98cff; }
 
 /* Personal Genome: rows below the detection limit */
 #view-personal tr.dim td { opacity: .5; }
+#view-personal i.dot { display: inline-block; margin-right: 6px; vertical-align: middle; }

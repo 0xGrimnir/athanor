@@ -239,6 +239,7 @@ log(f"outliers removed: {len(dropped)}", dropped[:40])
 # small-panel correction and detection floors) and a validation set that the
 # build never looks at (validate_modern.py measures accuracy on it).
 merges = []
+titles: dict[str, list[str]] = {}
 cal_sample, val_sample = {}, {}
 for r, v in reg_members.items():
     perm = [int(x) for x in rng.permutation(v)]
@@ -271,7 +272,11 @@ while True:
     small, big = sorted((r, s_), key=lambda x: len(reg_members[x]))
     rb = next(x for x in regions if x[0] == big)
     rs_ = next(x for x in regions if x[0] == small)
-    merged = (big, f"{rb[1]} and {rs_[1]}" if len(rb[1]) + len(rs_[1]) < 60 else rb[1], rb[2], rb[3] + rs_[3])
+    parts = titles.get(big, [rb[1]]) + titles.get(small, [rs_[1]])
+    titles[big] = parts
+    name = (" and ".join(parts) if len(parts) == 2 else ", ".join(parts[:-1]) + " and " + parts[-1]) if len(parts) <= 3 \
+        else f"{dict(CONTINENTS)[rb[2]]} ({len(parts)} regions combined)"
+    merged = (big, name, rb[2], rb[3] + rs_[3])
     regions = [merged if x[0] == big else x for x in regions if x[0] != small]
     reg_members[big] = sorted(reg_members[big] + reg_members[small])
     cal_sample[big] = sorted(cal_sample[big] + cal_sample[small])
