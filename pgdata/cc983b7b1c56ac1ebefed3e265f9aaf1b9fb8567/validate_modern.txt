@@ -1,0 +1,51 @@
+[   51.2s] LOO at 80000: continents {'africa': 1.0, 'europe': 0.997, 'west_asia': 0.981, 'south_asia': 0.907, 'east_asia': 0.99, 'oceania': 1.0, 'americas': 0.954}
+[   51.2s] LOO at 80000: regions {'west_africa': 1.0, 'nw_europe': 0.992, 'sardinia': 0.957, 'druze': 0.981, 'gujarat': 0.907, 'north_china': 0.99, 'papua': 1.0, 'americas': 0.954}
+[  250.4s] LOO at 250000: continents {'africa': 1.0, 'europe': 0.999, 'west_asia': 0.974, 'south_asia': 0.904, 'east_asia': 0.987, 'oceania': 1.0, 'americas': 0.953}
+[  250.4s] LOO at 250000: regions {'west_africa': 1.0, 'nw_europe': 0.994, 'sardinia': 0.951, 'druze': 0.974, 'gujarat': 0.904, 'north_china': 0.987, 'papua': 1.0, 'americas': 0.953}
+[FAIL (synthetic stand-in, not enforced)] left-out individuals assigned to their own continent (mean >= 0.95 per continent, 250,000 SNPs): lowest 0.904; at 80,000 SNPs lowest 0.907
+[PASS] left-out individuals assigned to their own region (mean >= 0.6 per region, 80,000 SNPs): lowest 0.907 (gujarat)
+[  266.0s] mosaic 0: ['oceania', 'europe', 'west_asia'] truth [0.232 0.552 0.217] est [0.209 0.546 0.242] (painted genomes so far 1, mean accuracy 0.951)
+[  275.0s] mosaic 1: ['east_asia', 'americas'] truth [0.425 0.575] est [0.439 0.561] (painted genomes so far 2, mean accuracy 0.926)
+[  290.4s] mosaic 2: ['europe', 'africa'] truth [0.273 0.727] est [0.258 0.742] (painted genomes so far 3, mean accuracy 0.949)
+[  308.7s] mosaic 3: ['south_asia', 'west_asia', 'americas'] truth [0.432 0.109 0.459] est [0.409 0.136 0.435] (painted genomes so far 4, mean accuracy 0.925)
+[  320.2s] mosaic 4: ['americas', 'africa'] truth [0.2 0.8] est [0.199 0.8  ] (painted genomes so far 5, mean accuracy 0.938)
+[  335.0s] mosaic 5: ['east_asia', 'europe'] truth [0.852 0.148] est [0.856 0.136] (painted genomes so far 6, mean accuracy 0.948)
+[  336.2s] mosaic 6: ['africa', 'oceania', 'west_asia'] truth [0.839 0.106 0.056] est [0.856 0.111 0.033] (painted genomes so far 6, mean accuracy 0.948)
+[  349.5s] mosaic 7: ['europe', 'americas'] truth [0.869 0.131] est [0.86  0.133] (painted genomes so far 7, mean accuracy 0.954)
+[  359.5s] mosaic 8: ['west_asia', 'east_asia'] truth [0.831 0.169] est [0.798 0.169] (painted genomes so far 8, mean accuracy 0.957)
+[  369.9s] mosaic 9: ['south_asia', 'oceania', 'africa'] truth [0.177 0.189 0.634] est [0.159 0.184 0.651] (painted genomes so far 9, mean accuracy 0.962)
+[  382.1s] mosaic 10: ['americas', 'west_asia'] truth [0.821 0.179] est [0.824 0.159] (painted genomes so far 10, mean accuracy 0.965)
+[  391.7s] mosaic 11: ['west_asia', 'africa'] truth [0.612 0.388] est [0.607 0.384] (painted genomes so far 11, mean accuracy 0.968)
+[  405.1s] mosaic 12: ['europe', 'east_asia', 'oceania'] truth [0.419 0.449 0.133] est [0.411 0.446 0.134] (painted genomes so far 12, mean accuracy 0.970)
+[  421.7s] mosaic 13: ['americas', 'west_asia'] truth [0.278 0.722] est [0.255 0.703] (painted genomes so far 13, mean accuracy 0.972)
+[  439.9s] mosaic 14: ['oceania', 'europe'] truth [0.703 0.297] est [0.718 0.282] (painted genomes so far 14, mean accuracy 0.973)
+[  451.4s] mosaic 15: ['west_asia', 'oceania', 'east_asia'] truth [0.754 0.134 0.112] est [0.745 0.12  0.114] (painted genomes so far 15, mean accuracy 0.974)
+[  461.2s] mosaic 16: ['west_asia', 'east_asia'] truth [0.743 0.257] est [0.737 0.229] (painted genomes so far 16, mean accuracy 0.975)
+[  470.6s] mosaic 17: ['africa', 'americas'] truth [0.043 0.957] est [0.029 0.943] (painted genomes so far 17, mean accuracy 0.976)
+[  486.9s] mosaic 18: ['south_asia', 'europe', 'africa'] truth [0.087 0.396 0.518] est [0.09  0.359 0.542] (painted genomes so far 18, mean accuracy 0.977)
+[  495.9s] mosaic 19: ['americas', 'east_asia'] truth [0.453 0.547] est [0.404 0.596] (painted genomes so far 19, mean accuracy 0.972)
+[  507.3s] mosaic 20: ['oceania', 'south_asia'] truth [0.466 0.534] est [0.494 0.457] (painted genomes so far 20, mean accuracy 0.973)
+[  521.2s] mosaic 21: ['americas', 'oceania', 'africa'] truth [0.166 0.479 0.356] est [0.163 0.468 0.361] (painted genomes so far 21, mean accuracy 0.974)
+[  523.5s] mosaic 22: ['africa', 'east_asia'] truth [0.94 0.06] est [0.954 0.045] (painted genomes so far 21, mean accuracy 0.974)
+[  536.6s] mosaic 23: ['americas', 'europe'] truth [0.291 0.709] est [0.294 0.706] (painted genomes so far 22, mean accuracy 0.975)
+[FAIL (synthetic stand-in, not enforced)] simulated admixed genomes: continental proportions within 0.02 on average and 0.06 at worst: mean error 0.0154, worst 0.0770
+   bootstrap 95% intervals contain the simulated proportion in 100% of cases
+[PASS] chromosome painting: per-SNP accuracy >= 0.85 and mean posterior within 0.05 of it: accuracy 0.975, mean posterior 0.982 over 22 genomes
+[  748.5s] Indigenous American detection rate by simulated level: {0.0: 0.0, 0.02: 0.16666666666666666, 0.05: 0.5, 0.1: 1.0, 0.25: 1.0} East Asian false positives: 0.08333333333333333
+[FAIL (synthetic stand-in, not enforced)] Indigenous American: proportion within 0.03 from 5% up; <= 5% false detections at 0% and in East Asians: worst error 0.035; detected at 0/2/5/10/25%: [0.0, 0.17, 0.5, 1.0, 1.0]; East Asian false positives 0.08333333333333333
+   ADMIXTURE projection with P as the frequency of the alt allele: log-likelihood -14417333.9
+   ADMIXTURE projection with P as the frequency of the ref allele: log-likelihood -61752.4
+[PASS] ADMIXTURE projection (-P) agrees within 0.01: largest difference 0.0001 over 12 genomes
+[PASS] inserted homozygous stretches found (>= 95% of their length): 100.0%
+[PASS] runs of homozygosity match PLINK 1.9 (total within 2%, overlap >= 0.95): largest total-length difference 0.00%, lowest overlap 1.000 over 10 genomes
+[  768.5s] X leave-one-out own-continent means: {'africa': 1.0, 'europe': 0.987, 'west_asia': 0.894, 'south_asia': 0.78, 'east_asia': 0.98, 'oceania': 0.995, 'americas': 0.926}
+[FAIL (synthetic stand-in, not enforced)] X chromosome: left-out individuals assigned to their own continent (mean >= 0.8): lowest 0.780
+   23andme file 0: 32 cards in 3 s; missing []; trait variants read wrongly []; not found []
+   ancestry file 0: 32 cards in 3 s; missing []; trait variants read wrongly []; not found []
+   23andme file 1: 32 cards in 6 s; missing []; trait variants read wrongly []; not found []
+   ancestry file 1: 32 cards in 6 s; missing []; trait variants read wrongly []; not found []
+   23andme file 2: 32 cards in 4 s; missing []; trait variants read wrongly []; not found []
+   ancestry file 2: 32 cards in 4 s; missing []; trait variants read wrongly []; not found []
+[PASS] end to end: full analysis runs and every trait variant is read with the right genotype: see lines above
+   validation summaries written into the pack manifest: ['chromosome_painting', 'continental_ancestry', 'indigenous_american', 'regional_ancestry', 'roh', 'x_ancestry']
+total 798 s; 0 gate(s) failed: []

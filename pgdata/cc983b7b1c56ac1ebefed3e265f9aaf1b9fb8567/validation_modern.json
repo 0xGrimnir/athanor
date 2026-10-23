@@ -1,0 +1,11 @@
+{
+ "summary": {
+  "continental_ancestry": "Reference individuals left out of their own panel are assigned on average at least 90% to their own continent (250,000 SNPs; 91% with 80,000). On 24 simulated genomes mixing two or three continents, built from left-out individuals' chromosomes, the proportions were within 1.5 percentage points on average (7.7 at worst), and the 95% intervals contained the true value 100% of the time. ADMIXTURE's projection mode gives the same proportions to within 0.000.",
+  "regional_ancestry": "With 80,000 SNPs, people left out of the reference panels are assigned on average 97% to their own region (lowest region 91%); regions that could not be told apart were merged before the pack was built (6 merges).",
+  "chromosome_painting": "On simulated genomes with known ancestry segments, the pair of ancestries was right at 97% of SNPs, and the average confidence the method reported was 98%.",
+  "indigenous_american": "Detection limit 3.0%. On simulated genomes with known Indigenous American ancestry the proportion was recovered within 3.5 points from 5% upwards; detection rates at 2%, 5% and 10% were 17%, 50% and 100%; 0% of genomes with none, and 8% of left-out East Asian genomes, were reported as having some.",
+  "roh": "Segments match PLINK 1.9's --homozyg on the same genotypes (total length within 0.0%, overlap at least 1.00), and homozygous stretches of known length inserted into real genomes were found over 100% of their length.",
+  "x_ancestry": "From X-chromosome SNPs alone, people left out of the reference panels are assigned on average at least 78% to their own continent."
+ },
+ "fails": []
+}
