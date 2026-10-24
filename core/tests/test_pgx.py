@@ -230,3 +230,20 @@ def test_frequency_choice_for_unphased_nat2_like_genes():
     assert c["chosen_by"] == "haplotype frequency" and c["diplotypes"] == ["*4/*16"]
     assert abs(c["diplotype_probability"] - 0.025 / 0.045) < 1e-9
     assert set(c["phenotype_probabilities"]) == {"Intermediate Metabolizer"}
+
+
+def test_unread_common_allele_makes_the_call_unknown():
+    d = {**TPMT, "alleles": [dict(a, freq={"European": 0.06}) if a["name"] == "*3C" else a for a in TPMT["alleles"]]}
+    pgx = {"genes": {"TPMT": d}, "references": {},
+           "drugs": [{"name": "mercaptopurine", "genes": ["TPMT"], "guideline": {},
+                      "recs": [{"key": {"TPMT": "Normal Metabolizer"}, "recommendation": "standard"}]}]}
+    r = raw([("rs1", 6, 100, "CC"), ("rs3", 6, 300, "AA")])           # rs2 (*3C) not on the chip
+
+    def make(cid, title, group, grade, summary, result, limits, method, sources, ok=True):
+        return {"id": cid, "grade": grade, "summary": summary, "result": result}
+    cards = pgx_cards(pgx, None, r, r.pos, "the reference's + strand", "XX", make)
+    tp = next(c for c in cards if c["id"] == "pgx_tpmt")
+    assert tp["result"]["call"]["status"] == "unreliable" and tp["grade"] == "C"
+    assert "*3C" in tp["summary"] and "unknown" in tp["summary"]
+    # an unknown gene selects no recommendation row
+    assert cards[0]["result"]["drugs"][0]["depends"] and not cards[0]["result"]["drugs"][0]["rows"]

@@ -52,7 +52,6 @@ VARIANT_GENES = {"DPYD", "RYR1"}
 BY_FREQUENCY = {"NAT2"}
 SEVERITY = {"Malignant Hyperthermia associated": 0, "No function": 0, "Uncertain function": 1,
             "Decreased function": 1, "Normal function": 2}
-ROUTINE = "Normal/Routine/Low Risk"
 
 
 def _num(v):
@@ -167,7 +166,10 @@ class Gene:
         C, score, T = self.consistent(geno, haploid)
         tested = np.zeros(len(self.pos), dtype=bool)
         tested[T] = True
-        evid = np.array([i == self.ref or bool((self.defined[i] & tested & ~self._is_ref_cell(i)).any())
+        # only alleles every one of whose variant cells was read: the others are the "alleles your file
+        # cannot see", reported separately
+        nonref = self.defined & ~(self.allowed == self.refmask[None, :])
+        evid = np.array([i == self.ref or (bool(nonref[i].any()) and bool(tested[nonref[i]].all()))
                          for i in range(len(self.alleles))])
         out = []
         pairs = [(i,) for i in np.flatnonzero(C)] if haploid else [tuple(x) for x in np.argwhere(C)]
@@ -491,13 +493,54 @@ def pgx_cards(pgx: dict, panel: Panel | None, g: RawGenotypes, pos37: np.ndarray
         tested = geno[:, 0] != UNTESTED
         rel = (panel.agreement(gene, chrom, tested, c)
                if (panel is not None and sym != "CYP2D6" and c["status"] in ("called", "ambiguous")) else None)
-        calls[sym] = c
         cyp2d6 = sym == "CYP2D6"
+        if c["status"] == "called" and not cyp2d6 and not c.get("genotype_only"):
+            why = _unreliable(gene, geno, rel, [tuple(x.split("/")) for x in c["diplotypes"]], c)
+            if why:
+                c = {**c, "status": "unreliable", "presumptive": c["phenotype"], "phenotype": None, "why": why}
+        calls[sym] = c
         if c["status"] == "called" and not cyp2d6 and c.get("phenotype"):
             status[sym] = c["score"] if d["lookup"] == "ACTIVITY_SCORE" else c["phenotype"]
         cards.append(_gene_card(sym, d, gene, c, rel, geno, drugs_by_gene.get(sym, []), refs, make_card, haploid))
     cards.insert(0, _summary_card(pgx, genes, calls, status, refs, make_card))
     return cards
+
+
+MIN_AGREEMENT = 0.90
+
+
+def _unreliable(gene: Gene, geno, rel, c_names=None, call=None) -> str | None:
+    """Why a call from these positions should not be used, or None. With the 1000 Genomes panel: a full
+    reading gives the same phenotype in fewer than 90% of people with this call. Without it (no panel
+    genotypes, e.g. MT-RNR1): an allele seen in at least 5% of some population, which would change the
+    phenotype in place of either called allele, was not read."""
+    if rel and rel.get("phenotype_agrees") is not None:
+        if rel["phenotype_agrees"] < MIN_AGREEMENT:
+            alt = (rel.get("full_instead") or [{}])[0]
+            return (f"a full reading gives the same phenotype in only {_pct(rel['phenotype_agrees'])} of the "
+                    f"{rel['same_call']:,} 1000 Genomes people with this call"
+                    + (f" (most often instead: {alt['phenotype']}, {_pct(alt['share'])})" if alt.get("phenotype") else ""))
+        return None
+    pp = (call or {}).get("phenotype_probabilities")
+    if pp and max(pp.values()) < MIN_AGREEMENT:
+        return (f"several diplotypes fit your genotypes and the likeliest phenotype carries only "
+                f"{_pct(max(pp.values()))} of their combined 1000 Genomes frequency")
+    dip = (c_names or [None])[0]
+    if dip is None:
+        return None
+    cur = (gene.phenotype(dip) or {}).get("result")
+    for u in _alleles_untested(gene, geno):
+        if u["max_frequency"] < 0.05:
+            continue
+        if gene.mode == "variants":
+            found = [(v["name"], v["copies"]) for v in (call or {}).get("variants", [])] + [(u["allele"], 1)]
+            swaps = [gene.variant_diplotype(found, len(dip) == 1)]
+        else:
+            swaps = [(u["allele"],)] if len(dip) == 1 else [(u["allele"], dip[1]), (dip[0], u["allele"])]
+        if any((gene.phenotype(sw) or {}).get("result") != cur for sw in swaps):
+            return (f"{u['allele']} ({u['function'] or 'function not assigned'}, up to {100 * u['max_frequency']:.0f}% "
+                    f"in {u['where']}) would change the result and is at positions your file does not have")
+    return None
 
 
 def _alleles_untested(gene: Gene, geno) -> list[dict]:
@@ -540,7 +583,7 @@ def _gene_card(sym, d, gene, c, rel, geno, drug_names, refs, make_card, haploid)
     rare = _rare_in_call(gene, c)
     cyp2d6 = sym == "CYP2D6"
     drugs = ", ".join(sorted(set(drug_names))) or "none"
-    ok = c["status"] in ("called", "ambiguous")
+    ok = c["status"] in ("called", "ambiguous", "unreliable")
     if c["status"] == "not tested":
         summary = f"Your file has none of the {ntot} positions CPIC uses to define {sym} alleles."
     elif c["status"].startswith("no call"):
@@ -554,6 +597,9 @@ def _gene_card(sym, d, gene, c, rel, geno, drug_names, refs, make_card, haploid)
                        "before it could guide any medicine.")
             if c.get("phenotype"):
                 summary += f" If you have the usual two copies, these alleles would mean: {c['phenotype']} (presumptive)."
+        elif c["status"] == "unreliable":
+            summary = (f"Not determinable from your file. From the positions it has, the call would be {dtxt} "
+                       f"({c['presumptive']}), but {c['why']}. Treat it as unknown; a clinical test is needed.")
         elif c.get("genotype_only"):
             summary = (f"{sym} {dtxt}. CPIC assigns this gene no phenotype; its guideline uses the genotype directly "
                        f"(for {drugs}).")
@@ -565,14 +611,15 @@ def _gene_card(sym, d, gene, c, rel, geno, drug_names, refs, make_card, haploid)
                             f"haplotype frequencies, and diplotypes giving this phenotype carry {_pct(pp)} of the total.")
         else:
             summary = f"{sym} {dtxt}: the positions your file has cannot separate {' and '.join(c['possible'])}."
-        if rel and rel.get("phenotype_agrees") is not None and not cyp2d6:
+        if rel and rel.get("phenotype_agrees") is not None and not cyp2d6 and c["status"] != "unreliable":
             summary += (f" Among {rel['same_call']:,} 1000 Genomes people given the same result from the same positions, "
                         f"a full reading gave the same phenotype in {_pct(rel['phenotype_agrees'])}.")
         if rare:
             summary += (f" {', '.join(rare)} is rare (under 1% in every population CPIC lists): chip calls of rare variants "
                         "are often false, so it needs confirming with a clinical test.")
     agree = (rel or {}).get("phenotype_agrees")
-    grade = "C" if cyp2d6 or not ok else ("A" if (agree is not None and agree >= 0.95 and not rare) else "B")
+    grade = ("C" if cyp2d6 or not ok or c["status"] == "unreliable"
+             else "A" if (agree is not None and agree >= 0.95 and not rare) else "B")
     limits = [DISCLAIMER,
               f"Your file has {tested} of the {ntot} positions CPIC uses for {sym}; an allele defined only at missing "
               "positions reads as the reference allele (*1 or 'Reference'), as in PharmCAT."]
@@ -651,19 +698,24 @@ def _summary_card(pgx, genes, calls, status, refs, make_card):
     for sym, c in calls.items():
         if sym in status:
             pr[sym] = c.get("priority") or (pgx["genes"][sym].get("phenotypes", {}).get(c.get("phenotype")) or {}).get("ehrpriority")
-    flagged = sorted(s for s, p in pr.items() if p and p != ROUTINE)
+    # CPIC's EHR priority: "Abnormal/Priority/High Risk" (or "Priority/High Risk") marks a result that changes
+    # a recommendation; the normal labels vary ("Normal/Routine/Low Risk", "Normal Risk", "none")
+    flagged = sorted(s for s, p in pr.items() if p and "high risk" in p.lower())
     recs = recommendations(pgx, status, calls)
     actionable = [r for r in recs if r["rows"] and any(g in flagged for g in r["genes"])]
     needs_test = sorted({r["drug"] for r in recs if "CYP2D6" in r["genes"]})
     called = sorted(status)
     if flagged and actionable:
-        s = (f"Results outside the usual range in {', '.join(flagged)}, which CPIC guidelines link to "
+        s = (f"Results that change a CPIC recommendation in {', '.join(flagged)}, for "
              f"{len(actionable)} medicine{'s' if len(actionable) != 1 else ''}: "
              + ", ".join(sorted({r['drug'] for r in actionable})[:12]) + ("…" if len(actionable) > 12 else "") + ".")
     elif flagged:
-        s = f"Results outside the usual range in {', '.join(flagged)}."
+        s = f"Results CPIC marks as high priority in {', '.join(flagged)}."
     else:
-        s = "No result outside the usual range in the genes your file could read."
+        s = "No result that changes a CPIC recommendation in the genes your file could read."
+    unrel = sorted(k for k, c in calls.items() if c["status"] == "unreliable")
+    if unrel:
+        s += f" Not determinable from your file: {', '.join(unrel)}."
     s += f" Called {len(called)} of {len(genes)} genes."
     if needs_test:
         s += f" {len(needs_test)} medicines depend on CYP2D6, which needs a clinical test."
