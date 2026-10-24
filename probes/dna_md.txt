@@ -1,0 +1,13 @@
+openmm 8.6.1 ['Reference', 'CPU']
+['DNA.OL15.xml', 'DNA.bsc1.xml', 'RNA.OL3.xml'] ['gbn.xml', 'obc2.xml', 'gbn2.xml', 'hct.xml', 'obc1.xml']
+B atoms with H 758 ['DC', 'DG', 'DC'] ['DG', 'DC', 'DG']
+Traceback (most recent call last):
+  File "/home/runner/work/athanor/athanor/tools/probes/dna_md.py", line 26, in <module>
+    sysm = ff.createSystem(mod.topology, nonbondedMethod=app.NoCutoff, constraints=app.HBonds, implicitSolventSaltConc=0.15 * u.molar)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/micromamba/envs/probe/lib/python3.12/site-packages/openmm/app/forcefield.py", line 1513, in createSystem
+    args.checkArgs(self.createSystem)
+  File "/home/runner/micromamba/envs/probe/lib/python3.12/site-packages/openmm/app/internal/argtracker.py", line 24, in checkArgs
+    raise ValueError(f"The argument '{key}' was specified to {fn.__name__}() but was never used.")
+ValueError: The argument 'implicitSolventSaltConc' was specified to createSystem() but was never used.
+exit 1
