@@ -1,0 +1,79 @@
+460 measurements of 92 duplexes at Na+ [0.069, 0.119, 0.22, 0.621, 1.02] M
+0 rows whose second strand is not the complement
+owczarzy2004 {
+ "69 mM": {
+  "mean_abs": 1.7043201709458597,
+  "mean": 1.0490204568194959,
+  "max_abs": 6.353477267538018,
+  "n": 92
+ },
+ "119 mM": {
+  "mean_abs": 1.671775207097735,
+  "mean": 1.087534675795181,
+  "max_abs": 6.369584779824947,
+  "n": 92
+ },
+ "220 mM": {
+  "mean_abs": 1.5940898144252995,
+  "mean": 1.0171612573063953,
+  "max_abs": 6.106171664389336,
+  "n": 92
+ },
+ "621 mM": {
+  "mean_abs": 1.7095355153402234,
+  "mean": 1.2004697980215888,
+  "max_abs": 6.318291828946315,
+  "n": 92
+ },
+ "1020 mM": {
+  "mean_abs": 1.6347209499307487,
+  "mean": 1.050883922354041,
+  "max_abs": 6.05305667910298,
+  "n": 92
+ },
+ "all": {
+  "mean_abs": 1.6628883315479732,
+  "mean": 1.0810140220593403,
+  "n": 460
+ }
+}
+santalucia1998 {
+ "69 mM": {
+  "mean_abs": 0.9189614871943294,
+  "mean": 0.4080128185245137,
+  "max_abs": 5.911738029605807,
+  "n": 92
+ },
+ "119 mM": {
+  "mean_abs": 1.0901797647007603,
+  "mean": -0.6423829632066934,
+  "max_abs": 4.429439599314083,
+  "n": 92
+ },
+ "220 mM": {
+  "mean_abs": 1.4855452478189224,
+  "mean": -1.2277409064871319,
+  "max_abs": 3.6850444116062917,
+  "n": 92
+ },
+ "621 mM": {
+  "mean_abs": 1.2187487298268502,
+  "mean": -0.06748633635019159,
+  "max_abs": 4.2951504605781,
+  "n": 92
+ },
+ "1020 mM": {
+  "mean_abs": 1.6737716335460564,
+  "mean": 1.1150673559741153,
+  "max_abs": 6.150428833504947,
+  "n": 92
+ },
+ "all": {
+  "mean_abs": 1.2774413726173837,
+  "mean": -0.08290600630907762,
+  "n": 460
+ }
+}
+[PASS] melting temperatures vs 92 measured duplexes at 1 M Na+ (Owczarzy 2004): mean error <= 2.0 C: mean |error| 1.63 C, mean +1.05 C, worst 6.1 C
+[PASS] melting temperatures vs the same duplexes at 69-621 mM Na+ (Owczarzy 2004 salt correction): mean error <= 2.0 C: 69 mM 1.70; 119 mM 1.67; 220 mM 1.59; 621 mM 1.71; 1020 mM 1.63
+[PASS] same melting temperatures as Biopython's Tm_NN (Allawi & SantaLucia parameters, both salt corrections): largest difference 0.0044 C over 276 cases
