@@ -1,0 +1,36 @@
+name: probe-env
+# Like probe, but in a conda environment with the packages given; for checking engines and data sources.
+on:
+  workflow_dispatch:
+    inputs:
+      script: {description: "script name in tools/probes (without .py)", required: true}
+      conda: {description: "conda-forge packages (space separated)", required: false, default: "python=3.12 numpy scipy"}
+      pip: {description: "pip packages (space separated)", required: false, default: ""}
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: probe
+          create-args: ${{ inputs.conda }}
+          condarc: |
+            channels: [conda-forge, bioconda]
+      - run: |
+          if [ -n "${{ inputs.pip }}" ]; then pip install -q ${{ inputs.pip }} 2>&1 | tail -3; fi
+          nproc; export PYTHONPATH="$PWD/core"
+          timeout 6000 python "tools/probes/${{ inputs.script }}.py" > probe.txt 2>&1 || echo "exit $?" >> probe.txt
+          tail -c 20000 probe.txt
+      - if: always()
+        run: |
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/probes" && cp probe.txt "$d/probes/${{ inputs.script }}.txt" && \
+            (cd "$d" && git add -A && git commit -qm "probe ${{ inputs.script }}" && git push -q origin HEAD:ci-results)
