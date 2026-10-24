@@ -1,0 +1,749 @@
+
+### https://api.cpicpgx.org/v1/gene?select=symbol,chr,lookupmethod,genesequenceid,chromosequenceid,mrnasequenceid,allelesLastModified,functionmethod&lookupmethod=not.is.null
+ERROR <HTTPError 400: 'Bad Request'>
+
+### https://api.cpicpgx.org/v1/pair?select=*&cpiclevel=eq.A&removed=eq.false  (26766 bytes)
+rows: 96
+[
+ {
+  "pairid": 110083,
+  "genesymbol": "CYP2D6",
+  "drugid": "RxNorm:38400",
+  "guidelineid": 104243,
+  "usedforrecommendation": true,
+  "version": 88,
+  "cpiclevel": "A",
+  "clinpgxlevel": "1A",
+  "pgxtesting": "Actionable PGx",
+  "citations": [
+   "30801677"
+  ],
+  "removed": false,
+  "removeddate": null,
+  "removedreason": null
+ },
+ {
+  "pairid": 1556299,
+  "genesymbol": "SLCO1B1",
+  "drugid": "RxNorm:83367",
+  "guidelineid": 100426,
+  "usedforrecommendation": true,
+  "version": 79,
+  "cpiclevel": "A",
+  "clinpgxlevel": "1A",
+  "pgxtesting": null,
+  "citations": [
+   "35152405"
+  ],
+  "removed": false,
+  "removeddate": null,
+  "removedreason": null
+ }
+]
+level A genes: ['ABCG2', 'CACNA1S', 'CFTR', 'CYP2B6', 'CYP2C19', 'CYP2C9', 'CYP2D6', 'CYP3A5', 'CYP4F2', 'DPYD', 'G6PD', 'HLA-A', 'HLA-B', 'MT-RNR1', 'NAT2', 'NUDT15', 'RYR1', 'SLCO1B1', 'TPMT', 'UGT1A1', 'VKORC1']
+
+### https://api.cpicpgx.org/v1/pair_view?limit=2  (668 bytes)
+rows: 2
+[
+ {
+  "pairid": 110083,
+  "drugid": "RxNorm:38400",
+  "drugname": "atomoxetine",
+  "genesymbol": "CYP2D6",
+  "guidelinename": "CYP2D6 and Atomoxetine",
+  "guidelineurl": "https://www.clinpgx.org/guideline/PA166251459",
+  "cpiclevel": "A",
+  "clinpgxlevel": "1A",
+  "pgxtesting": "Actionable PGx",
+  "pmids": [
+   "30801677"
+  ],
+  "usedforrecommendation": "Yes",
+  "provisional": false
+ },
+ {
+  "pairid": 1556299,
+  "drugid": "RxNorm:83367",
+  "drugname": "atorvastatin",
+  "genesymbol": "SLCO1B1",
+  "guidelinename": "SLCO1B1, ABCG2, CYP2C9, and Statins",
+  "guidelineurl": "https://www.clinpgx.org/guideline/PA166264281",
+  "cpiclevel": "A",
+  "clinpgxlevel": "1A",
+  "pgxtesting": null,
+  "pmids": [
+   "35152405"
+  ],
+  "usedforrecommendation": "Yes",
+  "provisional": false
+ }
+]
+
+### https://api.cpicpgx.org/v1/allele?genesymbol=eq.CYP2C19&limit=3  (3388 bytes)
+rows: 3
+[
+ {
+  "id": 777533,
+  "version": 409,
+  "genesymbol": "CYP2C19",
+  "name": "*1",
+  "functionalstatus": null,
+  "clinicalfunctionalstatus": "Normal function",
+  "clinicalfunctionalsubstrate": null,
+  "activityvalue": null,
+  "definitionid": 777532,
+  "citations": [
+   "7487078",
+   "32602114",
+   "22027650",
+   "29325448",
+   "33237321"
+  ],
+  "strength": "Definitve",
+  "functioncomments": null,
+  "findings": "CYP2C19*1 is assigned normal function based on definitive evidence. CYP2C19*1 has been studied for more than 20 years and is the most frequently observed allele (7487078, 32602114). CYP2C19*1 has repeatedly demonstrated normal function with numerous substrates and its association with normal function is well-established (22027650, 29325448, 33237321).",
+  "frequency": {
+   "Latino": 0.7165527,
+   "American": 0.7921841,
+   "European": 0.62514144,
+   "Oceanian": 0.18709892,
+   "East Asian": 0.59554905,
+   "Near Eastern": 0.67225105,
+   "Central/South Asian": 0.543626,
+   "Sub-Saharan African": 0.55150676,
+   "African American/Afro-Caribbean": 0.54676163
+  },
+  "inferredfrequency": true
+ },
+ {
+  "id": 777551,
+  "version": 409,
+  "genesymbol": "CYP2C19",
+  "name": "*10",
+  "functionalstatus": null,
+  "clinicalfunctionalstatus": "Decreased function",
+  "clinicalfunctionalsubstrate": null,
+  "activityvalue": null,
+  "definitionid": 777550,
+  "citations": [
+   "12464799",
+   "19661214",
+   "21325430",
+   "25001882",
+   "24945780",
+   "21692664"
+  ],
+  "strength": "Limited",
+  "functioncomments": null,
+  "findings": "CYP2C19*10 is assigned decreased function based on limited evidence.Six in vitro studies using different cell systems found CYP2C19*10 demonstrated decreased enzyme activity compared to wildtype with mephenytoin, omeprazole, and clopidogrel substrates (12464799, 19661214, 21325430, 25001882, 24945780). Another study found CYP2C19*10 exhibited significantly reduced catalytic activities compared with CYP2C19*1 across multiple substrates (21692664). Therefore, consensus among experts was decreased function based on limited evidence as it was determined the phenotypes containing this allele would be clinically distinct from phenotypes comprising normal function alleles.",
+  "frequency": {
+   "Latino": 0.0012398496,
+   "American": null,
+   "European": 0.0,
+   "Oceanian": null,
+   "East Asian": 0.00010471204,
+   "Near Eastern": 0.0,
+   "Central/South Asian": null,
+   "Sub-Saharan African": 0.0,
+   "African American/Afro-Caribbean": 0.0032672414
+  },
+  "inferredfrequency": false
+ }
+]
+
+### https://api.cpicpgx.org/v1/allele?genesymbol=eq.DPYD&limit=3  (1658 bytes)
+rows: 3
+[
+ {
+  "id": 778394,
+  "version": 392,
+  "genesymbol": "DPYD",
+  "name": "c.1314T>G",
+  "functionalstatus": "Decreased function",
+  "clinicalfunctionalstatus": "Decreased function",
+  "clinicalfunctionalsubstrate": null,
+  "activityvalue": "0.5",
+  "definitionid": 778393,
+  "citations": [
+   "24648345"
+  ],
+  "strength": "Limited",
+  "functioncomments": null,
+  "findings": "5-fluorouracil (in vitro)",
+  "frequency": {
+   "Latino": 0.0,
+   "European": 0.0,
+   "East Asian": 0.00068351155,
+   "Central/South Asian": 0.0,
+   "Sub-Saharan African": 0.0,
+   "African American/Afro-Caribbean": 0.0
+  },
+  "inferredfrequency": false
+ },
+ {
+  "id": 778422,
+  "version": 390,
+  "genesymbol": "DPYD",
+  "name": "c.1682G>T",
+  "functionalstatus": "Normal function",
+  "clinicalfunctionalstatus": "Normal function",
+  "clinicalfunctionalsubstrate": null,
+  "activityvalue": "1.0",
+  "definitionid": 778421,
+  "citations": [
+   "24648345"
+  ],
+  "strength": "Limited",
+  "functioncomments": null,
+  "findings": "5-fluorouracil (in vitro)",
+  "frequency": {
+   "Latino": 0.0001,
+   "European": 1.3742599e-05,
+   "East Asian": 0.0,
+   "Central/South Asian": 0.0001,
+   "Sub-Saharan African": null,
+   "African American/Afro-Caribbean": null
+  },
+  "inferredfrequency": false
+ }
+]
+
+### https://api.cpicpgx.org/v1/allele_definition?genesymbol=eq.CYP2C19&name=eq.*2&select=*,allele_location_value(*,sequence_location(*))  (1518 bytes)
+rows: 1
+[
+ {
+  "id": 777534,
+  "version": 188,
+  "genesymbol": "CYP2C19",
+  "name": "*2",
+  "pharmvarid": null,
+  "matchesreferencesequence": false,
+  "structuralvariation": false,
+  "allele_location_value": [
+   {
+    "version": 1,
+    "locationid": 777508,
+    "variantallele": "R",
+    "sequence_location": {
+     "id": 777508,
+     "name": "12662A>G",
+     "dbsnpid": "rs12769205",
+     "version": 107,
+     "position": 94775367,
+     "genesymbol": "CYP2C19",
+     "genelocation": "g.17687A>G",
+     "proteinlocation": "splicing defect",
+     "chromosomelocation": "g.94775367A>G"
+    },
+    "alleledefinitionid": 777534
+   },
+   {
+    "version": 1,
+    "locationid": 777513,
+    "variantallele": "R",
+    "sequence_location": {
+     "id": 777513,
+     "name": "12802G>A",
+     "dbsnpid": "rs58973490",
+     "version": 107,
+     "position": 94775507,
+     "genesymbol": "CYP2C19",
+     "genelocation": "g.17827G>A",
+     "proteinlocation": "p.R150H",
+     "chromosomelocation": "g.94775507G>A"
+    },
+    "alleledefinitionid": 777534
+   },
+   {
+    "version": 1,
+    "locationid": 777518,
+    "variantallele": "A",
+    "sequence_location": {
+     "id": 777518,
+     "name": "19154G>A",
+     "dbsnpid": "rs4244285",
+     "version": 107,
+     "position": 94781859,
+     "genesymbol": "CYP2C19",
+     "genelocation": "g.24179G>A",
+     "proteinlocation": "splicing defect",
+     "chromosomelocation": "g.94781859G>A"
+    },
+    "alleledefinitionid": 777534
+   },
+   {
+    "version": 1,
+    "locationid": 777522,
+    "variantallele": "R",
+    "sequence_location": {
+     "id": 777522,
+     "name": "80161A>G",
+     "dbsnpid": "rs3758581",
+     "version": 107,
+     "position": 94842866,
+     "genesymbol": "CYP2C19",
+     "genelocation": "g.85186A>G",
+     "proteinlocation": "p.I331V",
+     "chromosomelocation": "g.94842866A>G"
+    },
+    "alleledefinitionid": 777534
+   }
+  ]
+ }
+]
+
+### https://api.cpicpgx.org/v1/sequence_location?geneSymbol=eq.CYP2C19&limit=3
+ERROR <HTTPError 400: 'Bad Request'>
+
+### https://api.cpicpgx.org/v1/diplotype?genesymbol=eq.CYP2C9&diplotype=eq.*1/*3  (966 bytes)
+rows: 1
+[
+ {
+  "genesymbol": "CYP2C9",
+  "diplotype": "*1/*3",
+  "function1": "Normal function",
+  "function2": "No function",
+  "activityvalue1": "1.0",
+  "activityvalue2": "0.0",
+  "totalactivityscore": "1.0",
+  "description": "An individual carrying one normal function allele and one no function allele",
+  "diplotypekey": {
+   "CYP2C9": {
+    "*1": 1,
+    "*3": 1
+   }
+  },
+  "generesult": "Intermediate Metabolizer",
+  "ehrpriority": "Abnormal/Priority/High Risk",
+  "consultationtext": "This result signifies that the patient has one copy of a normal function allele and one copy of a no function allele OR two copies of decreased function alleles. Based on the genotype result, this patient is predicted to be a CYP2C9 intermediate metabolizer (activity score of 1). This patient may be at risk for an adverse response to medications that are affected by CYP2C9. Please consult a clinical pharmacist for more specific information about how CYP2C9 intermediate metabolizer status influences drug dosing.",
+  "lookupkey": {
+   "CYP2C9": "1.0"
+  }
+ }
+]
+
+### https://api.cpicpgx.org/v1/gene_result?genesymbol=eq.CYP2C19&limit=2  (2156 bytes)
+rows: 2
+[
+ {
+  "id": 8368990,
+  "genesymbol": "CYP2C19",
+  "result": "Poor Metabolizer",
+  "activityscore": "n/a",
+  "ehrpriority": "Abnormal/Priority/High Risk",
+  "consultationtext": "This result signifies that the patient has two copies of a no function allele. Based on the genotype result this patient is predicted to be a poor metabolizer of CYP2C19 substrates. This patient may be at a high risk for an adverse or poor response to medications that are metabolized by CYP2C19. To avoid an untoward drug response, dose adjustments or or alternative therapy may be necessary for medications metabolized by the CYP2C19. Please consult a clinical pharmacist for more information about how CYP2C19 metabolic status influences drug selection and dosing.",
+  "version": 3,
+  "frequency": {
+   "Latino": 0.011408395,
+   "American": 0.014819587,
+   "European": 0.02387743,
+   "Oceanian": 0.5713864,
+   "East Asian": 0.12978691,
+   "Near Eastern": 0.018584846,
+   "Central/South Asian": 0.08156806,
+   "Sub-Saharan African": 0.036714304,
+   "African American/Afro-Caribbean": 0.040512204
+  }
+ },
+ {
+  "id": 8368817,
+  "genesymbol": "CYP2C19",
+  "result": "Intermediate Metabolizer",
+  "activityscore": "n/a",
+  "ehrpriority": "Abnormal/Priority/High Risk",
+  "consultationtext": "This result signifies that the patient has one copy of a normal function allele and one copy of a no function allele OR one copy of an increased function and one copy of a no function allele. Based on the genotype result this patient is predicted to be an intermediate metabolizer of CYP2C19 substrates. This patient may be at risk for an adverse or poor response to medications that are metabolized by CYP2C19. To avoid an untoward drug response, dose adjustments or alternative therapeutic agents may be necessary for medications metabolized by CYP2C19. Please consult a clinical pharmacist for more information about how CYP2C19 metabolic status influences drug selection and dosing.",
+  "version": 3,
+  "frequency": {
+   "Latino": 0.19035932,
+   "American": 0.21383229,
+   "European": 0.26108757,
+   "Oceanian": 0.36902928,
+   "East Asian": 0.45928204,
+   "Near Eastern": 0.2354828,
+   "Central/South Asian": 0.40806636,
+   "Sub-Saharan African": 0.29945874,
+   "African American/Afro-Caribbean": 0.31398684
+  }
+ }
+]
+
+### https://api.cpicpgx.org/v1/gene_result_lookup?limit=2  (621 bytes)
+rows: 2
+[
+ {
+  "id": 8362021,
+  "phenotypeid": 8362020,
+  "lookupkey": {
+   "Decreased function": 2
+  },
+  "function1": "Decreased function",
+  "function2": "Decreased function",
+  "activityvalue1": "n/a",
+  "activityvalue2": "n/a",
+  "totalactivityscore": "n/a",
+  "description": "An individual carrying two decreased function alleles"
+ },
+ {
+  "id": 8362024,
+  "phenotypeid": 8362023,
+  "lookupkey": {
+   "Normal function": 1,
+   "Decreased function": 1
+  },
+  "function1": "Normal function",
+  "function2": "Decreased function",
+  "activityvalue1": "n/a",
+  "activityvalue2": "n/a",
+  "totalactivityscore": "n/a",
+  "description": "An individual carrying one normal function allele and one decreased function allele"
+ }
+]
+
+### https://api.cpicpgx.org/v1/drug?name=eq.clopidogrel  (272 bytes)
+rows: 1
+[
+ {
+  "drugid": "RxNorm:32968",
+  "name": "clopidogrel",
+  "clinpgxid": "PA449053",
+  "rxnormid": "32968",
+  "drugbankid": "DB00758",
+  "atcid": [
+   "B01AC04"
+  ],
+  "umlscui": null,
+  "flowchart": "https://files.cpicpgx.org/images/flow_chart/Clopidogrel_CDS_Flow_Chart.jpg",
+  "version": 268,
+  "guidelineid": 100411
+ }
+]
+
+### https://api.cpicpgx.org/v1/recommendation?drugid=eq.RxNorm:32968&limit=2  (1652 bytes)
+rows: 2
+[
+ {
+  "id": 8480383,
+  "guidelineid": 100411,
+  "drugid": "RxNorm:32968",
+  "implications": {
+   "CYP2C19": "Increased clopidogrel active metabolite formation; lower on-treatment platelet reactivity; no association with higher bleeding risk"
+  },
+  "drugrecommendation": "If considering clopidogrel, use at standard dose (75 mg/day)",
+  "classification": "Strong",
+  "phenotypes": {
+   "CYP2C19": "Ultrarapid Metabolizer"
+  },
+  "activityscore": {},
+  "allelestatus": {},
+  "lookupkey": {
+   "CYP2C19": "Ultrarapid Metabolizer"
+  },
+  "population": "CVI ACS PCI ",
+  "comments": "For cardiovascular indications of acute coronary syndrome (ACS) and/or percutaneous coronary intervention (PCI). ACS and/or PCI includes patients undergoing PCI for an ACS or non-ACS (elective) indication.",
+  "version": 1,
+  "dosinginformation": false,
+  "alternatedrugavailable": false,
+  "otherprescribingguidance": false
+ },
+ {
+  "id": 8480384,
+  "guidelineid": 100411,
+  "drugid": "RxNorm:32968",
+  "implications": {
+   "CYP2C19": "Normal or increased clopidogrel active metabolite formation; normal or lower on-treatment platelet reactivity; no association with higher bleeding risk"
+  },
+  "drugrecommendation": "If considering clopidogrel, use at standard dose (75 mg/day)",
+  "classification": "Strong",
+  "phenotypes": {
+   "CYP2C19": "Rapid Metabolizer"
+  },
+  "activityscore": {},
+  "allelestatus": {},
+  "lookupkey": {
+   "CYP2C19": "Rapid Metabolizer"
+  },
+  "population": "CVI ACS PCI ",
+  "comments": "For cardiovascular indications of acute coronary syndrome (ACS) and/or percutaneous coronary intervention (PCI). ACS and/or PCI includes patients undergoing PCI for an ACS or non-ACS (elective) indication.",
+  "version": 1,
+  "dosinginformation": false,
+  "alternatedrugavailable": false,
+  "otherprescribingguidance": false
+ }
+]
+
+### https://api.cpicpgx.org/v1/guideline?select=*,publication(title,pmid,year)&limit=2  (1142 bytes)
+rows: 2
+[
+ {
+  "id": 100416,
+  "version": 72,
+  "name": "CYP2D6, OPRM1, COMT, and Opioids",
+  "url": "https://www.clinpgx.org/guideline/PA166251454",
+  "genes": [
+   "CYP2D6",
+   "COMT",
+   "OPRM1"
+  ],
+  "notesonusage": null,
+  "clinpgxid": "PA166251454",
+  "publication": [
+   {
+    "pmid": "22205192",
+    "year": 2011,
+    "title": "Clinical Pharmacogenetics Implementation Consortium (CPIC) Guidelines for Codeine Therapy in the Context of Cytochrome P450 2D6 (CYP2D6) Genotype"
+   },
+   {
+    "pmid": "24458010",
+    "year": 2014,
+    "title": "Clinical Pharmacogenetics Implementation Consortium (CPIC) guidelines for cytochrome P450 2D6 (CYP2D6) genotype and codeine therapy: 2014 Update"
+   },
+   {
+    "pmid": "33387367",
+    "year": 2021,
+    "title": "Clinical Pharmacogenetics Implementation Consortium (CPIC) guideline for CYP2D6, OPRM1, and COMT genotype and select opioid therapy."
+   }
+  ]
+ },
+ {
+  "id": 100418,
+  "version": 71,
+  "name": "CYP3A5 and Tacrolimus",
+  "url": "https://www.clinpgx.org/guideline/PA166251451",
+  "genes": [
+   "CYP3A5"
+  ],
+  "notesonusage": null,
+  "clinpgxid": "PA166251451",
+  "publication": [
+   {
+    "pmid": "25801146",
+    "year": 2015,
+    "title": "Clinical pharmacogenetics implementation consortium (CPIC) guidelines for CYP3A5 genotype and tacrolimus dosing"
+   }
+  ]
+ }
+]
+
+### https://api.cpicpgx.org/v1/test_alert?limit=1  (960 bytes)
+rows: 1
+[
+ {
+  "id": 8481816,
+  "population": "general",
+  "cdscontext": "Post-test",
+  "genes": [
+   "CYP2D6",
+   "CYP2C19"
+  ],
+  "phenotype": {
+   "CYP2C19": "No Result"
+  },
+  "activityscore": {
+   "CYP2D6": "0.0"
+  },
+  "allelestatus": {},
+  "lookupkey": {
+   "CYP2D6": "0.0",
+   "CYP2C19": "No Result"
+  },
+  "drugid": "RxNorm:704",
+  "alerttext": [
+   "CYP2D6 and CYP2C19 genetic status may be predictive of an adverse reaction or poor response to this medication due to altered drug metabolism. This patient is predicted to be a CYP2D6 poor metabolizer and may be at an increased risk of a sub-optimal response. Consider selecting an alternative drug not metabolized by CYP2D6. If amitriptyline is warranted, consider a 50% reduction of recommended starting dose and utilize therapeutic drug monitoring to guide dose adjustments. A CYP2C19 genotype does not appear to have been ordered for this patient. CYP2C19 genetic status may be important for alternative drugs. Please consult a clinical pharmacist for more information."
+  ],
+  "version": 1
+ }
+]
+
+### https://api.cpicpgx.org/v1/allele_frequency?limit=2  (182 bytes)
+rows: 2
+[
+ {
+  "alleleid": 1508725,
+  "population": 8475149,
+  "frequency": 0.926,
+  "label": "0.9260",
+  "version": 1
+ },
+ {
+  "alleleid": 1508727,
+  "population": 8475149,
+  "frequency": 0.074,
+  "label": "0.0740",
+  "version": 1
+ }
+]
+
+### https://api.cpicpgx.org/v1/change_log?limit=2  (345 bytes)
+rows: 2
+[
+ {
+  "date": "2019-10-09",
+  "type": "ALLELE_FUNCTION_REFERENCE",
+  "entityid": "CYP3A5",
+  "note": "Updated to new format. Added new alleles from PharmVar",
+  "version": 1,
+  "deployedrelease": null
+ },
+ {
+  "date": "2025-07-23",
+  "type": "GENE_CDS",
+  "entityid": "CYP2C9",
+  "note": "added gene symbol as a prefix to the phenotype column values",
+  "version": 1,
+  "deployedrelease": null
+ }
+]
+
+### http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV/  (17026 bytes)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV</title>
+ </head>
+ <body>
+<h1>Index of /vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV</h1>
+  <table>
+   <tr><th valign="top"><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr>
+   <tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="/vol1/ftp/data_collections/1000G_2504_high_coverage/working/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr1.filtered.SNV_INDEL_SV_phased_panel.vcf.gz">1kGP_high_coverage_Illumina.chr1.filtered.SNV_INDEL_SV_phased_panel.vcf.gz</a></td><td align="right">2022-04-25 15:45  </td><td align="right">2.2G</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr1.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi">1kGP_high_coverage_Illumina.chr1.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi</a></td><td align="right">2022-04-25 16:18  </td><td align="right">223K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr2.filtered.SNV_INDEL_SV_phased_panel.vcf.gz">1kGP_high_coverage_Illumina.chr2.filtered.SNV_INDEL_SV_phased_panel.vcf.gz</a></td><td align="right">2022-04-25 16:17  </td><td align="right">2.3G</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr2.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi">1kGP_high_coverage_Illumina.chr2.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi</a></td><td align="right">2022-04-25 15:26  </td><td align="right">190K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr3.filtered.SNV_INDEL_SV_phased_panel.vcf.gz">1kGP_high_coverage_Illumina.chr3.filtered.SNV_INDEL_SV_phased_panel.vcf.gz</a></td><td align="right">2022-04-25 16:45  </td><td align="right">2.0G</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr3.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi">1kGP_high_coverage_Illumina.chr3.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi</a></td><td align="right">2022-04-25 15:46  </td><td align="right">191K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr4.filtered.SNV_INDEL_SV_phased_panel.vcf.gz">1kGP_high_coverage_Illumina.chr4.filtered.SNV_INDEL_SV_phased_panel.vcf.gz</a></td><td align="right">2022-04-25 15:46  </td><td align="right">1.9G</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr4.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi">1kGP_high_coverage_Illumina.chr4.filtered.SNV_INDEL_SV_phased_panel.vcf.gz.tbi</a></td><td align="right">2022-04-25 16:47  </td><td align="right">183K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/compressed.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr5.filtered.SNV_INDEL_SV_phased_panel.vcf.gz">1kGP_high_coverage_Illumina.chr5.filtered.SNV_INDEL_SV_phased_panel.vcf.gz</a></td><td align="right">2022-04-25 16:18  </td><td align="right">1.8G</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/unknown.gif" alt="[   ]"></td><td><a href="1kGP_high_coverage_Illumina.chr5.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
+
+### https://api.github.com/repos/PharmGKB/PharmCAT/releases?per_page=1  (15617 bytes)
+rows: 1
+[
+ {
+  "url": "https://api.github.com/repos/PharmGKB/PharmCAT/releases/353518777",
+  "assets_url": "https://api.github.com/repos/PharmGKB/PharmCAT/releases/353518777/assets",
+  "upload_url": "https://uploads.github.com/repos/PharmGKB/PharmCAT/releases/353518777/assets{?name,label}",
+  "html_url": "https://github.com/PharmGKB/PharmCAT/releases/tag/v3.4.0",
+  "id": 353518777,
+  "author": {
+   "login": "markwoon",
+   "id": 215141,
+   "node_id": "MDQ6VXNlcjIxNTE0MQ==",
+   "avatar_url": "https://avatars.githubusercontent.com/u/215141?v=4",
+   "gravatar_id": "",
+   "url": "https://api.github.com/users/markwoon",
+   "html_url": "https://github.com/markwoon",
+   "followers_url": "https://api.github.com/users/markwoon/followers",
+   "following_url": "https://api.github.com/users/markwoon/following{/other_user}",
+   "gists_url": "https://api.github.com/users/markwoon/gists{/gist_id}",
+   "starred_url": "https://api.github.com/users/markwoon/starred{/owner}{/repo}",
+   "subscriptions_url": "https://api.github.com/users/markwoon/subscriptions",
+   "organizations_url": "https://api.github.com/users/markwoon/orgs",
+   "repos_url": "https://api.github.com/users/markwoon/repos",
+   "events_url": "https://api.github.com/users/markwoon/events{/privacy}",
+   "received_events_url": "https://api.github.com/users/markwoon/received_events",
+   "type": "User",
+   "user_view_type": "public",
+   "site_admin": false
+  },
+  "node_id": "RE_kwDOA1E3Hc4VEkS5",
+  "tag_name": "v3.4.0",
+  "target_commitish": "development",
+  "name": "v3.4.0",
+  "draft": false,
+  "immutable": false,
+  "prerelease": false,
+  "created_at": "2026-07-14T01:19:41Z",
+  "updated_at": "2026-07-14T01:20:52Z",
+  "published_at": "2026-07-14T01:19:45Z",
+  "assets": [
+   {
+    "url": "https://api.github.com/repos/PharmGKB/PharmCAT/releases/assets/476111958",
+    "id": 476111958,
+    "node_id": "RA_kwDOA1E3Hc4cYORW",
+    "name": "pharmcat-3.4.0-all.jar",
+    "label": "",
+    "uploader": {
+     "login": "github-actions[bot]",
+     "id": 41898282,
+     "node_id": "MDM6Qm90NDE4OTgyODI=",
+     "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+     "gravatar_id": "",
+     "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+     "html_url": "https://github.com/apps/github-actions",
+     "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+     "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+     "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+     "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+     "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+     "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+     "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+     "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events
+
+### https://api.github.com/repos/cpicpgx/cpic-data/releases?per_page=1  (2041 bytes)
+rows: 1
+[
+ {
+  "url": "https://api.github.com/repos/cpicpgx/cpic-data/releases/369584105",
+  "assets_url": "https://api.github.com/repos/cpicpgx/cpic-data/releases/369584105/assets",
+  "upload_url": "https://uploads.github.com/repos/cpicpgx/cpic-data/releases/369584105/assets{?name,label}",
+  "html_url": "https://github.com/cpicpgx/cpic-data/releases/tag/v1.60.1",
+  "id": 369584105,
+  "author": {
+   "login": "whaleyr",
+   "id": 329004,
+   "node_id": "MDQ6VXNlcjMyOTAwNA==",
+   "avatar_url": "https://avatars.githubusercontent.com/u/329004?v=4",
+   "gravatar_id": "",
+   "url": "https://api.github.com/users/whaleyr",
+   "html_url": "https://github.com/whaleyr",
+   "followers_url": "https://api.github.com/users/whaleyr/followers",
+   "following_url": "https://api.github.com/users/whaleyr/following{/other_user}",
+   "gists_url": "https://api.github.com/users/whaleyr/gists{/gist_id}",
+   "starred_url": "https://api.github.com/users/whaleyr/starred{/owner}{/repo}",
+   "subscriptions_url": "https://api.github.com/users/whaleyr/subscriptions",
+   "organizations_url": "https://api.github.com/users/whaleyr/orgs",
+   "repos_url": "https://api.github.com/users/whaleyr/repos",
+   "events_url": "https://api.github.com/users/whaleyr/events{/privacy}",
+   "received_events_url": "https://api.github.com/users/whaleyr/received_events",
+   "type": "User",
+   "user_view_type": "public",
+   "site_admin": false
+  },
+  "node_id": "RE_kwDOCQvuYM4WB2fp",
+  "tag_name": "v1.60.1",
+  "target_commitish": "development",
+  "name": "v1.60.1 - API fix",
+  "draft": false,
+  "immutable": false,
+  "prerelease": false,
+  "created_at": "2026-08-12T23:33:11Z",
+  "updated_at": "2026-08-12T23:34:32Z",
+  "published_at": "2026-08-12T23:33:16Z",
+  "assets": [],
+  "tarball_url": "https://api.github.com/repos/cpicpgx/cpic-data/tarball/v1.60.1",
+  "zipball_url": "https://api.github.com/repos/cpicpgx/cpic-data/zipball/v1.60.1",
+  "body": "## <small>1.60.1 (2026-08-12)</small>\r\n\r\n* fix: fix parameters and queries in DB functions ([4b87330](https://github.com/cpicpgx/cpic-data/commit/4b87330)), closes [#51](https://github.com/cpicpgx/cpic-data/issues/51)\r\n\r\nThis is an application-only release so no database image was generated.\r\n"
+ }
+]
+
+### http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/HLA_types/  (1566 bytes)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /vol1/ftp/data_collections/HLA_types</title>
+ </head>
+ <body>
+<h1>Index of /vol1/ftp/data_collections/HLA_types</h1>
+  <table>
+   <tr><th valign="top"><img src="/icons/blank.gif" alt="[ICO]"></th><th><a href="?C=N;O=D">Name</a></th><th><a href="?C=M;O=A">Last modified</a></th><th><a href="?C=S;O=A">Size</a></th><th><a href="?C=D;O=A">Description</a></th></tr>
+   <tr><th colspan="5"><hr></th></tr>
+<tr><td valign="top"><img src="/icons/back.gif" alt="[PARENTDIR]"></td><td><a href="/vol1/ftp/data_collections/">Parent Directory</a></td><td>&nbsp;</td><td align="right">  - </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="20181129_HLA_manifest.txt">20181129_HLA_manifest.txt</a></td><td align="right">2018-11-30 09:38  </td><td align="right">263 </td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="20181129_HLA_types_full_1000_Genomes_Project_panel.txt">20181129_HLA_types_full_1000_Genomes_Project_panel.txt</a></td><td align="right">2018-11-30 09:38  </td><td align="right">198K</td><td>&nbsp;</td></tr>
+<tr><td valign="top"><img src="/icons/text.gif" alt="[TXT]"></td><td><a href="README_20181129_HLA_types_full_1000_Genomes_Project_panel.txt">README_20181129_HLA_types_full_1000_Genomes_Project_panel.txt</a></td><td align="right">2018-11-30 09:37  </td><td align="right">3.1K</td><td>&nbsp;</td></tr>
+   <tr><th colspan="5"><hr></th></tr>
+</table>
+</body></html>
+
