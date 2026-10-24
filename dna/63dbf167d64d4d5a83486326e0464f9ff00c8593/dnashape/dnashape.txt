@@ -1,0 +1,12 @@
+2026-10-24 19:08:21.220244: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+exported 18 features
+[PASS] Athanor's NumPy Deep DNAshape equals the original TensorFlow model (largest difference, in units of each feature's normalisation range, <= 1e-4): MGW 3.6e-07, ProT 3.0e-07, Roll 3.1e-07, HelT 8.5e-07, EP 1.1e-07, Shear 2.1e-07, Stretch 4.0e-07, Stagger 3.0e-07, Buckle 2.8e-07, Opening 3.9e-07, Shift 2.5e-07, Slide 4.1e-07, Rise 6.3e-07, Tilt 2.8e-07, MGW-FL 2.6e-07, ProT-FL 4.8e-07, Roll-FL 8.5e-07, HelT-FL 4.7e-07
+   Expt MGW: Pearson r 0.369, mean |error| 1.596 over 16627 positions
+   Expt ProT: Pearson r 0.051, mean |error| 8.304 over 24483 positions
+   Expt Roll: Pearson r 0.278, mean |error| 4.578 over 21475 positions
+   Expt HelT: Pearson r 0.168, mean |error| 3.599 over 21475 positions
+   MD MGW: Pearson r 0.487, mean |error| 1.061 over 1985 positions
+   MD ProT: Pearson r 0.125, mean |error| 5.034 over 2197 positions
+   MD Roll: Pearson r 0.444, mean |error| 3.789 over 2070 positions
+   MD HelT: Pearson r 0.207, mean |error| 2.828 over 2070 positions
