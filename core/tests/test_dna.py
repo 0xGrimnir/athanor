@@ -119,13 +119,20 @@ def test_deep_dnashape_matches_the_original():
 
 def test_damage_model():
     from athanor_core.dna import damage
-    # overhang beyond position i with chance (1-lambda)^(i+1); C->T is delta_s inside, delta_d outside
-    assert abs(damage.p_uracil(0, 0.4, 0.01, 0.3) - (0.3 * 0.6 + 0.01 * 0.4)) < 1e-12
-    prof = damage.read_profile(40, 0.03, 0.4, 0.01, 0.3)
-    assert prof[0] > prof[1] > prof[5] and prof[-1] < 0.01
-    m = damage.molecule("ATCGCCGATCCGATCGCCATGCATCGCCGGATCCAGTC", 5, 1, {("A", 2)})
+    # Briggs 2007: an end has a 5' overhang half the time; it reaches past position i with (1-lambda)^(i+1)
+    far = 10 ** 6
+    assert abs(damage.p_uracil(0, far, 0.4, 0.01, 0.3) - (0.3 * 0.3 + 0.01 * 0.7)) < 1e-12
+    assert abs(damage.p_uracil(0, far, 0.4, 0.01, 0.3, "legacy") - (0.3 * 0.6 + 0.01 * 0.4)) < 1e-12
+    # gargammel 1.1.5 release notes, Briggs et al.'s estimates: 5'-most C->T about 0.215 (1.1.5) and 0.440 (1.1.4)
+    ct, _ = damage.read_profile(60, *damage.BRIGGS_2007)
+    ct_old, _ = damage.read_profile(60, *damage.BRIGGS_2007, model="legacy")
+    assert abs(ct[0] - 0.215) < 0.015 and abs(ct_old[0] - 0.440) < 0.015
+    m = damage.molecule("ATCGCCGATCCGATCGCCATGCATCGCCGGATCCAGTC", ("5", 5), ("3", 1), {("A", 2)})
     names = {(a[0], a[1]): a[2] for a in m["atoms"]}
-    assert names[("A", 3)] == "DU" and ("B", 72) not in names and ("A", 38) not in names
+    n = 38
+    assert names[("A", 3)] == "DU"
+    assert ("B", 2 * n) not in names and ("B", 2 * n - 4) not in names      # opposite strand I's 5' overhang
+    assert ("B", n + 1) not in names and ("A", n) in names                 # strand I's 3' end protrudes
 
 
 def test_relaxation_closes_the_backbone():

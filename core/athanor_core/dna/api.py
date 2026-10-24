@@ -43,7 +43,8 @@ def _bonds(atoms) -> list[list[int]]:
             continue
         o3 = next((i for i in by_res[(c1, n1)] if atoms[i][3] == "O3'"), None)
         p = next((i for i in by_res[(c2, n2)] if atoms[i][3] == "P"), None)
-        if o3 is not None and p is not None:
+        # a nick between chains merged into one strand, or a gap, is not a bond
+        if o3 is not None and p is not None and np.linalg.norm(atoms[o3][4] - atoms[p][4]) < 2.5:
             bonds.append([o3, p])
     return bonds
 
@@ -77,10 +78,13 @@ def melting_check() -> dict | None:
             "salts": len([k for k in m if k != "all"]), "duplexes": a["n"] // max(1, len([k for k in m if k != "all"]))}
 
 
-def _seq(p) -> str:
+def _seq(p, allow_n: bool = False) -> str:
     seq = "".join(str(p.get("sequence", "")).split()).upper()
     if not 2 <= len(seq) <= 200:
         raise ValueError("give 2 to 200 base pairs")
+    bad = set(seq) - set("ACGTN" if allow_n else "ACGT")
+    if bad:
+        raise ValueError(f"the sequence may contain only A, C, G and T{' (and N)' if allow_n else ''}; found {''.join(sorted(bad))}")
     return seq
 
 
@@ -123,8 +127,9 @@ def m_dna_md_start(p: dict) -> dict:
     seq, form = _seq(p), p.get("form", "B")
     model = build(seq, form)
     _MD.clear()                                    # one simulation at a time
-    d = md.Dynamics(model["atoms"], salt=float(p.get("salt", 0.15)), temperature=float(p.get("temperature", 300.0)),
-                    prefer=p.get("platform"))
+    salt = float(p.get("salt", 0.15))
+    start = _relaxed(seq, form, salt)["atoms"]     # the helix with its backbone closed
+    d = md.Dynamics(start, salt=salt, temperature=float(p.get("temperature", 300.0)), prefer=p.get("platform"))
     f = d.run(float(p.get("ps", 1.0)))
     rid = f"md{id(d)}"
     _MD[rid] = {"dyn": d, "sum": None, "sq": None, "n": 0, "seq": seq, "form": form}
@@ -136,8 +141,19 @@ def m_dna_md_start(p: dict) -> dict:
 def _frame(rid, f) -> dict:
     st = _MD[rid]
     an = analyse(_residues({"atoms": f["atoms"]}))
-    steps = np.array([s["params"] for s in an["steps"]]) if an["steps"] else np.zeros((0, 6))
-    grooves = np.array([g["minor"] if g["minor"] is not None else np.nan for g in an["grooves"]], dtype=float)
+    n = len(st["seq"])
+    # fixed slots by position along strand I, so a base pair that frays at an end leaves a gap, not a shift
+    steps = np.full((n - 1, 6), np.nan)
+    pi = [p["i"] for p in an["pairs"]]
+    k = 0
+    for a, b in zip(pi, pi[1:]):
+        if b == a + 1 and a < n - 1:
+            steps[a] = an["steps"][k]["params"]
+            k += 1
+    grooves = np.full(n - 1, np.nan)
+    for g in an["grooves"]:
+        if g["minor"] is not None and g["step"] < n - 1 and len(an["pairs"]) == n:
+            grooves[g["step"]] = g["minor"]
     vals = np.concatenate([steps.ravel(), grooves])
     if st["sum"] is None or len(st["sum"]) != len(vals):
         st["sum"], st["sq"], st["cnt"], st["n"] = np.zeros_like(vals), np.zeros_like(vals), np.zeros_like(vals), 0
@@ -150,11 +166,14 @@ def _frame(rid, f) -> dict:
     mean = st["sum"] / cnt
     sd = np.sqrt(np.maximum(st["sq"] / cnt - mean ** 2, 0.0))
     k = steps.size
+    nan0 = lambda a: [[None if np.isnan(x) else float(x) for x in row] for row in a]  # noqa: E731
+    cnt_steps = st["cnt"][:k].reshape(-1, 6)
     return {"coords": [[round(float(v), 3) for v in a[4]] for a in f["atoms"]], "time_ps": f["time_ps"],
             "temperature": f["temperature"], "potential_kcal": f["potential_kcal"], "ns_per_day": f["ns_per_day"],
             "platform": f["platform"], "n_frames": st["n"],
-            "steps": steps.tolist(), "minor": [None if np.isnan(g) else float(g) for g in grooves],
-            "mean_steps": mean[:k].reshape(-1, 6).tolist(), "sd_steps": sd[:k].reshape(-1, 6).tolist(),
+            "steps": nan0(steps), "minor": [None if np.isnan(g) else float(g) for g in grooves],
+            "mean_steps": [[None if c == 0 else float(m) for m, c in zip(r, cr)] for r, cr in zip(mean[:k].reshape(-1, 6), cnt_steps)],
+            "sd_steps": [[None if c == 0 else float(x) for x, c in zip(r, cr)] for r, cr in zip(sd[:k].reshape(-1, 6), cnt_steps)],
             "mean_minor": [None if c == 0 else float(m) for m, c in zip(mean[k:], st["cnt"][k:])],
             "sd_minor": [None if c == 0 else float(x) for x, c in zip(sd[k:], st["cnt"][k:])]}
 
@@ -215,9 +234,11 @@ def m_dna_export(p: dict) -> dict:
 # ------------------------------------------------------------------ shape, energies, damage, scales
 def m_dna_shape(p: dict) -> dict:
     """Deep DNAshape's predicted shape of the sequence as free DNA in solution."""
-    seq = _seq(p)
+    seq = _seq(p, allow_n=True)
     feats = p.get("features") or ["MGW", "ProT", "Roll", "HelT", "EP", "MGW-FL"]
     layer = int(p.get("layer", 4))
+    if not 0 <= layer <= 7:
+        raise ValueError("layer must be 0 to 7")
     out = {f: [round(float(x), 3) for x in shape.predict(f, seq, layer)] for f in feats if f in shape.available()}
     v = _load("dnashape/validation.json")
     return {"sequence": seq, "layer": layer, "shape": out, "units": {f: shape.UNITS.get(f.replace("-FL", ""), "deg") for f in out},
@@ -226,7 +247,7 @@ def m_dna_shape(p: dict) -> dict:
             "method": "Deep DNAshape (Li, Chiu & Rohs, Nature Commun. 15, 1243, 2024), trained on Monte Carlo simulations "
                       "of free DNA; run by Athanor's NumPy implementation of the published network and weights "
                       f"(BSD-3-Clause), {layer} bp of flanking sequence considered.",
-            "checked": "identical to the original TensorFlow model in CI" if v.get("equal_to_original") else None}
+            "checked": "gives the original TensorFlow model's predictions (to within 1e-6) in CI" if v.get("equal_to_original") else None}
 
 
 _RELAXED: dict = {}
@@ -258,6 +279,9 @@ def m_dna_energy_one(p: dict) -> dict:
     r = _relaxed(seq, form)
     fr = energy.fragments(r["atoms"], r["hydrogens"], len(seq))
     k = int(p["index"])
+    n = len(seq)
+    if not 0 <= k < (n - 1 if p.get("kind") == "step" else n):
+        raise ValueError("no such base pair or step")
     if p.get("kind") == "step":
         a, b = list(fr[k]), list(fr[k + 1])
     else:
@@ -271,13 +295,18 @@ def m_dna_damage(p: dict) -> dict:
     """One ancient molecule: overhangs and uracils drawn from the Briggs model or a measured profile."""
     seq = _seq(p)
     rng = np.random.default_rng(int(p["seed"]) if p.get("seed") is not None else None)
-    lam, dd, ds = float(p.get("lambda", 0.4)), float(p.get("delta_d", 0.01)), float(p.get("delta_s", 0.3))
+    nu0, lam0, dd0, ds0 = damage.BRIGGS_2007
+    lam, dd, ds = float(p.get("lambda", lam0)), float(p.get("delta_d", dd0)), float(p.get("delta_s", ds0))
+    model = "legacy" if p.get("model") == "legacy" else "briggs"
     prof = p.get("profile")
-    m = damage.sample(seq, lam, dd, ds, rng, profile=prof)
-    resp = _response(seq, "B", m["atoms"], m["frames"], md._o3p(m["atoms"]) if hasattr(md, "_o3p") else [])
-    resp.update({"damage": {"overhang5": m["overhang5"], "overhang3": m["overhang3"], "uracils": m["uracils"],
-                            "p_uracil": m["p_uracil"], "model": m["model"],
-                            "expected_ct": damage.p_uracil(np.arange(min(25, len(seq))), lam, dd, ds).round(4).tolist(),
+    m = damage.sample(seq, lam, dd, ds, rng, profile=prof, model=model)
+    resp = _response(seq, "B", m["atoms"], m["frames"], md._o3p(m["atoms"]))
+    i = np.arange(min(25, len(seq)))
+    resp.update({"damage": {"left": m["left"], "right": m["right"], "uracils": m["uracils"],
+                            "single_stranded": m["single_stranded"], "p_uracil": m["p_uracil"], "model": m["model"],
+                            # a cytosine's chance of being uracil by distance from its 5' end, far from its 3' end
+                            "expected": (np.clip(prof[:len(i)], 0, 1).tolist() if prof is not None else
+                                         damage.p_uracil(i, 10 ** 6, lam, dd, ds, model).round(4).tolist()),
                             "parameters": {"lambda": lam, "delta_d": dd, "delta_s": ds}}})
     return resp
 

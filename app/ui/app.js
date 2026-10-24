@@ -823,7 +823,7 @@ function renderAdna() {
     const e = r.mapdamage_bayesian && r.mapdamage_bayesian[k];
     return `<td class="n">${e && e.Mean != null ? e.Mean.toFixed(4) : "—"}</td>`; }).join("")}</tr>`).join("");
   $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(commonName(r.reference.organism))}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>
-    <p class="note">mapDamage2 posterior means, estimated on the final (iterated) reference. δd and λ are recovered. δs comes out near 0.55 against gargammel's s = 0.3 on every reference, including the sample's own. The likely reason is that the two programs place overhangs differently. gargammel 1.1.4's deamSim gives every 5′ end an overhang. Briggs et al. (2007), whose model mapDamage2 fits, give one to only half of the ends. The same C→T at the first base therefore needs about twice the δs in mapDamage2's model (0.3 → about 0.6). gargammel's own later source code makes that correction, and DNA Structure's CI confirms deamSim 1.1.4's behaviour position by position. δs is reported but not used.</p>`;
+    <p class="note">mapDamage2 posterior means, estimated on the final (iterated) reference. δd and λ are recovered. δs comes out near 0.55 against gargammel's s = 0.3 on every reference, including the sample's own. The likely reason is that the two programs place overhangs differently. gargammel 1.1.4's deamSim gives every 5′ end an overhang. Briggs et al. (2007), whose model mapDamage2 fits, give one to only half of the ends. The same C→T at the first base therefore needs about twice the δs in mapDamage2's model (0.3 → about 0.6). gargammel 1.1.5 corrected this; its release notes report the terminal C→T halving for the same parameters. DNA Structure's CI checks both versions position by position. δs is reported but not used.</p>`;
   drawDamage(); drawCalibration(); drawTracks(); renderAdnaProv();
 }
 
@@ -2250,8 +2250,9 @@ function showMdFrame(f) {
   $("dnaMdInfo").innerHTML = `<b>${(f.time_ps / 1000).toFixed(3)} ns</b> · ${f.temperature.toFixed(0)} K · ${f.ns_per_day.toFixed(1)} ns/day on ${escapeHtml(f.platform)}
     · ${f.n_frames} frames averaged<br><small>${escapeHtml(D.md ? D.md.method : "")}. Implicit water and salt: no explicit ions or water molecules.</small>`;
   // the step table shows the running average and spread over the frames so far
-  const f1 = (x, d) => { const t = x.toFixed(d); return /^-0\.0*$/.test(t) ? t.slice(1) : t; };
-  const steps = D.model.analysis.steps;
+  const f1 = (x, d) => { if (x == null) return "—"; const t = x.toFixed(d); return /^-0\.0*$/.test(t) ? t.slice(1) : t; };
+  const seq = D.model.sequence, comp = { A: "T", T: "A", G: "C", C: "G" };
+  const steps = f.mean_steps.map((_, i) => ({ step: `${seq[i]}${seq[i + 1]}/${comp[seq[i + 1]]}${comp[seq[i]]}` }));
   $("dnaStepsLabel").textContent = "Base-pair steps · average over the run";
   $("dnaSteps").innerHTML = `<table class="tight"><thead><tr><th>Step</th><th>Shift</th><th>Slide</th><th>Rise</th><th>Tilt</th><th>Roll</th><th>Twist</th></tr></thead><tbody>
     ${f.mean_steps.map((p, i) => `<tr><td>${escapeHtml((steps[i] || {}).step || "")}</td>${p.map((v, k) => `<td class="n">${f1(v, k < 3 ? 2 : 1)}<small> ±${f1(f.sd_steps[i][k], k < 3 ? 2 : 1)}</small></td>`).join("")}</tr>`).join("")}
@@ -2323,11 +2324,12 @@ async function dnaDamage(lab) {
     const btn = document.querySelector('[data-dnacolor="damage"]'); btn.hidden = false;
     H.setData("damage", probs); setPressed("[data-dnacolor]", btn); H.setColor("damage");
     $("dnaName").textContent = `Ancient molecule · ${n} bp`;
-    $("dnaFormula").textContent = `5′ overhangs ${d.overhang5} and ${d.overhang3} nt · ${d.uracils.length} uracil${d.uracils.length === 1 ? "" : "s"}`;
+    const oh = ([k, l]) => (l ? `${l} nt ${k}′` : "blunt");
+    $("dnaFormula").textContent = `ends: ${oh(d.left)} · ${oh(d.right)} · ${d.uracils.length} uracil${d.uracils.length === 1 ? "" : "s"}`;
     renderDna(m);
     $("dnaDamageInfo").innerHTML = `${d.uracils.length ? `Uracils (magenta) at ${d.uracils.map(([s, i]) => `strand ${s === "A" ? "I" : "II"} position ${i + 1}`).join(", ")}.` : "No cytosine deaminated in this draw."}
-      ${lab ? `Chances from ${escapeHtml(lab.source)}; overhangs drawn with λ = ${p.lambda}.` : `Each draw is one molecule: overhang lengths and uracils are random with the parameters above.`}
-      <br><small>Briggs et al., PNAS 104, 14616 (2007); the formulas are checked in CI against gargammel's deamSim, the simulator the Ancient DNA Lab uses. Single strands are drawn continuing the helix; in reality they are flexible.</small>`;
+      ${lab ? `Chances from ${escapeHtml(lab.source)}; overhangs drawn with λ = ${p.lambda}.` : `Each draw is one molecule: each end's overhang (5′ or 3′ strand protruding, equally likely), its length and the uracils are random with the parameters above. A cytosine at a 5′ end is a uracil ${pct(d.expected[0], 0)} of the time on average.`}
+      <br><small>Briggs et al., PNAS 104, 14616 (2007). The formulas are checked in CI against gargammel's deamSim, the simulator the Ancient DNA Lab uses (its corrected 1.1.5 model and the 1.1.4 model the Lab ran). Single strands are drawn continuing the helix; in reality they are flexible.</small>`;
   } catch (e) { log(`Damage view failed: ${e.message || e}`, true); }
   finally { dnaBusy(false); }
 }

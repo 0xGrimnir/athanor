@@ -3,17 +3,24 @@
 Post-mortem, DNA breaks into short fragments whose ends are often single-stranded, and cytosines lose
 their amino group (hydrolytic deamination), becoming uracils that a polymerase reads as thymine. Both
 happen far more in single-stranded stretches, so an ancient molecule carries most of its uracils near
-its 5' ends (Briggs et al., PNAS 104, 14616, 2007). In sequencing reads this appears as C->T at the
-5' end and, from the complementary strand, G->A at the 3' end.
+its ends (Briggs et al., PNAS 104, 14616, 2007). In double-stranded library sequencing this appears as
+C->T at the reads' 5' ends and, from the complementary strand, G->A at their 3' ends.
 
-Two ways to put damage on a helix:
+The Briggs model, as published:
 
-* the Briggs model: 5' overhang lengths are geometric with parameter lambda (the chance that an
-  overhang reaches past position i is (1-lambda)^(i+1)); a cytosine deaminates with probability
-  delta_s in an overhang and delta_d in the double-stranded part. CI checks these formulas, and the
-  read-level profile they imply (with the nick parameter nu), against gargammel's deamSim simulator.
-* a measured profile: the C->T frequency at each distance from the 5' end that the Ancient DNA Lab
-  measured on real reads, used directly as each cytosine's chance of being a uracil.
+* each end of a molecule has a single-stranded overhang; it leaves the 5' or the 3' strand protruding
+  with equal probability, and its length is geometric with parameter lambda (it reaches past position
+  i with probability (1-lambda)^(i+1));
+* a cytosine deaminates with probability delta_s in single-stranded DNA and delta_d in double-stranded;
+* library preparation fills in 3' overhangs and keeps 5' ones, and a read copies the other strand after
+  its first nick (probability nu per double-stranded position; molecules with a second nick are lost,
+  so the first nick is uniform over the double-stranded stretch).
+
+gargammel's deamSim implements this from version 1.1.5; up to 1.1.4 it drew a 5' overhang at both
+ends every time and placed the nick geometrically, which doubles the terminal damage for the same
+parameters (gargammel 1.1.5 release notes). Both are available here: ``model="briggs"`` (the paper)
+and ``model="legacy"`` (gargammel 1.1.4, which the Ancient DNA Lab's simulations used). CI checks each
+against the matching deamSim mode, position by position.
 
 A deaminated cytosine is drawn as uracil in place: the exocyclic N4 amine becomes the O4 carbonyl
 (C4=O 1.23 A) on the same ring.
@@ -24,27 +31,68 @@ import numpy as np
 
 from .builder import build
 
+# Briggs et al. (2007), maximum-likelihood estimates for Neanderthal DNA: nu, lambda, delta_d, delta_s
+BRIGGS_2007 = (0.024, 0.36, 0.0097, 0.68)
 
-def p_single(i, lam: float):
-    """Chance that the base i positions from a 5' end (0 = the terminal base) lies in that end's
-    single-stranded overhang, for geometric overhang lengths with parameter lambda."""
+
+def p_beyond(i, lam: float):
+    """Chance that an overhang (given there is one) reaches past position i (0 = the terminal base)."""
     return (1.0 - lam) ** (np.asarray(i, float) + 1.0)
 
 
-def p_uracil(i, lam: float, dd: float, ds: float):
-    """Chance that a cytosine i positions from its strand's 5' end is a uracil (Briggs model)."""
-    p = p_single(i, lam)
+def p_uracil(i_from5, i_from3, lam: float, dd: float, ds: float, model: str = "briggs"):
+    """Chance that a cytosine is a uracil, given its distances from its strand's 5' and 3' ends: it is
+    single-stranded if its 5' end has a 5' overhang reaching it, or its 3' end a 3' overhang."""
+    if model == "legacy":           # gargammel <= 1.1.4: a 5' overhang at every end, no 3' overhangs
+        p = p_beyond(i_from5, lam)
+    else:
+        p5, p3 = 0.5 * p_beyond(i_from5, lam), 0.5 * p_beyond(i_from3, lam)
+        p = p5 + p3 - p5 * p3
     return ds * p + dd * (1.0 - p)
 
 
-def read_profile(n: int, nu: float, lam: float, dd: float, ds: float):
-    """C->T at each distance from a read's 5' end, as gargammel 1.1.4's deamSim produces it for long
-    fragments (its "legacy" Briggs model): a 5' overhang on every molecule, deamination delta_s in it;
-    in the double-stranded part, delta_d until the first nick (probability nu per position), after
-    which the read copies the other strand, where that damage shows as G->A instead."""
-    i = np.arange(n, dtype=float)
-    p = p_single(i, lam)
-    return ds * p + dd * (1.0 - p) * (1.0 - nu) ** (i + 1.0)
+def _overhang_dist(lam: float, L: int, model: str):
+    """Probabilities of overhang lengths 0..L at one end."""
+    o = np.arange(L + 1)
+    g = lam * (1 - lam) ** o
+    if model == "legacy":
+        return g
+    g = 0.5 * g
+    g[0] += 0.5
+    return g
+
+
+def read_profile(L: int, nu: float, lam: float, dd: float, ds: float, model: str = "briggs"):
+    """Expected C->T at each distance from a read's 5' end and G->A from its 3' end, for reads of
+    length L from a double-stranded library, as deamSim produces them (``-damage`` for "briggs",
+    gargammel 1.1.4's ``-damage`` = 1.1.5's ``-damagelegacy`` for "legacy"). Exact enumeration over the
+    overhang lengths at both ends and the position of the first nick."""
+    P = _overhang_dist(lam, L, model)
+    ct, ga = np.zeros(L), np.zeros(L)
+    i = np.arange(L)
+    tot = 0.0
+    for o5 in range(L - 1):
+        for o3 in range(L - 1 - o5):              # the overhangs leave at least two double-stranded bases
+            w = P[o5] * P[o3]
+            if w < 1e-14:
+                continue
+            tot += w
+            last = L - o3 - 1                     # last double-stranded base
+            in5, in3 = i < o5, (L - i) <= o3
+            ds_ = ~in5 & ~in3
+            if model == "legacy":
+                # a nick at each position with probability nu, looked for from the 5' end
+                before = (1 - nu) ** (i + 1)      # no nick at or before i
+            else:
+                n = last - o5
+                p_nick = nu / (n * nu + (1 - nu)) if n >= 1 else 0.0
+                # the first nick lies after one of the bases o5..last-1, uniformly; "no nick" holds the rest
+                before = np.clip(1 - (i - o5) * p_nick, 0, 1)
+            c = np.where(in5, ds, np.where(ds_, dd * before, 0.0))
+            g = np.where(in3, ds, np.where(ds_, dd * (1 - before), 0.0))
+            ct += w * c
+            ga += w * g
+    return ct / tot, (ga / tot)[::-1]
 
 
 def _residues(atoms):
@@ -62,70 +110,90 @@ def to_uracil(res_atoms):
     o4 = c4 + 1.23 * v / np.linalg.norm(v)
     out = []
     for c, n, r, name, xyz in res_atoms:
-        if name == "N4":
-            out.append((c, n, "DU", "O4", o4))
-        else:
-            out.append((c, n, "DU", name, xyz))
+        out.append((c, n, "DU", "O4", o4) if name == "N4" else (c, n, "DU", name, xyz))
     return out
 
 
-def molecule(seq: str, overhang5: int, overhang3: int, uracils: set) -> dict:
-    """A damaged molecule: strand I is ``seq`` (5'->3'); its 5' end overhangs by ``overhang5`` bases
-    (strand II missing there) and strand II's 5' end overhangs by ``overhang3`` bases at the other end
-    (strand I missing there). ``uracils``: set of (strand, position from that strand's 5' end) for
-    cytosines that are uracil. Single strands are drawn continuing the B-form helix of the duplex they
-    belonged to; in reality they are flexible."""
+def molecule(seq: str, left: tuple, right: tuple, uracils: set) -> dict:
+    """A damaged molecule. Strand I is ``seq`` (5'->3', left to right). ``left`` and ``right`` are
+    (kind, length) for each end's overhang: kind "5" leaves the 5' strand protruding (strand I at the
+    left end, strand II at the right), "3" the 3' strand. ``uracils``: set of (strand, distance from that
+    strand's 5' end in the full-length helix) for cytosines that are uracil. Single strands are drawn
+    continuing the B-form helix of the duplex they belonged to; in reality they are flexible."""
     n = len(seq)
-    if overhang5 + overhang3 > n - 2:
+    if left[1] + right[1] > n - 2:
         raise ValueError("the overhangs must leave at least two base pairs")
     m = build(seq, "B")
-    res = _residues(m["atoms"])
+    gone = set()
+    for k in range(left[1]):
+        gone.add(("B", 2 * n - k) if left[0] == "5" else ("A", k + 1))
+    for k in range(n - right[1], n):
+        gone.add(("A", k + 1) if right[0] == "5" else ("B", 2 * n - k))
+    present = [key for key in dict.fromkeys((a[0], a[1]) for a in m["atoms"]) if key not in gone]
+    first = {}
+    for c, num in present:
+        first.setdefault(c, num)               # each strand's 5'-most remaining residue
     out = []
-    for (chain, num), atoms in res.items():
-        k = num - 1 if chain == "A" else 2 * n - num          # base-pair index along strand I
-        if chain == "A" and k >= n - overhang3:
-            continue                                          # opposite strand II's 5' overhang
-        if chain == "B" and k < overhang5:
-            continue                                          # opposite strand I's 5' overhang
-        dist = k if chain == "A" else n - 1 - k               # distance from this strand's own 5' end
+    for (chain, num), atoms in _residues(m["atoms"]).items():
+        if (chain, num) in gone:
+            continue
+        k = num - 1 if chain == "A" else 2 * n - num
+        dist = k if chain == "A" else n - 1 - k
+        if first[chain] == num:                # a new 5' end is a hydroxyl: no phosphate
+            atoms = [a for a in atoms if a[3] not in ("P", "OP1", "OP2")]
         if atoms[0][2][-1] == "C" and (chain, dist) in uracils:
             atoms = to_uracil(atoms)
         out.extend(atoms)
-    return {"atoms": out, "sequence": seq, "overhang5": overhang5, "overhang3": overhang3,
-            "frames": m["frames"]}
+    return {"atoms": out, "sequence": seq, "left": list(left), "right": list(right), "frames": m["frames"]}
 
 
-def sample(seq: str, lam: float, dd: float, ds: float, rng=None, profile=None) -> dict:
-    """Draw overhang lengths and uracils for one molecule. With ``profile`` (measured C->T by distance
-    from the 5' end), each cytosine's chance comes from it and the overhangs are drawn from lambda."""
+def single_stranded(n: int, left: tuple, right: tuple):
+    """{(strand, distance from its 5' end): True} for the bases left single-stranded by the overhangs."""
+    ss = set()
+    for k in range(left[1]):                    # left end: strand I's 5' end / strand II's 3' end
+        ss.add(("A", k) if left[0] == "5" else ("B", n - 1 - k))
+    for k in range(n - right[1], n):            # right end: strand I's 3' end / strand II's 5' end
+        ss.add(("B", n - 1 - k) if right[0] == "5" else ("A", k))
+    return ss
+
+
+def sample(seq: str, lam: float, dd: float, ds: float, rng=None, profile=None, model: str = "briggs") -> dict:
+    """Draw one molecule: each end's overhang (5' or 3' with equal probability, geometric length), then
+    each cytosine is a uracil with probability delta_s if single-stranded and delta_d if not. With a
+    measured ``profile`` (C->T by distance from the 5' end) the cytosines' chances come from it instead."""
     rng = rng or np.random.default_rng()
+    lam = float(np.clip(lam, 0.01, 0.99))
+    dd, ds = float(np.clip(dd, 0, 1)), float(np.clip(ds, 0, 1))
     n = len(seq)
     for _ in range(1000):
-        o5 = int(rng.geometric(lam)) - 1          # numpy's geometric counts trials: shift to 0-based
-        o3 = int(rng.geometric(lam)) - 1
-        if o5 + o3 <= n - 2:
+        ends = []
+        for _ in range(2):
+            kind = "5" if (model == "legacy" or rng.random() < 0.5) else "3"
+            ends.append((kind, int(rng.geometric(lam)) - 1))       # numpy counts trials: shift to 0-based
+        if ends[0][1] + ends[1][1] <= n - 2:
             break
     else:
-        o5 = o3 = 0
+        ends = [("5", 0), ("5", 0)]
+    left, right = ends
+    ss = single_stranded(n, left, right)
     comp = {"A": "T", "T": "A", "G": "C", "C": "G"}
-    s2 = "".join(comp[b] for b in reversed(seq))           # strand II, 5'->3'
-    ura = set()
-    probs = {"A": [], "B": []}
-    for chain, s, own in (("A", seq, o5), ("B", s2, o3)):
-        present = n - (o3 if chain == "A" else o5)            # strand I lacks its 3' tail opposite strand II's overhang
-        for i, b in enumerate(s[:present]):
-            if b != "C":
+    strands = {"A": seq, "B": "".join(comp[b] for b in reversed(seq))}
+    gone = {("B", n - 1 - k) for k in range(left[1])} if left[0] == "5" else {("A", k) for k in range(left[1])}
+    gone |= {("A", k) for k in range(n - right[1], n)} if right[0] == "5" else {("B", n - 1 - k) for k in range(n - right[1], n)}
+    ura, probs = set(), {"A": [], "B": []}
+    for chain, s in strands.items():
+        for i, b in enumerate(s):
+            if b != "C" or (chain, i) in gone:
                 probs[chain].append(None)
                 continue
-            if profile is not None and i < len(profile):
-                p = float(profile[i])
-            elif profile is not None:
-                p = float(profile[-1])
+            if profile is not None:
+                p = float(np.clip(profile[min(i, len(profile) - 1)], 0, 1))
             else:
-                p = ds if i < own else dd
+                p = ds if (chain, i) in ss else dd
             probs[chain].append(p)
             if rng.random() < p:
                 ura.add((chain, i))
-    m = molecule(seq, o5, o3, ura)
-    m.update({"uracils": sorted(ura), "p_uracil": probs, "model": "profile" if profile is not None else "briggs"})
+    m = molecule(seq, left, right, ura)
+    m.update({"uracils": sorted(ura), "p_uracil": probs, "single_stranded": sorted(ss),
+              "model": "profile" if profile is not None else model})
     return m

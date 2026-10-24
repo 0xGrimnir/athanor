@@ -64,7 +64,10 @@ jobs:
         if: always()
         run: |
           set +e
-          python tools/dnadata/damage_bench.py work-damage > damage.txt 2>&1
+          # gargammel 1.1.5 (Briggs model as published) is not on bioconda yet: build deamSim at a fixed commit
+          ( git clone -q https://github.com/grenaud/gargammel.git ext/gargammel && cd ext/gargammel && git checkout -q 4fc10b7 \
+            && make -s src/deamSim > ../garg-build.log 2>&1 ) || tail -30 ext/garg-build.log
+          python tools/dnadata/damage_bench.py work-damage "$PWD/ext/gargammel/src/deamSim" > damage.txt 2>&1
           rc=$?
           cat damage.txt
           msg=$(grep -E "^\[(PASS|FAIL)\]" damage.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')

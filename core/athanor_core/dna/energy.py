@@ -108,6 +108,8 @@ def interaction_dft(frags_a, frags_b, functional: str = "b3lyp-d3bj", basis: str
 def helix_energies(atoms, hydrogens, n: int, method: str = "gfn2-xtb", on_step=None) -> dict:
     """Pairing energy of every base pair and stacking energy of every step (kcal/mol)."""
     fr = fragments(atoms, hydrogens, n)
+    if method not in ("gfn2-xtb", "dft"):
+        raise ValueError(f"unknown method {method!r}")
     calc = interaction_gfn2 if method == "gfn2-xtb" else interaction_dft
     pairs, steps = [], []
     total = 2 * n - 1

@@ -16,7 +16,6 @@ Usage: python md_bench.py WORK_DIR [production_ps]
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
 import sys
@@ -99,11 +98,11 @@ print(lp.stdout[-1500:])
 prm = app.AmberPrmtopFile(str(WORK / "ddd.prmtop"))
 crd = app.AmberInpcrdFile(str(WORK / "ddd.inpcrd"))
 sp = prm.createSystem(nonbondedMethod=app.NoCutoff, implicitSolvent=app.GBn2, implicitSolventSaltConc=0.15 * u.molar,
-                      temperature=300 * u.kelvin)
+                      temperature=300 * u.kelvin, sasaMethod=None)       # no surface-area term, as sander's gbsa=0
 c2 = mm.Context(sp, mm.VerletIntegrator(0.001), mm.Platform.getPlatformByName("Reference"))
 c2.setPositions(crd.positions)
 e_prm = energy(c2)
-(WORK / "sp.in").write_text("single point\n &cntrl\n  imin=1, maxcyc=1, ncyc=1, ntb=0, igb=8, saltcon=0.15, cut=999.0, ntpr=1,\n /\n")
+(WORK / "sp.in").write_text("single point\n &cntrl\n  imin=1, maxcyc=1, ncyc=1, ntb=0, igb=8, saltcon=0.15, cut=999.0, rgbmax=999.0, gbsa=0, ntpr=1,\n /\n")
 sd = subprocess.run(["sander", "-O", "-i", "sp.in", "-p", "ddd.prmtop", "-c", "ddd.inpcrd", "-o", "sp.out"], cwd=WORK,
                     capture_output=True, text=True)
 out = (WORK / "sp.out").read_text() if (WORK / "sp.out").exists() else sd.stderr
@@ -140,9 +139,16 @@ for pid, a in ref_an.items():
 CENTRAL = range(2, 9)        # steps 3-9: the central eight base pairs
 
 
-def central_steps(an):
-    st = np.array([s["params"] for s in an["steps"]])
-    return st[list(CENTRAL)]
+def central_steps(an, n=12):
+    """Steps 3-9 by position along strand I (NaN where an end has frayed and a pair is missing)."""
+    out = np.full((n - 1, 6), np.nan)
+    pi = [p["i"] for p in an["pairs"]]
+    k = 0
+    for a, b in zip(pi, pi[1:]):
+        if b == a + 1:
+            out[a] = an["steps"][k]["params"]
+            k += 1
+    return out[list(CENTRAL)]
 
 
 def core_atoms(atoms_by_key, res_list, n=12):
@@ -180,12 +186,12 @@ for atoms in frames:
     for pid, res in refs.items():
         P, Q = core_atoms(by, res)
         rms[pid].append(kabsch(P, Q)[2])
-md_mean = np.mean(md_steps, axis=0).mean(axis=0)
+md_mean = np.nanmean(np.nanmean(md_steps, axis=0), axis=0)
 summary["md"] = {"production_ps": PROD, "frames": len(frames), "mean_twist": round(float(md_mean[5]), 2),
                  "mean_rise": round(float(md_mean[2]), 3), "mean_roll": round(float(md_mean[4]), 2),
                  "mean_slide": round(float(md_mean[1]), 3)}
 for pid in refs:
-    ref_mean = central_steps(ref_an[pid]).mean(axis=0)
+    ref_mean = np.nanmean(central_steps(ref_an[pid]), axis=0)
     summary[pid] = {"mean_twist": round(float(ref_mean[5]), 2), "mean_rise": round(float(ref_mean[2]), 3),
                     "mean_roll": round(float(ref_mean[4]), 2), "mean_slide": round(float(ref_mean[1]), 3),
                     "rmsd_median": round(float(np.median(rms[pid])), 2), "rmsd_p90": round(float(np.percentile(rms[pid], 90)), 2)}

@@ -43,8 +43,10 @@ def version() -> str | None:
 
 
 def kappa(salt_molar: float, temperature_k: float = 300.0, dielectric: float = 78.5) -> float:
-    """Debye-Hueckel screening parameter in 1/nm (as OpenMM's AMBER loader computes it)."""
-    return 50.33355 * math.sqrt(salt_molar / dielectric / temperature_k) * 10.0
+    """Debye-Hueckel screening parameter in 1/nm, as AMBER (sander's saltcon) and OpenMM's AMBER loader
+    compute it: the Debye kappa in 1/A times 7.3, i.e. 10 (A -> nm) times AMBER's 0.73 ion-exclusion
+    factor (Srinivasan, Trevathan, Felts & Onufriev, J. Chem. Theory Comput. 2, 1043, 2006)."""
+    return 50.33355 * math.sqrt(salt_molar / dielectric / temperature_k) * 7.3
 
 
 def _pdb(atoms) -> str:
@@ -95,10 +97,13 @@ class System:
             random.setstate(state)
         self.topology, self.positions = mod.topology, mod.positions
         self.salt, self.temperature = salt, temperature
-        # hydrogen mass repartitioning (1.5 amu hydrogens) allows a 4 fs time step (Hopkins et al., JCTC 11, 1864, 2015)
-        extra = {"hydrogenMass": 1.5 * u.amu} if hmr else {}
+        # hydrogen mass repartitioning (3.024 Da hydrogens) allows a 4 fs time step (Hopkins, Le Grand,
+        # Walker & Roitberg, J. Chem. Theory Comput. 11, 1864, 2015)
+        extra = {"hydrogenMass": 3.024 * u.amu} if hmr else {}
+        # no nonpolar surface-area term, as in AMBER's GBn2 (igb=8) with its default gbsa=0
         self.system = self.ff.createSystem(self.topology, nonbondedMethod=app.NoCutoff, constraints=app.HBonds,
-                                           implicitSolventKappa=kappa(salt, temperature) / u.nanometer, **extra)
+                                           implicitSolventKappa=kappa(salt, temperature) / u.nanometer,
+                                           sasaMethod=None, **extra)
         self.keys = [(a.residue.chain.id, int(a.residue.id), a.name) for a in self.topology.atoms()]
         self.heavy = [i for i, a in enumerate(self.topology.atoms()) if a.element is not None and a.element.symbol != "H"]
         self.order = atoms
@@ -196,13 +201,14 @@ def relax(atoms, salt: float = 0.15, restraint: float = 50.0, tolerance: float =
 class Dynamics:
     """Langevin dynamics of a duplex in GBn2 implicit solvent, run in chunks.
 
-    Starts from a relaxed structure: a short restrained minimisation, then free dynamics at the given
-    temperature. Each :meth:`run` advances the simulation and returns the heavy-atom coordinates at
+    The starting structure (the app passes the relaxed helix) is energy-minimised without restraints,
+    then given velocities at the given temperature. Each :meth:`run` advances the simulation and returns the heavy-atom coordinates at
     the end of the chunk."""
 
     def __init__(self, atoms, salt: float = 0.15, temperature: float = 300.0, timestep_fs: float = 4.0,
                  friction_per_ps: float = 1.0, seed: int = 0, prefer: str | None = None):
-        self.s = System(atoms, salt, temperature, hmr=timestep_fs > 2.5)
+        self.hmr = timestep_fs > 2.5
+        self.s = System(atoms, salt, temperature, hmr=self.hmr)
         integ = mm.LangevinMiddleIntegrator(temperature * u.kelvin, friction_per_ps / u.picosecond, timestep_fs * u.femtoseconds)
         if seed:
             integ.setRandomNumberSeed(seed)
@@ -211,14 +217,17 @@ class Dynamics:
         self.sim = app.Simulation(self.s.topology, self.s.system, integ, self.plat)
         self.sim.context.setPositions(self.s.positions)
         self.sim.minimizeEnergy(tolerance=10.0 * KCAL * 10.0 * u.kilojoule_per_mole / u.nanometer, maxIterations=2000)
-        self.sim.context.setVelocitiesToTemperature(temperature * u.kelvin, seed or 1)
+        if seed:
+            self.sim.context.setVelocitiesToTemperature(temperature * u.kelvin, seed)
+        else:
+            self.sim.context.setVelocitiesToTemperature(temperature * u.kelvin)
         self.time_ps = 0.0
         self.temperature = temperature
 
     def describe(self) -> str:
         return (f"OpenMM {mm.__version__} on {self.plat.getName()}: AMBER OL15 DNA force field, GBn2 implicit solvent "
                 f"with {self.s.salt * 1000:.0f} mM salt, Langevin dynamics at {self.temperature:.0f} K, "
-                f"{self.dt_ps * 1000:.0f} fs steps with hydrogen mass repartitioning")
+                f"{self.dt_ps * 1000:.0f} fs steps" + (" with hydrogen mass repartitioning" if self.hmr else ""))
 
     def run(self, ps: float) -> dict:
         n = max(1, int(round(ps / self.dt_ps)))
@@ -229,7 +238,7 @@ class Dynamics:
         st = self.sim.context.getState(getPositions=True, getEnergy=True)
         pos = st.getPositions(asNumpy=True).value_in_unit(u.nanometer)
         ke = st.getKineticEnergy().value_in_unit(u.kilojoule_per_mole)
-        ndof = 3 * self.s.system.getNumParticles() - self.s.system.getNumConstraints()
+        ndof = 3 * self.s.system.getNumParticles() - self.s.system.getNumConstraints() - 3   # less the removed centre-of-mass motion
         temp = 2 * ke / (ndof * 0.00831446261815324)
         return {"atoms": self.s.atoms_from(pos), "time_ps": self.time_ps, "temperature": temp,
                 "potential_kcal": st.getPotentialEnergy().value_in_unit(u.kilojoule_per_mole) / KCAL,

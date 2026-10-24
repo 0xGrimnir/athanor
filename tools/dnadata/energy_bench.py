@@ -109,7 +109,7 @@ if DFT:
     fr = energy.fragments(r["atoms"], r["hydrogens"], len(SEQ))
     d_gc = energy.interaction_dft([fr[0][0]], [fr[0][1]])
     d_at = energy.interaction_dft([fr[5][0]], [fr[5][1]])
-    summary["helix"]["dft_pairs"] = {"C1-G24": round(d_gc, 2), "T6-A19": round(d_at, 2)}
+    summary["helix"]["dft_pairs"] = {"C1-G24": round(d_gc, 2), "A6-T19": round(d_at, 2)}
     print(f"helix DFT: C-G {d_gc:.2f} (GFN2 {h['pairs'][0]:.2f}), A-T {d_at:.2f} (GFN2 {h['pairs'][5]:.2f})")
 (WORK / "energy_report.json").write_text(json.dumps({"results": results, "summary": summary}, indent=1, default=float))
 # what the app shows (two decimals, so it regenerates identically)

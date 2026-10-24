@@ -125,7 +125,8 @@ except Exception as e:  # noqa: BLE001
     print("published data not checked:", repr(e)[:200])
 (WORK / "dnashape_report.json").write_text(json.dumps({"results": results, "agreement": report}, indent=1))
 # the committed summary holds only rounded figures, so it regenerates byte for byte
-v = {"equal_to_original": all(r["pass"] for r in results),
-     "agreement": {k: {"n": x["n"], "pearson": round(x["pearson"], 2), "mae": round(x["mae"], 2)} for k, x in report.items()}}
+# (the agreement with the authors' processed data stays in the CI report: the alignment of those files'
+# values to positions is not documented well enough to quote the figures)
+v = {"equal_to_original": all(r["pass"] for r in results)}
 (OUT / "validation.json").write_text(json.dumps(v, indent=1, sort_keys=True) + "\n")
 sys.exit(0 if all(r["pass"] for r in results) else 1)

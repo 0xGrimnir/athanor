@@ -323,13 +323,13 @@
     <div class="sec" data-dnamode="helix">
       <div class="label">Ancient damage</div>
       <div class="row small">
-        <label class="mini">λ overhang<input id="dnaLam" class="field num" type="number" min="0.05" max="0.95" step="0.05" value="0.4"></label>
-        <label class="mini">δs single<input id="dnaDs" class="field num" type="number" min="0" max="1" step="0.05" value="0.3"></label>
-        <label class="mini">δd double<input id="dnaDd" class="field num" type="number" min="0" max="0.2" step="0.005" value="0.01"></label>
+        <label class="mini">λ overhang<input id="dnaLam" class="field num" type="number" min="0.05" max="0.95" step="0.01" value="0.36"></label>
+        <label class="mini">δs single<input id="dnaDs" class="field num" type="number" min="0" max="1" step="0.01" value="0.68"></label>
+        <label class="mini">δd double<input id="dnaDd" class="field num" type="number" min="0" max="0.2" step="0.0001" value="0.0097"></label>
       </div>
       <div class="row"><button type="button" class="btn" id="dnaDamageBtn">Draw an ancient molecule</button>
         <button type="button" class="btn" id="dnaDamageLab" hidden>Use my Ancient DNA Lab run</button></div>
-      <div id="dnaDamageInfo" class="note">Breaks leave single-stranded 5′ overhangs, where cytosines lose their amino group and become uracil (read as T). Parameters as in the Briggs model.</div>
+      <div id="dnaDamageInfo" class="note">Breaks leave single-stranded overhangs, where cytosines lose their amino group and become uracil (read as T). The values are Briggs et al.&#39;s (2007) estimates for Neanderthal DNA.</div>
     </div>
     <div class="sec" data-dnamode="complex" hidden>
       <div class="label">Protein–DNA complexes</div>
