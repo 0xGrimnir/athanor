@@ -108,6 +108,10 @@ for sym in genes:
         skipped[sym] = NOT_DEFINED.get(sym, "no allele definitions in CPIC")
         print(f"{sym}: skipped ({skipped[sym]})")
         continue
+    if not any(d.get("allele_location_value") for d in defs):
+        skipped[sym] = NOT_DEFINED.get(sym, "CPIC defines its alleles without variant positions")
+        print(f"{sym}: skipped ({skipped[sym]})")
+        continue
     alleles = api(f"allele?genesymbol=eq.{urllib.parse.quote(sym)}")
     gdata[sym] = {"defs": defs, "alleles": alleles}
     print(f"{sym}: {len(defs)} definitions, {len(alleles)} allele rows", flush=True)
@@ -117,7 +121,7 @@ lookups = api("gene_result_lookup")
 by_ph = {}
 for l in lookups:
     by_ph.setdefault(l["phenotypeid"], []).append(l)
-guideline_ids = sorted({p["guidelinename"] for p in pairs})
+guideline_ids = sorted({p["guidelinename"] for p in pairs if p.get("guidelinename")})
 guides = api("guideline?select=*,publication(title,pmid,year)")
 gid = {g["name"]: g for g in guides}
 recs = api(f"recommendation?guidelineid={inlist(sorted({gid[n]['id'] for n in guideline_ids if n in gid}))}")
@@ -531,10 +535,10 @@ for did in drug_ids:
     prs = [p for p in pairs if p["drugid"] == did]
     rr = [r for r in recs if r["drugid"] == did]
     gene_set = sorted({g for r in rr for g in (r.get("lookupkey") or {})} | {p["genesymbol"] for p in prs})
-    gname = prs[0]["guidelinename"]
-    gl = gid.get(gname, {})
+    gname = next((p["guidelinename"] for p in prs if p.get("guidelinename")), None)
+    gl = gid.get(gname, {}) if gname else {}
     drug_out.append({"name": d["name"], "drugid": did, "genes": gene_set, "level_a": sorted({p["genesymbol"] for p in prs}),
-                     "guideline": {"name": gname, "url": prs[0].get("guidelineurl"),
+                     "guideline": {"name": gname, "url": next((p.get("guidelineurl") for p in prs if p.get("guidelineurl")), None),
                                    "publications": [{"pmid": x.get("pmid"), "title": x.get("title"), "year": x.get("year")}
                                                     for x in gl.get("publication") or []]},
                      "recs": [{"key": r.get("lookupkey") or {}, "population": (r.get("population") or "").strip(),

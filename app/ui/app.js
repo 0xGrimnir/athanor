@@ -1276,7 +1276,8 @@ function renderPersonal() {
     ${g.cards.map(cardHtml).join("")}</div>`).join("");
   for (const c of R.cards) {
     const el = $(`pgbody_${c.id}`);
-    if (el && DETAIL[c.id]) { try { DETAIL[c.id](el, c); } catch (e) { el.innerHTML = `<p class="note">${escapeHtml(String(e))}</p>`; } }
+    const fn = DETAIL[c.id] || (c.id.startsWith("pgx_") ? pgxDetail : null);
+    if (el && fn) { try { fn(el, c); } catch (e) { el.innerHTML = `<p class="note">${escapeHtml(String(e))}</p>`; } }
   }
   renderPgProv();
 }
@@ -1454,6 +1455,66 @@ function traitDetail(el, c) {
       <td><small>${v.freq ? POPS.filter(([k]) => v.freq[k] != null).map(([k, n]) => `${n} ${pct(v.freq[k], 0)}`).join(" · ") : ""}</small>
       ${v.gwas ? `<br><small>GWAS Catalog: ${escapeHtml(v.gwas.trait)} (${escapeHtml(v.gwas.first_author || "")}, p = ${Number(v.gwas.p).toExponential(0)})</small>` : ""}</td></tr>`).join("")}
     </tbody></table><p class="note">Genotypes on the forward strand of the GRCh37 reference; frequencies from 1000 Genomes.</p>`;
+}
+
+// ------------------------------------------------------------------ medicines
+const POP1KG = { AFR: "Africa", AMR: "Americas", EAS: "East Asia", EUR: "Europe", SAS: "South Asia" };
+
+DETAIL.medicines = function (el, c) {
+  const r = c.result, genes = r.genes || {};
+  const known = (d) => d.rows && d.rows.length;
+  const flagged = new Set(r.flagged || []);
+  const act = (r.drugs || []).filter((d) => known(d) && d.genes.some((g) => flagged.has(g)));
+  const rest = (r.drugs || []).filter((d) => !act.includes(d));
+  const geneText = (d) => d.genes.map((g) => {
+    const x = genes[g];
+    if (!x) return `${escapeHtml(g)}: <i>not in the pack</i>`;
+    if (g === "CYP2D6") return `${escapeHtml(g)}: <i>needs a clinical test</i>`;
+    return `${escapeHtml(g)}: ${escapeHtml(x.phenotype || x.status)}`;
+  }).join("<br>");
+  const recText = (d) => d.depends ? `<small>Depends on ${escapeHtml(d.unknown.join(", "))}, which your file cannot settle.</small>`
+    : d.rows.map((x) => `${escapeHtml(x.recommendation || "")}${x.classification ? ` <small>(${escapeHtml(x.classification)})</small>` : ""}
+        ${x.population && x.population !== "general" ? `<br><small>For: ${escapeHtml(x.population)}</small>` : ""}`).join("<hr>");
+  const table = (ds) => `<table><thead><tr><th>Medicine</th><th>Your genes</th><th>CPIC recommendation</th></tr></thead><tbody>
+    ${ds.map((d) => `<tr><td>${escapeHtml(d.drug)}<br><small>${escapeHtml((d.guideline && d.guideline.name) || "")}</small></td>
+      <td><small>${geneText(d)}</small></td><td>${recText(d)}</td></tr>`).join("")}</tbody></table>`;
+  el.innerHTML = `${act.length ? `<p class="note"><b>Medicines whose CPIC recommendation changes with your result</b></p>${table(act)}` : ""}
+    <details><summary class="note">All ${rest.length} other CPIC level-A medicines</summary>${table(rest)}</details>
+    <p class="note">CPIC data ${escapeHtml((r.cpic && r.cpic.accessed) || "")}${r.cpic && r.cpic.release ? `, database ${escapeHtml(r.cpic.release)}` : ""} (CC0). ${escapeHtml((r.cpic && r.cpic.notice) || "")}</p>`;
+};
+
+function pgxDetail(el, c) {
+  const r = c.result, k = r.call || {}, rel = r.reliability;
+  const rows = [
+    ["Diplotype", escapeHtml((k.diplotypes || []).join(" or ") || "—")],
+    ["Phenotype", escapeHtml(k.phenotype || (k.possible ? `one of: ${k.possible.join(", ")}` : k.status || "—"))],
+  ];
+  if (k.score) rows.push(["Activity score", escapeHtml(k.score)]);
+  rows.push(["Positions read", `${(r.positions || []).length}`]);
+  if (rel && rel.phenotype_agrees != null) {
+    rows.push(["Same phenotype from a full reading", `${pct(rel.phenotype_agrees, 0)} <small>of ${rel.same_call.toLocaleString()} 1000 Genomes people with your call</small>`]);
+  }
+  let html = kvTable(rows);
+  if (k.variants && k.variants.length) {
+    html += `<table><thead><tr><th>Variant found</th><th>Copies</th><th>Function</th></tr></thead><tbody>
+      ${k.variants.map((v) => `<tr><td>${escapeHtml(v.name)}</td><td class="n">${v.copies}</td><td>${escapeHtml(v.function || "")}${v.activity ? ` <small>(activity ${escapeHtml(v.activity)})</small>` : ""}</td></tr>`).join("")}</tbody></table>`;
+  }
+  if (k.alternatives && k.alternatives.length) {
+    html += `<p class="note">Also fits your genotypes, though less likely (the chip cannot tell which variants sit on the same chromosome): ${k.alternatives.map((a) => `${escapeHtml(a.diplotype)} (${escapeHtml(a.phenotype)})`).join("; ")}.</p>`;
+  }
+  if (rel && rel.full_instead && rel.full_instead.length) {
+    html += `<p class="note">When a full reading disagreed, it gave: ${rel.full_instead.map((x) => `${escapeHtml(x.phenotype || "no call")} ${pct(x.share, 0)}`).join(" · ")}.</p>`;
+  }
+  if (rel && rel.by_population) {
+    html += `<details><summary class="note">Reliability by 1000 Genomes population</summary><table><thead><tr><th>Population</th><th>People</th><th>With your call</th><th>Same phenotype</th></tr></thead><tbody>
+      ${Object.entries(rel.by_population).map(([p, x]) => `<tr><td>${escapeHtml(POP1KG[p] || p)}</td><td class="n">${x.n}</td><td class="n">${x.same_call}</td><td class="n">${pct(x.phenotype_agrees, 0)}</td></tr>`).join("")}</tbody></table></details>`;
+  }
+  if (r.positions && r.positions.length) {
+    html += `<details><summary class="note">Your genotypes at the ${r.positions.length} positions read</summary><table><thead><tr><th>Position</th><th>Genotype</th></tr></thead><tbody>
+      ${r.positions.map((p) => `<tr><td>${escapeHtml(p.rsid || "")} <small>${escapeHtml(p.hgvs || "")}${p.name ? ` · ${escapeHtml(p.name)}` : ""}</small></td><td class="n">${escapeHtml(p.genotype)}</td></tr>`).join("")}</tbody></table></details>`;
+  }
+  if (r.drugs && r.drugs.length) html += `<p class="note">CPIC level-A medicines for ${escapeHtml(r.gene)}: ${r.drugs.map(escapeHtml).join(", ")}.</p>`;
+  el.innerHTML = html;
 }
 
 const CONT_COLOR = { africa: "#ff6a57", europe: "#62d6ff", west_asia: "#ffb34a", south_asia: "#b98cff", east_asia: "#52f0b0",

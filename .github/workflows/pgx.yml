@@ -77,5 +77,6 @@ jobs:
             mkdir -p "$d/pgx/${GITHUB_SHA}" && \
             cp pgx_build.txt pgx_validate.txt pack/pgx.json pack/validation_pgx.json "$d/pgx/${GITHUB_SHA}/" 2>/dev/null || true; \
             ls work/pc 2>/dev/null | head -3 > "$d/pgx/${GITHUB_SHA}/pharmcat_files.txt"; \
+            gzip -c valdata/pgx_cpic_raw.json > "$d/pgx/${GITHUB_SHA}/pgx_cpic_raw.json.gz" 2>/dev/null; \
             f=$(ls work/pc/*.tsv 2>/dev/null | head -1); [ -n "$f" ] && cp "$f" "$d/pgx/${GITHUB_SHA}/pharmcat_example.tsv"; \
             (cd "$d" && git add -A && git commit -qm "pgx ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
