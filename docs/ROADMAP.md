@@ -8,9 +8,9 @@ Every module ships only after its benchmark suite reproduces published reference
 
 ## Order of work
 
-1. **Now:** Personal Genome, build step 2 (modern ancestry, appearance, food and drink, fitness)
+1. **Done:** Personal Genome steps 1–3 (deep and modern ancestry, traits, medicines; 0.5.0–0.7.0)
 2. **Next:** DNA Structure, first release
-3. **Then:** Deep Time, starting with ancient nuclear genomes and then traits from ancient genomes, interleaved with Personal Genome steps 3–5
+3. **Then:** Deep Time, starting with ancient nuclear genomes and then traits from ancient genomes, interleaved with Personal Genome steps 4–5
 4. **Later:** Populations, RNA and proteins, Radiocarbon dating, and the research problems
 
 ---
@@ -57,7 +57,7 @@ Open questions:
 - mapDamage2's δs differs from gargammel's single-stranded deamination parameter on every reference (≈ 0.55 vs 0.3): likely different parameterisations
 - Residual overconfidence at single-read sites; candidate fix: a site-heterogeneous divergence prior
 
-## Personal Genome (working; 0.5.0–0.6.0)
+## Personal Genome (working; 0.5.0–0.7.0)
 
 Load a consumer raw DNA file and get a library of reports, each graded for evidence, validated against data with known answers, and computed on the user's computer. The file never leaves the machine.
 
@@ -97,12 +97,12 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 - **Polygenic scores:** must match pgsc_calc on the same input
 - **Relatives:** known pairs in 1000 Genomes, plus simulated pedigrees
 - **Imputation:** masked-genotype concordance
-- **Rare-variant gate:** CI fails if any rare variant is shown without the confirmation warning
+- **Rare-variant gate:** CI fails if any rare variant is shown without the confirmation warning (done for medicines)
 
 ### Build order
 1. **Done (0.5.0):** foundations, file check, deep ancestry, haplogroups, Neanderthal and Denisovan
 2. **Done (0.6.0):** modern ancestry, appearance, food and drink, fitness. Every trait variant's effect allele is checked in CI against the amino acid it codes (Ensembl VEP), its population frequencies (1000 Genomes) or the direction recorded in the GWAS Catalog
-3. Pharmacogenomics
+3. **Done (0.7.0):** pharmacogenomics. Checked in CI against PharmCAT on 1000 Genomes high-coverage genotypes (at least 99.8% of calls the same in every gene), with the rare-variant gate
 4. Relatives, imputation, and the polygenic reports that need it (height, baldness, body mass, chronotype, sleep duration, coffee and alcohol intake). A raw chip file covers well under half of a modern score's variants, and the PGS Catalog's own calculator (pgsc_calc) by default refuses to score below 75% overlap, so these wait for imputation
 5. Health reports (opt-in)
 

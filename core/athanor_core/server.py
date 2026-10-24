@@ -178,7 +178,7 @@ def m_adna_export(p):
 
 # ------------------------------------------------------------------ Personal Genome
 PG_FEED = "https://github.com/0xGrimnir/athanor-releases/releases/download/pgdata-{v}/"
-PG_VERSION = 4
+PG_VERSION = 5
 
 
 def m_personal_status(_):

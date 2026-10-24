@@ -2,7 +2,7 @@
 
 All notable changes to Athanor are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.7.0] - 2026-10-24
 
 ### Added
 - **Personal Genome: medicines (pharmacogenomics).** A card for each of 19 genes in CPIC's level-A gene–drug pairs (ABCG2, CACNA1S, CFTR, CYP2B6, CYP2C19, CYP2C9, CYP2D6, CYP3A5, CYP4F2, DPYD, G6PD, MT-RNR1, NAT2, NUDT15, RYR1, SLCO1B1, TPMT, UGT1A1, VKORC1), and a summary of CPIC's recommendation for each of its level-A medicines given your results. Each gene card gives the star-allele diplotype and phenotype, how often a call from your file's positions matches a full reading in 1000 Genomes people with the same call, the common alleles your file cannot see, and other diplotypes that also fit. Rare variants are flagged as needing a clinical test; CYP2D6 gets no phenotype because a chip cannot see its deletions and duplications; HLA-A and HLA-B are not reported. Everything is framed as something to show a doctor or pharmacist.
