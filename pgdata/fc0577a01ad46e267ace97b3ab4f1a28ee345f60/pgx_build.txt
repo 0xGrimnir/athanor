@@ -1,0 +1,46 @@
+CPIC level A: 96 pairs, genes ['ABCG2', 'CACNA1S', 'CFTR', 'CYP2B6', 'CYP2C19', 'CYP2C9', 'CYP2D6', 'CYP3A5', 'CYP4F2', 'DPYD', 'G6PD', 'HLA-A', 'HLA-B', 'MT-RNR1', 'NAT2', 'NUDT15', 'RYR1', 'SLCO1B1', 'TPMT', 'UGT1A1', 'VKORC1']
+ABCG2: 2 definitions, 2 allele rows
+CACNA1S: 3 definitions, 3 allele rows
+CFTR: 104 definitions, 104 allele rows
+CYP2B6: 49 definitions, 49 allele rows
+CYP2C19: 49 definitions, 49 allele rows
+CYP2C9: 94 definitions, 94 allele rows
+CYP2D6: 184 definitions, 208 allele rows
+CYP3A5: 8 definitions, 8 allele rows
+CYP4F2: 23 definitions, 23 allele rows
+DPYD: 84 definitions, 84 allele rows
+G6PD: 187 definitions, 187 allele rows
+HLA-A: skipped (HLA alleles need HLA typing; CPIC has no SNP definitions for them)
+HLA-B: skipped (HLA alleles need HLA typing; CPIC has no SNP definitions for them)
+MT-RNR1: 25 definitions, 25 allele rows
+NAT2: 59 definitions, 59 allele rows
+NUDT15: 23 definitions, 23 allele rows
+RYR1: 347 definitions, 347 allele rows
+SLCO1B1: 47 definitions, 47 allele rows
+TPMT: 49 definitions, 49 allele rows
+UGT1A1: 9 definitions, 9 allele rows
+VKORC1: 2 definitions, 2 allele rows
+93 gene results, 208 lookups, 2093 recommendations, 78 drugs (10 s)
+ABCG2    chr4     1 positions (0 indels), 2 alleles, 3 result rows, lookup PHENOTYPE
+CACNA1S  chr1     2 positions (0 indels), 3 alleles, 3 result rows, lookup PHENOTYPE
+CFTR     chr7    93 positions (1 indels), 104 alleles, 3 result rows, lookup PHENOTYPE
+CYP2B6   chr19   48 positions (0 indels), 49 alleles, 15 result rows, lookup PHENOTYPE
+CYP2C19  chr10   43 positions (0 indels), 49 alleles, 15 result rows, lookup PHENOTYPE
+CYP2C9   chr10   88 positions (3 indels), 94 alleles, 15 result rows, lookup ACTIVITY_SCORE
+CYP2D6   chr22  157 positions (21 indels), 177 alleles, 45 result rows, lookup ACTIVITY_SCORE
+CYP3A5   chr7     7 positions (1 indels), 8 alleles, 6 result rows, lookup PHENOTYPE
+CYP4F2   chr19   20 positions (0 indels), 23 alleles, 0 result rows, lookup PHENOTYPE
+  CYP4F2: CPIC assigns no phenotype; the genotype is reported as it is
+DPYD     chr1    83 positions (2 indels), 84 alleles, 6 result rows, lookup ACTIVITY_SCORE
+G6PD     chrX   171 positions (9 indels), 186 alleles, 20 result rows, lookup PHENOTYPE
+MT-RNR1  chrM    22 positions (2 indels), 25 alleles, 3 result rows, lookup PHENOTYPE
+NAT2     chr8    47 positions (0 indels), 59 alleles, 10 result rows, lookup PHENOTYPE
+NUDT15   chr13   20 positions (4 indels), 22 alleles, 10 result rows, lookup PHENOTYPE
+RYR1     chr19  319 positions (5 indels), 346 alleles, 6 result rows, lookup PHENOTYPE
+SLCO1B1  chr12   35 positions (0 indels), 47 alleles, 15 result rows, lookup PHENOTYPE
+TPMT     chr6    45 positions (2 indels), 49 alleles, 15 result rows, lookup PHENOTYPE
+UGT1A1   chr2     4 positions (1 indels), 9 alleles, 10 result rows, lookup PHENOTYPE
+VKORC1   chr16    1 positions (0 indels), 2 alleles, 0 result rows, lookup PHENOTYPE
+  VKORC1: CPIC assigns no phenotype; the genotype is reported as it is
+GRCh37 positions: 936 SNVs checked against Ensembl, 0 differ
+ABCG2: 5 1000 Genomes records in the region, 1 at CPIC positions; 732 of 6404 haplotypes differ from GRCh38 somewhere
