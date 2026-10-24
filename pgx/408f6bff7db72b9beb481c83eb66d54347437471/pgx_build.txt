@@ -1,0 +1,73 @@
+CPIC level A: 96 pairs, genes ['ABCG2', 'CACNA1S', 'CFTR', 'CYP2B6', 'CYP2C19', 'CYP2C9', 'CYP2D6', 'CYP3A5', 'CYP4F2', 'DPYD', 'G6PD', 'HLA-A', 'HLA-B', 'MT-RNR1', 'NAT2', 'NUDT15', 'RYR1', 'SLCO1B1', 'TPMT', 'UGT1A1', 'VKORC1']
+ABCG2: 2 definitions, 2 allele rows
+CACNA1S: 3 definitions, 3 allele rows
+CFTR: 104 definitions, 104 allele rows
+CYP2B6: 49 definitions, 49 allele rows
+CYP2C19: 49 definitions, 49 allele rows
+CYP2C9: 94 definitions, 94 allele rows
+CYP2D6: 184 definitions, 208 allele rows
+CYP3A5: 8 definitions, 8 allele rows
+CYP4F2: 23 definitions, 23 allele rows
+DPYD: 84 definitions, 84 allele rows
+G6PD: 187 definitions, 187 allele rows
+HLA-A: skipped (HLA alleles need HLA typing; CPIC has no SNP definitions for them)
+HLA-B: skipped (HLA alleles need HLA typing; CPIC has no SNP definitions for them)
+MT-RNR1: 25 definitions, 25 allele rows
+NAT2: 59 definitions, 59 allele rows
+NUDT15: 23 definitions, 23 allele rows
+RYR1: 347 definitions, 347 allele rows
+SLCO1B1: 47 definitions, 47 allele rows
+TPMT: 49 definitions, 49 allele rows
+UGT1A1: 9 definitions, 9 allele rows
+VKORC1: 2 definitions, 2 allele rows
+93 gene results, 208 lookups, 2093 recommendations, 78 drugs (13 s)
+ABCG2    chr4     1 positions (0 indels), 2 alleles, 3 result rows, lookup PHENOTYPE
+CACNA1S  chr1     2 positions (0 indels), 3 alleles, 3 result rows, lookup PHENOTYPE
+CFTR     chr7    93 positions (1 indels), 104 alleles, 3 result rows, lookup PHENOTYPE
+CYP2B6   chr19   48 positions (0 indels), 49 alleles, 15 result rows, lookup PHENOTYPE
+  CYP2C19 rs3758581: CPIC reference row has G, GRCh38 has A
+CYP2C19  chr10   43 positions (0 indels), 49 alleles, 15 result rows, lookup PHENOTYPE
+CYP2C9   chr10   88 positions (3 indels), 94 alleles, 15 result rows, lookup ACTIVITY_SCORE
+CYP2D6   chr22  157 positions (21 indels), 184 alleles, 45 result rows, lookup ACTIVITY_SCORE
+CYP3A5   chr7     7 positions (1 indels), 8 alleles, 6 result rows, lookup PHENOTYPE
+CYP4F2   chr19   20 positions (0 indels), 23 alleles, 0 result rows, lookup PHENOTYPE
+FAIL: CYP4F2: no phenotype lookup rows
+DPYD     chr1    83 positions (2 indels), 84 alleles, 6 result rows, lookup ACTIVITY_SCORE
+  G6PD rs2230037: CPIC reference row has G, GRCh38 has A
+G6PD     chrX   173 positions (10 indels), 187 alleles, 20 result rows, lookup PHENOTYPE
+FAIL: MT-RNR1 m.961delT; m.961delTinsC(n): allele 'delinsCC; delinsCCC; delinsCCCC; delinsCCCCC; delinsCCCCCC; delinsCCCCCCC' not understood
+MT-RNR1  chrM    22 positions (2 indels), 25 alleles, 3 result rows, lookup PHENOTYPE
+NAT2     chr8    47 positions (0 indels), 59 alleles, 10 result rows, lookup PHENOTYPE
+NUDT15   chr13   20 positions (4 indels), 23 alleles, 10 result rows, lookup PHENOTYPE
+FAIL: RYR1 g.38572266_38572267delinsCT: no CPIC allele matches the GRCh38 sequence ('delTC' at chr19:38572266)
+FAIL: RYR1 g.38580039_38580040delinsAA: no CPIC allele matches the GRCh38 sequence ('delTT' at chr19:38580039)
+RYR1     chr19  320 positions (6 indels), 347 alleles, 6 result rows, lookup PHENOTYPE
+SLCO1B1  chr12   35 positions (0 indels), 47 alleles, 15 result rows, lookup PHENOTYPE
+TPMT     chr6    45 positions (2 indels), 49 alleles, 15 result rows, lookup PHENOTYPE
+UGT1A1   chr2     4 positions (1 indels), 9 alleles, 10 result rows, lookup PHENOTYPE
+VKORC1   chr16    1 positions (0 indels), 2 alleles, 0 result rows, lookup PHENOTYPE
+FAIL: VKORC1: no phenotype lookup rows
+GRCh37 positions: 937 SNVs checked against Ensembl, 0 differ
+ABCG2: 5 1000 Genomes records in the region, 1 at CPIC positions; 732 of 6404 haplotypes differ from GRCh38 somewhere
+CACNA1S: 871 1000 Genomes records in the region, 0 at CPIC positions; 0 of 6404 haplotypes differ from GRCh38 somewhere
+CFTR: 2945 1000 Genomes records in the region, 17 at CPIC positions; 146 of 6404 haplotypes differ from GRCh38 somewhere
+CYP2B6: 1254 1000 Genomes records in the region, 28 at CPIC positions; 3028 of 6404 haplotypes differ from GRCh38 somewhere
+CYP2C19: 3227 1000 Genomes records in the region, 18 at CPIC positions; 6116 of 6404 haplotypes differ from GRCh38 somewhere
+CYP2C9: 1455 1000 Genomes records in the region, 17 at CPIC positions; 1006 of 6404 haplotypes differ from GRCh38 somewhere
+CYP2D6: 252 1000 Genomes records in the region, 68 at CPIC positions; 4108 of 6404 haplotypes differ from GRCh38 somewhere
+CYP3A5: 470 1000 Genomes records in the region, 3 at CPIC positions; 4450 of 6404 haplotypes differ from GRCh38 somewhere
+CYP4F2: 566 1000 Genomes records in the region, 16 at CPIC positions; 2568 of 6404 haplotypes differ from GRCh38 somewhere
+DPYD: 18548 1000 Genomes records in the region, 32 at CPIC positions; 3283 of 6404 haplotypes differ from GRCh38 somewhere
+G6PD: 234 1000 Genomes records in the region, 16 at CPIC positions; 4978 of 6404 haplotypes differ from GRCh38 somewhere
+MT-RNR1: the 1000 Genomes panel has no mitochondrial genotypes
+NAT2: 32 1000 Genomes records in the region, 18 at CPIC positions; 6235 of 6404 haplotypes differ from GRCh38 somewhere
+NUDT15: 211 1000 Genomes records in the region, 6 at CPIC positions; 303 of 6404 haplotypes differ from GRCh38 somewhere
+RYR1: 4209 1000 Genomes records in the region, 37 at CPIC positions; 1599 of 6404 haplotypes differ from GRCh38 somewhere
+SLCO1B1: 2706 1000 Genomes records in the region, 20 at CPIC positions; 4124 of 6404 haplotypes differ from GRCh38 somewhere
+TPMT: 470 1000 Genomes records in the region, 9 at CPIC positions; 373 of 6404 haplotypes differ from GRCh38 somewhere
+UGT1A1: 22 1000 Genomes records in the region, 6 at CPIC positions; 2689 of 6404 haplotypes differ from GRCh38 somewhere
+VKORC1: 7 1000 Genomes records in the region, 1 at CPIC positions; 2200 of 6404 haplotypes differ from GRCh38 somewhere
+1000 Genomes: 3202 samples, 2600 unrelated
+PharmCAT positions: 1174 written with 1000 Genomes genotypes, 52 not in the CPIC genes used here
+78 drugs with level-A pairs
+pgx.json: 19 genes, 78 drugs; 5 failure(s) (494 s)
