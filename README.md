@@ -24,7 +24,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Working (0.1–0.2) |
 | **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Working (0.3–0.4) |
 | **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, continental and regional ancestry, chromosome painting, Indigenous American ancestry, runs of homozygosity, X-chromosome ancestry, appearance, food and drink, fitness, and medicines (CPIC pharmacogenomics for 19 genes); relatives and opt-in health to come | AADR (ancient and present-day genomes), PhyloTree, YFull; trait variants checked against Ensembl, 1000 Genomes and the GWAS Catalog; CPIC, checked against PharmCAT | Working (0.5–0.7) |
-| **DNA Structure** | Any sequence as a 3D helix, atom by atom, in B, A or Z form, built from parameters measured on crystal structures; base-pair, step and groove parameters for any duplex; melting temperature and which pairs open first; Personal Genome trait variants shown in the helix. Planned: groove shape from sequence, pairing and stacking energies, ancient damage in place, a zoom from helix to chromosome | 3DNA's methods (checked against 3DNA 2.4.9); PDB crystal structures; nearest-neighbour thermodynamics | Working (0.8) |
+| **DNA Structure** | Any sequence as a 3D helix, atom by atom, in B, A or Z form, from parameters measured on crystal structures, with the backbone closed by OpenMM. Molecular dynamics (AMBER OL15, on the GPU when available). Base-pair, step and groove parameters for any duplex. Shape in solution predicted from sequence (Deep DNAshape). Pairing and stacking energies (GFN2-xTB, DFT). Melting. Ancient damage on a molecule. A zoom from helix to nucleosome, protein–DNA complexes, chromatin fibre and a whole nucleus. Personal Genome variants shown in the helix and the nucleus | 3DNA's methods (checked against 3DNA 2.4.9); OpenMM; Deep DNAshape; xtb, Psi4; PDB, Dip-C | Working (0.8–0.9) |
 | **Deep Time** | Ancient nuclear genomes, traits from ancient genomes, ancient proteins, DNA decay, radiocarbon calibration | minimap2, bwa-mem2, samtools; IntCal20 | Planned |
 | **Populations** | Evolution sandbox: drift, selection, bottlenecks and interbreeding, compared with real ancient data | msprime, SLiM | Planned |
 | **RNA and proteins** | RNA folding; Personal Genome variants placed on AlphaFold and PDB protein structures | Mol* | Planned |
@@ -41,18 +41,41 @@ Reference values and sources: [`core/benchmarks/reference/phase1.json`](core/ben
 
 ## Validation (DNA Structure)
 
-Against 3DNA 2.4.9 and 112 DNA-only crystal duplexes from the PDB (X-ray, 1.6 Å or better; the entry list is pinned in [`tools/dnadata/entries.txt`](tools/dnadata/entries.txt)), and against measured melting temperatures:
+Every check runs in CI on each change (`tools/dnadata/`, `.github/workflows/dna*.yml`), and CI confirms that the shipped data files regenerate exactly.
+
+**Helix geometry.** Checked against 3DNA 2.4.9 and the DNA-only crystal duplexes in the PDB (X-ray, 1.6 Å or better; entry list pinned in [`tools/dnadata/entries.txt`](tools/dnadata/entries.txt)).
 
 | Check | Result |
 |---|---|
-| Base-pair, step and groove parameters vs 3DNA's `analyze` | Equal to its printed precision on 98 duplexes (14 not comparable: 3DNA pairs the ends differently) |
+| Base-pair, step and groove parameters vs 3DNA's `analyze` | Equal to its printed precision on 98 of 101 duplexes (3DNA pairs fewer bases in the other 3) |
 | Rebuild vs 3DNA's `rebuild` from the same parameters | 0.001 Å RMSD (15 duplexes) |
 | Each crystal rebuilt from its own parameters | Bases back to a median 0.03 Å |
-| B-DNA built from sequence alone (Olson et al. 1998 steps) | Median 1.45 Å all-atom RMSD to 62 crystals |
-| A- and Z-DNA from parameters measured on the other crystals | Median 1.57 Å (17 A-DNA) and 0.57 Å (28 Z-DNA) |
-| Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
+| B-DNA built from sequence alone (Olson et al. 1998 steps) | Median 1.42 Å all-atom RMSD to 52 crystals |
+| A- and Z-DNA from parameters measured on the other crystals | Median 1.56 Å (16 A-DNA) and 0.57 Å (28 Z-DNA) |
+| Backbone closed by OpenMM (OL15, GBn2) | Every O3′–P link 1.55–1.67 Å in all 96 models (rigid build 0.68–2.90 Å); bases move at most 0.3 Å; models no further from the crystals |
 
-These run in CI on every change (`tools/dnadata/`, `.github/workflows/dna.yml`), and CI checks that the shipped parameter files regenerate exactly. One limit is reported in the app: the backbone rides on each base, so O3′–P links in built B- and A-DNA are 1.2–2.8 Å rather than 1.61 Å.
+**Physics.**
+
+| Check | Result |
+|---|---|
+| OpenMM set-up vs AMBER (tleap + sander, same coordinates) | @@MDENERGY@@ |
+| Dickerson dodecamer in dynamics (@@MDPS@@ ps, implicit water) vs its NMR structure (1NAJ) | @@MDRESULT@@ |
+| Pairing and stacking energies on S22 vs CCSD(T)/CBS | Mean error 0.76 kcal/mol (GFN2-xTB) and 0.26 (B3LYP-D3(BJ)/def2-TZVP, counterpoise); adenine–thymine pair −15.9 / −17.0 vs −16.7, stacked −12.3 / −11.6 vs −11.7 |
+| In a built helix | G–C pairs bind more strongly than A–T (−30.8 vs −14.2 kcal/mol, GFN2-xTB; DFT −32.1 and −14.8) |
+| Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
+| Deep DNAshape port vs the original TensorFlow model | Same predictions to within 1e-6 for all 18 features, at 2, 4 and 7 bp of flank@@SHAPE@@ |
+| Ancient damage vs gargammel's deamSim | @@DAMAGE@@ |
+
+**Scales.**
+
+| Check | Result |
+|---|---|
+| Nucleosome 1KX5 rebuilt from its own parameters | Bases back in place to 0.02 Å; left-handed superhelix of radius 41.8 Å and pitch 25.9 Å (Richmond & Davey 2003: 41.9 and 25.9) |
+| DNA bends in protein complexes vs the papers | TBP 70° (80°), CAP 81° (90°), IHF 164° (more than 160°) |
+| Six-nucleosome fibre 6HKT | Two-start zigzag: nucleosomes 6.1 nm from the one two along, 21.4 nm from their neighbour |
+| Dip-C single-cell genomes (6 GM12878 cells) | Gene-rich chromosomes sit centrally: chromosome 19 inside 18 in 5 of 6 cells; radial position vs gene density ρ = −0.74 |
+
+Limits the app states: dynamics use implicit water (no explicit ions or water molecules). Energies are for the bases alone in vacuum. Shape predictions are for free DNA. The nucleosome view threads your sequence onto a crystal's path; it does not predict where nucleosomes form. The nucleus is one real cell, not your own.
 
 ## Validation (Ancient DNA Lab)
 
