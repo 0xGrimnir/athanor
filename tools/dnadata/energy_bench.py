@@ -41,9 +41,9 @@ def gate(name, ok, detail):
 db = Path(sys.prefix) / "share" / "psi4" / "databases" / "S22.py"
 text = db.read_text()
 ref = {int(k): float(v) for k, v in re.findall(r"BIND_S22B\[\s*'%s-%s'\s*%\s*\(\s*dbse\s*,\s*'?(\d+)'?\s*\)\s*\]\s*=\s*(-?[\d.]+)", text)}
-names = dict(re.findall(r"TAGL\[\s*'%s-%s'\s*%\s*\(\s*dbse\s*,\s*'?(\d+)'?\s*\)\s*\]\s*=\s*'([^']*)'", text))
+names = dict(re.findall(r"TAGL\[\s*'%s-%s'\s*%\s*\(\s*dbse\s*,\s*'?(\d+)'?\s*\)\s*\]\s*=\s*[\"']([^\"']*)[\"']", text))
 geos = {}
-for num, body in re.findall(r"GEOS\[\s*'%s-%s-%s'\s*%\s*\(\s*dbse\s*,\s*'?(\d+)'?\s*,\s*'dimer'\s*\)\s*\]\s*=\s*qcdb\.Molecule\(\s*\"\"\"(.*?)\"\"\"", text, re.S):
+for num, body in re.findall(r"GEOS\[\s*'%s-%s-dimer'\s*%\s*\(\s*dbse\s*,\s*'?(\d+)'?\s*\)\s*\]\s*=\s*qcdb\.Molecule\(\s*\"\"\"(.*?)\"\"\"", text, re.S):
     frags, cur = [], []
     for line in body.strip().splitlines():
         line = line.strip()
