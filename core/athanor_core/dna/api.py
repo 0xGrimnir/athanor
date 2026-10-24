@@ -230,6 +230,7 @@ def m_dna_shape(p: dict) -> dict:
 
 
 _RELAXED: dict = {}
+PROGRESS = None            # set by the server: sends progress notifications to the app
 
 
 def _relaxed(seq, form, salt=0.15):
@@ -246,8 +247,7 @@ def m_dna_energies(p: dict) -> dict:
     if len(seq) > 60:
         raise ValueError("energies are computed for up to 60 base pairs")
     r = _relaxed(seq, form)
-    from ..server import _progress
-    h = energy.helix_energies(r["atoms"], r["hydrogens"], len(seq), "gfn2-xtb", on_step=_progress({"tier": "dna"}))
+    h = energy.helix_energies(r["atoms"], r["hydrogens"], len(seq), "gfn2-xtb", on_step=PROGRESS)
     return {"sequence": seq, "form": form, "pairs": [round(x, 2) for x in h["pairs"]], "steps": [round(x, 2) for x in h["steps"]],
             "method": "GFN2-xTB interaction energies of the capped bases of the relaxed helix, in vacuum", "checked": _load("energy_validation.json")}
 

@@ -84,6 +84,23 @@ v = call("dna_variants")["variants"]
 assert v and call("dna_variant", {"rsid": v[0]})["variant"]["rsid"] == v[0]
 mt = call("dna_melt", {"sequence": "CGCGAATTCGCG"})
 summary["dna_melt_tm"] = round(mt["tm"], 1)
+rx = call("dna_relax", {"sequence": "CGCGAATTCGCG"})
+summary["dna_relax_o3p"] = [round(min(rx["o3p"]), 3), round(max(rx["o3p"]), 3), rx["relax"]["platform"]]
+assert 1.55 < min(rx["o3p"]) and max(rx["o3p"]) < 1.67, summary["dna_relax_o3p"]
+sh = call("dna_shape", {"sequence": "CGCGAATTCGCG"})
+summary["dna_shape_mgw"] = sh["shape"]["MGW"][:3]
+assert abs(sh["shape"]["MGW"][0] - 5.4325) < 0.01
+en = call("dna_energies", {"sequence": "GCAT"})
+summary["dna_energies"] = en["pairs"]
+assert en["pairs"][0] < en["pairs"][2] < 0                      # G-C binds more strongly than A-T
+md0 = call("dna_md_start", {"sequence": "CGCG", "ps": 0.2})
+md1 = call("dna_md_step", {"run": md0["run"], "ps": 0.2})
+call("dna_md_stop", {"run": md0["run"]})
+summary["dna_md"] = [md1["platform"], round(md1["ns_per_day"], 1)]
+for name in ("dna_nucleosome", "dna_fibre", "dna_nucleus"):
+    r = call(name, {"sequence": "CGCGAATTCGCG"} if name == "dna_nucleosome" else {})
+    summary[name] = True
+summary["dna_complexes"] = len(call("dna_scales")["complexes"])
 print("SMOKE_OK", json.dumps(summary))
 proc.stdin.close()
 proc.wait(timeout=30)

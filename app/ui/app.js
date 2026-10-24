@@ -1759,6 +1759,7 @@ async function boot() {
       if (d.task === "adna") { if (A.busy) adnaProgress(d); return; }
       if (d.task === "personal") { pgProgress(d); return; }
       if (d.task === "pgdata") { pgPackProgress(d); return; }
+      if (d.task === "dna_energy") { if (!$("dnaBusy").hidden) $("dnaBusyText").textContent = `${d.stage} (${d.step} of ${d.steps})`; return; }
       if (t && S.busy) setBusy(true, t);
     });
     TAURI.event.listen("core-status", (e) => {

@@ -31,6 +31,7 @@ import numpy as np
 from . import __version__, tasks
 from .engines import get_engine
 from .molecule import Molecule
+from .dna import api as _dna_api
 from .dna.api import METHODS as DNA_METHODS
 
 REF = Path(__file__).resolve().parent.parent / "benchmarks" / "reference" / "phase1.json"
@@ -341,6 +342,7 @@ METHODS = {"ping": m_ping, "engines": m_engines, "build": m_build, "parse_xyz": 
            "personal_remove": m_personal_remove, "personal_analyse": m_personal_analyse,
            "personal_export": m_personal_export}
 METHODS.update(DNA_METHODS)
+_dna_api.PROGRESS = lambda d: _notify("progress", {**d, "tier": "dna"})
 
 
 def handle(line: str) -> dict:
