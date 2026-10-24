@@ -206,6 +206,11 @@ def superhelix(points):
         return np.concatenate([r - r.mean(), (h - A @ coef)])
     sol = least_squares(resid, np.concatenate([axis0, c0]))
     ax, c = unpack(sol.x)
+    # the centre can slide along the axis and the axis can point either way: fix both, so the same
+    # structure always gives the same numbers (the handedness below does not depend on either)
+    c = c + ax * np.dot(P.mean(0) - c, ax)
+    if ax[np.argmax(np.abs(ax))] < 0:
+        ax = -ax
     d = P - c
     h = d @ ax
     rvec = d - np.outer(h, ax)
