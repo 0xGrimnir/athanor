@@ -1,0 +1,63 @@
+[    1.9s] SNPs 1233013 autosomal biallelic 1150639 Y 32670 MT 0
+[    2.1s] individuals 23089 annotated 23089
+[    2.2s] hg19ref homozygous for allele 1: 1.0
+[    2.3s] role Mbuti: 13 individuals: [np.str_('Mbuti'), np.str_('MbutiPygmy')] e.g. ['B_Mbuti-4.DG', 'S_Mbuti-1.DG', 'S_Mbuti-2.DG']
+[    2.3s] role YRI: 102 individuals: [np.str_('YRI')] e.g. ['NA19149.DG', 'NA19152.DG', 'NA18856.DG']
+[    2.3s] role Chimp: 1 individuals: [np.str_('Chimp')] e.g. ['Chimp.REF']
+[    2.3s] role Altai: 1 individuals: [np.str_('Altai_Neanderthal')] e.g. ['AltaiNeanderthal.DG']
+[    2.3s] role Vindija: 1 individuals: [np.str_('VindijaCave_Neanderthal')] e.g. ['Vindija.DG']
+[    2.3s] role Chagyrskaya: 1 individuals: [np.str_('ChagyrskayaCave_Neanderthal')] e.g. ['Chagyrskaya8.SG']
+[    2.3s] role Denisova: 1 individuals: [np.str_('Russia_Denisova')] e.g. ['Denisova3.DG']
+[    2.3s] role WHG: 51 individuals: [np.str_('Belgium_Mesolithic'), np.str_('England_Mesolithic'), np.str_('France_Mesolithic'), np.str_('Germany_GrossFredenwalde_Mesolithic'), np.str_('Luxembourg_Loschbour_Mesolithic'), np.str_('Netherlands_Mesolithic'), np.str_('Spain_Mesolithic')] e.g. ['I3006.AG', 'I7015.AG', 'I0843.AG']
+[    2.3s] role Anatolia_N: 48 individuals: [np.str_('Turkey_N')] e.g. ['I0723.AG', 'I0724.AG', 'I0727.AG']
+[    2.3s] role Yamnaya: 30 individuals: [np.str_('Russia_Samara_EBA_Yamnaya')] e.g. ['I0242.AG', 'I0243.AG', 'I10363.AG']
+[    2.3s] role Iran_N: 10 individuals: [np.str_('Iran_GanjDareh_N')] e.g. ['I1944.AG', 'I1946.AG', 'I1947.AG']
+[    2.3s] role CHG: 3 individuals: [np.str_('Georgia_KotiasKlde_Mesolithic'), np.str_('Georgia_Satsurblia_LateUP')] e.g. ['KK1.SG', 'SATP.SG', 'NEO281.SG']
+[    2.3s] role Steppe_MLBA: 41 individuals: [np.str_('Russia_Chelyabinsk_MLBA_Sintashta')] e.g. ['I0937.AG', 'I0938.AG', 'I0939.AG']
+[    2.3s] role Onge: 6 individuals: [np.str_('ONG')] e.g. ['ONG-1.SG', 'ONG-12.SG', 'ONG-14.SG']
+[    2.3s] role UstIshim: 1 individuals: [np.str_('Russia_UstIshim_IUP')] e.g. ['Ust_Ishim.DG']
+[    2.3s] role Kostenki: 2 individuals: [np.str_('Russia_Kostenki_UP')] e.g. ['Kostenki12.AG.BY.AA', 'Kostenki14_d.AG.BY.AA']
+[    2.3s] role MA1: 1 individuals: [np.str_('Russia_Malta_UP')] e.g. ['MA1.SG']
+[    2.3s] role Han: 43 individuals: [np.str_('Han')] e.g. ['B_Han-3.DG', 'S_Han-1.DG', 'S_Han-2.DG']
+[    2.3s] role Papuan: 17 individuals: [np.str_('Papuan')] e.g. ['B_Papuan-15.DG', 'S_Papuan-10.DG', 'S_Papuan-11.DG']
+[    2.3s] role Chukchi: 1 individuals: [np.str_('Chukchi')] e.g. ['S_Chukchi-1.DG']
+[    2.3s] role Karitiana: 13 individuals: [np.str_('Karitiana')] e.g. ['BI16.SG', 'B_Karitiana-3.DG', 'S_Karitiana-1.DG']
+[    2.3s] role Natufian: 6 individuals: [np.str_('Israel_Natufian')] e.g. ['I1069.AG', 'I1687.AG', 'I1690.AG.TW']
+[    2.3s] role Mota: 1 individuals: [np.str_('Ethiopia_MotaCave_4500BP')] e.g. ['mota.SG']
+[    2.5s] PCA reference individuals: world 1681 west 595 held out 242
+[    2.5s] ancient individuals (PASS, >= 20k SNPs, one version each) 14175
+[    2.8s] held 3781 genotype rows in memory (1.17 GB)
+[    2.8s] pass 1: frequencies, archaic statistics, PCA relationship matrices
+[    6.5s]   20000/1150639
+[   36.7s]   220000/1150639
+[   65.9s]   420000/1150639
+[   94.9s]   620000/1150639
+[  124.0s]   820000/1150639
+[  153.1s]   1020000/1150639
+[  172.6s] PCA world: top eigenvalues [7.91 4.13 1.22 0.79 0.62 0.58 0.3  0.28] % of variance
+[  172.6s] PCA west: top eigenvalues [1.42 0.68 0.5  0.45 0.4  0.37 0.37 0.36] % of variance
+[  172.6s] pass 2a: SNP loadings
+[  191.3s]   world done
+[  199.1s]   west done
+[  199.1s] pass 2b: projecting 17457 individuals
+[  201.5s]   64/17457
+[  249.4s]   1344/17457
+[  297.3s]   2624/17457
+[  346.0s]   3904/17457
+[  394.8s]   5184/17457
+[  443.0s]   6464/17457
+[  490.7s]   7744/17457
+[  537.8s]   9024/17457
+[  583.7s]   10304/17457
+[  626.1s]   11584/17457
+[  672.2s]   12864/17457
+[  719.0s]   14144/17457
+[  767.3s]   15424/17457
+[  813.2s]   16704/17457
+[  840.4s] trees: mt 5435 y 42041
+[  847.5s] pca_world: 974123 SNPs
+[  848.6s] pca_west: 885257 SNPs
+[  848.9s] ancients written 14175 mt matched 12037 y matched 7150
+[  852.8s] archaic alleles 7498
+[  898.9s] validation bundle written (Y 600 men, mtDNA 800 individuals)
+[  898.9s] done
