@@ -412,6 +412,29 @@ dmax = max(np.median([x["relaxed"] - x["rigid"] for x in relaxed[fm]]) for fm in
 gate("closing the backbone does not move the models away from the crystals (median all-atom RMSD change "
      "<= +0.05 A in each form)", dmax <= 0.05, f"largest median change {dmax:+.2f} A")
 
+# Deep DNAshape's predicted minor-groove width against the B-DNA crystals (reported, not gated: the
+# predictions are for free DNA in solution from Monte Carlo simulations and use Curves+'s groove
+# definition, the crystals are measured with 3DNA's P-P distance)
+try:
+    from athanor_core.dna import shape as _shape
+    xs, ys = [], []
+    for k in kept:
+        if k["form"] != "B":
+            continue
+        a = k["analysis"]
+        mgw = _shape.predict("MGW", a["sequence"], 4)
+        for g in a["grooves"]:
+            if g["minor"] is not None:
+                st = g["step"]
+                xs.append((mgw[st] + mgw[st + 1]) / 2)
+                ys.append(g["minor"])
+    if len(xs) > 20:
+        r = float(np.corrcoef(xs, ys)[0, 1])
+        summary["dnashape_vs_crystals"] = {"pearson": round(r, 2), "n": len(xs)}
+        print(f"Deep DNAshape minor-groove width vs 3DNA minor groove in B-DNA crystals: Pearson r {r:.2f} over {len(xs)} steps")
+except Exception as e:  # noqa: BLE001
+    print("Deep DNAshape comparison skipped:", repr(e)[:200])
+
 # against 3DNA's rebuild from the same parameters
 worst_rb = 0.0
 nrb = 0
