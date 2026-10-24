@@ -1,0 +1,97 @@
+[FAIL] pack: CPIC level-A genes with definitions, phenotype tables and recommendations: 19 genes (ABCG2, CACNA1S, CFTR, CYP2B6, CYP2C19, CYP2C9, CYP2D6, CYP3A5, CYP4F2, DPYD, G6PD, MT-RNR1, NAT2, NUDT15, RYR1, SLCO1B1, TPMT, UGT1A1, VKORC1); skipped ['HLA-A', 'HLA-B']; 78 drugs; without recommendations: ['warfarin', 'siponimod', 'pitolisant', 'ondansetron', 'tropisetron', 'irinotecan']; without phenotype tables: ['CYP4F2', 'VKORC1']
+PharmCAT exit 0 in 433 s; ---
+
+496 / 500 - NA21102
++ Starting sample NA21102 in pgx_1kg.vcf
+- Finished processing sample NA21102 in pgx_1kg.vcf
+
+---
+
+497 / 500 - NA21112
++ Starting sample NA21112 in pgx_1kg.vcf
+- Finished processing sample NA21112 in pgx_1kg.vcf
+
+---
+
+498 / 500 - NA21119
++ Starting sample NA21119 in pgx_1kg.vcf
+- Finished processing sample NA21119 in pgx_1kg.vcf
+
+---
+
+499 / 500 - NA21135
++ Starting sample NA21135 in pgx_1kg.vcf
+- Finished processing sample NA21135 in pgx_1kg.vcf
+
+---
+
+500 / 500 - NA21144
++ Starting sample NA21144 in pgx_1kg.vcf
+- Finished processing sample NA21144 in pgx_1kg.vcf
+Done.
+ 
+500 PharmCAT TSV reports; e.g. ['work/pc/pgx_1kg.HG01537.report.tsv', 'work/pc/pgx_1kg.NA19759.report.tsv']
+PharmCAT columns: ['Gene', 'Source Diplotype', 'Phenotype', 'Activity Score', 'Haplotype 1', 'Haplotype 1 Function', 'Haplotype 1 Activity Value', 'Haplotype 2', 'Haplotype 2 Function', 'Haplotype 2 Activity Value', 'Outside Call', 'Match Score', 'Missing positions', 'Recommendation Lookup Diplotype', 'Recommendation Lookup Phenotype', 'Recommendation Lookup Activity Score']
+
+gene         n   cmp   diplo   pheno   score  pharmcat-no-call  ours-only  pc-only  ambiguous
+ABCG2      500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+CACNA1S    500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+CFTR       500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+CYP2B6     500   491   1.000   1.000   1.000      9      0      0  0 (0 include PharmCAT's)
+CYP2C19    500   498   0.781   0.129   1.000      2      2      0  325 (325 include PharmCAT's)
+       HG01537: PharmCAT *1/*1 / Normal Metabolizer / -; ours ['*1/*1', '*1/*46', '*1/*47'] / ['Indeterminate', 'Normal Metabolizer'] / -
+       NA19759: PharmCAT *1/*1 / Normal Metabolizer / -; ours ['*1/*1', '*1/*46', '*1/*47'] / ['Indeterminate', 'Normal Metabolizer'] / -
+       HG02389: PharmCAT *1/*1 / Normal Metabolizer / -; ours ['*1/*1', '*1/*46', '*1/*47'] / ['Indeterminate', 'Normal Metabolizer'] / -
+       HG01405: PharmCAT *1/*1 / Normal Metabolizer / -; ours ['*1/*1', '*1/*46', '*1/*47'] / ['Indeterminate', 'Normal Metabolizer'] / -
+CYP2C9     500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+CYP3A5     500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+CYP4F2     500     0   0.000   0.000   0.000    500    498      0  0 (0 include PharmCAT's)
+DPYD       500   345   1.000   0.954   1.000    155    155      0  0 (0 include PharmCAT's)
+       HG02250: PharmCAT c.1627A>G (*5)/[c.85T>C (*9A) + c.1627A>G (*5)] / Indeterminate / -; ours ['c.1627A>G (*5)/c.1627A>G (*5)'] / Normal Metabolizer / 2.0
+       HG01462: PharmCAT c.85T>C (*9A)/[c.85T>C (*9A) + c.496A>G] / Indeterminate / -; ours ['c.496A>G/c.85T>C (*9A)'] / Normal Metabolizer / 2.0
+       HG03633: PharmCAT [c.1627A>G (*5) + c.2194G>A (*6)]/[c.1627A>G (*5) + c.2194G>A (*6)] / Indeterminate / -; ours ['c.1627A>G (*5)/c.1627A>G (*5)'] / Normal Metabolizer / 2.0
+       HG00158: PharmCAT c.1627A>G (*5)/[c.85T>C (*9A) + c.1627A>G (*5)] / Indeterminate / -; ours ['c.1627A>G (*5)/c.1627A>G (*5)'] / Normal Metabolizer / 2.0
+G6PD       500   498   1.000   1.000   1.000      2      0      0  0 (0 include PharmCAT's)
+NAT2       500   500   0.694   0.850   1.000      0      0      0  8 (8 include PharmCAT's)
+       HG03989: PharmCAT *4/*5 / Intermediate Metabolizer / -; ours ['*1/*16'] / Intermediate Metabolizer / n/a
+       HG00638: PharmCAT *5/*6 / Poor Metabolizer / -; ours ['*1/*30'] / Intermediate Metabolizer / n/a
+       HG03963: PharmCAT *5/*6 / Poor Metabolizer / -; ours ['*1/*30'] / Intermediate Metabolizer / n/a
+       HG03084: PharmCAT *4/*5 / Intermediate Metabolizer / -; ours ['*1/*16'] / Intermediate Metabolizer / n/a
+NUDT15     500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+RYR1       500   460   1.000   1.000   1.000     40     40      0  0 (0 include PharmCAT's)
+SLCO1B1    500   489   0.980   0.982   1.000     11     10      0  2 (0 include PharmCAT's)
+       HG02439: PharmCAT *14/*44 OR *37/*43 / Indeterminate / Indeterminate / -; ours ['*14/*44', '*37/*43'] / Indeterminate / n/a
+       NA19401: PharmCAT *14/*27 OR *37/*53 / Indeterminate / / -; ours ['*14/*27', '*37/*53'] / Indeterminate / n/a
+       HG02012: PharmCAT *14/*44 OR *37/*43 / Indeterminate / Indeterminate / -; ours ['*14/*44', '*37/*43'] / Indeterminate / n/a
+       HG01685: PharmCAT *4/*15 OR *5/*14 / Possible Decreased Function / Decreased Function / -; ours ['*14/*5', '*15/*4'] / ['Decreased Function', 'Possible Decreased Function'] / -
+TPMT       500   500   1.000   1.000   1.000      0      0      0  0 (0 include PharmCAT's)
+UGT1A1     500   498   1.000   1.000   1.000      2      0      0  0 (0 include PharmCAT's)
+VKORC1     500     0   0.000   0.000   0.000    500    500      0  0 (0 include PharmCAT's)
+[FAIL] PharmCAT: same diplotype and phenotype on 1000 Genomes genotypes (every gene >= 99%): 7,279 gene calls in 500 people; lowest agreement 0.694 (NAT2)
+   ABCG2    full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   CACNA1S  full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   CFTR     full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2598, 'no call': 2}
+   CYP2B6   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2521, 'no call': 79}
+   CYP2C19  full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   CYP2C9   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   CYP2D6   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2466, 'ambiguous': 106, 'no call': 28}
+   CYP3A5   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   CYP4F2   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2596, 'no call': 4}
+   DPYD     full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   G6PD     full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2597, 'no call': 3}
+   NAT2     full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2532, 'ambiguous': 68}
+   NUDT15   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   RYR1     full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   SLCO1B1  full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2579, 'ambiguous': 9, 'no call': 12}
+   TPMT     full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+   UGT1A1   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2595, 'no call': 5}
+   VKORC1   full-data calls on 2600 unrelated 1000 Genomes people: {'called': 2600}
+[FAIL] every gene gives a call for >= 99% of 1000 Genomes people (no definition clashes with the genome): highest no-call rate 3.04% (CYP2B6)
+[FAIL] chip input: 23andMe-style genotypes (GRCh37, both strands, indels as I/D) read back exactly: 139,760 genotypes, 120 differ
+[PASS] reliability: agreement estimated on half of 1000 Genomes holds on the other half (weighted error <= 0.03): weighted error 0.0068 over 60 calls; largest 0.102 (CYP2C19, 30% of positions, Intermediate Metabolizer: 0.55 vs 0.65, n=34)
+
+[FAIL] pack: CPIC level-A genes with definitions, phenotype tables and recommendations: 19 genes (ABCG2, CACNA1S, CFTR, CYP2B6, CYP2C19, CYP2C9, CYP2D6, CYP3A5, CYP4F2, DPYD, G6PD, MT-RNR1, NAT2, NUDT15, RYR1, SLCO1B1, TPMT, UGT1A1, VKORC1); skipped ['HLA-A', 'HLA-B']; 78 drugs; without recommendations: ['warfarin', 'siponimod', 'pitolisant', 'ondansetron', 'tropisetron', 'irinotecan']; without phenotype tables: ['CYP4F2', 'VKORC1']
+[FAIL] PharmCAT: same diplotype and phenotype on 1000 Genomes genotypes (every gene >= 99%): 7,279 gene calls in 500 people; lowest agreement 0.694 (NAT2)
+[FAIL] every gene gives a call for >= 99% of 1000 Genomes people (no definition clashes with the genome): highest no-call rate 3.04% (CYP2B6)
+[FAIL] chip input: 23andMe-style genotypes (GRCh37, both strands, indels as I/D) read back exactly: 139,760 genotypes, 120 differ
+[PASS] reliability: agreement estimated on half of 1000 Genomes holds on the other half (weighted error <= 0.03): weighted error 0.0068 over 60 calls; largest 0.102 (CYP2C19, 30% of positions, Intermediate Metabolizer: 0.55 vs 0.65, n=34)

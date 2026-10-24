@@ -1,0 +1,3 @@
+pgx_1kg.HG00107.match.json
+pgx_1kg.HG00107.phenotype.json
+pgx_1kg.HG00107.report.tsv
