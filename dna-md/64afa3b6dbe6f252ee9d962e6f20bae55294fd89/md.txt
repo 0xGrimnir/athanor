@@ -1,0 +1,59 @@
+p/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/runner/micromamba/envs/md/dat/leap/cmd/leaprc.DNA.OL15
+----- Source of /home/runner/micromamba/envs/md/dat/leap/cmd/leaprc.DNA.OL15 done
+Log file: ./leap.log
+Loading library: /home/runner/micromamba/envs/md/dat/leap/lib/DNA.OL15.lib
+Loading parameters: /home/runner/micromamba/envs/md/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/runner/micromamba/envs/md/dat/leap/parm/frcmod.DNA.OL15
+Reading force field modification type file (frcmod)
+Reading title:
+OL15 force field for DNA (99bsc0-betaOL1-eps-zetaOL1-chiOL4) see http://ffol.upol.cz
+Using ArgH and AspGluO modified Bondi2 radii
+Loading PDB file: ./ddd_amber.pdb
+  total atoms in file: 758
+Checking Unit.
+
+/home/runner/micromamba/envs/md/bin/teLeap: Warning!
+The unperturbed charge of the unit (-22.000000) is not zero.
+
+/home/runner/micromamba/envs/md/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 260 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+ (no restraints)
+	Quit
+
+Exiting LEaP: Errors = 0; Warnings = 1; Notes = 1.
+
+sander terms: [('BOND', '36.2610'), ('ANGLE', '102.2029'), ('DIHED', '625.1999'), ('VDWAALS', '-417.4744'), ('EEL', '3606.7337'), ('EGB', '-6403.9076'), ('1-4 VDW', '179.7111'), ('1-4 EEL', '-3139.3495'), ('RESTRAINT', '0.0000'), ('BOND', '36.2610'), ('ANGLE', '102.2029'), ('DIHED', '625.1999')]
+energy: Athanor -5409.558, OpenMM from tleap prmtop -5409.499, sander -5410.6 kcal/mol
+[FAIL] Athanor's OpenMM set-up gives AMBER's energy for the same coordinates (OL15 + GBn2, 150 mM): vs OpenMM reading tleap's prmtop and vs sander (|difference| <= 0.5 kcal/mol): Athanor -5409.56, prmtop -5409.50, sander -5410.6 kcal/mol
+1NAJ CGCGAATTCGCG 12 pairs
+355D CGCGAATTCGCG 12 pairs
+   150 ps, 298 K, 6.1 ns/day
+   250 ps, 301 K, 6.0 ns/day
+   350 ps, 296 K, 6.1 ns/day
+   450 ps, 310 K, 6.2 ns/day
+   550 ps, 295 K, 6.1 ns/day
+1NAJ {'mean_twist': 35.48, 'mean_rise': 3.179, 'mean_roll': 3.82, 'mean_slide': -0.128, 'rmsd_median': 1.44, 'rmsd_p90': 1.86}
+355D {'mean_twist': 33.57, 'mean_rise': 3.236, 'mean_roll': 1.71, 'mean_slide': -0.046, 'rmsd_median': 1.64, 'rmsd_p90': 2.03}
+MD {'production_ps': 500.0, 'frames': 100, 'mean_twist': 33.8, 'mean_rise': 3.36, 'mean_roll': 6.02, 'mean_slide': -0.149}
+[PASS] in dynamics the dodecamer stays close to its NMR solution structure (central 8 bp, heavy atoms; median RMSD over the production run <= 2.5 A): median 1.44 A, 90th percentile 1.86 A over 100 frames (500 ps); to the crystal (355D): median 1.64 A
+[PASS] average helix twist and rise of the central 8 bp match the NMR structure (within 2.5 deg and 0.2 A): twist 33.8 vs 35.48 deg; rise 3.36 vs 3.179 A (crystal 355D: 33.57 deg, 3.236 A)

@@ -1,0 +1,50 @@
+{
+ "results": [
+  {
+   "name": "Athanor's OpenMM set-up gives AMBER's energy for the same coordinates (OL15 + GBn2, 150 mM): vs OpenMM reading tleap's prmtop and vs sander (|difference| <= 0.5 kcal/mol)",
+   "pass": false,
+   "detail": "Athanor -5409.56, prmtop -5409.50, sander -5410.6 kcal/mol"
+  },
+  {
+   "name": "in dynamics the dodecamer stays close to its NMR solution structure (central 8 bp, heavy atoms; median RMSD over the production run <= 2.5 A)",
+   "pass": true,
+   "detail": "median 1.44 A, 90th percentile 1.86 A over 100 frames (500 ps); to the crystal (355D): median 1.64 A"
+  },
+  {
+   "name": "average helix twist and rise of the central 8 bp match the NMR structure (within 2.5 deg and 0.2 A)",
+   "pass": true,
+   "detail": "twist 33.8 vs 35.48 deg; rise 3.36 vs 3.179 A (crystal 355D: 33.57 deg, 3.236 A)"
+  }
+ ],
+ "summary": {
+  "energy": {
+   "athanor": -5409.56,
+   "openmm_prmtop": -5409.5,
+   "sander": -5410.6
+  },
+  "md": {
+   "production_ps": 500.0,
+   "frames": 100,
+   "mean_twist": 33.8,
+   "mean_rise": 3.36,
+   "mean_roll": 6.02,
+   "mean_slide": -0.149
+  },
+  "1NAJ": {
+   "mean_twist": 35.48,
+   "mean_rise": 3.179,
+   "mean_roll": 3.82,
+   "mean_slide": -0.128,
+   "rmsd_median": 1.44,
+   "rmsd_p90": 1.86
+  },
+  "355D": {
+   "mean_twist": 33.57,
+   "mean_rise": 3.236,
+   "mean_roll": 1.71,
+   "mean_slide": -0.046,
+   "rmsd_median": 1.64,
+   "rmsd_p90": 2.03
+  }
+ }
+}
