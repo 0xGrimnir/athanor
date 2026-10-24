@@ -1,0 +1,72 @@
+{
+ "results": [
+  {
+   "name": "Athanor's OpenMM set-up gives AMBER's energies for the same coordinates (OL15 + GBn2, 150 mM): every term equal to the same force field read from tleap's prmtop (0.01 kcal/mol), and within 0.05% of sander's",
+   "pass": true,
+   "detail": "totals: Athanor -5409.19, prmtop -5409.09, sander -5410.21 kcal/mol; largest term difference from prmtop 0.0002 kcal/mol, from sander 0.017%"
+  },
+  {
+   "name": "in dynamics the dodecamer stays close to its NMR solution structure (central 8 bp, heavy atoms; median RMSD over the production run <= 2.5 A)",
+   "pass": true,
+   "detail": "median 1.48 A, 90th percentile 1.83 A over 100 frames (500 ps); to the crystal (355D): median 1.63 A"
+  },
+  {
+   "name": "average helix twist and rise of the central 8 bp match the NMR structure (within 2.5 deg and 0.2 A)",
+   "pass": true,
+   "detail": "twist 33.95 vs 35.48 deg; rise 3.353 vs 3.179 A (crystal 355D: 33.57 deg, 3.236 A)"
+  }
+ ],
+ "summary": {
+  "energy": {
+   "athanor": -5409.19,
+   "openmm_prmtop": -5409.09,
+   "sander": -5410.21,
+   "terms": {
+    "bonds": {
+     "athanor": 36.343,
+     "sander": 36.3429
+    },
+    "angles": {
+     "athanor": 102.422,
+     "sander": 102.4223
+    },
+    "torsions": {
+     "athanor": 624.889,
+     "sander": 624.8887
+    },
+    "coulomb+vdW": {
+     "athanor": 230.22,
+     "sander": 230.2037999999999
+    },
+    "GB solvation": {
+     "athanor": -6402.969,
+     "sander": -6404.069
+    }
+   }
+  },
+  "md": {
+   "production_ps": 500.0,
+   "frames": 100,
+   "mean_twist": 33.95,
+   "mean_rise": 3.353,
+   "mean_roll": 5.85,
+   "mean_slide": -0.164
+  },
+  "1NAJ": {
+   "mean_twist": 35.48,
+   "mean_rise": 3.179,
+   "mean_roll": 3.82,
+   "mean_slide": -0.128,
+   "rmsd_median": 1.48,
+   "rmsd_p90": 1.83
+  },
+  "355D": {
+   "mean_twist": 33.57,
+   "mean_rise": 3.236,
+   "mean_roll": 1.71,
+   "mean_slide": -0.046,
+   "rmsd_median": 1.63,
+   "rmsd_p90": 2.01
+  }
+ }
+}
