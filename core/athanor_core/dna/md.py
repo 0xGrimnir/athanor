@@ -80,7 +80,7 @@ def strip_5p_phosphate(atoms):
 class System:
     """An OpenMM system for a duplex given as Athanor atoms [(chain, num, resname, name, xyz)]."""
 
-    def __init__(self, atoms, salt: float = 0.15, temperature: float = 300.0, hmr: bool = False):
+    def __init__(self, atoms, salt: float = 0.15, temperature: float = 300.0, hmr: bool = False, constraints="HBonds"):
         if mm is None:
             raise RuntimeError("OpenMM is not installed in this runtime")
         atoms = strip_5p_phosphate(atoms)
@@ -101,7 +101,8 @@ class System:
         # Walker & Roitberg, J. Chem. Theory Comput. 11, 1864, 2015)
         extra = {"hydrogenMass": 3.024 * u.amu} if hmr else {}
         # no nonpolar surface-area term, as in AMBER's GBn2 (igb=8) with its default gbsa=0
-        self.system = self.ff.createSystem(self.topology, nonbondedMethod=app.NoCutoff, constraints=app.HBonds,
+        self.system = self.ff.createSystem(self.topology, nonbondedMethod=app.NoCutoff,
+                                           constraints=app.HBonds if constraints == "HBonds" else None,
                                            implicitSolventKappa=kappa(salt, temperature) / u.nanometer,
                                            sasaMethod=None, **extra)
         self.keys = [(a.residue.chain.id, int(a.residue.id), a.name) for a in self.topology.atoms()]

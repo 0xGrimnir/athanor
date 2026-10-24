@@ -49,7 +49,9 @@ def gate(name, ok, detail):
 
 # ------------------------------------------------------------------ 1. energies against AMBER
 r = md.relax(build(SEQ, "B")["atoms"])
-s = md.System(r["atoms"])            # hydrogens are re-added by Modeller in the same order as in relax()
+# hydrogens are re-added by Modeller in the same order as in relax(); no constraints, so every bond term is
+# there to compare (the app constrains bonds to hydrogen during dynamics)
+s = md.System(r["atoms"], constraints=None)
 ctx = mm.Context(s.system, mm.VerletIntegrator(0.001), mm.Platform.getPlatformByName("Reference"))
 # put the relaxed hydrogens back exactly: rebuild the full coordinate set in the System's atom order
 full = {(c, int(n), name): xyz for c, n, _, name, xyz in r["atoms"] + r["hydrogens"]}
@@ -147,18 +149,16 @@ for t in sander:
     print(f"{t:14s} {ours.get(t, float('nan')):12.4f} {prm_terms.get(t, float('nan')):12.4f} {sander[t]:12.4f}")
 summary["energy"] = {"athanor": round(e_ath, 2), "openmm_prmtop": round(e_prm, 2), "sander": round(sum(sander.values()), 2),
                      "terms": {t: {"athanor": round(ours.get(t, 0), 3), "sander": sander[t]} for t in sander}}
-# the force-field terms are the same functions of the same parameters: they must agree to sander's printed
-# precision; the GB solvation term is computed by different numerical codes (OpenMM's tabulated GBn2 neck
-# integral, sander's own), so it gets a relative tolerance
-same = all(abs(ours[t] - sander[t]) <= 0.01 and abs(ours[t] - prm_terms[t]) <= 0.01 for t in ("bonds", "angles", "torsions", "coulomb+vdW"))
-gb_rel = abs(ours["GB solvation"] - sander["GB solvation"]) / abs(sander["GB solvation"])
-gb_prm = abs(ours["GB solvation"] - prm_terms["GB solvation"])
-gate("Athanor's OpenMM set-up gives AMBER's energies for the same coordinates (OL15 + GBn2, 150 mM): bonds, angles, "
-     "torsions and coulomb + van der Waals each equal sander's and OpenMM-from-tleap's to 0.01 kcal/mol; GB solvation "
-     "equal to tleap's parameters in OpenMM (0.1 kcal/mol) and within 0.05% of sander's",
-     same and gb_prm <= 0.1 and gb_rel <= 5e-4,
-     f"totals: Athanor {e_ath:.2f}, prmtop {e_prm:.2f}, sander {sum(sander.values()):.2f} kcal/mol; GB solvation differs "
-     f"from sander's by {100 * gb_rel:.3f}%")
+# the same force field from two routes (OpenMM's amber14 files, tleap's prmtop) must give the same numbers
+# term by term; against sander, a different program, the terms may differ by its constants (AMBER's
+# Coulomb constant 332.0522 vs OpenMM's 332.0637) and its own GBn2 code, so a relative tolerance
+same = all(abs(ours[t] - prm_terms[t]) <= 0.01 for t in sander)
+rel = {t: abs(ours[t] - sander[t]) / max(abs(sander[t]), 1.0) for t in sander}
+gate("Athanor's OpenMM set-up gives AMBER's energies for the same coordinates (OL15 + GBn2, 150 mM): every term "
+     "equal to the same force field read from tleap's prmtop (0.01 kcal/mol), and within 0.05% of sander's",
+     same and max(rel.values()) <= 5e-4,
+     f"totals: Athanor {e_ath:.2f}, prmtop {e_prm:.2f}, sander {sum(sander.values()):.2f} kcal/mol; largest term difference "
+     f"from prmtop {max(abs(ours[t] - prm_terms[t]) for t in sander):.4f} kcal/mol, from sander {100 * max(rel.values()):.3f}%")
 if PROD <= 0:
     (WORK / "md_report.json").write_text(json.dumps({"results": results, "summary": summary}, indent=1))
     sys.exit(0 if all(x["pass"] for x in results) else 1)
