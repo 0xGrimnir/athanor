@@ -106,16 +106,52 @@ e_prm = energy(c2)
 sd = subprocess.run(["sander", "-O", "-i", "sp.in", "-p", "ddd.prmtop", "-c", "ddd.inpcrd", "-o", "sp.out"], cwd=WORK,
                     capture_output=True, text=True)
 out = (WORK / "sp.out").read_text() if (WORK / "sp.out").exists() else sd.stderr
-m = re.search(r"NSTEP\s+ENERGY\s+RMS\s+GMAX.*?\n\s*\d+\s+(-?[\d.]+(?:E[-+]\d+)?)", out, re.S)
-e_sander = float(m.group(1)) if m else None
-terms = re.findall(r"(BOND|ANGLE|DIHED|VDWAALS|EEL|EGB|1-4 VDW|1-4 EEL|RESTRAINT)\s*=\s*(-?[\d.]+)", out)
-print("sander terms:", terms[:12])
-summary["energy"] = {"athanor": round(e_ath, 2), "openmm_prmtop": round(e_prm, 2), "sander": e_sander}
-print(f"energy: Athanor {e_ath:.3f}, OpenMM from tleap prmtop {e_prm:.3f}, sander {e_sander} kcal/mol")
-gate("Athanor's OpenMM set-up gives AMBER's energy for the same coordinates (OL15 + GBn2, 150 mM): vs OpenMM "
-     "reading tleap's prmtop and vs sander (|difference| <= 0.5 kcal/mol)",
-     e_sander is not None and abs(e_ath - e_prm) <= 0.5 and abs(e_ath - e_sander) <= 0.5,
-     f"Athanor {e_ath:.2f}, prmtop {e_prm:.2f}, sander {e_sander} kcal/mol")
+terms = dict(re.findall(r"(BOND|ANGLE|DIHED|VDWAALS|EEL|EGB|1-4 VDW|1-4 EEL)\s*=\s*(-?[\d.]+)", out))
+terms = {k: float(v) for k, v in terms.items()}
+print("sander terms:", terms)
+
+
+def by_term(system, positions):
+    """Energy of each part of an OpenMM system, in sander's groupings (kcal/mol)."""
+    kinds = {"HarmonicBondForce": "bonds", "HarmonicAngleForce": "angles", "PeriodicTorsionForce": "torsions",
+             "NonbondedForce": "coulomb+vdW", "CustomGBForce": "GB solvation", "GBSAOBCForce": "GB solvation"}
+    out = {}
+    for k, f in enumerate(system.getForces()):
+        f.setForceGroup(k)
+    c = mm.Context(system, mm.VerletIntegrator(0.001), mm.Platform.getPlatformByName("Reference"))
+    c.setPositions(positions)
+    for k, f in enumerate(system.getForces()):
+        name = kinds.get(type(f).__name__)
+        if name:
+            e = c.getState(getEnergy=True, groups={k}).getPotentialEnergy().value_in_unit(u.kilocalorie_per_mole)
+            out[name] = out.get(name, 0.0) + e
+    return out
+
+
+ours = by_term(s.system, pos * 0.1)
+prm_terms = by_term(sp, crd.positions)
+sander = {"bonds": terms.get("BOND"), "angles": terms.get("ANGLE"), "torsions": terms.get("DIHED"),
+          "coulomb+vdW": sum(terms.get(k, 0.0) for k in ("VDWAALS", "EEL", "1-4 VDW", "1-4 EEL")), "GB solvation": terms.get("EGB")}
+print(f"{'term':14s} {'Athanor':>12s} {'prmtop':>12s} {'sander':>12s}")
+for t in sander:
+    print(f"{t:14s} {ours.get(t, float('nan')):12.4f} {prm_terms.get(t, float('nan')):12.4f} {sander[t]:12.4f}")
+summary["energy"] = {"athanor": round(e_ath, 2), "openmm_prmtop": round(e_prm, 2), "sander": round(sum(sander.values()), 2),
+                     "terms": {t: {"athanor": round(ours.get(t, 0), 3), "sander": sander[t]} for t in sander}}
+# the force-field terms are the same functions of the same parameters: they must agree to sander's printed
+# precision; the GB solvation term is computed by different numerical codes (OpenMM's tabulated GBn2 neck
+# integral, sander's own), so it gets a relative tolerance
+same = all(abs(ours[t] - sander[t]) <= 0.01 and abs(ours[t] - prm_terms[t]) <= 0.01 for t in ("bonds", "angles", "torsions", "coulomb+vdW"))
+gb_rel = abs(ours["GB solvation"] - sander["GB solvation"]) / abs(sander["GB solvation"])
+gb_prm = abs(ours["GB solvation"] - prm_terms["GB solvation"])
+gate("Athanor's OpenMM set-up gives AMBER's energies for the same coordinates (OL15 + GBn2, 150 mM): bonds, angles, "
+     "torsions and coulomb + van der Waals each equal sander's and OpenMM-from-tleap's to 0.01 kcal/mol; GB solvation "
+     "equal to tleap's parameters in OpenMM (0.1 kcal/mol) and within 0.05% of sander's",
+     same and gb_prm <= 0.1 and gb_rel <= 5e-4,
+     f"totals: Athanor {e_ath:.2f}, prmtop {e_prm:.2f}, sander {sum(sander.values()):.2f} kcal/mol; GB solvation differs "
+     f"from sander's by {100 * gb_rel:.3f}%")
+if PROD <= 0:
+    (WORK / "md_report.json").write_text(json.dumps({"results": results, "summary": summary}, indent=1))
+    sys.exit(0 if all(x["pass"] for x in results) else 1)
 
 # ------------------------------------------------------------------ 2. dynamics against the solution structure
 def fetch(pid):
