@@ -58,8 +58,8 @@ Every check runs in CI on each change (`tools/dnadata/`, `.github/workflows/dna*
 
 | Check | Result |
 |---|---|
-| OpenMM set-up vs AMBER (tleap + sander, same coordinates) | @@MDENERGY@@ |
-| Dickerson dodecamer in dynamics (@@MDPS@@ ps, implicit water) vs its NMR structure (1NAJ) | @@MDRESULT@@ |
+| OpenMM set-up vs AMBER (tleap + sander, same coordinates) | Every energy term equal to the same force field built by tleap (to 0.0002 kcal/mol) and within 0.017% of sander's (its Coulomb constant and GBn2 code differ slightly) |
+| Dickerson dodecamer in dynamics (500 ps, implicit water) vs its NMR structure (1NAJ) | Central 8 bp stay within a median 1.48 Å (heavy atoms) of the solution structure; mean twist 34.0° and rise 3.35 Å vs 35.5° and 3.18 Å (crystal 355D: 33.6°, 3.24 Å) |
 | Pairing and stacking energies on S22 vs CCSD(T)/CBS | Mean error 0.76 kcal/mol (GFN2-xTB) and 0.26 (B3LYP-D3(BJ)/def2-TZVP, counterpoise); adenine–thymine pair −15.9 / −17.0 vs −16.7, stacked −12.3 / −11.6 vs −11.7 |
 | In a built helix | G–C pairs bind more strongly than A–T (−30.8 vs −14.2 kcal/mol, GFN2-xTB; DFT −32.1 and −14.8) |
 | Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
