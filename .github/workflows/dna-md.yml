@@ -1,0 +1,47 @@
+name: dna-md
+# DNA dynamics: OpenMM set-up vs AMBER (tleap/sander), and a simulated dodecamer vs its NMR structure.
+on:
+  workflow_dispatch:
+    inputs:
+      ps: {description: "production length (ps)", required: false, default: "500"}
+  push:
+    paths:
+      - "core/athanor_core/dna/md.py"
+      - "tools/dnadata/md_bench.py"
+      - ".github/workflows/dna-md.yml"
+permissions:
+  contents: write
+jobs:
+  md:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: md
+          create-args: python=3.12 numpy scipy openmm ambertools
+          condarc: |
+            channels: [conda-forge]
+      - name: Benchmarks
+        run: |
+          set +e
+          python tools/dnadata/md_bench.py work "${{ inputs.ps || '500' }}" > md.txt 2>&1
+          rc=$?
+          cat md.txt | tail -80
+          msg=$(grep -E "^\[(PASS|FAIL)\]" md.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=dna dynamics::$msg"; else echo "::error title=dna dynamics failed::$msg"; fi
+          exit $rc
+      - name: Publish
+        if: always()
+        run: |
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          for i in 1 2 3; do
+            d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+              mkdir -p "$d/dna-md/${GITHUB_SHA}" && cp md.txt work/md_report.json work/sp.out work/leap.log "$d/dna-md/${GITHUB_SHA}/" 2>/dev/null; \
+              (cd "$d" && git add -A && git commit -qm "dna-md ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) && break
+            git worktree remove --force "$d"; sleep $((RANDOM % 20 + 5))
+          done

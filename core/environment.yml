@@ -12,4 +12,5 @@ dependencies:
   - xtb>=6.7.1        # the GFN2-xTB engine; older builds write different output formats
   - psi4
   - ase
+  - openmm          # DNA Structure: backbone relaxation and molecular dynamics (AMBER OL15, GBn2)
   - pytest

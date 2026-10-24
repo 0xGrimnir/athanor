@@ -204,6 +204,11 @@ class Dynamics:
         self.time_ps = 0.0
         self.temperature = temperature
 
+    def describe(self) -> str:
+        return (f"OpenMM {mm.__version__} on {self.plat.getName()}: AMBER OL15 DNA force field, GBn2 implicit solvent "
+                f"with {self.s.salt * 1000:.0f} mM salt, Langevin dynamics at {self.temperature:.0f} K, "
+                f"{self.dt_ps * 1000:.0f} fs steps with hydrogen mass repartitioning")
+
     def run(self, ps: float) -> dict:
         n = max(1, int(round(ps / self.dt_ps)))
         t = time.time()

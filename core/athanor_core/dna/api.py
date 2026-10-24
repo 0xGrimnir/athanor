@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 
-from . import melting
+from . import md, melting
 from .builder import build, to_pdb
 from .structure import DATA, Residue, analyse
 
@@ -77,21 +77,99 @@ def melting_check() -> dict | None:
             "salts": len([k for k in m if k != "all"]), "duplexes": a["n"] // max(1, len([k for k in m if k != "all"]))}
 
 
-def m_dna_build(p: dict) -> dict:
+def _seq(p) -> str:
     seq = "".join(str(p.get("sequence", "")).split()).upper()
     if not 2 <= len(seq) <= 200:
         raise ValueError("give 2 to 200 base pairs")
-    form = p.get("form", "B")
-    model = build(seq, form)
-    an = analyse(_residues(model))
+    return seq
+
+
+def _response(seq, form, atoms, frames, o3p, extra=None) -> dict:
+    """What the app needs to draw and describe a duplex given as Athanor atoms."""
+    an = analyse(_residues({"atoms": atoms}))
     info = json.loads((DATA / "steps.json").read_text())[form]
-    atoms = [[c, n, r, a, _element(a), float(x[0]), float(x[1]), float(x[2])] for c, n, r, a, x in model["atoms"]]
-    return {"sequence": seq, "form": form, "atoms": atoms, "bonds": _bonds(model["atoms"]),
-            "frames": model["frames"], "o3p": model["o3p"],
+    out = [[c, n, r, a, _element(a), float(x[0]), float(x[1]), float(x[2])] for c, n, r, a, x in atoms]
+    return {"sequence": seq, "form": form, "atoms": out, "bonds": _bonds(atoms),
+            "frames": frames, "o3p": o3p,
             "analysis": {"pairs": [{k: x[k] for k in ("pair", "params")} for x in an["pairs"]],
                          "steps": an["steps"], "grooves": an["grooves"]},
             "method": info.get("method", ""), "sources": info.get("sources", []),
-            "validation": validation(form)}
+            "validation": validation(form), **(extra or {})}
+
+
+def m_dna_build(p: dict) -> dict:
+    seq, form = _seq(p), p.get("form", "B")
+    model = build(seq, form)
+    return _response(seq, form, model["atoms"], model["frames"], model["o3p"],
+                     {"relaxed": False, "md_available": md.available()})
+
+
+def m_dna_relax(p: dict) -> dict:
+    """The built helix with its backbone closed by an OpenMM energy minimisation (bases restrained)."""
+    seq, form = _seq(p), p.get("form", "B")
+    model = build(seq, form)
+    r = md.relax(model["atoms"], salt=float(p.get("salt", 0.15)))
+    return _response(seq, form, r["atoms"], model["frames"], r["o3p"],
+                     {"relaxed": True, "relax": {k: r[k] for k in ("energy_kcal", "base_shift_max", "base_shift_rms",
+                                                                    "seconds", "platform", "method")},
+                      "md_available": True})
+
+
+_MD: dict = {}
+
+
+def m_dna_md_start(p: dict) -> dict:
+    """Start molecular dynamics of the built helix; returns the starting model and a run id."""
+    seq, form = _seq(p), p.get("form", "B")
+    model = build(seq, form)
+    _MD.clear()                                    # one simulation at a time
+    d = md.Dynamics(model["atoms"], salt=float(p.get("salt", 0.15)), temperature=float(p.get("temperature", 300.0)),
+                    prefer=p.get("platform"))
+    f = d.run(float(p.get("ps", 1.0)))
+    rid = f"md{id(d)}"
+    _MD[rid] = {"dyn": d, "sum": None, "sq": None, "n": 0, "seq": seq, "form": form}
+    resp = _response(seq, form, f["atoms"], model["frames"], md._o3p(f["atoms"]))
+    resp.update({"run": rid, "frame": _frame(rid, f), "method": d.describe()})
+    return resp
+
+
+def _frame(rid, f) -> dict:
+    st = _MD[rid]
+    an = analyse(_residues({"atoms": f["atoms"]}))
+    steps = np.array([s["params"] for s in an["steps"]]) if an["steps"] else np.zeros((0, 6))
+    grooves = np.array([g["minor"] if g["minor"] is not None else np.nan for g in an["grooves"]], dtype=float)
+    vals = np.concatenate([steps.ravel(), grooves])
+    if st["sum"] is None or len(st["sum"]) != len(vals):
+        st["sum"], st["sq"], st["cnt"], st["n"] = np.zeros_like(vals), np.zeros_like(vals), np.zeros_like(vals), 0
+    ok = ~np.isnan(vals)
+    st["sum"][ok] += vals[ok]
+    st["sq"][ok] += vals[ok] ** 2
+    st["cnt"][ok] += 1
+    st["n"] += 1
+    cnt = np.maximum(st["cnt"], 1)
+    mean = st["sum"] / cnt
+    sd = np.sqrt(np.maximum(st["sq"] / cnt - mean ** 2, 0.0))
+    k = steps.size
+    return {"coords": [[round(float(v), 3) for v in a[4]] for a in f["atoms"]], "time_ps": f["time_ps"],
+            "temperature": f["temperature"], "potential_kcal": f["potential_kcal"], "ns_per_day": f["ns_per_day"],
+            "platform": f["platform"], "n_frames": st["n"],
+            "steps": steps.tolist(), "minor": [None if np.isnan(g) else float(g) for g in grooves],
+            "mean_steps": mean[:k].reshape(-1, 6).tolist(), "sd_steps": sd[:k].reshape(-1, 6).tolist(),
+            "mean_minor": [None if c == 0 else float(m) for m, c in zip(mean[k:], st["cnt"][k:])],
+            "sd_minor": [None if c == 0 else float(x) for x, c in zip(sd[k:], st["cnt"][k:])]}
+
+
+def m_dna_md_step(p: dict) -> dict:
+    rid = p["run"]
+    if rid not in _MD:
+        raise ValueError("that simulation has ended")
+    f = _MD[rid]["dyn"].run(float(p.get("ps", 5.0)))
+    return _frame(rid, f)
+
+
+def m_dna_md_stop(p: dict) -> dict:
+    _MD.pop(p.get("run"), None)
+    return {"stopped": True}
 
 
 def m_dna_variants(p: dict) -> dict:
@@ -130,5 +208,6 @@ def m_dna_export(p: dict) -> dict:
     return {"path": p["path"], "atoms": len(model["atoms"])}
 
 
-METHODS = {"dna_build": m_dna_build, "dna_melt": m_dna_melt, "dna_export": m_dna_export,
+METHODS = {"dna_build": m_dna_build, "dna_relax": m_dna_relax, "dna_md_start": m_dna_md_start,
+           "dna_md_step": m_dna_md_step, "dna_md_stop": m_dna_md_stop, "dna_melt": m_dna_melt, "dna_export": m_dna_export,
            "dna_variants": m_dna_variants, "dna_variant": m_dna_variant}

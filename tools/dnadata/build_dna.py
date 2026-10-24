@@ -31,6 +31,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "core"))
 from athanor_core.dna.builder import build  # noqa: E402
+from athanor_core.dna.md import relax  # noqa: E402
 from athanor_core.dna.geometry import kabsch  # noqa: E402
 from athanor_core.dna.structure import analyse, base_frame, read_pdb, standard_bases  # noqa: E402
 
@@ -346,6 +347,7 @@ def rmsd_against(model, res, atoms_filter=None):
 
 BACK = {"P", "OP1", "OP2", "O5'", "C5'", "C4'", "O4'", "C3'", "O3'", "C2'", "C1'"}
 own, generic = {"A": [], "B": [], "Z": []}, {"A": [], "B": [], "Z": []}
+relaxed = {"A": [], "B": [], "Z": []}
 for k in kept:
     a, fm = k["analysis"], k["form"]
     seq = a["sequence"]
@@ -360,6 +362,11 @@ for k in kept:
     m_gen = build(seq, fm)
     rg, _ = rmsd_against(m_gen, k["residues"])
     generic[fm].append(rg)
+    # the same model with its backbone closed by OpenMM (bases restrained)
+    rx = relax(m_gen["atoms"])
+    rr, _ = rmsd_against({"atoms": rx["atoms"]}, k["residues"])
+    relaxed[fm].append({"rigid": rg, "relaxed": rr, "o3p": [min(rx["o3p"]), max(rx["o3p"])],
+                        "rigid_o3p": [min(m_gen["o3p"]), max(m_gen["o3p"])], "base_shift": rx["base_shift_max"]})
 write_data(P)
 for fm in "ABZ":
     if own[fm]:
@@ -383,6 +390,27 @@ for fm in "AZ":
     if g["n"]:
         gate(f"{fm}-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out)",
              g["generic_median"] <= 2.0, f"median {g['generic_median']:.2f} A, 90th percentile {g['generic_p90']:.2f} A over {g['n']} crystals")
+
+# backbone closure
+allr = [x for v in relaxed.values() for x in v]
+lo = min(x["o3p"][0] for x in allr)
+hi = max(x["o3p"][1] for x in allr)
+gate("after OpenMM relaxation every O3'-P link is a bond (1.55-1.67 A; AMBER OL15 equilibrium 1.61 A)",
+     allr and lo >= 1.55 and hi <= 1.67,
+     f"{lo:.2f}-{hi:.2f} A over {len(allr)} models (rigid build: "
+     f"{min(x['rigid_o3p'][0] for x in allr):.2f}-{max(x['rigid_o3p'][1] for x in allr):.2f} A)")
+bs = max(x["base_shift"] for x in allr)
+gate("relaxation keeps the bases where the parameters put them (largest base-atom shift <= 0.3 A)", bs <= 0.3, f"{bs:.2f} A")
+for fm in "ABZ":
+    if relaxed[fm]:
+        d = np.median([x["relaxed"] - x["rigid"] for x in relaxed[fm]])
+        # two decimals: the minimiser's last digits can differ between runs
+        summary["rebuild"][fm]["relaxed_median"] = round(float(np.median([x["relaxed"] for x in relaxed[fm]])), 2)
+        print(f"{fm}: relaxed median all-atom RMSD {summary['rebuild'][fm]['relaxed_median']:.2f} A "
+              f"(rigid {summary['rebuild'][fm]['generic_median']:.2f}); median change {d:+.3f} A")
+dmax = max(np.median([x["relaxed"] - x["rigid"] for x in relaxed[fm]]) for fm in "ABZ" if relaxed[fm])
+gate("closing the backbone does not move the models away from the crystals (median all-atom RMSD change "
+     "<= +0.05 A in each form)", dmax <= 0.05, f"largest median change {dmax:+.2f} A")
 
 # against 3DNA's rebuild from the same parameters
 worst_rb = 0.0

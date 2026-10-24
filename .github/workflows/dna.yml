@@ -26,7 +26,7 @@ jobs:
         with:
           environment-name: dna
           create-args: >-
-            python=3.12 numpy scipy biopython=1.84
+            python=3.12 numpy scipy biopython=1.84 openmm
           condarc: |
             channels: [conda-forge]
           cache-environment: true

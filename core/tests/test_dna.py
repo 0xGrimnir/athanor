@@ -97,6 +97,10 @@ def test_every_nucleotide_has_its_backbone():
         names = {}
         for c, n, _, a, _ in m["atoms"]:
             names.setdefault((c, n), set()).add(a)
-        for atoms in names.values():
-            assert {"P", "OP1", "OP2", "O5'", "C5'", "C4'", "O4'", "C3'", "O3'", "C2'", "C1'"} <= atoms, (form, atoms)
+        n = len(seq)
+        for (chain, num), atoms in names.items():
+            five = (chain, num) in (("A", 1), ("B", n + 1))
+            need = {"O5'", "C5'", "C4'", "O4'", "C3'", "O3'", "C2'", "C1'"} | (set() if five else {"P", "OP1", "OP2"})
+            assert need <= atoms, (form, chain, num, atoms)
+            assert not five or "P" not in atoms
         assert len(m["o3p"]) == 2 * (len(seq) - 1)

@@ -91,7 +91,10 @@ def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
             Ri, Rii = Ri @ turn, Rii @ turn
         for base, Rb, ob, chain, num in ((b, Ri, oi, "A", k + 1), (COMP[b], Rii, oii, "B", 2 * n - k)):
             t = tmpl[_key(form, base, k if chain == "A" else n - 1 - k, n)]
-            res = [(chain, num, "D" + base, name, ob + Rb @ np.asarray(xyz)) for name, xyz in t.items()]
+            # each strand's 5' end is a hydroxyl, as in synthetic and crystallised DNA: no phosphate
+            five = (chain == "A" and k == 0) or (chain == "B" and k == n - 1)
+            res = [(chain, num, "D" + base, name, ob + Rb @ np.asarray(xyz)) for name, xyz in t.items()
+                   if not (five and name in ("P", "OP1", "OP2"))]
             (atoms if chain == "A" else strand2).append(res)
     ordered = [a for r in atoms for a in r] + [a for r in reversed(strand2) for a in r]
     o3p = []
