@@ -28,7 +28,7 @@
   {
    "name": "Z-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out)",
    "pass": true,
-   "detail": "median 0.44 A, 90th percentile 0.56 A over 28 crystals"
+   "detail": "median 0.57 A, 90th percentile 0.72 A over 28 crystals"
   },
   {
    "name": "Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A)",
@@ -175,9 +175,9 @@
    "Z": {
     "n": 28,
     "own_base": 0.0326,
-    "own_all": 0.3069,
-    "generic_median": 0.4414,
-    "generic_p90": 0.5606
+    "own_all": 0.4583,
+    "generic_median": 0.5654,
+    "generic_p90": 0.7183
    }
   }
  }

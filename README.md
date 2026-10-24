@@ -49,7 +49,7 @@ Against 3DNA 2.4.9 and 112 DNA-only crystal duplexes from the PDB (X-ray, 1.6 Å
 | Rebuild vs 3DNA's `rebuild` from the same parameters | 0.001 Å RMSD (15 duplexes) |
 | Each crystal rebuilt from its own parameters | Bases back to a median 0.03 Å |
 | B-DNA built from sequence alone (Olson et al. 1998 steps) | Median 1.45 Å all-atom RMSD to 62 crystals |
-| A- and Z-DNA from parameters measured on the other crystals | Median 1.57 Å (17 A-DNA) and 0.44 Å (28 Z-DNA) |
+| A- and Z-DNA from parameters measured on the other crystals | Median 1.57 Å (17 A-DNA) and 0.57 Å (28 Z-DNA) |
 | Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
 
 These run in CI on every change (`tools/dnadata/`, `.github/workflows/dna.yml`), and CI checks that the shipped parameter files regenerate exactly. One limit is reported in the app: the backbone rides on each base, so O3′–P links in built B- and A-DNA are 1.2–2.8 Å rather than 1.61 Å.

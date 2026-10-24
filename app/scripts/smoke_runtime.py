@@ -74,6 +74,16 @@ for tier, opts in (("mmff94", {}), ("gfn2-xtb", {}), ("dft", {"functional": "B3L
                      "dipole_D": round(sp["dipole_debye"] or 0, 3),
                      "freqs": [round(f, 1) for f in fq["frequencies_cm1"]], "seconds": round(time.time() - t, 1)}
     assert opt["converged"] and fq["n_imaginary"] == 0, f"{tier}: {summary[tier]}"
+# DNA Structure: the shipped parameter files load and build each form
+for seq, form in (("CGCGAATTCGCG", "B"), ("GGGGCCCC", "A"), ("CGCGCGCGCGCG", "Z")):
+    h = call("dna_build", {"sequence": seq, "form": form})
+    tw = sum(s["params"][5] for s in h["analysis"]["steps"]) / len(h["analysis"]["steps"])
+    summary[f"dna_{form}"] = {"atoms": len(h["atoms"]), "twist": round(tw, 1)}
+    assert len(h["atoms"]) > 20 * len(seq) and (tw < 0) == (form == "Z"), summary[f"dna_{form}"]
+v = call("dna_variants")["variants"]
+assert v and call("dna_variant", {"rsid": v[0]})["variant"]["rsid"] == v[0]
+mt = call("dna_melt", {"sequence": "CGCGAATTCGCG"})
+summary["dna_melt_tm"] = round(mt["tm"], 1)
 print("SMOKE_OK", json.dumps(summary))
 proc.stdin.close()
 proc.wait(timeout=30)

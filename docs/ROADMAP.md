@@ -126,7 +126,7 @@ Done (0.8.0):
 Benchmarks (CI, every change):
 - Base-pair, step and groove parameters equal 3DNA 2.4.9's on 98 crystal duplexes (≤ 1.6 Å, DNA only) to its printed precision
 - Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD 0.001 Å); every crystal rebuilt from its own parameters returns its bases to 0.03 Å
-- Built from sequence alone: B-DNA within a median 1.45 Å all-atom RMSD of 62 crystals; A-DNA 1.57 Å (17 crystals) and Z-DNA 0.44 Å (28) with each crystal left out of the parameters
+- Built from sequence alone: B-DNA within a median 1.45 Å all-atom RMSD of 62 crystals; A-DNA 1.57 Å (17 crystals) and Z-DNA 0.57 Å (28) with each crystal left out of the parameters
 - Melting temperatures: mean error 1.66 °C against 92 measured duplexes at five salt concentrations (Owczarzy et al. 2004); identical to Biopython's Tm_NN
 
 Next:
