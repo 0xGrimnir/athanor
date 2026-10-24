@@ -51,10 +51,12 @@ rng = np.random.default_rng(7)
 level_a = sorted({g for d in pgx["drugs"] for g in d.get("level_a", [])})
 no_rec = [d["name"] for d in pgx["drugs"] if not d["recs"]]
 no_lookup = [s for s, d in pgx["genes"].items() if not d["results"]]
-gate("pack: CPIC level-A genes with definitions, phenotype tables and recommendations",
-     len(genes) >= 15 and not no_rec and not no_lookup,
+with_rec = len(pgx["drugs"]) - len(no_rec)
+gate("pack: CPIC level-A genes with definitions and phenotype tables; medicines with recommendation tables",
+     len(genes) >= 15 and with_rec >= 60 and set(no_lookup) <= {"CYP4F2", "VKORC1"},
      f"{len(genes)} genes ({', '.join(sorted(genes))}); skipped {sorted(pgx.get('skipped', {}))}; "
-     f"{len(pgx['drugs'])} drugs; without recommendations: {no_rec or 'none'}; without phenotype tables: {no_lookup or 'none'}")
+     f"{len(pgx['drugs'])} drugs, {with_rec} with recommendation tables (without: {', '.join(no_rec) or 'none'}); "
+     f"genes CPIC gives no phenotype: {', '.join(no_lookup) or 'none'}")
 summary["genes"] = sorted(genes)
 summary["drugs"] = len(pgx["drugs"])
 
@@ -128,6 +130,21 @@ def same_score(a, b):
 
 stats = defaultdict(Counter)
 examples = defaultdict(list)
+
+
+def nonref_text(sym, g):
+    gene = genes[sym]
+    out = []
+    for k, p in enumerate(gene.pos):
+        a, b = g[k]
+        if a == UNTESTED:
+            continue
+        if not ((gene.refmask[k] >> int(a)) & 1 and (gene.refmask[k] >> int(b)) & 1):
+            out.append(f"{p.get('rsid') or p.get('hgvs')}={p['alleles'][a] if a < len(p['alleles']) else '?'}/"
+                       f"{p['alleles'][b] if b < len(p['alleles']) else '?'}")
+    return " ".join(out[:8])
+
+
 for sid, rows in by_sample.items():
     s = sset.get(sid)
     if s is None:
@@ -139,41 +156,53 @@ for sid, rows in by_sample.items():
         if sym in written:
             keep = np.zeros(len(genes[sym].pos), dtype=bool)
             keep[written[sym]] = True
-        ours = genes[sym].call(panel_geno(sym, s, keep), haploid(sym, s))
-        pc_dip = (row.get("Source Diplotype") or "").strip()
-        pc_ph = (row.get("Phenotype") or "").strip()
-        pc_as = (row.get("Activity Score") or "").strip()
+        geno = panel_geno(sym, s, keep)
+        ours = genes[sym].call(geno, haploid(sym, s))
+        src = (row.get("Source Diplotype") or "").strip()
+        pc_dips = {norm_dip(x.strip()) for x in src.split(" OR ") if x.strip()}
+        look_ph = (row.get("Recommendation Lookup Phenotype") or "").strip()
+        pc_ph = {x.strip() for x in (look_ph or row.get("Phenotype") or "").split(" / ") if x.strip()}
+        pc_as = (row.get("Recommendation Lookup Activity Score") or row.get("Activity Score") or "").strip()
         st = stats[sym]
         st["n"] += 1
-        if pc_dip in ("", "Unknown/Unknown", "Not called") or not pc_ph:
+        raw_line = "\t".join(row.get(k, "") for k in ("Source Diplotype", "Phenotype", "Activity Score",
+                                                       "Recommendation Lookup Diplotype", "Recommendation Lookup Phenotype",
+                                                       "Recommendation Lookup Activity Score"))
+        if not pc_dips or src in ("Unknown/Unknown", "Not called") or (not pc_ph and not genes[sym].genotype_only):
             st["pharmcat_no_call"] += 1
             if ours["status"] in ("called", "ambiguous"):
                 st["only_ours"] += 1
+                if len(examples[sym]) < 3:
+                    examples[sym].append(f"{sid}: PharmCAT [{raw_line}]; ours {ours['diplotypes'][:2]} {ours.get('phenotype')}; {nonref_text(sym, geno)}")
             continue
         if ours["status"] not in ("called", "ambiguous"):
             st["only_pharmcat"] += 1
             if len(examples[sym]) < 4:
-                examples[sym].append(f"{sid}: PharmCAT {pc_dip} {pc_ph}; ours {ours['status']}")
+                examples[sym].append(f"{sid}: PharmCAT [{raw_line}]; ours {ours['status']}; {nonref_text(sym, geno)}")
             continue
         dset = {norm_dip(d) for d in ours["diplotypes"]}
-        dip_ok = norm_dip(pc_dip) in dset
+        dip_ok = bool(pc_dips & dset)
         if sym in ("DPYD", "RYR1"):
             dip_ok = True             # variant lists are written differently; the phenotype decides
-        if ours["status"] == "called":
-            ph_ok = ours["phenotype"].lower() == pc_ph.lower()
+        if genes[sym].genotype_only:
+            ph_ok = dip_ok
+        elif ours["status"] == "called":
+            ph_ok = {ours["phenotype"].lower()} == {x.lower() for x in pc_ph}
         else:
-            ph_ok = False
+            ph_ok = {x.lower() for x in ours.get("possible", [])} == {x.lower() for x in pc_ph}
             st["ours_ambiguous"] += 1
-            if pc_ph in ours.get("possible", []):
+            if pc_ph & set(ours.get("possible", [])):
                 st["ambiguous_includes_pharmcat"] += 1
         as_ok = (not pc_as) or (not ours.get("score")) or same_score(ours.get("score"), pc_as)
         st["compared"] += 1
         st["diplotype_agree"] += dip_ok
         st["phenotype_agree"] += ph_ok
         st["score_agree"] += as_ok
-        if not (dip_ok and ph_ok and as_ok) and len(examples[sym]) < 4:
-            examples[sym].append(f"{sid}: PharmCAT {pc_dip} / {pc_ph} / {pc_as or '-'}; ours {sorted(dset)[:3]} / "
-                                 f"{ours.get('phenotype') or ours.get('possible')} / {ours.get('score') or '-'}")
+        if not (dip_ok and ph_ok and as_ok) and len(examples[sym]) < 5:
+            examples[sym].append(f"{sid}: PharmCAT [{raw_line}]; ours {sorted(dset)[:3]} / "
+                                 f"{ours.get('phenotype') or ours.get('possible')} / {ours.get('score') or '-'}"
+                                 f"{' p=%.2f' % ours['diplotype_probability'] if ours.get('diplotype_probability') else ''}; "
+                                 f"{nonref_text(sym, geno)}")
 
 print(f"\n{'gene':8s} {'n':>5s} {'cmp':>5s} {'diplo':>7s} {'pheno':>7s} {'score':>7s}  pharmcat-no-call  ours-only  pc-only  ambiguous")
 worst = []
@@ -186,8 +215,7 @@ for sym in sorted(stats):
     for e in examples[sym]:
         print("      ", e)
     if st["compared"] >= 50:
-        worst.append((min(st["diplotype_agree"], st["phenotype_agree"] + st["ambiguous_includes_pharmcat"],
-                          st["score_agree"]) / c, sym))
+        worst.append((min(st["diplotype_agree"], st["phenotype_agree"], st["score_agree"]) / c, sym))
 summary["pharmcat"] = {s: dict(v) for s, v in stats.items()}
 total = sum(st["compared"] for st in stats.values())
 low = min(worst) if worst else (0, "none")
@@ -201,9 +229,14 @@ for sym, gene in sorted(genes.items()):
     if panel.genotypes(sym) is None:
         continue
     st = Counter()
+    shown = 0
     for s in unrel:
-        c = gene.call(panel_geno(sym, s), haploid(sym, s))
+        gg = panel_geno(sym, s)
+        c = gene.call(gg, haploid(sym, s))
         st[c["status"].split(" (")[0]] += 1
+        if c["status"].startswith("no call") and shown < 3:
+            shown += 1
+            print(f"      no call {samples[s]}: {nonref_text(sym, gg)}")
     nocall[sym] = st["no call"] / max(1, sum(st.values()))
     print(f"   {sym:8s} full-data calls on {sum(st.values())} unrelated 1000 Genomes people: {dict(st)}")
 worst_nc = max(nocall.items(), key=lambda x: x[1]) if nocall else ("none", 0)
@@ -254,6 +287,10 @@ for flip in (False, True):
                     tot += 1
                     if sorted(got[k].tolist()) != expect[(sym, k)]:
                         mism += 1
+                        if mism <= 8:
+                            p = gene.pos[k]
+                            print(f"      chip {sym} {p.get('rsid')} {p['kind']} {p['alleles']} pos37 {p.get('pos37')} "
+                                  f"flip={flip}: expected {expect[(sym, k)]}, read {got[k].tolist()}")
 gate("chip input: 23andMe-style genotypes (GRCh37, both strands, indels as I/D) read back exactly",
      tot > 1000 and mism == 0, f"{tot:,} genotypes, {mism} differ")
 

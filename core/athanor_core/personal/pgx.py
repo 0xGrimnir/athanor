@@ -47,6 +47,9 @@ UNTESTED = 255
 # would hide an actionable variant found elsewhere in the gene)
 TO_REFERENCE = {"CACNA1S", "DPYD", "G6PD", "NUDT15", "RYR1", "TPMT"}
 VARIANT_GENES = {"DPYD", "RYR1"}
+# unphased NAT2 genotypes often fit several diplotypes; as PharmCAT does (with UK Biobank frequencies), the
+# commonest is chosen - here by star-allele frequencies on the phased 1000 Genomes haplotypes
+BY_FREQUENCY = {"NAT2"}
 SEVERITY = {"Malignant Hyperthermia associated": 0, "No function": 0, "Uncertain function": 1,
             "Decreased function": 1, "Normal function": 2}
 ROUTINE = "Normal/Routine/Low Risk"
@@ -92,6 +95,7 @@ class Gene:
         self.by_name = {a["name"]: a for a in self.alleles}
         self.mode = "variants" if symbol in VARIANT_GENES else "diplotype"
         self.genotype_only = not d["results"]          # CPIC gives no phenotype (CYP4F2, VKORC1)
+        self.freq = (d.get("hap_freq") or {}).get("all") or {}
 
     # ------------------------------------------------------------------ matching
     def _bits(self, geno: np.ndarray, T: np.ndarray, col: int) -> np.ndarray:
@@ -154,6 +158,23 @@ class Gene:
                 out.append({"diplotype": "/".join(names), "phenotype": r})
         out.sort(key=lambda x: x["diplotype"])
         return out[:limit]
+
+    def by_frequency(self, geno: np.ndarray):
+        """The diplotype with the highest product of haplotype frequencies
+        among all that fit, and how much of the total it carries."""
+        C, _, _ = self.consistent(geno, False)
+        ij = np.argwhere(C)
+        f = np.array([max(self.freq.get(n, 0.0), 1e-5) for n in self.names])
+        w = f[ij[:, 0]] * f[ij[:, 1]] * np.where(ij[:, 0] == ij[:, 1], 1.0, 2.0)
+        best = int(np.argmax(w))
+        names = tuple(sorted((self.names[ij[best, 0]], self.names[ij[best, 1]]), key=_order))
+        by_ph = {}
+        for (i, j), x in zip(ij, w):
+            r = (self.phenotype((self.names[i], self.names[j])) or {}).get("result") or "Indeterminate"
+            by_ph[r] = by_ph.get(r, 0.0) + x
+        tot = float(w.sum())
+        return [names], {"chosen_by": "haplotype frequency", "diplotype_probability": float(w[best]) / tot,
+                         "phenotype_probabilities": {k: v / tot for k, v in sorted(by_ph.items(), key=lambda x: -x[1])}}
 
     def _is_ref_cell(self, i):
         """Positions where allele i's definition is just the reference base."""
@@ -248,6 +269,8 @@ class Gene:
         else:
             dips, _ = self.match(geno, haploid)
             extra = {}
+            if dips and self.symbol in BY_FREQUENCY and self.freq and not haploid:
+                dips, extra = self.by_frequency(geno)
             if not dips:
                 why = (" (a base no CPIC allele lists, at " + ", ".join(self.pos[k]["rsid"] or self.pos[k]["hgvs"] for k in novel) + ")") if novel else ""
                 return {"tested": tested, "diplotypes": [], "phenotype": None, "status": "no call" + why, "notes": notes}

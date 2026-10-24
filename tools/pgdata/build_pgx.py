@@ -35,6 +35,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "core"))
 from athanor_core.personal.liftover import Liftover  # noqa: E402
+from athanor_core.personal.pgx import Gene  # noqa: E402
 
 PACK, VAL, CHAIN, BCFTOOLS = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4]
 PC_POS = sys.argv[5] if len(sys.argv) > 5 else None
@@ -57,7 +58,9 @@ NOT_DEFINED = {"HLA-A": "HLA alleles need HLA typing; CPIC has no SNP definition
 PRIMARY = {"DPYD": {"rs75017182"}}    # HapB3: the intronic SNP decides (CPIC/PharmCAT)
 # PharmCAT's exclusions: rs2230037's CPIC reference base is not GRCh38's, and the Villeurbanne deletion
 # shares its position with rs5030869 (https://pharmcat.org/methods/Gene-Definition-Exceptions/)
-EXCLUDE = {"G6PD": {"rs2230037", "g.154532991_154532993delGGT"}}
+EXCLUDE = {"G6PD": {"rs2230037", "g.154532991_154532993delGGT"}, "RYR1": {"rs193922877"}}
+# PharmCAT gives CYP2C19 *1 every cell of *38 (the reference row), so *1 scores like a reference allele
+FILL = {"CYP2C19": ("*1", "*38")}
 fails = []
 
 
@@ -348,6 +351,9 @@ for sym, gd in gdata.items():
         alleles.append({"name": d["name"], "ref": d is ref_row, "structural": bool(d.get("structuralvariation")),
                         "def": df, "function": a.get("clinicalfunctionalstatus"), "activity": a.get("activityvalue"),
                         "freq": a.get("frequency") or {}, "strength": a.get("strength")})
+    if sym in FILL:
+        tgt, src = (next(a for a in alleles if a["name"] == n) for n in FILL[sym])
+        tgt["def"] = [t if t is not None else sc for t, sc in zip(tgt["def"], src["def"])]
     gres = [r for r in results if r["genesymbol"] == sym]
     rlist, phen = [], {}
     for r in gres:
@@ -485,6 +491,33 @@ related = np.array([s in children for s in samples or []])
 np.savez_compressed(PACK / "pgx_1kg.npz", samples=np.array(samples or []), superpop=pop, male=male, related=related,
                     **{f"hap_{s}": h for s, h in haps.items()})
 print(f"1000 Genomes: {len(samples or [])} samples, {int((~related).sum())} unrelated", flush=True)
+
+# star-allele frequencies on the phased 1000 Genomes haplotypes (unrelated people; one X in males)
+for sym, H in haps.items():
+    gene = Gene(sym, out_genes[sym])
+    xchr = out_genes[sym]["chrom"] == 23
+    cnt = {}
+    cache = {}
+    for si in np.flatnonzero(~related):
+        for h in (0, 1):
+            if h == 1 and xchr and male[si]:
+                continue
+            row = H[2 * si + h].copy()
+            row[row >= 15] = 255
+            key = row.tobytes()
+            if key not in cache:
+                g2 = np.stack([row, row], axis=1)
+                d, _ = gene.match(g2, haploid=True)
+                cache[key] = [x[0] for x in d]
+            names = cache[key] or ["(no call)"]
+            for nme in names:
+                for grp in ("all", str(pop[si])):
+                    cnt.setdefault(grp, {}).setdefault(nme, 0.0)
+                    cnt[grp][nme] += 1 / len(names)
+    out_genes[sym]["hap_freq"] = {grp: {k: round(v / sum(c.values()), 5) for k, v in sorted(c.items(), key=lambda x: -x[1])}
+                                  for grp, c in cnt.items()}
+    top = list(out_genes[sym]["hap_freq"]["all"].items())[:5]
+    print(f"{sym}: commonest haplotypes in 1000 Genomes {top}", flush=True)
 
 # VCF for PharmCAT (unphased; PharmCAT's representation)
 if PC_POS and samples:

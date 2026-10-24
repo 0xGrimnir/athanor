@@ -22,6 +22,9 @@ on:
 permissions:
   contents: write
 
+env:
+  PHARMCAT: "3.4.0"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,7 +44,7 @@ jobs:
         with:
           environment-name: pg
           create-args: >-
-            python=3.12 numpy scipy msprime admixtools=8.0.2 admixture=1.3.0 plink=1.90b6.21
+            python=3.12 numpy scipy msprime admixtools=8.0.2 admixture=1.3.0 plink=1.90b6.21 bcftools=1.21 openjdk=21
           condarc: |
             channels: [conda-forge, bioconda]
           cache-environment: true
@@ -57,6 +60,10 @@ jobs:
             https://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.over.chain.gz \
             || cp ext/Yleaf/yleaf/data/hg19/hg38ToHg19.over.chain.gz ext/hg38ToHg19.over.chain.gz
           ls -la ext/hg38ToHg19.over.chain.gz
+          # PharmCAT: CI-only cross-check of the pharmacogenomic calls (MPL-2.0; not shipped)
+          git clone -q --depth 1 --branch "v$PHARMCAT" https://github.com/PharmGKB/PharmCAT.git ext/PharmCAT
+          curl -fsSL --retry 3 -o ext/pharmcat.jar \
+            "https://github.com/PharmGKB/PharmCAT/releases/download/v$PHARMCAT/pharmcat-$PHARMCAT-all.jar"
 
       - name: qpAdm against ADMIXTOOLS (estimator cross-check)
         run: |
@@ -149,6 +156,16 @@ jobs:
           if [ $rc -ne 0 ]; then echo "::error title=modern panels failed::$(tail -c 2000 modern.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
           exit $rc
 
+      - name: Pharmacogenomics (CPIC, 1000 Genomes)
+        run: |
+          set +e
+          python tools/pgdata/build_pgx.py pack valdata ext/hg38ToHg19.over.chain.gz "$(which bcftools)" \
+            ext/PharmCAT/pharmcat_positions.vcf > pgx_build.txt 2>&1
+          rc=$?
+          cut -c1-400 pgx_build.txt
+          if [ $rc -ne 0 ]; then echo "::error title=pgx build::$(grep -E '^FAIL' pgx_build.txt | tail -c 2500 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc
+
       - name: Validate
         env:
           ATHANOR_CROSSCHECK: cc/crosscheck.json
@@ -173,13 +190,23 @@ jobs:
           if [ $rc -eq 0 ]; then echo "::notice title=modern validation::$msg"; else echo "::error title=modern validation failed::$msg"; fi
           exit $rc
 
+      - name: Validate pharmacogenomics (PharmCAT, chip input, reliability)
+        run: |
+          set +e
+          python tools/pgdata/validate_pgx.py pack valdata ext/pharmcat.jar "$(which java)" pgxwork > pgx_validate.txt 2>&1
+          rc=$?
+          cut -c1-600 pgx_validate.txt
+          msg=$(grep -E "^\[(PASS|FAIL)\]" pgx_validate.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=pgx validation::$msg"; else echo "::error title=pgx validation failed::$msg"; fi
+          exit $rc
+
       - name: Publish the logs to ci-results
         if: always()
         run: |
           git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/pgdata/${GITHUB_SHA}" && \
-            cp crosscheck.txt build.txt validate.txt traits.txt modern.txt validate_modern.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null || true; \
+            cp crosscheck.txt build.txt validate.txt traits.txt modern.txt validate_modern.txt pgx_build.txt pgx_validate.txt "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null || true; \
             cp pack/manifest.json pack/validation.json pack/validation_modern.json pack/traits.json "$d/pgdata/${GITHUB_SHA}/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "pgdata ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
 
@@ -195,7 +222,7 @@ jobs:
           m["pack_version"] = int("$v")
           json.dump(m, open("pack/manifest.json", "w"), indent=1)
           PY
-          rm -f pack/validation_modern.json
+          rm -f pack/validation_modern.json pack/validation_pgx.json
           ( cd pack && tar -czf ../pgdata-$v.tar.gz . )
           python - <<PY
           import hashlib, json, os

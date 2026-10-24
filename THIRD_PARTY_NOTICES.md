@@ -85,6 +85,10 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | GWAS Catalog (REST API v2) | Effect alleles, directions and effect sizes recorded for some trait variants (resolved in CI) | EMBL-EBI Terms of Use | To verify |
 | NCBI PubMed (E-utilities) | Titles, journals and DOIs of the trait reports' references | NCBI: no general restrictions on bibliographic data | Verified source |
 | ADMIXTURE 1.3.0, PLINK 1.9 | Independent cross-checks of the ancestry estimator and of runs of homozygosity in CI (not shipped) | ADMIXTURE: free for use, own licence; PLINK 1.9: GPL-3.0 | Verified |
+| CPIC database (api.cpicpgx.org) | Medicines reports: allele definitions, allele functions and frequencies, phenotype tables, prescribing recommendations for level-A gene–drug pairs (downloaded in CI; the pack records the access date and database release) | CC0 1.0. CPIC asks for attribution, for its content to be described as subject to updates, and that its logo and acronym not be used in advertising without NIH permission | Verified |
+| 1000 Genomes high-coverage phased panel (NYGC; Byrska-Bishop et al., Cell 2022) | Genotypes at the CPIC positions, used to measure how far a call from a chip's positions can be trusted, and for the PharmCAT comparison | 1000 Genomes data are open (Fort Lauderdale principles; no restrictions on use) | Verified source |
+| Ensembl REST (GRCh38 sequence, GRCh37 variation) | Placing the CPIC indels and checking every CPIC reference allele against the genome; checking the GRCh37 liftover (in CI) | EMBL-EBI Terms of Use | To verify |
+| PharmCAT 3.4.0 | Independent cross-check of the pharmacogenomic calls in CI (not shipped) | MPL-2.0 | Verified |
 
 ## Compute pack note
 
