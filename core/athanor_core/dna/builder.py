@@ -19,7 +19,7 @@ import json
 import numpy as np
 
 from .geometry import next_frame, pair_frames
-from .structure import DATA, standard_bases
+from .structure import DATA
 
 COMP = {"A": "T", "T": "A", "G": "C", "C": "G"}
 
@@ -52,8 +52,17 @@ def step_params(seq: str, form: str) -> list[list[float]]:
 
 
 def pair_params(seq: str, form: str) -> list[list[float]]:
+    """Base-pair parameters by pair type (G-C or A-T), as measured on crystals of the form. A pair read
+    from the other strand (C-G for G-C, T-A for A-T) has shear and buckle reversed in sign."""
     d = _data("steps.json")[form]
-    return [list(d["pair"]) for _ in seq]
+    by = d.get("pair_by_type") or {}
+    out = []
+    for b in seq:
+        p = list(by.get("GC" if b in "GC" else "AT") or d["pair"])
+        if b in "CT":
+            p[0], p[3] = -p[0], -p[3]
+        out.append(p)
+    return out
 
 
 def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
@@ -62,7 +71,6 @@ def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
     seq = "".join(seq.split()).upper()
     if form == "Z" and any(seq[i:i + 2] not in ("CG", "GC") for i in range(len(seq) - 1)):
         raise ValueError("Z-DNA is built only for alternating C and G")
-    std = standard_bases()
     tmpl = _data("templates.json")[form]
     steps = steps if steps is not None else step_params(seq, form)
     pairs = pairs if pairs is not None else pair_params(seq, form)
@@ -77,12 +85,8 @@ def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
     for k, (b, (Rm, om), pp) in enumerate(zip(seq, frames, pairs)):
         (Ri, oi), (Rii, oii) = pair_frames(Rm, om, pp)
         for base, Rb, ob, chain, num in ((b, Ri, oi, "A", k + 1), (COMP[b], Rii, oii, "B", 2 * n - k)):
-            t = tmpl.get(_key(form, base, k if chain == "A" else n - 1 - k, n)) or tmpl[base]
-            res = []
-            for name, xyz in t.items():
-                if name in std[base]:
-                    xyz = std[base][name]
-                res.append((chain, num, "D" + base, name, ob + Rb @ np.asarray(xyz)))
+            t = tmpl[_key(form, base, k if chain == "A" else n - 1 - k, n)]
+            res = [(chain, num, "D" + base, name, ob + Rb @ np.asarray(xyz)) for name, xyz in t.items()]
             (atoms if chain == "A" else strand2).append(res)
     ordered = [a for r in atoms for a in r] + [a for r in reversed(strand2) for a in r]
     o3p = []

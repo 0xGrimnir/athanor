@@ -14,6 +14,7 @@
     <button type="button" class="tab" data-view="validation" aria-pressed="false"><span class="k">02</span>Validation</button>
     <button type="button" class="tab" data-view="adna" aria-pressed="false"><span class="k">03</span>Ancient DNA</button>
       <button type="button" class="tab" data-view="personal" aria-pressed="false"><span class="k">04</span>Personal Genome</button>
+      <button type="button" class="tab" data-view="dna" aria-pressed="false"><span class="k">05</span>DNA Structure</button>
   </nav>
   <button type="button" class="btn update" id="updateBtn" hidden></button>
   <button type="button" class="btn gpu" id="gpuBtn" hidden></button>
@@ -272,6 +273,60 @@
   <section class="panel" aria-label="Provenance">
     <div class="sec"><div class="label">Provenance</div><div id="pgProv" class="note">No report yet.</div>
       <div class="row"><button type="button" class="btn sm" id="pgExport" hidden>Save report (JSON)…</button></div></div>
+  </section>
+</main>
+
+<!-- ============================ DNA STRUCTURE ============================ -->
+<main class="view deck" id="view-dna" hidden>
+  <section class="panel" aria-label="Sequence and form">
+    <div class="sec">
+      <div class="label">Sequence</div>
+      <textarea id="dnaSeq" class="field seq" rows="3" spellcheck="false" aria-label="DNA sequence, 5' to 3'">CGCGAATTCGCG</textarea>
+      <div class="presets" id="dnaPresets"></div>
+      <div class="seg" id="dnaForm" role="radiogroup" aria-label="Helix form">
+        <button type="button" data-form="B" role="radio" aria-checked="true">B<small>the usual form</small></button>
+        <button type="button" data-form="A" role="radio" aria-checked="false">A<small>dehydrated, wider</small></button>
+        <button type="button" data-form="Z" role="radio" aria-checked="false">Z<small>left-handed, CG only</small></button>
+      </div>
+      <button type="button" class="btn primary" id="dnaBuild">Build helix</button>
+      <p class="note" id="dnaNote">B-DNA is built with the sequence-dependent step parameters of Olson et al. (1998); A and Z with values measured on crystal structures of those forms.</p>
+    </div>
+    <div class="sec">
+      <div class="label">Melting</div>
+      <label class="mini">Temperature <b id="dnaTempV">25 °C</b><input id="dnaTemp" type="range" min="0" max="100" value="25" step="1"></label>
+      <div class="row small">
+        <label class="mini">Na⁺
+          <select id="dnaNa" class="field"><option value="1">1 M</option><option value="0.15" selected>150 mM</option><option value="0.05">50 mM</option></select></label>
+        <label class="mini">Strands
+          <select id="dnaCt" class="field"><option value="1e-4">100 µM</option><option value="1e-6" selected>1 µM</option><option value="2.5e-7">250 nM</option></select></label>
+      </div>
+      <div id="dnaMelt" class="note"></div>
+    </div>
+  </section>
+
+  <section class="stage" aria-label="3D double helix">
+    <canvas id="dnagl" aria-label="Double helix. Drag to rotate, scroll to zoom, click a base for details."></canvas>
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="ident"><div class="name" id="dnaName">—</div><div class="formula" id="dnaFormula"></div></div>
+    <div class="viewopts">
+      <button type="button" class="btn sm" data-dnastyle="atoms" aria-pressed="true">Atoms</button>
+      <button type="button" class="btn sm" data-dnastyle="cartoon" aria-pressed="false">Cartoon</button>
+      <span class="sep"></span>
+      <button type="button" class="btn sm" data-dnacolor="base" aria-pressed="true">Bases</button>
+      <button type="button" class="btn sm" data-dnacolor="element" aria-pressed="false">Elements</button>
+      <button type="button" class="btn sm" data-dnacolor="groove" aria-pressed="false">Minor groove</button>
+      <button type="button" class="btn sm" data-dnacolor="melt" aria-pressed="false">Melting</button>
+    </div>
+    <div class="badge" id="dnaPick" hidden></div>
+    <div class="busy" id="dnaBusy" hidden><div class="spinner"></div><span>Building…</span></div>
+  </section>
+
+  <section class="panel" aria-label="Helix geometry">
+    <div class="sec"><div class="label">Helix</div><div id="dnaSummary" class="note">Type a sequence and build.</div></div>
+    <div class="sec"><div class="label">Base-pair steps</div><div id="dnaSteps"></div></div>
+    <div class="sec"><div class="label">Base pairs</div><div id="dnaPairs"></div></div>
+    <div class="sec"><div class="label">Method and sources</div><div id="dnaProv" class="note"></div>
+      <div class="row"><button type="button" class="btn sm" id="dnaSavePdb" hidden>Save PDB…</button></div></div>
   </section>
 </main>
 

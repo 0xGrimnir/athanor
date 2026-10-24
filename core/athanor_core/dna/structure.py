@@ -204,22 +204,34 @@ def analyse(residues: list[Residue], std: dict | None = None) -> dict:
 
 
 def grooves(s1, s2, pairs) -> list[dict]:
-    """Minor and major groove widths from cross-strand phosphorus distances, less 5.8 A for the
-    phosphate groups (El Hassan & Calladine, Phil. Trans. R. Soc. A 355, 43, 1997; the simple P-P
-    measure 3DNA reports): for base pair k, the minor groove is |P(I, k+2) - P(II, pair(k)-? )|
-    measured between strand I residue k+2 and the strand II residue paired with k-2 (strand II
-    runs 3'->5' against strand I), and the major groove between k-3 and the partner of k+3."""
-    P1 = {i: r.atoms.get("P") for i, r in enumerate(s1)}
-    P2 = {j: r.atoms.get("P") for j, r in enumerate(s2)}
-    partner = dict(pairs)
+    """Minor and major groove widths per step from cross-strand phosphorus distances, as 3DNA reports
+    them (direct P-P distances; El Hassan & Calladine, J. Mol. Biol. 282, 331, 1998). With base pairs
+    numbered from 1 and P_I(k), P_II(k) the phosphorus of each strand's nucleotide in pair k, step s
+    (between pairs s and s+1) has
+        minor = (|P_I(s+2) - P_II(s-2)| + |P_I(s+3) - P_II(s-1)|) / 2,   major = |P_I(s-1) - P_II(s+2)|
+    defined for 3 <= s <= n-3. Subtract 5.8 A (the phosphate groups' van der Waals radii) for the
+    width of the groove itself; both are returned."""
+    n = len(pairs)
+    p1 = [s1[i].atoms.get("P") for i, _ in pairs]
+    p2 = [s2[j].atoms.get("P") for _, j in pairs]
+
+    def P(arr, k):                 # 1-based pair index
+        return arr[k - 1] if 1 <= k <= n else None
+
+    def dist(a, b):
+        return float(np.linalg.norm(a - b)) if a is not None and b is not None else None
+
     out = []
-    for k, _ in pairs:
-        row = {"pair_index": k, "minor": None, "major": None}
-        a, b = P1.get(k + 2), P2.get(partner.get(k - 2, -99) + 1) if (k - 2) in partner else None
-        if a is not None and b is not None:
-            row["minor"] = float(np.linalg.norm(a - b)) - 5.8
-        a, b = P1.get(k - 3), P2.get(partner.get(k + 3, -99) + 1) if (k + 3) in partner else None
-        if a is not None and b is not None:
-            row["major"] = float(np.linalg.norm(a - b)) - 5.8
+    for st in range(1, n):
+        row = {"step": st - 1, "minor_pp": None, "major_pp": None, "minor": None, "major": None}
+        if 3 <= st <= n - 3:
+            d1, d2 = dist(P(p1, st + 2), P(p2, st - 2)), dist(P(p1, st + 3), P(p2, st - 1))
+            if d1 is not None and d2 is not None:
+                row["minor_pp"] = (d1 + d2) / 2
+                row["minor"] = row["minor_pp"] - 5.8
+            d = dist(P(p1, st - 1), P(p2, st + 2))
+            if d is not None:
+                row["major_pp"] = d
+                row["major"] = d - 5.8
         out.append(row)
     return out

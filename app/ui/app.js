@@ -618,8 +618,9 @@ function wire() {
   document.getElementById("tabs").onclick = (e) => {
     const b = e.target.closest(".tab"); if (!b) return;
     document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-pressed", String(t === b)));
-    for (const v of ["molecule", "validation", "adna", "personal"]) $(`view-${v}`).hidden = b.dataset.view !== v;
+    for (const v of ["molecule", "validation", "adna", "personal", "dna"]) $(`view-${v}`).hidden = b.dataset.view !== v;
     if (b.dataset.view === "validation") renderValidation();
+    if (b.dataset.view === "dna") initDna();
     if (b.dataset.view === "adna") initAdna();
     if (b.dataset.view === "personal") initPersonal();
   };
@@ -1766,4 +1767,248 @@ async function boot() {
     log(`Science core failed to start: ${e.message || e}`, true);
   }
 }
+// ------------------------------------------------------------------ DNA Structure
+const BASECOL = { A: 0xff5a4a, T: 0x4f8dff, G: 0x52f0b0, C: 0xffe066, U: 0x4f8dff };   // the NDB colours: A red, T blue, G green, C yellow
+
+const H = (() => {
+  let canvas, renderer, scene, camera, world, group, dist = 60, distTarget = 60, ready = false;
+  let model = null, style = "atoms", color = "base", melt = null, inst = null, bondInst = null, slabs = null;
+  const sph = new THREE.SphereGeometry(1, 16, 12), cyl = new THREE.CylinderGeometry(1, 1, 1, 10, 1, true);
+  const box = new THREE.BoxGeometry(1, 1, 1);
+  const m4 = new THREE.Matrix4(), qq = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), tmp = new THREE.Vector3();
+
+  function init() {
+    if (ready) return;
+    canvas = $("dnagl");
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); renderer.setClearColor(0x000000, 0);
+    scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(38, 1, 0.5, 2000);
+    scene.add(new THREE.AmbientLight(0x6aa8c8, 0.65));
+    const key = new THREE.DirectionalLight(0xdff4ff, 1.0); key.position.set(30, 40, 60); scene.add(key);
+    const rim = new THREE.DirectionalLight(0x62d6ff, 0.7); rim.position.set(-40, -20, -30); scene.add(rim);
+    world = new THREE.Group(); scene.add(world); group = new THREE.Group(); world.add(group);
+    const resize = () => { const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+    new ResizeObserver(resize).observe(canvas); resize();
+    let drag = null; const ax = new THREE.Vector3();
+    canvas.addEventListener("pointerdown", (e) => { canvas.setPointerCapture(e.pointerId); drag = { x: e.clientX, y: e.clientY, moved: 0 }; });
+    canvas.addEventListener("pointermove", (e) => {
+      if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY; drag.moved += Math.abs(dx) + Math.abs(dy);
+      ax.set(0, 1, 0); qq.setFromAxisAngle(ax, dx * .008); world.quaternion.premultiply(qq);
+      ax.set(1, 0, 0); qq.setFromAxisAngle(ax, dy * .008); world.quaternion.premultiply(qq);
+    });
+    canvas.addEventListener("pointerup", (e) => { if (drag && drag.moved < 4) pick(e); drag = null; });
+    canvas.addEventListener("wheel", (e) => { e.preventDefault(); distTarget = Math.max(10, Math.min(400, distTarget * (1 + e.deltaY * .0012))); }, { passive: false });
+    const frame = () => { dist += (distTarget - dist) * .1; camera.position.set(0, 0, dist); camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera); requestAnimationFrame(frame); };
+    requestAnimationFrame(frame); ready = true;
+  }
+
+  // positions after the melting displacement: an open base pair's bases move apart along their C1'-C1' line
+  function positions() {
+    const P = model.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
+    if (!melt || color !== "melt") return P;
+    model.pair_of_atom.forEach((k, i) => {
+      if (k < 0) return;
+      const open = 1 - (melt.closed[k] ?? 1), dir = model.pair_dir[k];
+      const s = model.atoms[i][0] === "A" ? 1 : -1;
+      P[i].addScaledVector(new THREE.Vector3(...dir), s * open * 4.0);
+    });
+    return P;
+  }
+
+  function atomColor(i) {
+    const a = model.atoms[i];
+    if (color === "element") return new THREE.Color(elInfo(a[4])[0]);
+    const base = a[2].replace(/^D/, ""), k = model.pair_of_atom[i];
+    if (color === "groove" && k >= 0 && model.groove[k] != null) {
+      // narrow minor groove (3 A) hot, wide (9 A) cool
+      const t = Math.max(0, Math.min(1, (model.groove[k] - 3) / 6));
+      return new THREE.Color(0xff3b5c).lerp(new THREE.Color(0x62d6ff), t);
+    }
+    if (color === "melt" && melt && k >= 0) {
+      const c = melt.closed[k] ?? 1;
+      return new THREE.Color(0x7f9fb3).lerp(new THREE.Color(BASECOL[base] || 0xd0d8e0), c);
+    }
+    return model.backbone[i] ? new THREE.Color(0x9fb8c8) : new THREE.Color(BASECOL[base] || 0xd0d8e0);
+  }
+
+  function draw() {
+    if (!model) return;
+    group.clear();
+    const P = positions(), n = P.length;
+    const center = P.reduce((a, v) => a.add(v), new THREE.Vector3()).multiplyScalar(1 / n);
+    if (style === "atoms") {
+      const mat = new THREE.MeshStandardMaterial({ metalness: .2, roughness: .45 });
+      inst = new THREE.InstancedMesh(sph, mat, n);
+      P.forEach((p, i) => {
+        const r = 0.18 + elInfo(model.atoms[i][4])[1] * 0.22;
+        m4.compose(tmp.copy(p).sub(center), qq.identity(), new THREE.Vector3(r, r, r));
+        inst.setMatrixAt(i, m4); inst.setColorAt(i, atomColor(i));
+      });
+      group.add(inst);
+      const bm = new THREE.MeshStandardMaterial({ color: 0x9fdcff, emissive: 0x1d5a7a, metalness: .3, roughness: .4 });
+      bondInst = new THREE.InstancedMesh(cyl, bm, model.bonds.length);
+      model.bonds.forEach(([i, j], k) => {
+        const a = P[i].clone().sub(center), b = P[j].clone().sub(center), d = b.clone().sub(a), len = d.length();
+        qq.setFromUnitVectors(up, d.divideScalar(len || 1));
+        m4.compose(a.add(b).multiplyScalar(.5), qq, new THREE.Vector3(.08, len, .08)); bondInst.setMatrixAt(k, m4);
+      });
+      group.add(bondInst);
+    } else {
+      // cartoon: a tube along each strand's phosphorus atoms, a slab per base from C1' into the ring
+      inst = null;
+      for (const chain of ["A", "B"]) {
+        const pts = model.atoms.map((a, i) => (a[0] === chain && a[3] === "P" ? P[i].clone().sub(center) : null)).filter(Boolean);
+        if (pts.length > 1) {
+          const tube = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 8, 0.9, 10, false);
+          group.add(new THREE.Mesh(tube, new THREE.MeshStandardMaterial({ color: chain === "A" ? 0x9fdcff : 0xc8a8ff, metalness: .3, roughness: .4 })));
+        }
+      }
+      const res = model.residues;
+      const sm = new THREE.MeshStandardMaterial({ metalness: .15, roughness: .5 });
+      slabs = new THREE.InstancedMesh(box, sm, res.length);
+      res.forEach((r, k) => {
+        const c1 = P[r.c1].clone().sub(center), tip = P[r.tip].clone().sub(center), d = tip.clone().sub(c1), len = d.length();
+        qq.setFromUnitVectors(up, d.divideScalar(len || 1));
+        m4.compose(c1.clone().add(tip).multiplyScalar(.5), qq, new THREE.Vector3(1.6, len, .5)); slabs.setMatrixAt(k, m4);
+        slabs.setColorAt(k, atomColor(r.tip));
+      });
+      group.add(slabs);
+    }
+  }
+
+  function pick(e) {
+    if (!model) return;
+    const rect = canvas.getBoundingClientRect();
+    const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects([inst, slabs].filter(Boolean))[0];
+    if (!hit || hit.instanceId == null) { $("dnaPick").hidden = true; return; }
+    const i = hit.object === inst ? hit.instanceId : model.residues[hit.instanceId].tip;
+    const a = model.atoms[i], k = model.pair_of_atom[i];
+    const bp = k >= 0 ? model.analysis.pairs[k] : null;
+    $("dnaPick").hidden = false;
+    $("dnaPick").textContent = `${a[2].replace(/^D/, "")}${a[1]} strand ${a[0] === "A" ? "I" : "II"} · atom ${a[3]}` +
+      (bp ? ` · pair ${bp.pair}, propeller ${bp.params[4].toFixed(1)}°` : "") +
+      (k >= 0 && model.groove[k] != null ? ` · minor groove ${model.groove[k].toFixed(1)} Å` : "") +
+      (melt && k >= 0 ? ` · closed ${pct(melt.closed[k], 0)}` : "");
+  }
+
+  function set(m) {
+    init(); model = m;
+    // which base pair each atom belongs to, the residues' C1' and ring-tip atoms, and backbone atoms
+    const bb = new Set(["P", "OP1", "OP2", "O5'", "C5'", "C4'", "O4'", "C3'", "O3'", "C2'", "C1'", "O1P", "O2P"]);
+    const nbp = m.sequence.length;
+    m.backbone = m.atoms.map((a) => bb.has(a[3]));
+    m.pair_of_atom = m.atoms.map((a) => (a[0] === "A" ? a[1] - 1 : 2 * nbp - a[1]));
+    const byRes = new Map();
+    m.atoms.forEach((a, i) => { const key = a[0] + a[1]; if (!byRes.has(key)) byRes.set(key, {}); byRes.get(key)[a[3]] = i; });
+    m.residues = [...byRes.values()].map((r) => ({ c1: r["C1'"], tip: r["N1"] !== undefined && r["N9"] === undefined ? (r["N3"] ?? r["N1"]) : (r["N1"] ?? r["C1'"]) }))
+      .filter((r) => r.c1 !== undefined && r.tip !== undefined);
+    m.pair_dir = [];
+    for (let k = 0; k < nbp; k++) {
+      const a = byRes.get("A" + (k + 1)) || {}, b = byRes.get("B" + (2 * nbp - k)) || {};
+      if (a["C1'"] === undefined || b["C1'"] === undefined) { m.pair_dir.push([0, 0, 0]); continue; }
+      const pa = m.atoms[a["C1'"]], pb = m.atoms[b["C1'"]];
+      const d = [pa[5] - pb[5], pa[6] - pb[6], pa[7] - pb[7]], L = Math.hypot(...d) || 1;
+      m.pair_dir.push(d.map((x) => x / L));
+    }
+    m.groove = Array(nbp).fill(null);
+    (m.analysis.grooves || []).forEach((g) => { if (g.minor != null) m.groove[g.pair_index] = g.minor; });
+    const P = m.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
+    const c = P.reduce((x, v) => x.add(v), new THREE.Vector3()).multiplyScalar(1 / P.length);
+    let r = 0; for (const v of P) r = Math.max(r, v.distanceTo(c));
+    distTarget = Math.max(25, (r + 4) / Math.tan(THREE.MathUtils.degToRad(17)));
+    // stand the helix up: its axis (first to last pair origin) along screen y
+    const f = m.frames, o0 = new THREE.Vector3(...f[0][1]), o1 = new THREE.Vector3(...f[f.length - 1][1]);
+    const axis = o1.clone().sub(o0); if (axis.lengthSq() > 1e-6) group.quaternion.setFromUnitVectors(axis.normalize(), up);
+    world.quaternion.identity();
+    draw();
+  }
+  return { set, setStyle: (s) => { style = s; draw(); }, setColor: (c) => { color = c; draw(); }, setMelt: (x) => { melt = x; if (color === "melt") draw(); } };
+})();
+
+const D = { inited: false, model: null, form: "B", melt: null };
+const DNA_PRESETS = [
+  ["Dickerson dodecamer", "CGCGAATTCGCG", "B"], ["A-tract (bent)", "GCAAAAAACGGCAAAAAACG", "B"],
+  ["GC-rich 20-mer", "GCGGCGCCGCGGCCGCGGCG", "B"], ["Z-DNA hexamer", "CGCGCG", "Z"],
+  ["A-DNA octamer", "GGGGCCCC", "A"], ["Primer-length 24-mer", "ATGCTAGCTAGGCTAACGTTAGCA", "B"],
+];
+
+function initDna() {
+  if (D.inited) return; D.inited = true;
+  $("dnaPresets").innerHTML = DNA_PRESETS.map(([n], i) => `<button type="button" class="btn" data-i="${i}">${escapeHtml(n)}</button>`).join("");
+  $("dnaPresets").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; const [, s, f] = DNA_PRESETS[+b.dataset.i];
+    $("dnaSeq").value = s; setForm(f); dnaBuild(); };
+  const setForm = (f) => { D.form = f; document.querySelectorAll("#dnaForm button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.form === f))); };
+  $("dnaForm").onclick = (e) => { const b = e.target.closest("button"); if (b) setForm(b.dataset.form); };
+  $("dnaBuild").onclick = dnaBuild;
+  document.querySelectorAll("[data-dnastyle]").forEach((b) => (b.onclick = () => {
+    document.querySelectorAll("[data-dnastyle]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); H.setStyle(b.dataset.dnastyle); }));
+  document.querySelectorAll("[data-dnacolor]").forEach((b) => (b.onclick = () => {
+    document.querySelectorAll("[data-dnacolor]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); H.setColor(b.dataset.dnacolor); }));
+  let t = null;
+  const meltLater = () => { $("dnaTempV").textContent = `${$("dnaTemp").value} °C`; clearTimeout(t); t = setTimeout(dnaMelt, 60); };
+  $("dnaTemp").oninput = meltLater; $("dnaNa").onchange = dnaMelt; $("dnaCt").onchange = dnaMelt;
+  $("dnaSavePdb").onclick = dnaSave;
+  dnaBuild();
+}
+
+async function dnaBuild() {
+  const seq = $("dnaSeq").value.replace(/\s+/g, "").toUpperCase();
+  $("dnaBusy").hidden = false;
+  try {
+    const m = await rpc("dna_build", { sequence: seq, form: D.form });
+    D.model = m; H.set(m);
+    $("dnaName").textContent = `${m.form}-DNA · ${m.sequence.length} bp`;
+    $("dnaFormula").textContent = `5'-${m.sequence}-3'`;
+    renderDna(m); $("dnaSavePdb").hidden = false;
+    await dnaMelt();
+  } catch (e) { log(`Helix build failed: ${e.message || e}`, true); }
+  finally { $("dnaBusy").hidden = true; }
+}
+
+async function dnaMelt() {
+  if (!D.model) return;
+  try {
+    const r = await rpc("dna_melt", { sequence: D.model.sequence, temp: +$("dnaTemp").value, na: +$("dnaNa").value, ct: +$("dnaCt").value });
+    D.melt = r; H.setMelt(r);
+    $("dnaMelt").innerHTML = `Melting temperature <b>${r.tm.toFixed(1)} °C</b> (two-state; ΔH° ${r.dH.toFixed(1)} kcal/mol, ΔG°37 ${r.dG37.toFixed(2)} kcal/mol).
+      At ${$("dnaTemp").value} °C, <b>${pct(r.fraction_duplex, 0)}</b> of strands are paired; colour by <i>Melting</i> to see which pairs open first.
+      <br><small>Nearest-neighbour parameters: SantaLucia 1998; salt: Owczarzy et al. 2004. Checked in CI against 92 measured duplexes at five salt concentrations (mean error ${r.checked || "≈1.6 °C"}).</small>`;
+  } catch (e) { $("dnaMelt").textContent = String(e.message || e); }
+}
+
+function renderDna(m) {
+  const st = m.analysis.steps.map((s) => s.params), pr = m.analysis.pairs.map((p) => p.params);
+  const avg = (k) => (st.length ? st.reduce((a, p) => a + p[k], 0) / st.length : NaN);
+  const g = m.analysis.grooves.map((x) => x.minor).filter((x) => x != null);
+  $("dnaSummary").innerHTML = kvTable([
+    ["Base pairs", m.sequence.length], ["Length", `${(avg(2) * Math.max(0, m.sequence.length - 1)).toFixed(1)} Å`],
+    ["Mean twist", `${avg(5).toFixed(1)}° (${(360 / avg(5)).toFixed(1)} bp per turn)`], ["Mean rise", `${avg(2).toFixed(2)} Å`],
+    ["Minor groove", g.length ? `${Math.min(...g).toFixed(1)}–${Math.max(...g).toFixed(1)} Å` : "—"],
+    ["Backbone O3′–P", m.o3p.length ? `${Math.min(...m.o3p).toFixed(2)}–${Math.max(...m.o3p).toFixed(2)} Å (ideal 1.61)` : "—"],
+  ]);
+  const f = (x, d = 1) => x.toFixed(d);
+  $("dnaSteps").innerHTML = `<table class="tight"><thead><tr><th>Step</th><th>Shift</th><th>Slide</th><th>Rise</th><th>Tilt</th><th>Roll</th><th>Twist</th></tr></thead><tbody>
+    ${m.analysis.steps.map((s) => `<tr><td>${escapeHtml(s.step)}</td>${s.params.map((v, k) => `<td class="n">${f(v, k < 3 ? 2 : 1)}</td>`).join("")}</tr>`).join("")}
+    </tbody></table><p class="note">Å and degrees, in the standard reference frame (Olson et al. 2001).</p>`;
+  $("dnaPairs").innerHTML = `<details><summary class="note">Shear, stretch, stagger, buckle, propeller, opening</summary><table class="tight"><thead><tr><th>Pair</th><th>Shear</th><th>Stretch</th><th>Stagger</th><th>Buckle</th><th>Prop.</th><th>Open.</th></tr></thead><tbody>
+    ${m.analysis.pairs.map((p) => `<tr><td>${escapeHtml(p.pair)}</td>${p.params.map((v, k) => `<td class="n">${f(v, k < 3 ? 2 : 1)}</td>`).join("")}</tr>`).join("")}
+    </tbody></table></details>`;
+  $("dnaProv").innerHTML = `${escapeHtml(m.method)}<ul>${(m.sources || []).map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>${m.validation ? `<b>Checked:</b> ${escapeHtml(m.validation)}` : ""}`;
+}
+
+async function dnaSave() {
+  if (!D.model) return;
+  try {
+    const path = await TAURI.core.invoke("pick_save_path", { title: "Save structure", defaultName: `${D.model.form}-DNA-${D.model.sequence.slice(0, 20)}.pdb`,
+      filters: [["PDB", ["pdb"]]] });
+    if (!path) return;
+    await rpc("dna_export", { path, sequence: D.model.sequence, form: D.form });
+    log(`Saved ${baseName(path)}`);
+  } catch (e) { log(`Save failed: ${e.message || e}`, true); }
+}
+
 boot();

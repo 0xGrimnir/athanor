@@ -31,7 +31,26 @@ jobs:
             channels: [conda-forge]
           cache-environment: true
 
+      - name: 3DNA (BSD-3-Clause; the reference for helix geometry)
+        run: |
+          set -euo pipefail
+          git clone -q --depth 1 --branch v2.4.9 https://github.com/x3dna-dssr/x3dna-v2.4.git ext/x3dna
+          ( cd ext/x3dna/src && make -s >/dev/null )
+          ls ext/x3dna/bin
+
+      - name: Helix data and benchmarks (PDB crystal duplexes vs 3DNA)
+        run: |
+          set +e
+          python tools/dnadata/make_data.py ext/x3dna core/athanor_core/data/dna > structure.txt 2>&1
+          python tools/dnadata/build_dna.py "$PWD/ext/x3dna" core/athanor_core/data/dna work >> structure.txt 2>&1
+          rc=$?
+          cut -c1-400 structure.txt | grep -v "^ " | head -200
+          msg=$(grep -E "^\[(PASS|FAIL)\]" structure.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=helix geometry::$msg"; else echo "::error title=helix geometry failed::$msg"; fi
+          exit $rc
+
       - name: Melting temperatures (Owczarzy 2004 measurements, Biopython)
+        if: always()
         run: |
           set +e
           python tools/dnadata/validate_melting.py melting.json > melting.txt 2>&1
@@ -47,5 +66,6 @@ jobs:
           git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/dna/${GITHUB_SHA}" && \
-            cp melting.txt melting.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
+            cp melting.txt melting.json structure.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
+            mkdir -p "$d/dna/${GITHUB_SHA}/data" && cp core/athanor_core/data/dna/*.json "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "dna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"

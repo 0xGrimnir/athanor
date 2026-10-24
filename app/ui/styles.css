@@ -258,3 +258,9 @@ i.s2, .dot.s2 { background: #52f0b0; } i.s3, .dot.s3 { background: #b98cff; }
 /* Personal Genome: rows below the detection limit */
 #view-personal tr.dim td { opacity: .5; }
 #view-personal i.dot { display: inline-block; margin-right: 6px; vertical-align: middle; }
+
+/* DNA Structure */
+.field.seq { width: 100%; resize: vertical; font-family: var(--f-mono, monospace); letter-spacing: .08em; text-transform: uppercase; }
+table.tight td, table.tight th { padding: 2px 4px; font-size: 11.5px; }
+.viewopts .sep { display: inline-block; width: 10px; }
+#dnaTemp { width: 100%; }
