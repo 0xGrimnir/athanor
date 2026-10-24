@@ -8,7 +8,7 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ### Added
 - **Personal Genome: modern ancestry.**
-  - **Continental and regional ancestry:** supervised admixture against present-day reference genomes in the AADR (1000 Genomes, HGDP and others), with 95% intervals from a block bootstrap and a measured detection limit for every region. Regions that could not be told apart in validation were merged automatically.
+  - **Continental and regional ancestry:** supervised admixture against present-day reference genomes in the AADR (1000 Genomes, HGDP and others), with 95% intervals from a block bootstrap and a measured detection limit for every region. Every region keeps its own reference panel; regions that validation could not tell apart are reported together. Each card also shows what reference people from your main region typically get.
   - **Chromosome painting:** the pair of continental ancestries along each of your 22 chromosomes.
   - **Indigenous American ancestry,** with its detection limit and plain statements of what it cannot show (it is not tribal membership; the references are mostly Central and South American).
   - **Runs of homozygosity,** shown against reference groups measured the same way and against the expected values for related parents.
@@ -24,6 +24,7 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ### Changed
 - Reference data version 4 (download it again from the Personal Genome tab; the app offers the update).
+- Runs of homozygosity follow PLINK 1.9's algorithm exactly (checked against PLINK in CI).
 - Polygenic reports (height, baldness, body mass, chronotype, sleep, coffee and alcohol intake) move to the imputation step: a raw chip file covers too few of a modern score's variants.
 
 ## [0.5.0] - 2026-10-22
