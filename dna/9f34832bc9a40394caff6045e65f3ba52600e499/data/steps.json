@@ -1,0 +1,210 @@
+{
+ "B": {
+  "dimers": {
+   "AA": [
+    -0.03,
+    -0.08,
+    3.27,
+    -1.4,
+    0.7,
+    35.1
+   ],
+   "AC": [
+    0.13,
+    -0.58,
+    3.36,
+    -0.1,
+    0.7,
+    31.5
+   ],
+   "AG": [
+    0.09,
+    -0.25,
+    3.34,
+    -1.7,
+    4.5,
+    31.9
+   ],
+   "AT": [
+    0.0,
+    -0.59,
+    3.31,
+    0.0,
+    1.1,
+    29.3
+   ],
+   "CA": [
+    0.09,
+    0.53,
+    3.33,
+    0.5,
+    4.7,
+    37.3
+   ],
+   "CG": [
+    0.0,
+    0.41,
+    3.39,
+    0.0,
+    5.4,
+    36.1
+   ],
+   "GA": [
+    -0.28,
+    0.09,
+    3.37,
+    -1.5,
+    1.9,
+    36.3
+   ],
+   "GC": [
+    0.0,
+    -0.38,
+    3.4,
+    0.0,
+    0.3,
+    33.6
+   ],
+   "GG": [
+    0.05,
+    -0.22,
+    3.42,
+    -0.1,
+    3.6,
+    32.9
+   ],
+   "TA": [
+    0.0,
+    0.05,
+    3.42,
+    0.0,
+    3.3,
+    37.8
+   ]
+  },
+  "pair": [
+   -0.2,
+   -0.14,
+   0.13,
+   3.68,
+   -8.81,
+   -0.78
+  ],
+  "pair_by_type": {
+   "AT": [
+    0.06,
+    -0.11,
+    0.01,
+    1.78,
+    -15.71,
+    3.7
+   ],
+   "GC": [
+    -0.2,
+    -0.14,
+    0.13,
+    3.68,
+    -8.81,
+    -0.78
+   ]
+  },
+  "method": "Step parameters: averages for each dimer step in protein-DNA crystal complexes (Olson et al. 1998, Table 1). Base-pair parameters: medians over high-resolution B-DNA crystal duplexes in the PDB. Nucleotide geometry: 3DNA's B-DNA set (Arnott backbone, chi -110 deg).",
+  "sources": [
+   "Olson et al., DNA sequence-dependent deformability deduced from protein-DNA crystal complexes, PNAS 95, 11163 (1998)",
+   "Olson et al., A standard reference frame for the description of nucleic acid base-pair geometry, J. Mol. Biol. 313, 229 (2001)",
+   "Lu & Olson, 3DNA, Nucleic Acids Res. 31, 5108 (2003)"
+  ]
+ },
+ "A": {
+  "uniform": [
+   -0.01,
+   -1.62,
+   3.23,
+   0.09,
+   6.65,
+   30.82
+  ],
+  "pair": [
+   -0.22,
+   -0.14,
+   -0.07,
+   -5.3,
+   -9.06,
+   -0.02
+  ],
+  "pair_by_type": {
+   "GC": [
+    -0.22,
+    -0.14,
+    -0.07,
+    -5.3,
+    -9.06,
+    -0.02
+   ],
+   "AT": [
+    0.07,
+    -0.14,
+    0.07,
+    -1.15,
+    -9.99,
+    0.93
+   ]
+  },
+  "method": "Uniform step and base-pair parameters: medians over 17 high-resolution A-DNA crystal duplexes in the PDB. Nucleotide geometry: 3DNA's A-DNA set (chi -160 deg).",
+  "sources": [
+   "Lu & Olson, 3DNA, Nucleic Acids Res. 31, 5108 (2003)",
+   "RCSB Protein Data Bank (CC0)"
+  ]
+ },
+ "Z": {
+  "uniform": {
+   "CG": [
+    0.04,
+    5.4,
+    3.66,
+    0.3,
+    -2.05,
+    -7.65
+   ],
+   "GC": [
+    -0.06,
+    -0.96,
+    3.27,
+    0.32,
+    -3.08,
+    -51.69
+   ]
+  },
+  "pair": [
+   0.25,
+   -0.14,
+   0.07,
+   -3.27,
+   -0.29,
+   1.82
+  ],
+  "pair_by_type": {
+   "GC": [
+    0.25,
+    -0.14,
+    0.07,
+    -3.27,
+    -0.29,
+    1.82
+   ],
+   "AT": [
+    0.11,
+    -0.17,
+    -0.0,
+    -7.67,
+    -3.43,
+    1.46
+   ]
+  },
+  "method": "Alternating CG and GC step parameters and base-pair parameters: medians over 33 high-resolution Z-DNA crystal duplexes in the PDB; nucleotides (syn G, anti C) from the same crystals.",
+  "sources": [
+   "Wang et al., Molecular structure of a left-handed double helical DNA fragment at atomic resolution, Nature 282, 680 (1979)",
+   "RCSB Protein Data Bank (CC0)"
+  ]
+ }
+}
