@@ -1,0 +1,373 @@
+{'A': 11, 'C': 9, 'G': 12, 'T': 10, 'U': 9} {'B': {'A': 21, 'C': 19, 'G': 22, 'T': 20}, 'A': {'A': 21, 'C': 19, 'G': 22, 'T': 20}}
+459 DNA-only X-ray entries at <= 1.6 A
+using the 112 pinned entries; 347 newer search hits not in the list: 145D 151D 152D 183D 191D 1BD1 1CW9 1D10 1D11 1D14 1D15 1D33 1D35 1D36 1D40 1D41 1D53 1D54 1D61 1D67 1D76 1D78 1D79 1D8G 1D8X 1D9R 1DA0 1DCR 1DL8 1DN4 1DN5 1DN8 1DNF 1DNZ 1DPL 1DPN 1EI4 1EM0 1EN3 1EN8
+   131D: 6 bp CGCGCG mean twist -26.0 slide 3.00 -> Z
+   181D: 6 bp CACGCG mean twist -25.5 slide 2.85 -> Z
+   1D23: 10 bp CGATCGATCG mean twist 37.1 slide 0.18 -> B
+   1D39: 6 bp CGCGCG mean twist -25.8 slide 2.85 -> Z
+   1D48: 6 bp CGCGCG mean twist -26.0 slide 3.00 -> Z
+   1D49: 10 bp CGATTAATCG mean twist 37.4 slide 0.15 -> B
+   1DC0: 12 bp CATGGGCCCATG mean twist 30.9 slide -1.57 -> A
+   1DCG: 6 bp CGCGCG mean twist -25.4 slide 2.84 -> Z
+   1DJ6: 6 bp CGCGCG mean twist -25.1 slide 2.80 -> Z
+   1EDR: 11 bp CGCGATTCGCG mean twist 38.5 slide 0.03 -> B
+   1FQ2: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.06 -> B
+   1G75: 11 bp CGCGAATCGCG mean twist 38.8 slide 0.05 -> B
+   1G8N: 11 bp CGCGAATCGCG mean twist 38.7 slide 0.03 -> B
+   1I0T: 6 bp CGCGCG mean twist -25.9 slide 3.04 -> Z
+   1ICK: 6 bp CGCGCG mean twist -24.9 slide 2.80 -> Z
+   1IKK: 10 bp CCTTTAAAGG mean twist 37.3 slide 0.09 -> B
+   1J8L: 11 bp CGCAAATTGCG mean twist 39.2 slide 0.11 -> B
+   1JES: 10 bp CGCGATCGCG mean twist -33.9 slide 2.96 -> Z
+   1JGR: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.14 -> B
+   1M6R: 6 bp CGCGCG mean twist -25.1 slide 2.76 -> Z
+   1S2R: 12 bp CGCAAATTTGCG mean twist 35.4 slide 0.19 -> B
+   1SK5: 10 bp CTTTTAAAAG mean twist 37.3 slide 0.10 -> B
+   1WOE: 6 bp CGCGCG mean twist -25.9 slide 3.00 -> Z
+   1Z3F: 6 bp CGATCG mean twist 29.4 slide 1.07 -> B
+   1ZF0: 10 bp CCGTTAACGG mean twist 34.7 slide 0.43 -> B
+   1ZF1: 10 bp CCGGGCCCGG mean twist 30.5 slide -1.76 -> A
+   1ZF6: 10 bp CCCCATGGGG mean twist 30.5 slide -1.49 -> A
+   1ZF7: 10 bp CCGTCGACGG mean twist 35.5 slide 0.63 -> B
+   1ZF8: 10 bp CCACCGGTGG mean twist 29.4 slide -1.76 -> A
+   1ZF9: 10 bp CCCCCGGGGG mean twist 28.8 slide -1.88 -> A
+   1ZFA: 10 bp CCTCCGGAGG mean twist 27.2 slide -1.80 -> A
+   1ZPI: 12 bp CGCGAATTCGCG mean twist 35.4 slide 0.26 -> B
+   213D: 8 bp CCGGCCGG mean twist 38.3 slide -2.36 -> A
+   224D: 6 bp TGATCA mean twist 31.6 slide 0.12 -> B
+   245D: 6 bp TGATCA mean twist 31.6 slide 0.14 -> B
+   292D: 6 bp CGCGCG mean twist -25.2 slide 2.84 -> Z
+   293D: 6 bp CGCGCG mean twist -25.3 slide 2.86 -> Z
+   2B3E: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.33 -> B
+   2DCG: 6 bp CGCGCG mean twist -25.1 slide 2.81 -> Z
+   2DES: 6 bp CGTACG mean twist 33.4 slide 0.48 -> B
+   2DPC: 11 bp CGCGAATCGCG mean twist 39.1 slide -0.01 -> B
+   2DYW: 12 bp CGCGAATTCGCG mean twist 35.4 slide 0.15 -> B
+   2ELG: 6 bp CGCGCG mean twist -25.1 slide 2.83 -> Z
+   2F8W: 6 bp CACGTG mean twist -26.0 slide 3.04 -> Z
+   2FII: 11 bp CGCGAATCGCG mean twist 38.7 slide 0.08 -> B
+   2FIJ: 8 bp GCGTACGC mean twist 39.9 slide -1.23 -> A
+   2HTO: 6 bp CGCGCA mean twist -23.2 slide 2.71 -> Z
+   2IE1: 6 bp CGCGCG mean twist -25.0 slide 2.87 -> Z
+   2PKV: 8 bp GGTATACC mean twist 31.6 slide -1.44 -> A
+   2PLB: 8 bp GGTATACC mean twist 32.9 slide -1.45 -> A
+   2PLO: 8 bp GGTATACC mean twist 31.7 slide -1.48 -> A
+   308D: 6 bp CGTACG mean twist 33.1 slide 0.59 -> B
+   336D: 6 bp CGCGCG mean twist -25.3 slide 2.83 -> Z
+   355D: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.09 -> B
+   362D: 6 bp TGCGCA mean twist -26.9 slide 2.75 -> Z
+   368D: 8 bp CCCGCGGG mean twist 33.3 slide -1.35 -> A
+   3FT6: 6 bp CGATCG mean twist 29.7 slide 1.06 -> B
+   3OMJ: 9 bp CAGTACTGG mean twist 37.3 slide 0.37 -> B
+   3OPI: 11 bp CGCGATTCGCG mean twist 38.6 slide 0.12 -> B
+   3P4J: 6 bp CGCGCG mean twist -24.9 slide 2.78 -> Z
+   3U05: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.32 -> B
+   3U08: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.33 -> B
+   3U0U: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.32 -> B
+   3U2N: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.17 -> B
+   3WBO: 6 bp CGCGCG mean twist -25.6 slide 2.79 -> Z
+   403D: 11 bp CGCAATTTGCG mean twist 39.1 slide 0.32 -> B
+   423D: 12 bp ACCGACGTCGGT mean twist 34.5 slide 0.08 -> B
+   440D: 10 bp AGGGGCCCCT mean twist 30.2 slide -1.71 -> A
+   442D: 12 bp CGCGAATTCGCG mean twist 36.0 slide 0.36 -> B
+   443D: 12 bp CGCGAATTCGCG mean twist 35.8 slide 0.31 -> B
+   455D: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.09 -> B
+   4AGZ: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.37 -> B
+   4AH0: 12 bp CGCAAATTTGCG mean twist 35.6 slide 0.31 -> B
+   4AH1: 12 bp CGCAAATTTGCG mean twist 35.9 slide 0.36 -> B
+   4C64: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.10 -> B
+   4FS5: 6 bp CGCGCG mean twist -25.3 slide 2.95 -> Z
+   4HIF: 6 bp CGCGCG mean twist -25.5 slide 2.87 -> Z
+   4HIG: 6 bp CGCGCG mean twist -24.7 slide 2.79 -> Z
+   4JD8: 6 bp ATGCAT mean twist 23.2 slide 0.67 -> B
+   4R15: 6 bp CGCGCG mean twist -25.9 slide 3.07 -> Z
+   4R49: 10 bp CCGGTACCGG mean twist 34.4 slide 0.54 -> B
+   4R4A: 10 bp CCGGTACCGG mean twist 34.6 slide 0.20 -> B
+   4U8A: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.18 -> B
+   4U8B: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.32 -> B
+   4U8C: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.28 -> B
+   5JZQ: 6 bp CGCGCG mean twist -24.4 slide 2.71 -> Z
+   5MVK: 12 bp CTACGCGCGTAG mean twist 29.4 slide -1.66 -> A
+   5T3L: 12 bp CGCGAATTCGCG mean twist 35.4 slide 0.13 -> B
+   5WV7: 14 bp CCGGGGTACCCCGG mean twist 29.8 slide -1.77 -> A
+   6BST: 6 bp CGCGCG mean twist -27.5 slide 2.99 -> Z
+   6CQ3: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.03 -> B
+   6DY5: 10 bp AGGGATCCCT mean twist 28.8 slide -1.71 -> A
+   6L75: 10 bp GTGGGCCGAC mean twist 32.6 slide -1.40 -> A
+   6X5D: 11 bp CGCGAATCGCG mean twist 38.6 slide 0.03 -> B
+   7ATG: 6 bp CGCGCG mean twist -25.1 slide 2.77 -> Z
+   7JY2: 6 bp CGCGCG mean twist -25.0 slide 2.82 -> Z
+   7KU4: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.19 -> B
+   7KWK: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.22 -> B
+   7RQT: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.09 -> B
+   7ZQM: 6 bp CGCGCG mean twist -25.4 slide 2.81 -> Z
+   8C63: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.07 -> B
+   8CE2: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.10 -> B
+   8EDB: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.15 -> B
+   8F2W: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.06 -> B
+   8FDQ: 12 bp CGCAAATTTGCG mean twist 36.0 slide 0.29 -> B
+   8FDR: 12 bp CGCGAAAACGCG mean twist 35.1 slide 0.12 -> B
+   8OE9: 6 bp CGCGCG mean twist -26.0 slide 2.98 -> Z
+   8OEX: 6 bp CGCGCG mean twist -25.7 slide 2.99 -> Z
+   8RI3: 12 bp CGCGAATTCGCG mean twist 35.0 slide 0.10 -> B
+   8RI5: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.09 -> B
+   8WQ7: 8 bp CGTATACG mean twist 29.6 slide 0.70 -> B
+   9V89: 8 bp CGTTAACG mean twist 28.0 slide 0.48 -> B
+kept duplexes: {'A': 17, 'B': 62, 'Z': 33}
+pair lists differ for 1EDR 12 11
+pair lists differ for 1G75 12 11
+pair lists differ for 1G8N 12 11
+pair lists differ for 1J8L 12 11
+pair lists differ for 1JES 12 10
+pairing differs for 1ZFA [(10, ('A10', 'B11'), ('A10', 'B12'))]
+pair lists differ for 213D 10 8
+pair lists differ for 2DPC 12 11
+pair lists differ for 2FII 12 11
+pair lists differ for 2FIJ 10 8
+pair lists differ for 3OMJ 10 9
+pair lists differ for 3OPI 12 11
+pair lists differ for 403D 12 11
+pair lists differ for 6X5D 12 11
+compared with 3DNA: 98 structures, 14 not comparable
+[PASS] base-pair and step parameters equal 3DNA's on every kept crystal duplex (to its printed 0.01 A / 0.01 deg): 98 structures; largest difference 0.005 (pairs) and 0.005 (steps), translations in A, rotations in units of 10 deg
+[PASS] groove widths equal 3DNA's direct P-P distances (to its printed 0.1 A): largest difference 0.050 A
+{
+ "B": {
+  "dimers": {
+   "AA": [
+    -0.03,
+    -0.08,
+    3.27,
+    -1.4,
+    0.7,
+    35.1
+   ],
+   "AC": [
+    0.13,
+    -0.58,
+    3.36,
+    -0.1,
+    0.7,
+    31.5
+   ],
+   "AG": [
+    0.09,
+    -0.25,
+    3.34,
+    -1.7,
+    4.5,
+    31.9
+   ],
+   "AT": [
+    0.0,
+    -0.59,
+    3.31,
+    0.0,
+    1.1,
+    29.3
+   ],
+   "CA": [
+    0.09,
+    0.53,
+    3.33,
+    0.5,
+    4.7,
+    37.3
+   ],
+   "CG": [
+    0.0,
+    0.41,
+    3.39,
+    0.0,
+    5.4,
+    36.1
+   ],
+   "GA": [
+    -0.28,
+    0.09,
+    3.37,
+    -1.5,
+    1.9,
+    36.3
+   ],
+   "GC": [
+    0.0,
+    -0.38,
+    3.4,
+    0.0,
+    0.3,
+    33.6
+   ],
+   "GG": [
+    0.05,
+    -0.22,
+    3.42,
+    -0.1,
+    3.6,
+    32.9
+   ],
+   "TA": [
+    0.0,
+    0.05,
+    3.42,
+    0.0,
+    3.3,
+    37.8
+   ]
+  },
+  "pair_by_type": {
+   "AT": [
+    0.06,
+    -0.11,
+    0.01,
+    1.78,
+    -15.71,
+    3.7
+   ],
+   "GC": [
+    -0.2,
+    -0.14,
+    0.13,
+    3.68,
+    -8.81,
+    -0.78
+   ]
+  }
+ },
+ "A": {
+  "steps": {
+   "all": [
+    -0.01,
+    -1.62,
+    3.23,
+    0.09,
+    6.65,
+    30.82
+   ]
+  },
+  "pair_by_type": {
+   "GC": [
+    -0.22,
+    -0.14,
+    -0.07,
+    -5.3,
+    -9.06,
+    -0.02
+   ],
+   "AT": [
+    0.07,
+    -0.14,
+    0.07,
+    -1.15,
+    -9.99,
+    0.93
+   ]
+  },
+  "n_structures": 17
+ },
+ "Z": {
+  "steps": {
+   "CG": [
+    0.04,
+    5.4,
+    3.66,
+    0.3,
+    -2.05,
+    -7.65
+   ],
+   "GC": [
+    -0.06,
+    -0.96,
+    3.27,
+    0.32,
+    -3.08,
+    -51.69
+   ],
+   "CA": [
+    0.22,
+    5.23,
+    3.77,
+    1.58,
+    -3.13,
+    -6.22
+   ],
+   "AC": [
+    0.33,
+    -0.73,
+    3.21,
+    -2.26,
+    -3.25,
+    -51.92
+   ],
+   "GA": [
+    0.81,
+    4.68,
+    7.27,
+    -5.07,
+    -4.6,
+    -64.91
+   ],
+   "AT": [
+    0.02,
+    -2.41,
+    3.16,
+    1.92,
+    5.79,
+    -41.97
+   ],
+   "TC": [
+    -0.65,
+    4.93,
+    7.16,
+    7.64,
+    -8.17,
+    -66.53
+   ],
+   "GT": [
+    -0.34,
+    -0.99,
+    3.26,
+    2.02,
+    3.28,
+    -50.3
+   ],
+   "TG": [
+    -0.02,
+    5.47,
+    3.74,
+    3.64,
+    1.2,
+    -10.3
+   ]
+  },
+  "pair_by_type": {
+   "GC": [
+    0.25,
+    -0.14,
+    0.07,
+    -3.27,
+    -0.29,
+    1.82
+   ],
+   "AT": [
+    0.11,
+    -0.17,
+    -0.0,
+    -7.67,
+    -3.43,
+    1.46
+   ]
+  },
+  "n_structures": 33
+ }
+}
+Z C: 16 atoms; median spread 0.11 A
+Z G: 22 atoms; median spread 0.15 A
+A: 17 crystals; rebuilt from own parameters: base atoms median 0.027 A, all atoms median 0.59 A; generic parameters (leave-one-out): median 1.57 A, 90th percentile 2.90 A
+B: 62 crystals; rebuilt from own parameters: base atoms median 0.027 A, all atoms median 0.75 A; generic parameters (leave-one-out): median 1.45 A, 90th percentile 2.99 A
+Z: 28 crystals; rebuilt from own parameters: base atoms median 0.033 A, all atoms median 0.31 A; generic parameters (leave-one-out): median 0.44 A, 90th percentile 0.56 A
+[PASS] rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A): median 0.029 A over 107 crystals
+[PASS] B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median): median 1.45 A, 90th percentile 2.99 A over 62 crystals
+[PASS] A-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out): median 1.57 A, 90th percentile 2.90 A over 17 crystals
+[PASS] Z-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out): median 0.44 A, 90th percentile 0.56 A over 28 crystals
+[PASS] Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A): largest RMSD 0.0009 A over 15 duplexes
