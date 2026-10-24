@@ -48,9 +48,33 @@ def _bonds(atoms) -> list[list[int]]:
     return bonds
 
 
-def validation() -> dict:
-    f = DATA / "validation.json"
+def _load(name) -> dict:
+    f = DATA / name
     return json.loads(f.read_text()) if f.exists() else {}
+
+
+def validation(form: str) -> str | None:
+    """What CI measured for this form's builder (data/dna/validation.json, written by tools/dnadata)."""
+    v = _load("validation.json")
+    r = v.get("summary", {}).get("rebuild", {}).get(form)
+    if not r or not r.get("n"):
+        return None
+    how = ("built from sequence alone with these parameters" if form == "B"
+           else "each built from parameters measured on the others")
+    text = (f"{r['n']} crystal {form}-DNA duplexes from the PDB, {how}, are matched to a median all-atom RMSD of "
+            f"{r['generic_median']:.2f} \u00c5 (90th percentile {r['generic_p90']:.2f} \u00c5).")
+    if all(x["pass"] for x in v.get("results", [])):
+        text += " Base-pair, step and groove measurements equal 3DNA's on every comparable crystal."
+    return text
+
+
+def melting_check() -> dict | None:
+    m = _load("melting_validation.json").get("errors", {}).get("owczarzy2004", {})
+    a = m.get("all")
+    if not a:
+        return None
+    return {"mean_abs": round(a["mean_abs"], 2), "mean": round(a["mean"], 2), "n": a["n"],
+            "salts": len([k for k in m if k != "all"]), "duplexes": a["n"] // max(1, len([k for k in m if k != "all"]))}
 
 
 def m_dna_build(p: dict) -> dict:
@@ -61,14 +85,35 @@ def m_dna_build(p: dict) -> dict:
     model = build(seq, form)
     an = analyse(_residues(model))
     info = json.loads((DATA / "steps.json").read_text())[form]
-    v = validation()
     atoms = [[c, n, r, a, _element(a), float(x[0]), float(x[1]), float(x[2])] for c, n, r, a, x in model["atoms"]]
     return {"sequence": seq, "form": form, "atoms": atoms, "bonds": _bonds(model["atoms"]),
             "frames": model["frames"], "o3p": model["o3p"],
             "analysis": {"pairs": [{k: x[k] for k in ("pair", "params")} for x in an["pairs"]],
                          "steps": an["steps"], "grooves": an["grooves"]},
             "method": info.get("method", ""), "sources": info.get("sources", []),
-            "validation": v.get("summary", {}).get(form)}
+            "validation": validation(form)}
+
+
+def m_dna_variants(p: dict) -> dict:
+    """The variants the app can show in a helix (reference sequence either side, data/dna/flanks.json)."""
+    f = _load("flanks.json")
+    return {"variants": sorted(f.get("variants", {})), "flank": f.get("flank")}
+
+
+def m_dna_variant(p: dict) -> dict:
+    """A B-DNA helix of the GRCh37 forward-strand sequence around a variant, with ``allele`` at its centre."""
+    f = _load("flanks.json")
+    v = f.get("variants", {}).get(p.get("rsid"))
+    if not v:
+        raise ValueError(f"no reference sequence for {p.get('rsid')}")
+    allele = str(p.get("allele") or v["ref"]).upper()
+    if allele not in "ACGT" or len(allele) != 1:
+        raise ValueError("a single base is needed")
+    seq = v["left"] + allele + v["right"]
+    r = m_dna_build({"sequence": seq, "form": "B"})
+    r["variant"] = {"rsid": p["rsid"], "chrom": v["chrom"], "pos37": v["pos37"], "ref": v["ref"], "alts": v["alts"],
+                    "allele": allele, "index": len(v["left"]), "source": f.get("source")}
+    return r
 
 
 def m_dna_melt(p: dict) -> dict:
@@ -76,8 +121,7 @@ def m_dna_melt(p: dict) -> dict:
     ct, na, t = float(p.get("ct", 1e-6)), float(p.get("na", 0.15)), float(p.get("temp", 25))
     r = melting.tm(seq, ct, na)
     z = melting.zipper(seq, t, ct, na)
-    v = validation().get("melting")
-    return {**r, "temp": t, "fraction_duplex": z["fraction_duplex"], "closed": z["closed"], "checked": v}
+    return {**r, "temp": t, "fraction_duplex": z["fraction_duplex"], "closed": z["closed"], "checked": melting_check()}
 
 
 def m_dna_export(p: dict) -> dict:
@@ -86,4 +130,5 @@ def m_dna_export(p: dict) -> dict:
     return {"path": p["path"], "atoms": len(model["atoms"])}
 
 
-METHODS = {"dna_build": m_dna_build, "dna_melt": m_dna_melt, "dna_export": m_dna_export}
+METHODS = {"dna_build": m_dna_build, "dna_melt": m_dna_melt, "dna_export": m_dna_export,
+           "dna_variants": m_dna_variants, "dna_variant": m_dna_variant}

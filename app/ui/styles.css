@@ -87,6 +87,7 @@ select.field { appearance: none; cursor: pointer;
 .btn:hover:not(:disabled) { background: var(--holo-dim); border-color: var(--line-hi); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 .btn.sm { padding: 5px 9px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.btn.xs { padding: 2px 7px; margin-top: 4px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 .btn[aria-pressed="true"] { border-color: var(--arc); color: var(--arc); background: var(--arc-dim); }
 .btn.act { font-family: var(--f-display); font-weight: 600; letter-spacing: .06em; border-left: 2px solid var(--holo); }
 .btn.warn { border-color: rgba(255,106,87,.5); color: var(--warn); }
@@ -116,8 +117,8 @@ select.field { appearance: none; cursor: pointer;
 /* stage */
 .stage { position: relative; min-width: 0; min-height: 0; border: 1px solid var(--line); overflow: hidden;
   background: radial-gradient(ellipse at 50% 45%, rgba(30,100,150,.22), rgba(3,7,11,.4) 70%); display: flex; flex-direction: column; }
-#gl { flex: 1 1 0; min-height: 0; height: 0; width: 100%; display: block; cursor: grab; touch-action: none; }
-#gl.drag { cursor: grabbing; }
+#gl, #dnagl { flex: 1 1 0; min-height: 0; height: 0; width: 100%; display: block; cursor: grab; touch-action: none; }
+#gl.drag, #dnagl.drag { cursor: grabbing; }
 .corner { position: absolute; width: 22px; height: 22px; border: 1.5px solid var(--holo); opacity: .55; pointer-events: none; }
 .corner.tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; } .corner.tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
 .corner.bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; } .corner.br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }

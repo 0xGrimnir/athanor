@@ -53,12 +53,25 @@ jobs:
         if: always()
         run: |
           set +e
-          python tools/dnadata/validate_melting.py melting.json > melting.txt 2>&1
+          python tools/dnadata/validate_melting.py core/athanor_core/data/dna/melting_validation.json > melting.txt 2>&1
           rc=$?
           cat melting.txt
           msg=$(grep -E "^\[(PASS|FAIL)\]" melting.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
           if [ $rc -eq 0 ]; then echo "::notice title=melting::$msg"; else echo "::error title=melting failed::$msg"; fi
           exit $rc
+
+      - name: Reference sequence around the Personal Genome trait variants (Ensembl GRCh37)
+        if: always()
+        run: python tools/dnadata/flanks.py core/athanor_core/data/dna/flanks.json
+
+      - name: Committed data/dna files regenerate exactly
+        if: always()
+        run: |
+          git diff --stat core/athanor_core/data/dna
+          if [ -n "$(git status --porcelain core/athanor_core/data/dna)" ]; then
+            git status --short core/athanor_core/data/dna
+            echo "::error title=helix data::the committed data/dna files differ from the regenerated ones"; exit 1
+          fi
 
       - name: Publish the logs to ci-results
         if: always()
@@ -66,6 +79,6 @@ jobs:
           git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/dna/${GITHUB_SHA}" && \
-            cp melting.txt melting.json structure.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
+            cp melting.txt structure.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
             mkdir -p "$d/dna/${GITHUB_SHA}/data" && cp core/athanor_core/data/dna/*.json "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "dna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"

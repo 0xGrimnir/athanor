@@ -8,12 +8,13 @@
    analyze on every kept structure.
 3. Parameter sets the builder uses: B-DNA steps are Olson et al. (1998) Table 1; B-DNA base pairs, and
    A- and Z-DNA steps and pairs, are medians over the kept structures of that form. Z-DNA nucleotide
-   geometries (syn G, anti C) are the medians of the crystal nucleotides in their base frames.
+   backbones (syn G, anti C) are the medians of the crystal nucleotides in their base frames; the bases
+   themselves are the standard bases.
 4. Builder benchmarks: Athanor's rebuild against 3DNA's rebuild from the same parameters; each crystal
    rebuilt from its own parameters; and each crystal built from the generic parameter set for its form,
    with that structure left out of the set (leave-one-out).
 
-Usage: python build_dna.py X3DNA_DIR DATA_DIR WORK_DIR
+Usage: python build_dna.py X3DNA_DIR DATA_DIR WORK_DIR [--refresh]\n(without --refresh only the entries in entries.txt are used)
 """
 from __future__ import annotations
 
@@ -81,6 +82,13 @@ q = {"query": {"type": "group", "logical_operator": "and", "nodes": [
 hits = get("https://search.rcsb.org/rcsbsearch/v2/query", json.dumps(q).encode())
 ids = sorted(h["identifier"] for h in hits.get("result_set", []))
 print(f"{len(ids)} DNA-only X-ray entries at <= 1.6 A", flush=True)
+PINNED = Path(__file__).with_name("entries.txt")
+if "--refresh" not in sys.argv and PINNED.exists():
+    # the committed data are built from a fixed list of entries, so CI can check they regenerate exactly
+    pinned = [x.strip() for x in PINNED.read_text().splitlines() if x.strip() and not x.startswith("#")]
+    new = sorted(set(ids) - set(pinned))
+    print(f"using the {len(pinned)} pinned entries; {len(new)} newer search hits not in the list: {' '.join(new[:40])}", flush=True)
+    ids = pinned
 
 std = standard_bases()
 kept = []
@@ -271,6 +279,12 @@ for b in "CG":
                 if len(x) >= 0.8 * max(len(y) for y in acc.values())}
     spread = {nm: float(np.median(np.linalg.norm(np.array(x) - np.median(np.array(x), axis=0), axis=1)))
               for nm, x in acc.items()}
+    # the base itself (with C1') is the standard base, as in 3DNA's rebuild and the B and A sets, so a
+    # helix built from parameters analyses back to exactly those parameters; the sugar-phosphate comes
+    # from the crystals
+    for nm, xyz in std[b].items():
+        if nm in ztmpl[b]:
+            ztmpl[b][nm] = [round(float(v), 3) for v in xyz]
     print(f"Z {b}: {len(ztmpl[b])} atoms; median spread {np.median(list(spread.values())):.2f} A")
 
 

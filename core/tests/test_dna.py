@@ -73,3 +73,17 @@ def test_zipper_frays_ends_first():
     assert cold["fraction_duplex"] > 0.99 and min(cold["closed"]) > 0.9
     hot = M.zipper(s, 95, 1e-6)
     assert hot["fraction_duplex"] < 0.01
+
+
+def test_built_helices_analyse_back_to_their_parameters():
+    """A helix built from the shipped parameters, analysed like a crystal, gives those parameters back -
+    including Z-DNA, which 3DNA (and Athanor) measure with every base frame turned for a left-handed duplex."""
+    from athanor_core.dna.api import _residues
+    from athanor_core.dna.builder import build
+    from athanor_core.dna.structure import analyse
+    for seq, form in (("CGCGAATTCGCG", "B"), ("GGGGCCCC", "A"), ("CGCGCGCG", "Z")):
+        m = build(seq, form)
+        a = analyse(_residues(m))
+        assert a["left_handed"] == (form == "Z")
+        assert np.allclose([s["params"] for s in a["steps"]], m["steps"], atol=1e-6)
+        assert np.allclose([p["params"] for p in a["pairs"]], m["pairs"], atol=1e-6)

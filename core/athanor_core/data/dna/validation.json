@@ -1,0 +1,184 @@
+{
+ "results": [
+  {
+   "name": "base-pair and step parameters equal 3DNA's on every kept crystal duplex (to its printed 0.01 A / 0.01 deg)",
+   "pass": true,
+   "detail": "98 structures; largest difference 0.005 (pairs) and 0.005 (steps), translations in A, rotations in units of 10 deg"
+  },
+  {
+   "name": "groove widths equal 3DNA's direct P-P distances (to its printed 0.1 A)",
+   "pass": true,
+   "detail": "largest difference 0.050 A"
+  },
+  {
+   "name": "rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A)",
+   "pass": true,
+   "detail": "median 0.027 A over 107 crystals"
+  },
+  {
+   "name": "B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median)",
+   "pass": true,
+   "detail": "median 1.45 A, 90th percentile 2.99 A over 62 crystals"
+  },
+  {
+   "name": "A-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out)",
+   "pass": true,
+   "detail": "median 1.57 A, 90th percentile 2.90 A over 17 crystals"
+  },
+  {
+   "name": "Z-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out)",
+   "pass": true,
+   "detail": "median 0.44 A, 90th percentile 0.56 A over 28 crystals"
+  },
+  {
+   "name": "Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A)",
+   "pass": true,
+   "detail": "largest RMSD 0.0009 A over 15 duplexes"
+  }
+ ],
+ "summary": {
+  "structures": {
+   "A": [
+    "1DC0",
+    "1ZF1",
+    "1ZF6",
+    "1ZF8",
+    "1ZF9",
+    "1ZFA",
+    "213D",
+    "2FIJ",
+    "2PKV",
+    "2PLB",
+    "2PLO",
+    "368D",
+    "440D",
+    "5MVK",
+    "5WV7",
+    "6DY5",
+    "6L75"
+   ],
+   "B": [
+    "1D23",
+    "1D49",
+    "1EDR",
+    "1FQ2",
+    "1G75",
+    "1G8N",
+    "1IKK",
+    "1J8L",
+    "1JGR",
+    "1S2R",
+    "1SK5",
+    "1Z3F",
+    "1ZF0",
+    "1ZF7",
+    "1ZPI",
+    "224D",
+    "245D",
+    "2B3E",
+    "2DES",
+    "2DPC",
+    "2DYW",
+    "2FII",
+    "308D",
+    "355D",
+    "3FT6",
+    "3OMJ",
+    "3OPI",
+    "3U05",
+    "3U08",
+    "3U0U",
+    "3U2N",
+    "403D",
+    "423D",
+    "442D",
+    "443D",
+    "455D",
+    "4AGZ",
+    "4AH0",
+    "4AH1",
+    "4C64",
+    "4JD8",
+    "4R49",
+    "4R4A",
+    "4U8A",
+    "4U8B",
+    "4U8C",
+    "5T3L",
+    "6CQ3",
+    "6X5D",
+    "7KU4",
+    "7KWK",
+    "7RQT",
+    "8C63",
+    "8CE2",
+    "8EDB",
+    "8F2W",
+    "8FDQ",
+    "8FDR",
+    "8RI3",
+    "8RI5",
+    "8WQ7",
+    "9V89"
+   ],
+   "Z": [
+    "131D",
+    "181D",
+    "1D39",
+    "1D48",
+    "1DCG",
+    "1DJ6",
+    "1I0T",
+    "1ICK",
+    "1JES",
+    "1M6R",
+    "1WOE",
+    "292D",
+    "293D",
+    "2DCG",
+    "2ELG",
+    "2F8W",
+    "2HTO",
+    "2IE1",
+    "336D",
+    "362D",
+    "3P4J",
+    "3WBO",
+    "4FS5",
+    "4HIF",
+    "4HIG",
+    "4R15",
+    "5JZQ",
+    "6BST",
+    "7ATG",
+    "7JY2",
+    "7ZQM",
+    "8OE9",
+    "8OEX"
+   ]
+  },
+  "rebuild": {
+   "A": {
+    "n": 17,
+    "own_base": 0.026616004654020364,
+    "own_all": 0.592750145834628,
+    "generic_median": 1.565038039092148,
+    "generic_p90": 2.9003131084285148
+   },
+   "B": {
+    "n": 62,
+    "own_base": 0.027243458423156387,
+    "own_all": 0.7549466287230757,
+    "generic_median": 1.4514905391209298,
+    "generic_p90": 2.986573939062918
+   },
+   "Z": {
+    "n": 28,
+    "own_base": 0.027655375396387655,
+    "own_all": 0.3067516115048866,
+    "generic_median": 0.4417999635571532,
+    "generic_p90": 0.5606386389014283
+   }
+  }
+ }
+}

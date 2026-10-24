@@ -1451,11 +1451,34 @@ function traitDetail(el, c) {
   const POPS = [["EUR", "Europe"], ["EAS", "East Asia"], ["SAS", "South Asia"], ["AFR", "Africa"], ["AMR", "Americas"]];
   el.innerHTML = `<table><thead><tr><th>Variant</th><th>Your genotype</th><th>Copies of the effect allele</th><th>How common the effect allele is</th></tr></thead><tbody>
     ${vs.map((v) => `<tr><td>${escapeHtml(v.variant)}<br><small>${escapeHtml(v.rsid)} · ${escapeHtml(v.gene)} · effect allele ${escapeHtml(v.effect_allele)}</small></td>
-      <td class="n">${v.genotype ? escapeHtml(v.genotype) : "—"}</td>
+      <td class="n">${v.genotype ? escapeHtml(v.genotype) : "—"}${helixButtons(v)}</td>
       <td class="n">${v.copies == null ? `<small>${escapeHtml(v.note || "not read")}</small>` : v.copies}</td>
       <td><small>${v.freq ? POPS.filter(([k]) => v.freq[k] != null).map(([k, n]) => `${n} ${pct(v.freq[k], 0)}`).join(" · ") : ""}</small>
       ${v.gwas ? `<br><small>GWAS Catalog: ${escapeHtml(v.gwas.trait)} (${escapeHtml(v.gwas.first_author || "")}, p = ${Number(v.gwas.p).toExponential(0)})</small>` : ""}</td></tr>`).join("")}
-    </tbody></table><p class="note">Genotypes on the forward strand of the GRCh37 reference; frequencies from 1000 Genomes.</p>`;
+    </tbody></table><p class="note">Genotypes on the forward strand of the GRCh37 reference; frequencies from 1000 Genomes.
+    <i>Helix</i> builds the reference sequence around a variant, with your base at the centre, in DNA Structure.</p>`;
+  el.querySelectorAll("[data-helix]").forEach((b) => (b.onclick = (e) => { e.stopPropagation(); showVariantHelix(b.dataset.helix, b.dataset.allele); }));
+  helixVariants().then((have) => el.querySelectorAll("[data-helix]").forEach((b) => { b.hidden = !have.has(b.dataset.helix); }));
+}
+
+// the variants that have reference sequence around them (data/dna/flanks.json), fetched once
+let _helixVariants = null;
+function helixVariants() {
+  if (!_helixVariants) _helixVariants = rpc("dna_variants", {}).then((r) => new Set(r.variants || [])).catch(() => new Set());
+  return _helixVariants;
+}
+
+function helixButtons(v) {
+  const bases = [...new Set((v.genotype || "").replace(/[^ACGT]/g, "").split(""))];
+  if (!bases.length) return "";
+  return `<br>${bases.map((b) => `<button type="button" class="btn xs" hidden data-helix="${escapeHtml(v.rsid)}" data-allele="${b}"
+    title="Show the sequence around ${escapeHtml(v.rsid)} with ${b} at the centre">Helix · ${b}</button>`).join(" ")}`;
+}
+
+function showVariantHelix(rsid, allele) {
+  D.pending = { rsid, allele };
+  if (D.inited) dnaVariant();
+  document.querySelector('.tab[data-view="dna"]').click();
 }
 
 // ------------------------------------------------------------------ medicines
@@ -1818,6 +1841,13 @@ const H = (() => {
   }
 
   function atomColor(i) {
+    const c = baseColor(i), k = model.pair_of_atom[i];
+    // a highlighted base pair (a variant): every other pair fades
+    if (model.highlight != null && k !== model.highlight) c.lerp(new THREE.Color(0x2a3a46), 0.6);
+    return c;
+  }
+
+  function baseColor(i) {
     const a = model.atoms[i];
     if (color === "element") return new THREE.Color(elInfo(a[4])[0]);
     const base = a[2].replace(/^D/, ""), k = model.pair_of_atom[i];
@@ -1957,7 +1987,28 @@ function initDna() {
   const meltLater = () => { $("dnaTempV").textContent = `${$("dnaTemp").value} °C`; clearTimeout(t); t = setTimeout(dnaMelt, 60); };
   $("dnaTemp").oninput = meltLater; $("dnaNa").onchange = dnaMelt; $("dnaCt").onchange = dnaMelt;
   $("dnaSavePdb").onclick = dnaSave;
-  dnaBuild();
+  D.setForm = setForm;
+  if (D.pending) dnaVariant(); else dnaBuild();
+}
+
+async function dnaVariant() {
+  const want = D.pending; D.pending = null;
+  if (!want) return;
+  $("dnaBusy").hidden = false;
+  try {
+    const m = await rpc("dna_variant", want), v = m.variant;
+    D.setForm("B"); D.model = m; $("dnaSeq").value = m.sequence;
+    m.highlight = v.index; H.set(m);
+    $("dnaName").textContent = `${v.rsid} · ${v.allele}`;
+    $("dnaFormula").textContent = `chr${v.chrom}:${(v.pos37 - v.index).toLocaleString()}–${(v.pos37 + m.sequence.length - 1 - v.index).toLocaleString()} (GRCh37, forward strand)`;
+    renderDna(m); $("dnaSavePdb").hidden = false;
+    $("dnaPick").hidden = false;
+    $("dnaPick").textContent = `Base pair ${v.index + 1}: ${v.allele} at chr${v.chrom}:${v.pos37.toLocaleString()} ` +
+      `(reference ${v.ref}${v.alts.length ? `, alternative ${v.alts.join("/")}` : ""}). Reference sequence either side from ${v.source}. ` +
+      `The helix is ideal B-DNA from average step parameters; a single base change shifts its local shape only slightly.`;
+    await dnaMelt();
+  } catch (e) { log(`Helix build failed: ${e.message || e}`, true); }
+  finally { $("dnaBusy").hidden = true; }
 }
 
 async function dnaBuild() {
@@ -1981,7 +2032,7 @@ async function dnaMelt() {
     D.melt = r; H.setMelt(r);
     $("dnaMelt").innerHTML = `Melting temperature <b>${r.tm.toFixed(1)} °C</b> (two-state; ΔH° ${r.dH.toFixed(1)} kcal/mol, ΔG°37 ${r.dG37.toFixed(2)} kcal/mol).
       At ${$("dnaTemp").value} °C, <b>${pct(r.fraction_duplex, 0)}</b> of strands are paired; colour by <i>Melting</i> to see which pairs open first.
-      <br><small>Nearest-neighbour parameters: SantaLucia 1998; salt: Owczarzy et al. 2004. Checked in CI against 92 measured duplexes at five salt concentrations (mean error ${r.checked || "≈1.6 °C"}).</small>`;
+      <br><small>Nearest-neighbour parameters: SantaLucia 1998; salt: Owczarzy et al. 2004. ${r.checked ? `Checked against ${r.checked.duplexes} measured duplexes at ${r.checked.salts} salt concentrations (Owczarzy et al. 2004): mean error ${r.checked.mean_abs.toFixed(1)} °C, predictions ${r.checked.mean >= 0 ? "high" : "low"} by ${Math.abs(r.checked.mean).toFixed(1)} °C on average.` : ""}</small>`;
   } catch (e) { $("dnaMelt").textContent = String(e.message || e); }
 }
 
@@ -1995,7 +2046,7 @@ function renderDna(m) {
     ["Minor groove", g.length ? `${Math.min(...g).toFixed(1)}–${Math.max(...g).toFixed(1)} Å` : "—"],
     ["Backbone O3′–P", m.o3p.length ? `${Math.min(...m.o3p).toFixed(2)}–${Math.max(...m.o3p).toFixed(2)} Å (ideal 1.61)` : "—"],
   ]);
-  const f = (x, d = 1) => x.toFixed(d);
+  const f = (x, d = 1) => { const t = x.toFixed(d); return /^-0\.0*$/.test(t) ? t.slice(1) : t; };
   $("dnaSteps").innerHTML = `<table class="tight"><thead><tr><th>Step</th><th>Shift</th><th>Slide</th><th>Rise</th><th>Tilt</th><th>Roll</th><th>Twist</th></tr></thead><tbody>
     ${m.analysis.steps.map((s) => `<tr><td>${escapeHtml(s.step)}</td>${s.params.map((v, k) => `<td class="n">${f(v, k < 3 ? 2 : 1)}</td>`).join("")}</tr>`).join("")}
     </tbody></table><p class="note">Å and degrees, in the standard reference frame (Olson et al. 2001).</p>`;
