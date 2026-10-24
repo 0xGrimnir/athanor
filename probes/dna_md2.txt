@@ -1,0 +1,8 @@
+tleap /home/runner/micromamba/envs/probe/bin/tleap
+sander /home/runner/micromamba/envs/probe/bin/sander
+cpptraj /home/runner/micromamba/envs/probe/bin/cpptraj
+10.0 ps 299 K 7.2 ns/day CPU 4
+20.0 ps 304 K 7.2 ns/day CPU 4
+30.0 ps 302 K 7.2 ns/day CPU 4
+40.0 ps 282 K 7.2 ns/day CPU 4
+['leaprc.DNA.OL15', 'leaprc.DNA.OL21', 'leaprc.DNA.OL24', 'leaprc.DNA.bsc1', 'leaprc.DNA.tumuc1', 'leaprc.LignAmb25-SOLO', 'leaprc.RNA.OL3']
