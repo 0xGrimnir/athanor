@@ -1,0 +1,285 @@
+{'A': 11, 'C': 9, 'G': 12, 'T': 10, 'U': 9} {'B': {'A': 21, 'C': 19, 'G': 22, 'T': 20}, 'A': {'A': 21, 'C': 19, 'G': 22, 'T': 20}}
+459 DNA-only X-ray entries at <= 1.6 A
+kept duplexes: {'A': 17, 'B': 95, 'Z': 0}
+3DNA failed on 131D CalledProcessError(1, ['find_pair', 'work/131D.pdb', 'out.inp'])
+3DNA failed on 181D CalledProcessError(1, ['find_pair', 'work/181D.pdb', 'out.inp'])
+3DNA failed on 1D23 CalledProcessError(1, ['find_pair', 'work/1D23.pdb', 'out.inp'])
+3DNA failed on 1D39 CalledProcessError(1, ['find_pair', 'work/1D39.pdb', 'out.inp'])
+3DNA failed on 1D48 CalledProcessError(1, ['find_pair', 'work/1D48.pdb', 'out.inp'])
+3DNA failed on 1D49 CalledProcessError(1, ['find_pair', 'work/1D49.pdb', 'out.inp'])
+3DNA failed on 1DC0 CalledProcessError(1, ['find_pair', 'work/1DC0.pdb', 'out.inp'])
+3DNA failed on 1DCG CalledProcessError(1, ['find_pair', 'work/1DCG.pdb', 'out.inp'])
+3DNA failed on 1DJ6 CalledProcessError(1, ['find_pair', 'work/1DJ6.pdb', 'out.inp'])
+3DNA failed on 1EDR CalledProcessError(1, ['find_pair', 'work/1EDR.pdb', 'out.inp'])
+3DNA failed on 1FQ2 CalledProcessError(1, ['find_pair', 'work/1FQ2.pdb', 'out.inp'])
+3DNA failed on 1G75 CalledProcessError(1, ['find_pair', 'work/1G75.pdb', 'out.inp'])
+3DNA failed on 1G8N CalledProcessError(1, ['find_pair', 'work/1G8N.pdb', 'out.inp'])
+3DNA failed on 1I0T CalledProcessError(1, ['find_pair', 'work/1I0T.pdb', 'out.inp'])
+3DNA failed on 1ICK CalledProcessError(1, ['find_pair', 'work/1ICK.pdb', 'out.inp'])
+3DNA failed on 1IKK CalledProcessError(1, ['find_pair', 'work/1IKK.pdb', 'out.inp'])
+3DNA failed on 1J8L CalledProcessError(1, ['find_pair', 'work/1J8L.pdb', 'out.inp'])
+3DNA failed on 1JES CalledProcessError(1, ['find_pair', 'work/1JES.pdb', 'out.inp'])
+3DNA failed on 1JGR CalledProcessError(1, ['find_pair', 'work/1JGR.pdb', 'out.inp'])
+3DNA failed on 1M6R CalledProcessError(1, ['find_pair', 'work/1M6R.pdb', 'out.inp'])
+3DNA failed on 1S2R CalledProcessError(1, ['find_pair', 'work/1S2R.pdb', 'out.inp'])
+3DNA failed on 1SK5 CalledProcessError(1, ['find_pair', 'work/1SK5.pdb', 'out.inp'])
+3DNA failed on 1WOE CalledProcessError(1, ['find_pair', 'work/1WOE.pdb', 'out.inp'])
+3DNA failed on 1Z3F CalledProcessError(1, ['find_pair', 'work/1Z3F.pdb', 'out.inp'])
+3DNA failed on 1ZF0 CalledProcessError(1, ['find_pair', 'work/1ZF0.pdb', 'out.inp'])
+3DNA failed on 1ZF1 CalledProcessError(1, ['find_pair', 'work/1ZF1.pdb', 'out.inp'])
+3DNA failed on 1ZF6 CalledProcessError(1, ['find_pair', 'work/1ZF6.pdb', 'out.inp'])
+3DNA failed on 1ZF7 CalledProcessError(1, ['find_pair', 'work/1ZF7.pdb', 'out.inp'])
+3DNA failed on 1ZF8 CalledProcessError(1, ['find_pair', 'work/1ZF8.pdb', 'out.inp'])
+3DNA failed on 1ZF9 CalledProcessError(1, ['find_pair', 'work/1ZF9.pdb', 'out.inp'])
+3DNA failed on 1ZFA CalledProcessError(1, ['find_pair', 'work/1ZFA.pdb', 'out.inp'])
+3DNA failed on 1ZPI CalledProcessError(1, ['find_pair', 'work/1ZPI.pdb', 'out.inp'])
+3DNA failed on 213D CalledProcessError(1, ['find_pair', 'work/213D.pdb', 'out.inp'])
+3DNA failed on 224D CalledProcessError(1, ['find_pair', 'work/224D.pdb', 'out.inp'])
+3DNA failed on 245D CalledProcessError(1, ['find_pair', 'work/245D.pdb', 'out.inp'])
+3DNA failed on 292D CalledProcessError(1, ['find_pair', 'work/292D.pdb', 'out.inp'])
+3DNA failed on 293D CalledProcessError(1, ['find_pair', 'work/293D.pdb', 'out.inp'])
+3DNA failed on 2B3E CalledProcessError(1, ['find_pair', 'work/2B3E.pdb', 'out.inp'])
+3DNA failed on 2DCG CalledProcessError(1, ['find_pair', 'work/2DCG.pdb', 'out.inp'])
+3DNA failed on 2DES CalledProcessError(1, ['find_pair', 'work/2DES.pdb', 'out.inp'])
+3DNA failed on 2DPC CalledProcessError(1, ['find_pair', 'work/2DPC.pdb', 'out.inp'])
+3DNA failed on 2DYW CalledProcessError(1, ['find_pair', 'work/2DYW.pdb', 'out.inp'])
+3DNA failed on 2ELG CalledProcessError(1, ['find_pair', 'work/2ELG.pdb', 'out.inp'])
+3DNA failed on 2F8W CalledProcessError(1, ['find_pair', 'work/2F8W.pdb', 'out.inp'])
+3DNA failed on 2FII CalledProcessError(1, ['find_pair', 'work/2FII.pdb', 'out.inp'])
+3DNA failed on 2FIJ CalledProcessError(1, ['find_pair', 'work/2FIJ.pdb', 'out.inp'])
+3DNA failed on 2HTO CalledProcessError(1, ['find_pair', 'work/2HTO.pdb', 'out.inp'])
+3DNA failed on 2IE1 CalledProcessError(1, ['find_pair', 'work/2IE1.pdb', 'out.inp'])
+3DNA failed on 2PKV CalledProcessError(1, ['find_pair', 'work/2PKV.pdb', 'out.inp'])
+3DNA failed on 2PLB CalledProcessError(1, ['find_pair', 'work/2PLB.pdb', 'out.inp'])
+3DNA failed on 2PLO CalledProcessError(1, ['find_pair', 'work/2PLO.pdb', 'out.inp'])
+3DNA failed on 308D CalledProcessError(1, ['find_pair', 'work/308D.pdb', 'out.inp'])
+3DNA failed on 336D CalledProcessError(1, ['find_pair', 'work/336D.pdb', 'out.inp'])
+3DNA failed on 355D CalledProcessError(1, ['find_pair', 'work/355D.pdb', 'out.inp'])
+3DNA failed on 362D CalledProcessError(1, ['find_pair', 'work/362D.pdb', 'out.inp'])
+3DNA failed on 368D CalledProcessError(1, ['find_pair', 'work/368D.pdb', 'out.inp'])
+3DNA failed on 3FT6 CalledProcessError(1, ['find_pair', 'work/3FT6.pdb', 'out.inp'])
+3DNA failed on 3OMJ CalledProcessError(1, ['find_pair', 'work/3OMJ.pdb', 'out.inp'])
+3DNA failed on 3OPI CalledProcessError(1, ['find_pair', 'work/3OPI.pdb', 'out.inp'])
+3DNA failed on 3P4J CalledProcessError(1, ['find_pair', 'work/3P4J.pdb', 'out.inp'])
+3DNA failed on 3U05 CalledProcessError(1, ['find_pair', 'work/3U05.pdb', 'out.inp'])
+3DNA failed on 3U08 CalledProcessError(1, ['find_pair', 'work/3U08.pdb', 'out.inp'])
+3DNA failed on 3U0U CalledProcessError(1, ['find_pair', 'work/3U0U.pdb', 'out.inp'])
+3DNA failed on 3U2N CalledProcessError(1, ['find_pair', 'work/3U2N.pdb', 'out.inp'])
+3DNA failed on 3WBO CalledProcessError(1, ['find_pair', 'work/3WBO.pdb', 'out.inp'])
+3DNA failed on 403D CalledProcessError(1, ['find_pair', 'work/403D.pdb', 'out.inp'])
+3DNA failed on 423D CalledProcessError(1, ['find_pair', 'work/423D.pdb', 'out.inp'])
+3DNA failed on 440D CalledProcessError(1, ['find_pair', 'work/440D.pdb', 'out.inp'])
+3DNA failed on 442D CalledProcessError(1, ['find_pair', 'work/442D.pdb', 'out.inp'])
+3DNA failed on 443D CalledProcessError(1, ['find_pair', 'work/443D.pdb', 'out.inp'])
+3DNA failed on 455D CalledProcessError(1, ['find_pair', 'work/455D.pdb', 'out.inp'])
+3DNA failed on 4AGZ CalledProcessError(1, ['find_pair', 'work/4AGZ.pdb', 'out.inp'])
+3DNA failed on 4AH0 CalledProcessError(1, ['find_pair', 'work/4AH0.pdb', 'out.inp'])
+3DNA failed on 4AH1 CalledProcessError(1, ['find_pair', 'work/4AH1.pdb', 'out.inp'])
+3DNA failed on 4C64 CalledProcessError(1, ['find_pair', 'work/4C64.pdb', 'out.inp'])
+3DNA failed on 4FS5 CalledProcessError(1, ['find_pair', 'work/4FS5.pdb', 'out.inp'])
+3DNA failed on 4HIF CalledProcessError(1, ['find_pair', 'work/4HIF.pdb', 'out.inp'])
+3DNA failed on 4HIG CalledProcessError(1, ['find_pair', 'work/4HIG.pdb', 'out.inp'])
+3DNA failed on 4JD8 CalledProcessError(1, ['find_pair', 'work/4JD8.pdb', 'out.inp'])
+3DNA failed on 4R15 CalledProcessError(1, ['find_pair', 'work/4R15.pdb', 'out.inp'])
+3DNA failed on 4R49 CalledProcessError(1, ['find_pair', 'work/4R49.pdb', 'out.inp'])
+3DNA failed on 4R4A CalledProcessError(1, ['find_pair', 'work/4R4A.pdb', 'out.inp'])
+3DNA failed on 4U8A CalledProcessError(1, ['find_pair', 'work/4U8A.pdb', 'out.inp'])
+3DNA failed on 4U8B CalledProcessError(1, ['find_pair', 'work/4U8B.pdb', 'out.inp'])
+3DNA failed on 4U8C CalledProcessError(1, ['find_pair', 'work/4U8C.pdb', 'out.inp'])
+3DNA failed on 5JZQ CalledProcessError(1, ['find_pair', 'work/5JZQ.pdb', 'out.inp'])
+3DNA failed on 5MVK CalledProcessError(1, ['find_pair', 'work/5MVK.pdb', 'out.inp'])
+3DNA failed on 5T3L CalledProcessError(1, ['find_pair', 'work/5T3L.pdb', 'out.inp'])
+3DNA failed on 5WV7 CalledProcessError(1, ['find_pair', 'work/5WV7.pdb', 'out.inp'])
+3DNA failed on 6BST CalledProcessError(1, ['find_pair', 'work/6BST.pdb', 'out.inp'])
+3DNA failed on 6CQ3 CalledProcessError(1, ['find_pair', 'work/6CQ3.pdb', 'out.inp'])
+3DNA failed on 6DY5 CalledProcessError(1, ['find_pair', 'work/6DY5.pdb', 'out.inp'])
+3DNA failed on 6L75 CalledProcessError(1, ['find_pair', 'work/6L75.pdb', 'out.inp'])
+3DNA failed on 6X5D CalledProcessError(1, ['find_pair', 'work/6X5D.pdb', 'out.inp'])
+3DNA failed on 7ATG CalledProcessError(1, ['find_pair', 'work/7ATG.pdb', 'out.inp'])
+3DNA failed on 7JY2 CalledProcessError(1, ['find_pair', 'work/7JY2.pdb', 'out.inp'])
+3DNA failed on 7KU4 CalledProcessError(1, ['find_pair', 'work/7KU4.pdb', 'out.inp'])
+3DNA failed on 7KWK CalledProcessError(1, ['find_pair', 'work/7KWK.pdb', 'out.inp'])
+3DNA failed on 7RQT CalledProcessError(1, ['find_pair', 'work/7RQT.pdb', 'out.inp'])
+3DNA failed on 7ZQM CalledProcessError(1, ['find_pair', 'work/7ZQM.pdb', 'out.inp'])
+3DNA failed on 8C63 CalledProcessError(1, ['find_pair', 'work/8C63.pdb', 'out.inp'])
+3DNA failed on 8CE2 CalledProcessError(1, ['find_pair', 'work/8CE2.pdb', 'out.inp'])
+3DNA failed on 8EDB CalledProcessError(1, ['find_pair', 'work/8EDB.pdb', 'out.inp'])
+3DNA failed on 8F2W CalledProcessError(1, ['find_pair', 'work/8F2W.pdb', 'out.inp'])
+3DNA failed on 8FDQ CalledProcessError(1, ['find_pair', 'work/8FDQ.pdb', 'out.inp'])
+3DNA failed on 8FDR CalledProcessError(1, ['find_pair', 'work/8FDR.pdb', 'out.inp'])
+3DNA failed on 8OE9 CalledProcessError(1, ['find_pair', 'work/8OE9.pdb', 'out.inp'])
+3DNA failed on 8OEX CalledProcessError(1, ['find_pair', 'work/8OEX.pdb', 'out.inp'])
+3DNA failed on 8RI3 CalledProcessError(1, ['find_pair', 'work/8RI3.pdb', 'out.inp'])
+3DNA failed on 8RI5 CalledProcessError(1, ['find_pair', 'work/8RI5.pdb', 'out.inp'])
+3DNA failed on 8WQ7 CalledProcessError(1, ['find_pair', 'work/8WQ7.pdb', 'out.inp'])
+3DNA failed on 9V89 CalledProcessError(1, ['find_pair', 'work/9V89.pdb', 'out.inp'])
+compared with 3DNA: 0 structures, 112 not comparable
+[FAIL] base-pair and step parameters equal 3DNA's on every kept crystal duplex (to its printed 0.01 A / 0.01 deg): 0 structures; largest difference 0.000 (pairs) and 0.000 (steps), translations in A, rotations in units of 10 deg
+[FAIL] groove widths equal 3DNA's direct P-P distances (to its printed 0.1 A): largest difference 0.000 A
+/home/runner/micromamba/envs/dna/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/home/runner/micromamba/envs/dna/lib/python3.12/site-packages/numpy/_core/_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{
+ "B": {
+  "dimers": {
+   "AA": [
+    -0.03,
+    -0.08,
+    3.27,
+    -1.4,
+    0.7,
+    35.1
+   ],
+   "AC": [
+    0.13,
+    -0.58,
+    3.36,
+    -0.1,
+    0.7,
+    31.5
+   ],
+   "AG": [
+    0.09,
+    -0.25,
+    3.34,
+    -1.7,
+    4.5,
+    31.9
+   ],
+   "AT": [
+    0.0,
+    -0.59,
+    3.31,
+    0.0,
+    1.1,
+    29.3
+   ],
+   "CA": [
+    0.09,
+    0.53,
+    3.33,
+    0.5,
+    4.7,
+    37.3
+   ],
+   "CG": [
+    0.0,
+    0.41,
+    3.39,
+    0.0,
+    5.4,
+    36.1
+   ],
+   "GA": [
+    -0.28,
+    0.09,
+    3.37,
+    -1.5,
+    1.9,
+    36.3
+   ],
+   "GC": [
+    0.0,
+    -0.38,
+    3.4,
+    0.0,
+    0.3,
+    33.6
+   ],
+   "GG": [
+    0.05,
+    -0.22,
+    3.42,
+    -0.1,
+    3.6,
+    32.9
+   ],
+   "TA": [
+    0.0,
+    0.05,
+    3.42,
+    0.0,
+    3.3,
+    37.8
+   ]
+  },
+  "pair_by_type": {
+   "AT": [
+    0.06,
+    -0.11,
+    0.01,
+    1.92,
+    -15.59,
+    3.63
+   ],
+   "GC": [
+    -0.22,
+    -0.14,
+    0.05,
+    3.41,
+    -6.03,
+    -1.28
+   ]
+  }
+ },
+ "A": {
+  "steps": {
+   "all": [
+    -0.01,
+    -1.62,
+    3.23,
+    0.09,
+    6.65,
+    30.82
+   ]
+  },
+  "pair_by_type": {
+   "GC": [
+    -0.22,
+    -0.14,
+    -0.07,
+    -5.3,
+    -9.06,
+    -0.02
+   ],
+   "AT": [
+    0.07,
+    -0.14,
+    0.07,
+    -1.15,
+    -9.99,
+    0.93
+   ]
+  },
+  "n_structures": 17
+ },
+ "Z": {
+  "steps": {},
+  "pair_by_type": {},
+  "n_structures": 0
+ }
+}
+Z C: 0 atoms; median spread nan A
+Z G: 0 atoms; median spread nan A
+A: 17 crystals; rebuilt from own parameters: base atoms median 0.027 A, all atoms median 0.59 A; generic parameters (leave-one-out): median 1.57 A, 90th percentile 2.90 A
+B: 95 crystals; rebuilt from own parameters: base atoms median 0.031 A, all atoms median 1.10 A; generic parameters (leave-one-out): median 2.12 A, 90th percentile 8.62 A
+[PASS] rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A): median 0.030 A over 112 crystals
+[FAIL] B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median): median 2.12 A, 90th percentile 8.62 A over 95 crystals
+[FAIL] A-DNA built from its generic parameters lands within 1.5 A all-atom RMSD of the crystal (median, leave-one-out): median 1.57 A over 17 crystals
+3DNA rebuild failed 131D CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 181D CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1D23 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1D39 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1D48 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1D49 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1DCG CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1DJ6 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1EDR CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1FQ2 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1G75 CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1G8N CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1I0T CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1ICK CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+3DNA rebuild failed 1IKK CalledProcessError(1, ['rebuild', '-atomic', 'bp_step.par', 'rb.pdb'])
+[FAIL] Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A): largest RMSD 0.0000 A over 0 duplexes

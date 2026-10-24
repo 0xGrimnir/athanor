@@ -1,0 +1,318 @@
+{
+ "results": [
+  {
+   "name": "base-pair and step parameters equal 3DNA's on every kept crystal duplex (to its printed 0.01 A / 0.01 deg)",
+   "pass": false,
+   "detail": "0 structures; largest difference 0.000 (pairs) and 0.000 (steps), translations in A, rotations in units of 10 deg"
+  },
+  {
+   "name": "groove widths equal 3DNA's direct P-P distances (to its printed 0.1 A)",
+   "pass": false,
+   "detail": "largest difference 0.000 A"
+  },
+  {
+   "name": "rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A)",
+   "pass": true,
+   "detail": "median 0.030 A over 112 crystals"
+  },
+  {
+   "name": "B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median)",
+   "pass": false,
+   "detail": "median 2.12 A, 90th percentile 8.62 A over 95 crystals"
+  },
+  {
+   "name": "A-DNA built from its generic parameters lands within 1.5 A all-atom RMSD of the crystal (median, leave-one-out)",
+   "pass": false,
+   "detail": "median 1.57 A over 17 crystals"
+  },
+  {
+   "name": "Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A)",
+   "pass": false,
+   "detail": "largest RMSD 0.0000 A over 0 duplexes"
+  }
+ ],
+ "summary": {
+  "structures": {
+   "A": [
+    "1DC0",
+    "1ZF1",
+    "1ZF6",
+    "1ZF8",
+    "1ZF9",
+    "1ZFA",
+    "213D",
+    "2FIJ",
+    "2PKV",
+    "2PLB",
+    "2PLO",
+    "368D",
+    "440D",
+    "5MVK",
+    "5WV7",
+    "6DY5",
+    "6L75"
+   ],
+   "B": [
+    "131D",
+    "181D",
+    "1D23",
+    "1D39",
+    "1D48",
+    "1D49",
+    "1DCG",
+    "1DJ6",
+    "1EDR",
+    "1FQ2",
+    "1G75",
+    "1G8N",
+    "1I0T",
+    "1ICK",
+    "1IKK",
+    "1J8L",
+    "1JES",
+    "1JGR",
+    "1M6R",
+    "1S2R",
+    "1SK5",
+    "1WOE",
+    "1Z3F",
+    "1ZF0",
+    "1ZF7",
+    "1ZPI",
+    "224D",
+    "245D",
+    "292D",
+    "293D",
+    "2B3E",
+    "2DCG",
+    "2DES",
+    "2DPC",
+    "2DYW",
+    "2ELG",
+    "2F8W",
+    "2FII",
+    "2HTO",
+    "2IE1",
+    "308D",
+    "336D",
+    "355D",
+    "362D",
+    "3FT6",
+    "3OMJ",
+    "3OPI",
+    "3P4J",
+    "3U05",
+    "3U08",
+    "3U0U",
+    "3U2N",
+    "3WBO",
+    "403D",
+    "423D",
+    "442D",
+    "443D",
+    "455D",
+    "4AGZ",
+    "4AH0",
+    "4AH1",
+    "4C64",
+    "4FS5",
+    "4HIF",
+    "4HIG",
+    "4JD8",
+    "4R15",
+    "4R49",
+    "4R4A",
+    "4U8A",
+    "4U8B",
+    "4U8C",
+    "5JZQ",
+    "5T3L",
+    "6BST",
+    "6CQ3",
+    "6X5D",
+    "7ATG",
+    "7JY2",
+    "7KU4",
+    "7KWK",
+    "7RQT",
+    "7ZQM",
+    "8C63",
+    "8CE2",
+    "8EDB",
+    "8F2W",
+    "8FDQ",
+    "8FDR",
+    "8OE9",
+    "8OEX",
+    "8RI3",
+    "8RI5",
+    "8WQ7",
+    "9V89"
+   ],
+   "Z": []
+  },
+  "rebuild": {
+   "A": {
+    "n": 17,
+    "own_base": 0.026616004654020076,
+    "own_all": 0.5927501458346278,
+    "generic_median": 1.5650380390921486,
+    "generic_p90": 2.9003131084285148
+   },
+   "B": {
+    "n": 95,
+    "own_base": 0.030572917008009643,
+    "own_all": 1.0953633490775538,
+    "generic_median": 2.1224197291007076,
+    "generic_p90": 8.623892792590754
+   },
+   "Z": {
+    "n": 0,
+    "own_base": null,
+    "own_all": null,
+    "generic_median": null,
+    "generic_p90": null
+   }
+  }
+ },
+ "params": {
+  "B": {
+   "dimers": {
+    "AA": [
+     -0.03,
+     -0.08,
+     3.27,
+     -1.4,
+     0.7,
+     35.1
+    ],
+    "AC": [
+     0.13,
+     -0.58,
+     3.36,
+     -0.1,
+     0.7,
+     31.5
+    ],
+    "AG": [
+     0.09,
+     -0.25,
+     3.34,
+     -1.7,
+     4.5,
+     31.9
+    ],
+    "AT": [
+     0.0,
+     -0.59,
+     3.31,
+     0.0,
+     1.1,
+     29.3
+    ],
+    "CA": [
+     0.09,
+     0.53,
+     3.33,
+     0.5,
+     4.7,
+     37.3
+    ],
+    "CG": [
+     0.0,
+     0.41,
+     3.39,
+     0.0,
+     5.4,
+     36.1
+    ],
+    "GA": [
+     -0.28,
+     0.09,
+     3.37,
+     -1.5,
+     1.9,
+     36.3
+    ],
+    "GC": [
+     0.0,
+     -0.38,
+     3.4,
+     0.0,
+     0.3,
+     33.6
+    ],
+    "GG": [
+     0.05,
+     -0.22,
+     3.42,
+     -0.1,
+     3.6,
+     32.9
+    ],
+    "TA": [
+     0.0,
+     0.05,
+     3.42,
+     0.0,
+     3.3,
+     37.8
+    ]
+   },
+   "pair_by_type": {
+    "AT": [
+     0.06,
+     -0.11,
+     0.01,
+     1.92,
+     -15.59,
+     3.63
+    ],
+    "GC": [
+     -0.22,
+     -0.14,
+     0.05,
+     3.41,
+     -6.03,
+     -1.28
+    ]
+   }
+  },
+  "A": {
+   "steps": {
+    "all": [
+     -0.01,
+     -1.62,
+     3.23,
+     0.09,
+     6.65,
+     30.82
+    ]
+   },
+   "pair_by_type": {
+    "GC": [
+     -0.22,
+     -0.14,
+     -0.07,
+     -5.3,
+     -9.06,
+     -0.02
+    ],
+    "AT": [
+     0.07,
+     -0.14,
+     0.07,
+     -1.15,
+     -9.99,
+     0.93
+    ]
+   },
+   "n_structures": 17
+  },
+  "Z": {
+   "steps": {},
+   "pair_by_type": {},
+   "n_structures": 0
+  }
+ }
+}
