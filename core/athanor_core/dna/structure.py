@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .geometry import kabsch, pair_parameters, step_parameters
+from .geometry import bz_check, kabsch, pair_parameters, step_parameters
 
 PURINE_RING = ["N9", "C8", "N7", "C5", "C6", "N1", "C2", "N3", "C4"]
 PYRIMIDINE_RING = ["N1", "C2", "N3", "C4", "C5", "C6"]
@@ -196,6 +196,8 @@ def analyse(residues: list[Residue], std: dict | None = None) -> dict:
             continue
         Ra, oa = (np.array(x) for x in a["frame"])
         Rb, ob = (np.array(x) for x in b["frame"])
+        if a["watson_crick"] and b["watson_crick"]:
+            Ra, Rb = bz_check(Ra, oa, Rb, ob)
         p, _, _ = step_parameters(Ra, oa, Rb, ob)
         steps.append({"step": f"{a['pair'][0]}{b['pair'][0]}/{b['pair'][2]}{a['pair'][2]}", "params": p.tolist()})
     return {"strands": [s1[0].chain if s1 else None, s2[0].chain if s2 else None],

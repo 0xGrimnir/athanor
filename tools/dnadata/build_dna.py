@@ -129,7 +129,7 @@ def x3dna_analyse(path: Path):
     d.mkdir(exist_ok=True)
     subprocess.run(["find_pair", str(path.resolve()), "out.inp"], cwd=d, env=ENV, capture_output=True, check=True)
     subprocess.run(["analyze", "out.inp"], cwd=d, env=ENV, capture_output=True, check=True)
-    txt = (d / "out.out").read_text()
+    txt = (d / f"{path.stem}.out").read_text()
     pairs = re.findall(r"^\s+\d+\s+\(\s*[\d.]+\)\s+\.*>(\S):\.*(-?\d+)_:\[\.*(\w+)\](\w)-[-*+x]+-(\w)\[\.*(\w+)\]:\.*(-?\d+)_:(\S)<",
                        txt, re.M)
 

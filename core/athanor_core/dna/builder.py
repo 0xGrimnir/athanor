@@ -82,7 +82,12 @@ def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
     n = len(seq)
     atoms = []
     strand2 = []
+    turn = np.diag([-1.0, 1.0, -1.0])
     for k, (b, (Rm, om), pp) in enumerate(zip(seq, frames, pairs)):
+        if form == "Z":
+            # Z-DNA step parameters are measured with every pair frame turned 180 degrees about y
+            # (3DNA's B-Z check); the pair parameters belong to the unturned frame
+            Rm = Rm @ turn
         (Ri, oi), (Rii, oii) = pair_frames(Rm, om, pp)
         for base, Rb, ob, chain, num in ((b, Ri, oi, "A", k + 1), (COMP[b], Rii, oii, "B", 2 * n - k)):
             t = tmpl[_key(form, base, k if chain == "A" else n - 1 - k, n)]

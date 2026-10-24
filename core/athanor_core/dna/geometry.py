@@ -73,6 +73,24 @@ def step_parameters(R1: np.ndarray, o1: np.ndarray, R2: np.ndarray, o2: np.ndarr
     return np.array([shift, slide, rise, tilt, roll, twist]), Rm, om
 
 
+def bz_check(R1, o1, R2, o2):
+    """3DNA's treatment of left-handed and B-Z junction steps between two Watson-Crick pairs (analyze's
+    default -bz): in Z-DNA the base-pair z axes point against the direction from one pair to the next,
+    so both frames are turned 180 degrees about y (x and z reversed); at a B-Z junction, where the two z
+    axes oppose each other, the frame pointing backwards is turned. Returns the (possibly) adjusted
+    frames."""
+    x1, y1, z1 = R1[:, 0], R1[:, 1], R1[:, 2]
+    x2, y2, z2 = R2[:, 0], R2[:, 1], R2[:, 2]
+    d = np.asarray(o2, float) - np.asarray(o1, float)
+    turn = np.diag([-1.0, 1.0, -1.0])
+    if np.dot(x1, x2) < 0 and np.dot(z1, z2) < 0 and np.dot(y1, y2) > 0:
+        return (R1, R2 @ turn) if np.dot(d, z1) > 0 else (R1 @ turn, R2)
+    if (np.dot(x1, x2) > 0 and np.dot(z1, z2) > 0 and np.dot(y1, y2) > 0 and np.dot(d, z1) < 0
+            and np.dot(d, z2) < 0):
+        return R1 @ turn, R2 @ turn
+    return R1, R2
+
+
 def step_transform(p) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """For parameters p = [shift, slide, rise, tilt, roll, twist], frame 2 in the coordinates of
     frame 1: (R, middle-frame rotation, displacement d) with R2 = R1 @ R, Rm = R1 @ Mrel and
