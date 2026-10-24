@@ -395,22 +395,26 @@ for fm in "AZ":
 allr = [x for v in relaxed.values() for x in v]
 lo = min(x["o3p"][0] for x in allr)
 hi = max(x["o3p"][1] for x in allr)
+# OpenMM's multithreaded CPU platform sums the implicit-solvent forces in varying order, so the last
+# digits of a relaxed structure vary between runs: the exact figures go to the log, and the committed
+# validation file holds only what is stable
+print(f"relaxed O3'-P {lo:.3f}-{hi:.3f} A; largest base-atom shift {max(x['base_shift'] for x in allr):.3f} A")
 gate("after OpenMM relaxation every O3'-P link is a bond (1.55-1.67 A; AMBER OL15 equilibrium 1.61 A)",
      allr and lo >= 1.55 and hi <= 1.67,
-     f"{lo:.2f}-{hi:.2f} A over {len(allr)} models (rigid build: "
+     f"all links in range in {len(allr)} models (rigid build: "
      f"{min(x['rigid_o3p'][0] for x in allr):.2f}-{max(x['rigid_o3p'][1] for x in allr):.2f} A)")
 bs = max(x["base_shift"] for x in allr)
-gate("relaxation keeps the bases where the parameters put them (largest base-atom shift <= 0.3 A)", bs <= 0.3, f"{bs:.2f} A")
+gate("relaxation keeps the bases where the parameters put them (largest base-atom shift <= 0.3 A)", bs <= 0.3,
+     f"in all {len(allr)} models")
 for fm in "ABZ":
     if relaxed[fm]:
         d = np.median([x["relaxed"] - x["rigid"] for x in relaxed[fm]])
-        # two decimals: the minimiser's last digits can differ between runs
-        summary["rebuild"][fm]["relaxed_median"] = round(float(np.median([x["relaxed"] for x in relaxed[fm]])), 2)
-        print(f"{fm}: relaxed median all-atom RMSD {summary['rebuild'][fm]['relaxed_median']:.2f} A "
-              f"(rigid {summary['rebuild'][fm]['generic_median']:.2f}); median change {d:+.3f} A")
+        summary["rebuild"][fm]["relaxed_median"] = round(float(np.median([x["relaxed"] for x in relaxed[fm]])), 1)
+        print(f"{fm}: relaxed median all-atom RMSD {np.median([x['relaxed'] for x in relaxed[fm]]):.3f} A "
+              f"(rigid {summary['rebuild'][fm]['generic_median']:.3f}); median change {d:+.3f} A")
 dmax = max(np.median([x["relaxed"] - x["rigid"] for x in relaxed[fm]]) for fm in "ABZ" if relaxed[fm])
 gate("closing the backbone does not move the models away from the crystals (median all-atom RMSD change "
-     "<= +0.05 A in each form)", dmax <= 0.05, f"largest median change {dmax:+.2f} A")
+     "<= +0.05 A in each form)", dmax <= 0.05, "A, B and Z")
 
 # Deep DNAshape's predicted minor-groove width against the B-DNA crystals (reported, not gated: the
 # predictions are for free DNA in solution from Monte Carlo simulations and use Curves+'s groove

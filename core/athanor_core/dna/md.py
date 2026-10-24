@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import io
 import math
+import random
 import time
 
 import numpy as np
@@ -84,7 +85,14 @@ class System:
         pdb = app.PDBFile(io.StringIO(_pdb(atoms)))
         self.ff = app.ForceField(*FF_FILES)
         mod = app.Modeller(pdb.topology, pdb.positions)
-        mod.addHydrogens(self.ff)
+        # Modeller starts the new hydrogens at random positions (Python's random module) before minimising
+        # them: a fixed seed makes the same input give the same structure every time
+        state = random.getstate()
+        random.seed(20240607)
+        try:
+            mod.addHydrogens(self.ff, platform=mm.Platform.getPlatformByName("Reference"))
+        finally:
+            random.setstate(state)
         self.topology, self.positions = mod.topology, mod.positions
         self.salt, self.temperature = salt, temperature
         # hydrogen mass repartitioning (1.5 amu hydrogens) allows a 4 fs time step (Hopkins et al., JCTC 11, 1864, 2015)
@@ -164,7 +172,10 @@ def relax(atoms, salt: float = 0.15, restraint: float = 50.0, tolerance: float =
     base = [i for i in s.heavy if s.keys[i][2] in BASE_ATOMS]
     s.restrain(base, restraint)
     integ = mm.VerletIntegrator(0.001)
-    ctx = mm.Context(s.system, integ, platform())
+    plat = platform()
+    # forces summed in a fixed order, so the same input always gives the same structure
+    props = {"DeterministicForces": "true"} if plat.getName() in ("CPU", "CUDA") else {}
+    ctx = mm.Context(s.system, integ, plat, props)
     ctx.setPositions(s.positions)
     e0 = ctx.getState(getEnergy=True).getPotentialEnergy().value_in_unit(u.kilojoule_per_mole) / KCAL
     t = time.time()
