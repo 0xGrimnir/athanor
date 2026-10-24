@@ -55,6 +55,9 @@ REFS = {  # key: (PMID, words the PubMed title must contain)
 NOT_DEFINED = {"HLA-A": "HLA alleles need HLA typing; CPIC has no SNP definitions for them",
                "HLA-B": "HLA alleles need HLA typing; CPIC has no SNP definitions for them"}
 PRIMARY = {"DPYD": {"rs75017182"}}    # HapB3: the intronic SNP decides (CPIC/PharmCAT)
+# PharmCAT's exclusions: rs2230037's CPIC reference base is not GRCh38's, and the Villeurbanne deletion
+# shares its position with rs5030869 (https://pharmcat.org/methods/Gene-Definition-Exceptions/)
+EXCLUDE = {"G6PD": {"rs2230037", "g.154532991_154532993delGGT"}}
 fails = []
 
 
@@ -173,8 +176,9 @@ REP = re.compile(r"^([ACGT]+)\((\d+)\)$")
 def expand(s: str, ref_is_snv: bool) -> list[str]:
     """CPIC allele cell -> concrete allele strings."""
     s = s.strip()
-    if " or " in s:
-        return [x for part in s.split(" or ") for x in expand(part, ref_is_snv)]
+    for sep in (" or ", "; "):
+        if sep in s:
+            return [x for part in s.split(sep) for x in expand(part, ref_is_snv)]
     if ref_is_snv and len(s) == 1 and s in IUPAC:
         return list(IUPAC[s])
     return [s]
@@ -200,12 +204,16 @@ def allele_seq(a: str, refcell: str, window: str, off: int):
     else:
         return None, f"reference cell {refcell!r} not understood"
     m = REP.match(a)
-    if m:
+    if a == refcell:
+        rep = window[start:start + span]
+    elif m:
         rep = m.group(1) * int(m.group(2))
+    elif re.fullmatch(r"delins[ACGT]+", a):
+        rep = a[6:]
     elif a == "del" or re.fullmatch(r"del[ACGT]*", a):
         rep = ""
     elif re.fullmatch(r"ins[ACGT]+", a):
-        rep = a[3:] if span else a[3:]
+        rep = a[3:]
     elif re.fullmatch(r"[ACGT]+", a):
         rep = a
     else:
@@ -228,10 +236,16 @@ for sym, gd in gdata.items():
     # CPIC's reference row is the first row of the definition table; the API flags the row matching the
     # reference sequence. Where none is flagged, use the allele named *1 or 'Reference'.
     named = {d["name"]: d for d in defs}
-    ref_row = next((named[n] for n in ("*1", "Reference", "B (reference)") if n in named), None) or (refdef[0] if refdef else None)
+    ref_row = refdef[0] if refdef else next((named[n] for n in ("*1", "Reference") if n in named), None)
     if ref_row is None:
         fail(f"{sym}: no reference allele row")
         continue
+    # positions PharmCAT also leaves out (its Gene Definition Exceptions): the drop changes no phenotype
+    excl = EXCLUDE.get(sym, set())
+    for d in defs:
+        d["allele_location_value"] = [v for v in d["allele_location_value"]
+                                      if not ({v["sequence_location"].get("dbsnpid"), v["sequence_location"].get("chromosomelocation")} & excl)]
+    defs = [d for d in defs if d is ref_row or d["allele_location_value"] or d.get("structuralvariation")]
     locs = {}
     for d in defs:
         for v in d["allele_location_value"]:
@@ -348,7 +362,7 @@ for sym, gd in gdata.items():
     print(f"{sym:8s} {chrom_name:5s} {len(positions):4d} positions ({n_ind} indels), {len(alleles)} alleles, "
           f"{len(rlist)} result rows, lookup {grow.get('lookupmethod')}", flush=True)
     if not rlist:
-        fail(f"{sym}: no phenotype lookup rows")
+        print(f"  {sym}: CPIC assigns no phenotype; the genotype is reported as it is")
 
 # GRCh37 check against Ensembl for every SNV with an rsID
 rs = sorted({p["rsid"] for g in out_genes.values() for p in g["positions"] if p["kind"] == "snv" and p["rsid"]

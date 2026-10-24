@@ -195,6 +195,22 @@ gate("PharmCAT: same diplotype and phenotype on 1000 Genomes genotypes (every ge
      worst and low[0] >= 0.99 and total > 1000,
      f"{total:,} gene calls in {len(by_sample)} people; lowest agreement {low[0]:.3f} ({low[1]})")
 
+# ------------------------------------------------------------------ full-data calls
+nocall = {}
+for sym, gene in sorted(genes.items()):
+    if panel.genotypes(sym) is None:
+        continue
+    st = Counter()
+    for s in unrel:
+        c = gene.call(panel_geno(sym, s), haploid(sym, s))
+        st[c["status"].split(" (")[0]] += 1
+    nocall[sym] = st["no call"] / max(1, sum(st.values()))
+    print(f"   {sym:8s} full-data calls on {sum(st.values())} unrelated 1000 Genomes people: {dict(st)}")
+worst_nc = max(nocall.items(), key=lambda x: x[1]) if nocall else ("none", 0)
+gate("every gene gives a call for >= 99% of 1000 Genomes people (no definition clashes with the genome)",
+     worst_nc[1] <= 0.01, f"highest no-call rate {worst_nc[1]:.2%} ({worst_nc[0]})")
+summary["no_call"] = nocall
+
 # ------------------------------------------------------------------ 2. chip input
 COMP = {"A": "T", "C": "G", "G": "C", "T": "A"}
 mism = tot = 0

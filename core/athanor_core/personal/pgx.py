@@ -56,7 +56,7 @@ def _num(v):
     try:
         return f"{float(v):g}"
     except (TypeError, ValueError):
-        return None if v is None else str(v).strip()
+        return None if v is None else str(v).strip().lower()
 
 
 def _key(c: Counter) -> tuple:
@@ -91,6 +91,7 @@ class Gene:
             self.lookups.setdefault(_key(Counter(r["key"])), r)
         self.by_name = {a["name"]: a for a in self.alleles}
         self.mode = "variants" if symbol in VARIANT_GENES else "diplotype"
+        self.genotype_only = not d["results"]          # CPIC gives no phenotype (CYP4F2, VKORC1)
 
     # ------------------------------------------------------------------ matching
     def _bits(self, geno: np.ndarray, T: np.ndarray, col: int) -> np.ndarray:
@@ -250,9 +251,12 @@ class Gene:
             if not dips:
                 why = (" (a base no CPIC allele lists, at " + ", ".join(self.pos[k]["rsid"] or self.pos[k]["hgvs"] for k in novel) + ")") if novel else ""
                 return {"tested": tested, "diplotypes": [], "phenotype": None, "status": "no call" + why, "notes": notes}
+        out = {"tested": tested, "diplotypes": ["/".join(dp) for dp in dips], "notes": notes, **extra}
+        if self.genotype_only:
+            out.update(status="called" if len(dips) == 1 else "ambiguous", phenotype=None, genotype_only=True)
+            return out
         phen = [self.phenotype(dp) for dp in dips]
         results = sorted({(p or {}).get("result") or "Indeterminate" for p in phen})
-        out = {"tested": tested, "diplotypes": ["/".join(dp) for dp in dips], "notes": notes, **extra}
         if len(results) == 1:
             p = phen[0] or {}
             out.update(status="called", phenotype=results[0], score=p.get("score"),
@@ -394,8 +398,11 @@ class Panel:
 
 
 def _summary(c: dict) -> tuple:
+    dips = tuple(sorted(c.get("diplotypes") or []))
     ph = c.get("phenotype") or ("uncertain: " + " or ".join(c["possible"]) if c.get("possible") else None)
-    return (ph, tuple(sorted(c.get("diplotypes") or [])))
+    if c.get("genotype_only"):
+        ph = "diplotype " + " or ".join(dips) if dips else None
+    return (ph, dips)
 
 
 # ------------------------------------------------------------------ the cards
@@ -427,10 +434,11 @@ def pgx_cards(pgx: dict, panel: Panel | None, g: RawGenotypes, pos37: np.ndarray
         geno = gt.genotype(gene, chrom)
         c = gene.call(geno, haploid, alternatives=True)
         tested = geno[:, 0] != UNTESTED
-        rel = panel.agreement(gene, chrom, tested, c) if (panel is not None and c["status"] in ("called", "ambiguous")) else None
+        rel = (panel.agreement(gene, chrom, tested, c)
+               if (panel is not None and sym != "CYP2D6" and c["status"] in ("called", "ambiguous")) else None)
         calls[sym] = c
         cyp2d6 = sym == "CYP2D6"
-        if c["status"] == "called" and not cyp2d6:
+        if c["status"] == "called" and not cyp2d6 and c.get("phenotype"):
             status[sym] = c["score"] if d["lookup"] == "ACTIVITY_SCORE" else c["phenotype"]
         cards.append(_gene_card(sym, d, gene, c, rel, geno, drugs_by_gene.get(sym, []), refs, make_card, haploid))
     cards.insert(0, _summary_card(pgx, genes, calls, status, refs, make_card))
@@ -491,6 +499,9 @@ def _gene_card(sym, d, gene, c, rel, geno, drug_names, refs, make_card, haploid)
                        "before it could guide any medicine.")
             if c.get("phenotype"):
                 summary += f" If you have the usual two copies, these alleles would mean: {c['phenotype']} (presumptive)."
+        elif c.get("genotype_only"):
+            summary = (f"{sym} {dtxt}. CPIC assigns this gene no phenotype; its guideline uses the genotype directly "
+                       f"(for {drugs}).")
         elif c["status"] == "called":
             summary = f"{c['phenotype']} ({sym} {dtxt})."
         else:
@@ -523,8 +534,8 @@ def _gene_card(sym, d, gene, c, rel, geno, drug_names, refs, make_card, haploid)
               "Named Allele Matcher. Allele functions and the phenotype for each combination are CPIC's. ")
     if sym in VARIANT_GENES:
         method += "As CPIC specifies for this gene, the two lowest-function variants found make the diplotype. "
-    method += ("Reliability: the 2,504 unrelated 1000 Genomes (30x) people called with all positions and with only "
-               "yours. " f"CPIC drugs: {drugs}.")
+    method += ("Reliability: the unrelated people of the 1000 Genomes high-coverage panel, called once with every position "
+               "and once with only yours. " f"CPIC level-A medicines: {drugs}.")
     res = {"gene": sym, "call": c, "reliability": rel, "untested_alleles": untested, "rare_in_call": rare,
            "positions": [{"rsid": p.get("rsid"), "hgvs": p.get("hgvs"), "name": p.get("name"),
                           "genotype": _gt_text(p, geno[k], haploid)} for k, p in enumerate(gene.pos)
