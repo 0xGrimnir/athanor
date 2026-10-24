@@ -1,0 +1,80 @@
+[    0.0s] chip-like subset 95358 of 433252
+   23andme: vendor 23andMe, build GRCh37, markers 95358, used 95358, exact True, dropped ambiguous 0
+   ancestry: vendor AncestryDNA, build GRCh37, markers 95358, used 95358, exact True, dropped ambiguous 0
+   myheritage: vendor MyHeritage, build GRCh37, markers 95358, used 95358, exact True, dropped ambiguous 0
+   ftdna: vendor FamilyTreeDNA, build GRCh37, markers 95358, used 95358, exact True, dropped ambiguous 0
+   livingdna: vendor Living DNA, build GRCh37, markers 95358, used 95358, exact True, dropped ambiguous 0
+   vcf: vendor VCF, build GRCh37, markers 95358, used 95358, exact True, dropped ambiguous 0
+   vcf38: vendor VCF, build GRCh38 (converted to GRCh37), markers 64031, used 64031, exact True, dropped ambiguous 0
+[PASS] parsers: every vendor format reads back exactly: see lines above
+analysing 84 of 190 held-out genomes (6 per population)
+[    5.5s]   analysed 1/84
+[   19.7s]   analysed 11/84
+[   34.1s]   analysed 21/84
+[   48.6s]   analysed 31/84
+[   63.4s]   analysed 41/84
+[   78.3s]   analysed 51/84
+[   92.6s]   analysed 61/84
+[  106.7s]   analysed 71/84
+[  121.4s]   analysed 81/84
+[PASS] PCA: chip-subset genomes land within 2% of the PC1 range of their all-SNP position (median): median 0.95%, 95th percentile 2.63% over 168 placements
+[PASS] Neanderthal: chip-subset 95% interval contains the all-SNP estimate in >= 90% of genomes: 100% of 84
+   all-SNP Neanderthal estimates by group: {'GBR': 2.06, 'CEU': 2.19, 'FIN': 2.23, 'IBS': 2.05, 'TSI': 2.14, 'CHB': 2.4, 'JPT': 2.43, 'GIH': 1.9, 'PJL': 1.96, 'PEL': 2.43, 'MXL': 2.45, 'PUR': 2.2, 'Sardinian': 2.14, 'Druze': 1.88}
+   model fit by group (fits / marginal / does not fit):
+     CEU        europe             3/0/3
+     CEU        europe_west_asia   4/0/2
+     CEU        south_asia         0/0/6
+     CHB        europe             0/0/6
+     CHB        europe_west_asia   0/0/6
+     CHB        south_asia         0/0/6
+     Druze      europe             4/0/2
+     Druze      europe_west_asia   2/0/4
+     Druze      south_asia         3/0/3
+     FIN        europe             0/0/6
+     FIN        europe_west_asia   1/0/5
+     FIN        south_asia         0/0/6
+     GBR        europe             2/0/4
+     GBR        europe_west_asia   3/0/3
+     GBR        south_asia         0/0/6
+     GIH        europe             0/0/6
+     GIH        europe_west_asia   0/0/6
+     GIH        south_asia         4/2/0
+     IBS        europe             2/0/4
+     IBS        europe_west_asia   2/0/4
+     IBS        south_asia         0/0/6
+     JPT        europe             0/0/6
+     JPT        europe_west_asia   0/0/6
+     JPT        south_asia         0/0/6
+     MXL        europe             0/0/6
+     MXL        europe_west_asia   0/0/6
+     MXL        south_asia         0/0/6
+     PEL        europe             0/0/6
+     PEL        europe_west_asia   0/0/6
+     PEL        south_asia         0/0/6
+     PJL        europe             0/0/6
+     PJL        europe_west_asia   0/0/6
+     PJL        south_asia         5/1/0
+     PUR        europe             3/0/3
+     PUR        europe_west_asia   3/1/2
+     PUR        south_asia         0/0/6
+     Sardinian  europe             2/0/4
+     Sardinian  europe_west_asia   0/0/6
+     Sardinian  south_asia         0/0/6
+     TSI        europe             2/1/3
+     TSI        europe_west_asia   1/0/5
+     TSI        south_asia         0/0/6
+   CEU: max weight difference 0.0075, largest standard error 0.1063  (not identifiable; excluded)
+   CHB: max weight difference 515.3669, largest standard error 8.0953  (not identifiable; excluded)
+   Druze: max weight difference 0.2174, largest standard error 0.1899  (not identifiable; excluded)
+   FIN: max weight difference 0.0061, largest standard error 0.0955  (not identifiable; excluded)
+   no population target was well determined enough to compare (the estimator itself is checked by crosscheck_qpadm.py)
+   GBR: largest difference from the simulated proportion 0.103 (1.2 standard errors; model p 0.152)
+   CEU: largest difference from the simulated proportion 0.050 (0.5 standard errors; model p 0.454)
+   FIN: largest difference from the simulated proportion 0.081 (0.9 standard errors; model p 0.715)
+   IBS: largest difference from the simulated proportion 0.019 (0.3 standard errors; model p 0.660)
+   TSI: largest difference from the simulated proportion 0.152 (1.8 standard errors; model p 0.614)
+   PUR: largest difference from the simulated proportion 0.149 (1.2 standard errors; model p 0.473)
+[PASS] qpAdm recovers the simulated proportions within two standard errors: worst TSI: 0.152 = 1.8 standard errors, over 6 population(s)
+   no mitochondrial data supplied; mtDNA check skipped
+   validation summaries written into the pack manifest: ['ancient_ancestry', 'file_check', 'neanderthal', 'pca']
+total 141 s; 0 gate(s) failed: []

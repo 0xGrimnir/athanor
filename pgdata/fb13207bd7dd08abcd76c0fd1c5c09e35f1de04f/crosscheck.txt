@@ -1,0 +1,8 @@
+simulated 356168 SNPs, 200 individuals
+   ADMIXTOOLS [0.524 0.282 0.195] (se [0.013 0.011 0.009])
+   Athanor    [0.5239 0.2817 0.1944] (se [0.0127 0.0113 0.0091]), p 0.977, 356168 SNPs, 40 blocks
+[PASS] the simulation is well powered (every standard error below 0.02): largest standard error 0.0127
+[PASS] Athanor's qpAdm weights match ADMIXTOOLS within 0.005: largest difference 0.00061
+[PASS] Athanor's standard errors match ADMIXTOOLS within 0.005: largest difference 0.00026
+[PASS] both recover the simulated proportions within 0.03: Athanor [0.0239 0.0183 0.0056], ADMIXTOOLS [0.024 0.018 0.005]
+0 gate(s) failed: []

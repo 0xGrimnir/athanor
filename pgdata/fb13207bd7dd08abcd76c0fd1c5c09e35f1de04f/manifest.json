@@ -1,0 +1,618 @@
+{
+ "name": "pgdata-1",
+ "built": "2026-10-24T05:08:13Z",
+ "sources": {
+  "aadr": {
+   "name": "Allen Ancient DNA Resource v66.p1 (1240K)",
+   "licence": "CC0 1.0",
+   "doi": "https://doi.org/10.7910/DVN/FFIDCW",
+   "citation": "Mallick et al., Sci. Data 11, 182 (2024)"
+  },
+  "phylotree": {
+   "name": "PhyloTree Build 17 (RSRS), as packaged for Haplogrep 3",
+   "licence": "MIT",
+   "commit": "0e79ddf1b78f7a1b81fb5d607bc31a6ddea7b18b",
+   "citation": "van Oven & Kayser, Hum. Mutat. 30, E386 (2009); Schonherr et al., NAR 51, W263 (2023)"
+  },
+  "yleaf": {
+   "name": "Yleaf Y-chromosome tree and GRCh37 positions (YFull)",
+   "licence": "GPL-3.0",
+   "commit": "1aee0a1316e38fba2d616cdbf5145a7f0cd7456d",
+   "citation": "Ralf et al., Mol. Biol. Evol. 35, 1291 (2018)"
+  },
+  "chain": {
+   "name": "UCSC hg38ToHg19 liftOver chain",
+   "licence": "free for academic and non-profit use; commercial use of the UCSC tools requires a licence"
+  }
+ },
+ "roles": {
+  "Mbuti": {
+   "groups": [
+    "Mbuti"
+   ],
+   "individuals": 6
+  },
+  "YRI": {
+   "groups": [
+    "YRI"
+   ],
+   "individuals": 30
+  },
+  "Chimp": {
+   "groups": [
+    "Chimp"
+   ],
+   "individuals": 1
+  },
+  "Altai": {
+   "groups": [
+    "Altai_Neanderthal"
+   ],
+   "individuals": 1
+  },
+  "Vindija": {
+   "groups": [
+    "VindijaCave_Neanderthal"
+   ],
+   "individuals": 1
+  },
+  "Chagyrskaya": {
+   "groups": [
+    "ChagyrskayaCave_Neanderthal"
+   ],
+   "individuals": 1
+  },
+  "Denisova": {
+   "groups": [
+    "Russia_Denisova"
+   ],
+   "individuals": 1
+  },
+  "WHG": {
+   "groups": [
+    "Luxembourg_Loschbour_Mesolithic"
+   ],
+   "individuals": 16
+  },
+  "Anatolia_N": {
+   "groups": [
+    "Turkey_N"
+   ],
+   "individuals": 20
+  },
+  "Yamnaya": {
+   "groups": [
+    "Russia_Samara_EBA_Yamnaya"
+   ],
+   "individuals": 20
+  },
+  "Iran_N": {
+   "groups": [
+    "Iran_GanjDareh_N"
+   ],
+   "individuals": 6
+  },
+  "CHG": {
+   "groups": [
+    "Georgia_KotiasKlde_Mesolithic"
+   ],
+   "individuals": 4
+  },
+  "Steppe_MLBA": {
+   "groups": [
+    "Russia_Chelyabinsk_MLBA_Sintashta"
+   ],
+   "individuals": 6
+  },
+  "Onge": {
+   "groups": [
+    "ONG"
+   ],
+   "individuals": 4
+  },
+  "UstIshim": {
+   "groups": [
+    "Russia_UstIshim_IUP"
+   ],
+   "individuals": 1
+  },
+  "Kostenki": {
+   "groups": [
+    "Russia_Kostenki_UP"
+   ],
+   "individuals": 1
+  },
+  "MA1": {
+   "groups": [
+    "Russia_Malta_UP"
+   ],
+   "individuals": 3
+  },
+  "Han": {
+   "groups": [
+    "Han"
+   ],
+   "individuals": 8
+  },
+  "Papuan": {
+   "groups": [
+    "Papuan"
+   ],
+   "individuals": 16
+  },
+  "Chukchi": {
+   "groups": [
+    "Chukchi"
+   ],
+   "individuals": 1
+  },
+  "Karitiana": {
+   "groups": [
+    "Karitiana"
+   ],
+   "individuals": 16
+  },
+  "Natufian": {
+   "groups": [
+    "Israel_Natufian"
+   ],
+   "individuals": 4
+  },
+  "Mota": {
+   "groups": [
+    "Ethiopia_MotaCave_4500BP"
+   ],
+   "individuals": 2
+  }
+ },
+ "models": [
+  {
+   "id": "europe",
+   "title": "European three-way model",
+   "description": "Western hunter-gatherers, Anatolian early farmers and Yamnaya steppe herders (Haak et al. 2015).",
+   "sources": [
+    "WHG",
+    "Anatolia_N",
+    "Yamnaya"
+   ],
+   "labels": {
+    "WHG": "Western hunter-gatherer",
+    "Anatolia_N": "Anatolian early farmer",
+    "Yamnaya": "Steppe herder (Yamnaya)"
+   },
+   "right": [
+    "Mbuti",
+    "UstIshim",
+    "Kostenki",
+    "MA1",
+    "Han",
+    "Papuan",
+    "Onge",
+    "Chukchi",
+    "Karitiana"
+   ]
+  },
+  {
+   "id": "europe_west_asia",
+   "title": "European and West Asian four-way model",
+   "description": "Adds early Iranian farmers for ancestry from the Caucasus and Near East (southern Europe, West Asia).",
+   "sources": [
+    "WHG",
+    "Anatolia_N",
+    "Yamnaya",
+    "Iran_N"
+   ],
+   "labels": {
+    "WHG": "Western hunter-gatherer",
+    "Anatolia_N": "Anatolian early farmer",
+    "Yamnaya": "Steppe herder (Yamnaya)",
+    "Iran_N": "Iranian early farmer"
+   },
+   "right": [
+    "Mbuti",
+    "UstIshim",
+    "Kostenki",
+    "MA1",
+    "Han",
+    "Papuan",
+    "Onge",
+    "Chukchi",
+    "Karitiana",
+    "Natufian",
+    "Mota"
+   ]
+  },
+  {
+   "id": "south_asia",
+   "title": "South Asian three-way model",
+   "description": "Iranian-related farmers, Middle-to-Late Bronze Age steppe herders and an ancestral South Indian proxy (Narasimhan et al. 2019).",
+   "sources": [
+    "Iran_N",
+    "Steppe_MLBA",
+    "Onge"
+   ],
+   "labels": {
+    "Iran_N": "Iranian-related farmer",
+    "Steppe_MLBA": "Steppe herder (Bronze Age)",
+    "Onge": "Ancestral South Indian (Onge proxy)"
+   },
+   "right": [
+    "Mbuti",
+    "UstIshim",
+    "Kostenki",
+    "MA1",
+    "Han",
+    "Papuan",
+    "Karitiana",
+    "Natufian",
+    "Anatolia_N",
+    "WHG",
+    "Mota"
+   ]
+  }
+ ],
+ "archaic_roles": {
+  "altai": "Altai",
+  "chimp": "Chimp",
+  "vindija": "Vindija",
+  "africa": "YRI",
+  "denisova": "Denisova"
+ },
+ "archaic_definition": "All of the Altai, Vindija and Chagyrskaya Neanderthals that are called carry the allele (at least two called); under 1% in sub-Saharan African reference genomes (at least 100 chromosomes); at least 1% in European, East Asian and South Asian 1000 Genomes samples combined.",
+ "pca": [
+  {
+   "id": "world",
+   "title": "Worldwide",
+   "reference_individuals": 168
+  },
+  {
+   "id": "west",
+   "title": "West Eurasia",
+   "reference_individuals": 84
+  }
+ ],
+ "snps": 433252,
+ "ancients": 89,
+ "mt_matched": 89,
+ "y_matched": 26,
+ "modern": {
+  "regions": [
+   {
+    "id": "west_africa",
+    "title": "West Africa",
+    "continent": "africa",
+    "components": [
+     "west_africa"
+    ],
+    "groups": [
+     "YRI",
+     "Yoruba"
+    ],
+    "group_names": {
+     "YRI": "Yoruba in Ibadan, Nigeria"
+    },
+    "individuals": 36,
+    "detection_floor": 0.01,
+    "own_share_loo": 0.999999975045456
+   },
+   {
+    "id": "nw_europe",
+    "title": "Europe (5 regions)",
+    "continent": "europe",
+    "components": [
+     "nw_europe",
+     "france",
+     "finland",
+     "iberia",
+     "italy"
+    ],
+    "groups": [
+     "CEU",
+     "FIN",
+     "French",
+     "GBR",
+     "IBS",
+     "TSI"
+    ],
+    "group_names": {
+     "CEU": "Utah residents with Northern and Western European ancestry",
+     "FIN": "Finnish in Finland",
+     "GBR": "British in England and Scotland",
+     "IBS": "Iberian populations in Spain",
+     "TSI": "Toscani in Italy"
+    },
+    "individuals": 164,
+    "detection_floor": 0.01,
+    "own_share_loo": 0.9783000285258336
+   },
+   {
+    "id": "sardinia",
+    "title": "Sardinia",
+    "continent": "europe",
+    "components": [
+     "sardinia"
+    ],
+    "groups": [
+     "Sardinian"
+    ],
+    "group_names": {},
+    "individuals": 16,
+    "detection_floor": 0.01,
+    "own_share_loo": 0.9495242081478363
+   },
+   {
+    "id": "druze",
+    "title": "Druze",
+    "continent": "west_asia",
+    "components": [
+     "druze"
+    ],
+    "groups": [
+     "Druze"
+    ],
+    "group_names": {},
+    "individuals": 16,
+    "detection_floor": 0.06946868980278989,
+    "own_share_loo": 0.980760907991687
+   },
+   {
+    "id": "nw_south_asia",
+    "title": "Northwestern South Asia / Gujarat",
+    "continent": "south_asia",
+    "components": [
+     "nw_south_asia",
+     "gujarat"
+    ],
+    "groups": [
+     "GIH",
+     "PJL"
+    ],
+    "group_names": {
+     "GIH": "Gujarati Indians in Houston, Texas",
+     "PJL": "Punjabi in Lahore, Pakistan"
+    },
+    "individuals": 24,
+    "detection_floor": 0.02835224553718333,
+    "own_share_loo": 0.9153546220995186
+   },
+   {
+    "id": "north_china",
+    "title": "Northern and Northeast China / Japan and Korea",
+    "continent": "east_asia",
+    "components": [
+     "north_china",
+     "japan_korea"
+    ],
+    "groups": [
+     "CHB",
+     "Han",
+     "JPT"
+    ],
+    "group_names": {
+     "CHB": "Han Chinese in Beijing",
+     "JPT": "Japanese in Tokyo"
+    },
+    "individuals": 32,
+    "detection_floor": 0.05632970507114008,
+    "own_share_loo": 0.979068850220697
+   },
+   {
+    "id": "papua",
+    "title": "Papua New Guinea, Melanesia and Australia",
+    "continent": "oceania",
+    "components": [
+     "papua"
+    ],
+    "groups": [
+     "Papuan"
+    ],
+    "group_names": {},
+    "individuals": 16,
+    "detection_floor": 0.01,
+    "own_share_loo": 0.9992128058693581
+   },
+   {
+    "id": "americas",
+    "title": "Indigenous Americas",
+    "continent": "americas",
+    "components": [
+     "americas"
+    ],
+    "groups": [
+     "Karitiana"
+    ],
+    "group_names": {},
+    "individuals": 16,
+    "detection_floor": 0.030321242134339524,
+    "own_share_loo": 0.9542732466289527
+   }
+  ],
+  "continents": [
+   {
+    "id": "africa",
+    "title": "Sub-Saharan Africa",
+    "detection_floor": 0.01
+   },
+   {
+    "id": "europe",
+    "title": "Europe",
+    "detection_floor": 0.01
+   },
+   {
+    "id": "west_asia",
+    "title": "West Asia and North Africa",
+    "detection_floor": 0.06946868980278989
+   },
+   {
+    "id": "south_asia",
+    "title": "South Asia",
+    "detection_floor": 0.02835224553718333
+   },
+   {
+    "id": "east_asia",
+    "title": "East and Southeast Asia",
+    "detection_floor": 0.05632970507114008
+   },
+   {
+    "id": "oceania",
+    "title": "Oceania",
+    "detection_floor": 0.01
+   },
+   {
+    "id": "americas",
+    "title": "Indigenous Americas",
+    "detection_floor": 0.030321242134339524
+   }
+  ],
+  "outliers_removed": 0,
+  "merges": [
+   {
+    "merged": [
+     "nw_europe",
+     "france"
+    ],
+    "own_share_before": 0.04
+   },
+   {
+    "merged": [
+     "nw_europe",
+     "france",
+     "finland"
+    ],
+    "own_share_before": 0.157
+   },
+   {
+    "merged": [
+     "nw_europe",
+     "france",
+     "finland",
+     "italy"
+    ],
+    "own_share_before": 0.197
+   },
+   {
+    "merged": [
+     "nw_europe",
+     "france",
+     "finland",
+     "iberia",
+     "italy"
+    ],
+    "own_share_before": 0.2
+   },
+   {
+    "merged": [
+     "north_china",
+     "japan_korea"
+    ],
+    "own_share_before": 0.326
+   },
+   {
+    "merged": [
+     "nw_south_asia",
+     "gujarat"
+    ],
+    "own_share_before": 0.435
+   }
+  ],
+  "loo": {
+   "snps": 80000,
+   "calibration_per_region": 16,
+   "validation_per_region": 12,
+   "own_share_threshold": 0.65
+  },
+  "painting": {
+   "generations": 10.0,
+   "temper": 0.5,
+   "calibration": {
+    "0.25": {
+     "accuracy": 0.9840266666666667,
+     "mean_posterior": 0.9826012353102366
+    },
+    "0.35": {
+     "accuracy": 0.9876866666666667,
+     "mean_posterior": 0.9865035514036814
+    },
+    "0.5": {
+     "accuracy": 0.9880126666666668,
+     "mean_posterior": 0.9895204802354177
+    },
+    "0.7": {
+     "accuracy": 0.9863120000000002,
+     "mean_posterior": 0.9904743234316508
+    },
+    "1.0": {
+     "accuracy": 0.9836206666666666,
+     "mean_posterior": 0.9901266098022461
+    }
+   }
+  },
+  "x_snps": 19849,
+  "not_covered": [
+   "Central Asia (its populations are themselves mixtures of West and East Eurasian ancestry)",
+   "Iran (too few reference genomes)",
+   "Northeast Africa and the Horn of Africa (too few reference genomes)",
+   "Polynesia and Island Southeast Asia (too few reference genomes)",
+   "Indigenous North America (few reference genomes; most Indigenous American references are from Central and South America)",
+   "Jewish diaspora groups (not in the reference set)"
+  ],
+  "validation": {
+   "loo": {
+    "80000": {
+     "region": {
+      "West Africa": 0.9999999906614024,
+      "Europe (5 regions)": 0.9859712326790674,
+      "Sardinia": 0.9472842655815646,
+      "Druze": 0.9812904998537663,
+      "Northwestern South Asia / Gujarat": 0.9115024628758503,
+      "Northern and Northeast China / Japan and Korea": 0.9896195744235206,
+      "Papua New Guinea, Melanesia and Australia": 0.9999980553384501,
+      "Indigenous Americas": 0.9574722198021693
+     },
+     "continent": {
+      "africa": 0.9999999906614024,
+      "europe": 0.9975417468457386,
+      "west_asia": 0.9812904998537663,
+      "south_asia": 0.9115024628758503,
+      "east_asia": 0.9896195744235206,
+      "oceania": 0.9999980553384501,
+      "americas": 0.9574722198021693
+     }
+    }
+   }
+  }
+ },
+ "validation": {
+  "file_check": "Raw files written in the AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA, Living DNA and VCF layouts (including a GRCh38 VCF) are read back with every genotype exact.",
+  "pca": "Genomes reduced to about 95,358 SNPs (a genotyping chip's worth) land a median 0.95% of the map's width from where the same genomes land with all 1.15 million SNPs (168 placements of 84 held-out genomes).",
+  "neanderthal": "On 84 held-out genomes reduced to chip size, the 95% interval contained the estimate from all 1.15 million SNPs in 100% of cases.",
+  "ancient_ancestry": "Athanor's qpAdm reproduces ADMIXTOOLS qpAdm [0.524, 0.282, 0.195] with [0.524, 0.282, 0.194] on a well-powered simulation: every weight agrees to within 0.0006 and every standard error to within 0.0003, and both recover the simulated proportions [0.5, 0.3, 0.2] to within 0.024. On simulated populations whose true proportions are known, the fitted proportions were within two standard errors of the truth for all 6 populations (largest deviation 0.152).",
+  "continental_ancestry": "On 12 simulated genomes mixing two or three continents, built from the chromosomes of reference people left out of the panels whose own ancestry is unambiguous, the proportions were within 1.4 percentage points on average (4.8 at worst); the 95% intervals, which reflect statistical noise only, contained the true value 100% of the time. On genomes built from any reference people, including members of mixed groups, results matched the sources' own compositions within 1.4 points on average. Reference people left out of their panel are assigned on average at least 91% to their own continent; the rest mostly reflects real shared ancestry between neighbouring regions, which is why each region's typical profile is shown. ADMIXTURE's projection mode gives the same proportions to within 0.002.",
+  "regional_ancestry": "With 80,000 SNPs, people left out of the reference panels are assigned on average 97% to their own region (lowest region 91%); regions that could not be told apart are reported together.",
+  "chromosome_painting": "On simulated genomes with known ancestry segments, the pair of ancestries was right at 98% of SNPs, and the average confidence the method reported was 99%.",
+  "indigenous_american": "Detection limit 3.0%. On simulated genomes with known Indigenous American ancestry the proportion was recovered within 2.6 points from 5% upwards; detection rates at 2%, 5% and 10% were 17%, 50% and 100%; 0% of genomes with none, and 8% of left-out East Asian genomes, were reported as having some.",
+  "roh": "Segments match PLINK 1.9's --homozyg on the same genotypes (total length within 0.0%, overlap at least 1.00), and homozygous stretches of known length inserted into real genomes were found over 100% of their length.",
+  "x_ancestry": "From X-chromosome SNPs alone, people left out of the reference panels are assigned on average at least 87% to their own continent (people whose autosomes are unambiguous).",
+  "pgx_abcg2": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_cacna1s": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_cftr": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_cyp2b6": "Checked in CI against PharmCAT on 491 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_cyp2c19": "Checked in CI against PharmCAT on 498 1000 Genomes people: diplotype 100.0%, phenotype 99.8% the same.",
+  "pgx_cyp2c9": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_cyp2d6": "Not comparable with PharmCAT (PharmCAT does not call it from a VCF).",
+  "pgx_cyp3a5": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_cyp4f2": "Checked in CI against PharmCAT on 498 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_dpyd": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_g6pd": "Checked in CI against PharmCAT on 498 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_mt_rnr1": "Not comparable with PharmCAT (PharmCAT does not call it from a VCF).",
+  "pgx_nat2": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 99.8%, phenotype 99.8% the same.",
+  "pgx_nudt15": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_ryr1": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_slco1b1": "Checked in CI against PharmCAT on 489 1000 Genomes people: diplotype 99.8%, phenotype 100.0% the same.",
+  "pgx_tpmt": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_ugt1a1": "Checked in CI against PharmCAT on 498 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "pgx_vkorc1": "Checked in CI against PharmCAT on 500 1000 Genomes people: diplotype 100.0%, phenotype 100.0% the same.",
+  "medicines": "Calls checked against PharmCAT in CI: 8,472 gene calls in 500 people; lowest agreement 0.998 (SLCO1B1)"
+ },
+ "validated": "2026-10-24T05:21:33Z"
+}
