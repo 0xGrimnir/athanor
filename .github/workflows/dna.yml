@@ -82,3 +82,45 @@ jobs:
             cp melting.txt structure.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
             mkdir -p "$d/dna/${GITHUB_SHA}/data" && cp core/athanor_core/data/dna/*.json "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "dna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
+
+  dnashape:
+    # Deep DNAshape weights exported from the original TensorFlow checkpoints, and Athanor's NumPy
+    # implementation checked against the original
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: dnashape
+          create-args: python=3.11 pip
+          condarc: |
+            channels: [conda-forge]
+      - name: Export and check
+        run: |
+          pip install -q tensorflow-cpu==2.15.1 numpy==1.23.5
+          set +e
+          python tools/dnadata/dnashape_export.py core/athanor_core/data/dna/dnashape work > dnashape.txt 2>&1
+          rc=$?
+          grep -v "tensorflow/core\|cpu_feature_guard\|rebuild TensorFlow" dnashape.txt | tail -60
+          exit $rc
+      - name: Committed Deep DNAshape files regenerate exactly
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain core/athanor_core/data/dna/dnashape)" ]; then
+            git status --short core/athanor_core/data/dna/dnashape
+            echo "::error title=dnashape data::the committed files differ from the regenerated ones"; exit 1
+          fi
+      - name: Publish
+        if: always()
+        run: |
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          for i in 1 2 3; do
+            d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+              mkdir -p "$d/dna/${GITHUB_SHA}/dnashape" && cp dnashape.txt work/dnashape_report.json core/athanor_core/data/dna/dnashape/* "$d/dna/${GITHUB_SHA}/dnashape/" 2>/dev/null; \
+              (cd "$d" && git add -A && git commit -qm "dnashape ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) && break
+            git worktree remove --force "$d"; sleep $((RANDOM % 20 + 5))
+          done
