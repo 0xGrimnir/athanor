@@ -1,0 +1,67 @@
+{
+ "complexes": {
+  "1AAY": {
+   "bend": 19,
+   "published": null
+  },
+  "1CDW": {
+   "bend": 70,
+   "published": 80
+  },
+  "1CGP": {
+   "bend": 81,
+   "published": 90
+  },
+  "1EFA": {
+   "bend": 62,
+   "published": null
+  },
+  "1IHF": {
+   "bend": 164,
+   "published": 160
+  },
+  "1TSR": {
+   "bend": 14,
+   "published": null
+  }
+ },
+ "fibre": {
+  "neighbour": 214,
+  "next_but_one": 61
+ },
+ "nucleosome": {
+  "superhelix": {
+   "hand": "left",
+   "pitch": 25.87,
+   "radius": 41.82,
+   "turns": 1.83
+  }
+ },
+ "nucleus": {
+  "cells": 6,
+  "chr19_inside_18": 5,
+  "rho": -0.74
+ },
+ "results": [
+  {
+   "name": "the 1KX5 nucleosome's DNA, rebuilt from its own parameters in place, puts the crystal's bases back (base-atom RMSD <= 0.1 A, no superposition)",
+   "pass": true
+  },
+  {
+   "name": "the 1KX5 DNA follows a left-handed superhelix of the published radius and pitch (Richmond & Davey 2003: 41.9 A and 25.9 A; within 1.5 A and 3 A)",
+   "pass": true
+  },
+  {
+   "name": "DNA bend angles measured on the crystal structures match the published bends (TBP 80, CAP 90 deg within 15 deg; IHF more than 160 deg, measured >= 145 deg)",
+   "pass": true
+  },
+  {
+   "name": "the 6HKT array is a two-start zigzag: six nucleosomes, each nearer the nucleosome two along the DNA than its neighbour (mean centre distances)",
+   "pass": true
+  },
+  {
+   "name": "in the Dip-C single-cell structures, gene-rich chromosomes sit nearer the centre of the nucleus: chromosome 19 is more central than 18 in at least 5 of 6 cells, and radial position falls with gene density (Spearman rho <= -0.5)",
+   "pass": true
+  }
+ ]
+}
