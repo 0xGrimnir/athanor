@@ -1,0 +1,161 @@
+
+### https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=x3dna  (1415 bytes, text/plain; charset=UTF-8)
+# Maintainer: Tomasz Zok <tomasz.zok [at] gmail.com>
+pkgname=x3dna
+_pkgver=2.4
+pkgver=${_pkgver}.4_20190909
+pkgrel=1
+pkgdesc="3DNA is a versatile, integrated software system for the analysis, rebuilding and visualization of three-dimensional nucleic-acid-containing structures. Please see: http://forum.x3dna.org/site-announcements/download-instructions/"
+arch=('x86_64')
+url="http://forum.x3dna.org/downloads/3dna-download/"
+license=('custom')
+depends=('ruby')
+source=("${pkgname}.md5")
+md5sums=('SKIP')
+
+package() {
+    archive=${pkgname}-v${_pkgver}-linux-64bit.tar.gz
+    if [[ ! -r "../${archive}" ]]; then
+        echo "You must download ${archive} on your own from the project webpage"
+        echo 'See: http://forum.x3dna.org/site-announcements/download-instructions/'
+        return 1
+    fi
+    if ! md5sum --quiet --check "${pkgname}.md5"; then
+        echo 'Invalid checksum!'
+        return 1
+    fi
+
+    bsdtar xfz ../${archive}
+    cd ${pkgname}-v${_pkgver}/
+
+    install -d ${pkgdir}/etc/profile.d/
+    install -d ${pkgdir}/opt/${pkgname}-v${_pkgver}/
+    install -d ${pkgdir}/usr/bin/
+
+    # fix conflict with hunspell package
+    mv bin/analyze bin/analyze-x3dna
+
+    install bin/* ${pkgdir}/usr/bin/
+    cp -R config doc examples fiber lib np_recipes perl_scripts src ${pkgdir}/opt/${pkgname}-v${_pkgver}/
+    echo "export X3DNA=/opt/${pkgname}-v${_pkgver}" > "$pkgdir/etc/profile.d/x3dna.sh"
+}
+
+
+### https://x3dna.org/downloads
+ERROR <HTTPError 404: 'Not Found'>
+
+### http://forum.x3dna.org/downloads/3dna/  (23347 bytes, text/html; charset=UTF-8)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" type="text/css" href="http://forum.x3dna.org/Themes/default/css/index.css?fin20" />
+	<script type="text/javascript" src="http://forum.x3dna.org/Themes/default/scripts/script.js?fin20"></script>
+	<script type="text/javascript" src="http://forum.x3dna.org/Themes/default/scripts/theme.js?fin20"></script>
+	<script type="text/javascript"><!-- // --><![CDATA[
+		var smf_theme_url = "http://forum.x3dna.org/Themes/default";
+		var smf_default_theme_url = "http://forum.x3dna.org/Themes/default";
+		var smf_images_url = "http://forum.x3dna.org/Themes/default/images";
+		var smf_scripturl = "http://forum.x3dna.org/index.php";
+		var smf_iso_case_folding = false;
+		var smf_charset = "UTF-8";
+		var ajax_notification_text = "Loading...";
+		var ajax_notification_cancel_text = "Cancel";
+	// ]]></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="3DNA" />
+	<meta name="keywords" content="3DNA, nucleic acid structure, DNA, RNA, modeling, DNA-protein complex, bioinformatics, DSSR, G-quadruplex " />
+	<title>3DNA</title>
+	<link rel="canonical" href="http://forum.x3dna.org/index.php?topic=153.0" />
+	<link rel="help" href="http://forum.x3dna.org/index.php?action=help" />
+	<link rel="search" href="http://forum.x3dna.org/index.php?action=search" />
+	<
+
+### https://files.rcsb.org/download/1BNA.cif  (100712 bytes, chemical/x-cif)
+data_1BNA
+# 
+_entry.id   1BNA 
+# 
+_audit_conform.dict_name       mmcif_pdbx.dic 
+_audit_conform.dict_version    5.385 
+_audit_conform.dict_location   http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdbx.dic 
+# 
+loop_
+_database_2.database_id 
+_database_2.database_code 
+_database_2.pdbx_database_accession 
+_database_2.pdbx_DOI 
+PDB   1BNA         pdb_00001bna 10.2210/pdb1bna/pdb 
+RCSB  BDL001       ?            ?                   
+WWPDB D_1000171933 ?            ?                   
+# 
+loop_
+_pdbx_audit_revision_history.ordinal 
+_pdbx_audit_revision_history.data_content_type 
+_pdbx_audit_revision_history.major_revision 
+_pdbx_audit_revision_history.minor_revision 
+_pdbx_audit_revision_history.revision_date 
+1 'Structure model' 1 0 1981-05-21 
+2 'Structure model' 1 1 2008-05-22 
+3 'Structure m
+
+### https://files.rcsb.org/download/355D.cif  (106722 bytes, chemical/x-cif)
+data_355D
+# 
+_entry.id   355D 
+# 
+_audit_conform.dict_name       mmcif_pdbx.dic 
+_audit_conform.dict_version    5.375 
+_audit_conform.dict_location   http://mmcif.pdb.org/dictionaries/ascii/mmcif_pdbx.dic 
+# 
+loop_
+_database_2.database_id 
+_database_2.database_code 
+_database_2.pdbx_database_accession 
+_database_2.pdbx_DOI 
+PDB   355D         pdb_0000355d 10.2210/pdb355d/pdb 
+RCSB  BDL084       ? 
+
+### https://data.rcsb.org/rest/v1/core/entry/355D  (12421 bytes, application/json)
+{"audit_author":[{"name":"Hu, L.D.","pdbx_ordinal":1},{"name":"Shui, X.","pdbx_ordinal":2},{"name":"McFail-Isom, L.","pdbx_ordinal":3},{"name":"Williams, G.G.","pdbx_ordinal":4}],"cell":{"Z_PDB":8,"angle_alpha":90.0,"angle_beta":90.0,"angle_gamma":90.0,"length_a":25.186,"length_b":40.208,"length_c":65.656},"citation":[{"country":"US","id":"primary","journal_abbrev":"Biochemistry","journal_id_ASTM":"BICHAW","journal_id_CSD":"0033","journal_id_ISSN":"0006-2960","journal_volume":"37","page_first":"8341","page_last":"8355","pdbx_database_id_DOI":"10.1021/bi973073c","pdbx_database_id_PubMed":9622486,"rcsb_authors":["Shui, X.","McFail-Isom, L.","Hu, G.G.","Williams, L.D."],"rcsb_is_primary":"Y","rcsb_journal_abbrev":"Biochemistry","title":"The B-DNA dodecamer at high resolution reveals a spine of water on sodium.","year":1998}],"database_2":[{"database_code":"355D","database_id":"PDB","pdbx_DOI":"10.2210/pdb355d/pdb","pdbx_database_accession":"pdb_0000355d"},{"database_code":"BDL084","database_id":"RCSB"},{"database_code":"D_1000178824","database_id":"WWPDB"}],"diffrn":[{"ambient_temp":136.0,"crystal_id":"1","id":"1"}],"diffrn_detector":[{"detector":"CCD","diffrn_id":"1","type":"ADSC"}],"diffrn_radiation":[{"diffrn_id":"1","monochromator":"GRAPHITE","pdbx_monochromatic_or_laue_m_l":"M","pdbx_scattering_type":"x-ray","wavelength_id":"1"}],"diffrn_source":[{"diffrn_id":"1","pdbx_wavelength":"1.5418","source":"ROTATING ANODE","type":"RIGAKU RU200"}],"entry":{"id":"355D"},"exptl":[{"cr
+
+### https://www.nakb.org/  (14931 bytes, text/html)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head> <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <title>NAKB</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0K2RSNBJTZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0K2RSNBJTZ'); 
+</script>
+
+<meta property="og:title" content="Nucleic Acid Knowledge Base" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://nakb.org" />
+<meta property="og:image" content="/images/nakb-logo-500px.png" />
+
+
+<link rel="icon"          href="/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+
+<link href="/css/bootstrap4.1.3.min.css" type="text/css" rel="stylesheet" media="screen, projection, print"/>
+<link href="/css/extra-styles.css"       type="text/css" rel="stylesheet" media="screen, projection, print"/>
+
+<script src="/js/jquery-3.3.1.min.js"      type="text/javascript"></script>
+<script src="/js/popper1.12.9.min.js"      type="text/javascript"></script>
+<script src="/js/bootstrap4.1.3.min.js"    type="text/javascript"></script
+
+### https://www.nakb.org/api/
+ERROR <HTTPError 404: 'Not Found'>
+
+### https://www.nakb.org/dssr/355D.json
+ERROR <HTTPError 404: 'Not Found'>
+
+### https://www.ebi.ac.uk/pdbe/api/pdb/entry/summary/355d  (654 bytes, application/json)
+{"355d":[{"title":"THE B-DNA DODECAMER AT HIGH RESOLUTION","processing_site":"NDB","deposition_site":"NDB","deposition_date":"19971007","release_date":"19971013","revision_date":"20230802","experimental_method_class":["x-ray"],"experimental_method":["X-ray diffraction"],"split_entry":[],"related_structures":[],"entry_authors":["Hu, L.D.","Shui, X.","McFail-Isom, L.","Williams, G.G."],"number_of_entities":{"water":1,"polypeptide":0,"dna":1,"rna":0,"sugar":0,"ligand":2,"dna/rna":0,"other":0,"carbohydrate_polymer":0,"peptide_nucleic_acid":0,"cyclic_pseudo_peptide":0},"assemblies":[{"assembly_id":"1","name":"dimer","form":"homo","preferred":true}]}]}
