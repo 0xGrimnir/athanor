@@ -60,7 +60,8 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | IQ-TREE | Phylogenetic trees with model selection | GPL-2.0 | To verify |
 | BLAST+ | Sequence search | Public domain (US government work) | To verify |
 | Primer3 (primer3-py) | Primer design | GPL-2.0-or-later | Verified |
-| Biopython | Sequence utilities | Biopython License Agreement / BSD-3-Clause | Verified |
+| Biopython | Sequence utilities; independent cross-check of the melting temperatures in CI (Tm_NN) | Biopython License Agreement / BSD-3-Clause | Verified |
+| 3DNA 2.4.9 (Lu & Olson, Nucleic Acids Res. 31, 5108, 2003; Nat. Protoc. 3, 1213, 2008) | DNA Structure: the standard base geometries and the B- and A-DNA nucleotide sets ship with Athanor (with 3DNA's copyright notice); the program itself is the reference the analysis and rebuild are checked against in CI (not shipped) | BSD-3-Clause | Verified |
 | parasail | Pairwise alignment | BSD | Verified |
 | AutoDock Vina | Docking | Apache-2.0 | To verify |
 
@@ -88,6 +89,11 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | CPIC database (api.cpicpgx.org) | Medicines reports: allele definitions, allele functions and frequencies, phenotype tables, prescribing recommendations for level-A gene–drug pairs (downloaded in CI; the pack records the access date and database release) | CC0 1.0. CPIC asks for attribution, for its content to be described as subject to updates, and that its logo and acronym not be used in advertising without NIH permission | Verified |
 | 1000 Genomes high-coverage phased panel (NYGC; Byrska-Bishop et al., Cell 2022) | Genotypes at the CPIC positions, used to measure how far a call from a chip's positions can be trusted, and for the PharmCAT comparison | 1000 Genomes data are open (Fort Lauderdale principles; no restrictions on use) | Verified source |
 | Ensembl REST (GRCh38 sequence, GRCh37 variation) | Placing the CPIC indels and checking every CPIC reference allele against the genome; checking the GRCh37 liftover (in CI) | EMBL-EBI Terms of Use | To verify |
+| RCSB Protein Data Bank (search and download services) | DNA Structure: crystal duplexes from which the A- and Z-DNA parameters, the B-DNA base-pair parameters and the Z-DNA backbone are measured (in CI; only the resulting medians ship) | PDB data are CC0 1.0 | Verified |
+| Olson et al., PNAS 95, 11163 (1998), Table 1 | B-DNA dimer step parameters (published values, cited) | Published scientific data | Verified source |
+| SantaLucia, PNAS 95, 1460 (1998); Owczarzy et al., Biochemistry 43, 3537 (2004) | Nearest-neighbour parameters and salt correction (published values, cited) | Published scientific data | Verified source |
+| TfReg data files (Owczarzy et al. 2004 measured melting temperatures), from the openSUSE source mirror | CI check of the melting temperatures only: downloaded at test time, never redistributed | GPL | Verified |
+| Ensembl GRCh37 REST (sequence/region) | DNA Structure: reference sequence 10 bp either side of each trait variant, checked against the reference allele (in CI; the short sequences ship) | EMBL-EBI Terms of Use | To verify |
 | PharmCAT 3.4.0 | Independent cross-check of the pharmacogenomic calls in CI (not shipped) | MPL-2.0 | Verified |
 
 ## Compute pack note
@@ -97,3 +103,39 @@ The optional GPU compute pack is a separate download that bundles NVIDIA's CUDA 
 ## License compatibility note
 
 Several engines are GPL-licensed (gargammel, ART, AdapterRemoval and BWA in the Linux engines pack; Bowtie2, FastTree, IQ-TREE, Primer3 planned). In the pack they are unmodified separate programs, run as subprocesses and distributed with their conda package metadata and the curated mitochondrial data comes from GetOrganelleDB (GPL-3.0). While the repository is private and nothing is distributed, this has no effect. Before any public release, Athanor's own license and the way these components are bundled (as separate programs rather than linked libraries) must be reviewed together. This note is not legal advice.
+
+## 3DNA licence
+
+The standard base geometries and the B- and A-DNA nucleotide sets in `core/athanor_core/data/dna/` come from 3DNA v2.4 (https://github.com/x3dna-dssr/x3dna-v2.4). The licence is reproduced here and in `core/athanor_core/data/dna/LICENSE-3DNA.txt`:
+
+```
+BSD 3-Clause License
+
+Copyright (c) 1999-2026, Xiang-Jun Lu and Wilma K. Olson
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```

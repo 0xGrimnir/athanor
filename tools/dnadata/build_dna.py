@@ -87,7 +87,8 @@ if "--refresh" not in sys.argv and PINNED.exists():
     # the committed data are built from a fixed list of entries, so CI can check they regenerate exactly
     pinned = [x.strip() for x in PINNED.read_text().splitlines() if x.strip() and not x.startswith("#")]
     new = sorted(set(ids) - set(pinned))
-    print(f"using the {len(pinned)} pinned entries; {len(new)} newer search hits not in the list: {' '.join(new[:40])}", flush=True)
+    print(f"using the {len(pinned)} pinned entries ({len(new)} other search hits, left out by the filters when the list "
+          f"was made or released since, are considered only with --refresh)", flush=True)
     ids = pinned
 
 std = standard_bases()
@@ -266,8 +267,12 @@ for b in "CG":
     for k in kept:
         if k["form"] != "Z":
             continue
+        first = {}
         for r in k["residues"]:
-            if r.base != b:
+            first.setdefault(r.chain, r)
+        for r in k["residues"]:
+            # 5'-terminal nucleotides have no phosphate and a free-end conformation: left out
+            if r.base != b or first[r.chain] is r:
                 continue
             fr = base_frame(r, std)
             if fr is None:
@@ -406,6 +411,19 @@ for k in [k for k in kept if k["form"] == "B" and k.get("same_pairs")][:15]:
 gate("Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A)", nrb >= 5 and worst_rb <= 0.02,
      f"largest RMSD {worst_rb:.4f} A over {nrb} duplexes")
 
+def _round(x):
+    """Four decimals: enough for the reports, and the committed file stays identical when CI regenerates it
+    (the last digits of a float vary between runs)."""
+    if isinstance(x, float):
+        return round(x, 4)
+    if isinstance(x, dict):
+        return {k: _round(v) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_round(v) for v in x]
+    return x
+
+
+summary = _round(summary)
 (DATA / "validation.json").write_text(json.dumps({"results": results, "summary": summary}, indent=1, default=str))
 (WORK / "dna_report.json").write_text(json.dumps({"results": results, "summary": summary, "params": P}, indent=1, default=str))
 sys.exit(0 if all(r["pass"] for r in results) else 1)

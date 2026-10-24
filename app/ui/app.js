@@ -1954,10 +1954,11 @@ const H = (() => {
     const P = m.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
     const c = P.reduce((x, v) => x.add(v), new THREE.Vector3()).multiplyScalar(1 / P.length);
     let r = 0; for (const v of P) r = Math.max(r, v.distanceTo(c));
-    distTarget = Math.max(25, (r + 4) / Math.tan(THREE.MathUtils.degToRad(17)));
-    // stand the helix up: its axis (first to last pair origin) along screen y
-    const f = m.frames, o0 = new THREE.Vector3(...f[0][1]), o1 = new THREE.Vector3(...f[f.length - 1][1]);
-    const axis = o1.clone().sub(o0); if (axis.lengthSq() > 1e-6) group.quaternion.setFromUnitVectors(axis.normalize(), up);
+    distTarget = Math.max(25, (r * 1.2 + 6) / Math.tan(THREE.MathUtils.degToRad(17)));
+    // stand the helix up: the mean of the base-pair z axes (the helix axis direction) along screen y
+    const axis = new THREE.Vector3();
+    for (const [R] of m.frames) axis.add(new THREE.Vector3(R[0][2], R[1][2], R[2][2]));
+    if (axis.lengthSq() > 1e-6) group.quaternion.setFromUnitVectors(axis.normalize(), up);
     world.quaternion.identity();
     draw();
   }
@@ -1967,7 +1968,7 @@ const H = (() => {
 const D = { inited: false, model: null, form: "B", melt: null };
 const DNA_PRESETS = [
   ["Dickerson dodecamer", "CGCGAATTCGCG", "B"], ["A-tract (bent)", "GCAAAAAACGGCAAAAAACG", "B"],
-  ["GC-rich 20-mer", "GCGGCGCCGCGGCCGCGGCG", "B"], ["Z-DNA hexamer", "CGCGCG", "Z"],
+  ["GC-rich 20-mer", "GCGGCGCCGCGGCCGCGGCG", "B"], ["Z-DNA 12-mer", "CGCGCGCGCGCG", "Z"],
   ["A-DNA octamer", "GGGGCCCC", "A"], ["Primer-length 24-mer", "ATGCTAGCTAGGCTAACGTTAGCA", "B"],
 ];
 
@@ -2000,7 +2001,7 @@ async function dnaVariant() {
     D.setForm("B"); D.model = m; $("dnaSeq").value = m.sequence;
     m.highlight = v.index; H.set(m);
     $("dnaName").textContent = `${v.rsid} · ${v.allele}`;
-    $("dnaFormula").textContent = `chr${v.chrom}:${(v.pos37 - v.index).toLocaleString()}–${(v.pos37 + m.sequence.length - 1 - v.index).toLocaleString()} (GRCh37, forward strand)`;
+    $("dnaFormula").textContent = `chr${v.chrom}:${(v.pos37 - v.index).toLocaleString()}+${m.sequence.length - 1} · GRCh37 +`;
     renderDna(m); $("dnaSavePdb").hidden = false;
     $("dnaPick").hidden = false;
     $("dnaPick").textContent = `Base pair ${v.index + 1}: ${v.allele} at chr${v.chrom}:${v.pos37.toLocaleString()} ` +
@@ -2013,7 +2014,7 @@ async function dnaVariant() {
 
 async function dnaBuild() {
   const seq = $("dnaSeq").value.replace(/\s+/g, "").toUpperCase();
-  $("dnaBusy").hidden = false;
+  $("dnaBusy").hidden = false; $("dnaPick").hidden = true;
   try {
     const m = await rpc("dna_build", { sequence: seq, form: D.form });
     D.model = m; H.set(m);
@@ -2042,7 +2043,7 @@ function renderDna(m) {
   const g = m.analysis.grooves.map((x) => x.minor).filter((x) => x != null);  // already less 5.8 A
   $("dnaSummary").innerHTML = kvTable([
     ["Base pairs", m.sequence.length], ["Length", `${(avg(2) * Math.max(0, m.sequence.length - 1)).toFixed(1)} Å`],
-    ["Mean twist", `${avg(5).toFixed(1)}° (${(360 / avg(5)).toFixed(1)} bp per turn)`], ["Mean rise", `${avg(2).toFixed(2)} Å`],
+    ["Mean twist", `${avg(5).toFixed(1)}° · ${(360 / Math.abs(avg(5))).toFixed(1)} bp/turn`], ["Handedness", avg(5) < 0 ? "left (Z-DNA)" : "right"], ["Mean rise", `${avg(2).toFixed(2)} Å`],
     ["Minor groove", g.length ? `${Math.min(...g).toFixed(1)}–${Math.max(...g).toFixed(1)} Å` : "—"],
     ["Backbone O3′–P", m.o3p.length ? `${Math.min(...m.o3p).toFixed(2)}–${Math.max(...m.o3p).toFixed(2)} Å (ideal 1.61)` : "—"],
   ]);

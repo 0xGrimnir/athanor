@@ -2,6 +2,17 @@
 
 All notable changes to Athanor are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] - 2026-10-24
+
+### Added
+- **DNA Structure.** Any sequence as a 3D double helix, atom by atom, in B, A or Z form.
+  - B-DNA follows the sequence: each dimer step takes its average shape in protein–DNA crystal structures (Olson et al. 1998). A- and Z-DNA use parameters measured on high-resolution crystal duplexes in the PDB.
+  - The table beside the helix gives each base pair's and step's six parameters and the minor-groove width, computed exactly as 3DNA does.
+  - Melting: the melting temperature for your salt and strand concentrations (SantaLucia 1998 nearest-neighbour parameters, Owczarzy 2004 salt correction), and a temperature slider that shows which base pairs open first.
+  - Atoms or cartoon; colour by base, element, minor-groove width or melting; click a base for its pair; save as PDB.
+- **Personal Genome → DNA Structure:** each trait variant has a *Helix* button that shows the reference sequence 10 bp either side with your base at the centre.
+- Checked in CI against 3DNA 2.4.9 on 112 PDB crystal duplexes and against 92 measured melting temperatures at five salt concentrations (see the README).
+
 ## [0.7.0] - 2026-10-24
 
 ### Added

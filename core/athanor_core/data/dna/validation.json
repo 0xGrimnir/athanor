@@ -13,7 +13,7 @@
   {
    "name": "rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A)",
    "pass": true,
-   "detail": "median 0.027 A over 107 crystals"
+   "detail": "median 0.029 A over 107 crystals"
   },
   {
    "name": "B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median)",
@@ -160,24 +160,24 @@
   "rebuild": {
    "A": {
     "n": 17,
-    "own_base": 0.026616004654020364,
-    "own_all": 0.592750145834628,
-    "generic_median": 1.565038039092148,
-    "generic_p90": 2.9003131084285148
+    "own_base": 0.0266,
+    "own_all": 0.5928,
+    "generic_median": 1.565,
+    "generic_p90": 2.9003
    },
    "B": {
     "n": 62,
-    "own_base": 0.027243458423156387,
-    "own_all": 0.7549466287230757,
-    "generic_median": 1.4514905391209298,
-    "generic_p90": 2.986573939062918
+    "own_base": 0.0272,
+    "own_all": 0.7549,
+    "generic_median": 1.4515,
+    "generic_p90": 2.9866
    },
    "Z": {
     "n": 28,
-    "own_base": 0.027655375396387655,
-    "own_all": 0.3067516115048866,
-    "generic_median": 0.4417999635571532,
-    "generic_p90": 0.5606386389014283
+    "own_base": 0.0326,
+    "own_all": 0.3069,
+    "generic_median": 0.4414,
+    "generic_p90": 0.5606
    }
   }
  }

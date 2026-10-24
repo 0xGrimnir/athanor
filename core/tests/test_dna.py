@@ -87,3 +87,16 @@ def test_built_helices_analyse_back_to_their_parameters():
         assert a["left_handed"] == (form == "Z")
         assert np.allclose([s["params"] for s in a["steps"]], m["steps"], atol=1e-6)
         assert np.allclose([p["params"] for p in a["pairs"]], m["pairs"], atol=1e-6)
+
+
+def test_every_nucleotide_has_its_backbone():
+    """Each built nucleotide carries a full sugar-phosphate, so every O3'-P link exists."""
+    from athanor_core.dna.builder import build
+    for seq, form in (("CGCGAATTCGCG", "B"), ("GGGGCCCC", "A"), ("CGCGCGCGCGCG", "Z")):
+        m = build(seq, form)
+        names = {}
+        for c, n, _, a, _ in m["atoms"]:
+            names.setdefault((c, n), set()).add(a)
+        for atoms in names.values():
+            assert {"P", "OP1", "OP2", "O5'", "C5'", "C4'", "O4'", "C3'", "O3'", "C2'", "C1'"} <= atoms, (form, atoms)
+        assert len(m["o3p"]) == 2 * (len(seq) - 1)

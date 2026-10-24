@@ -8,8 +8,8 @@ Every module ships only after its benchmark suite reproduces published reference
 
 ## Order of work
 
-1. **Done:** Personal Genome steps 1–3 (deep and modern ancestry, traits, medicines; 0.5.0–0.7.0)
-2. **Next:** DNA Structure, first release
+1. **Done:** Personal Genome steps 1–3 (deep and modern ancestry, traits, medicines; 0.5.0–0.7.0); DNA Structure, first release (0.8.0)
+2. **Next:** DNA Structure, second release (groove shape from sequence, pairing and stacking energies), or Deep Time
 3. **Then:** Deep Time, starting with ancient nuclear genomes and then traits from ancient genomes, interleaved with Personal Genome steps 4–5
 4. **Later:** Populations, RNA and proteins, Radiocarbon dating, and the research problems
 
@@ -110,25 +110,32 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 - Regional ancestry is limited by reference panels of a few dozen people per region; finer regions need larger panels
 - Several world regions have too few reference genomes to report (listed on the report cards)
 
-## DNA Structure (new)
+## DNA Structure (working; 0.8.0)
 
-The double helix as a real molecule, built from measured parameters rather than drawn as a generic spiral. Uses the Molecules layer's 3D viewer and quantum engines.
+The double helix as a real molecule, built from measured parameters rather than drawn as a generic spiral.
 
-- **Any sequence in 3D, atom by atom,** using sequence-dependent base-pair step parameters (Olson et al., PNAS 95, 11163, 1998), so each sequence bends and twists as real DNA does; B-, A- and Z-forms
-- **Groove shape:** minor-groove width, roll, propeller twist and helix twist predicted from sequence (DNAshape; Zhou et al., Nucleic Acids Res. 41, W56, 2013), shown as colour on the helix
-- **Melting:** a temperature slider unzips the helix, AT-rich regions first, from nearest-neighbour thermodynamics (SantaLucia, PNAS 95, 1460, 1998)
-- **Why the helix holds together:** base-pairing and stacking energies computed with the Molecules engines
+Done (0.8.0):
+- **Any sequence in 3D, atom by atom,** built the way 3DNA's rebuild does (Lu & Olson 2003): base-pair frames laid down from step parameters, base frames from pair parameters, standard bases (Olson et al. 2001) placed in them, the sugar-phosphate backbone riding on each base
+  - **B-DNA** from sequence-dependent step parameters (Olson et al., PNAS 95, 11163, 1998, Table 1), base pairs from crystal medians
+  - **A-DNA** and **Z-DNA** (alternating CG) from parameters measured on high-resolution crystal duplexes in the PDB; Z-DNA nucleotide geometry (syn G, anti C) from the same crystals
+- **Analysis** of any duplex: the six base-pair and six step parameters and the minor and major groove widths, computed exactly as 3DNA does (including its convention for left-handed Z-DNA and B–Z junctions)
+- **Melting:** two-state melting temperature from nearest-neighbour thermodynamics (SantaLucia 1998) with the Owczarzy 2004 salt correction; a temperature slider shows which base pairs open first (a zipper model of contiguous helical stretches)
+- **Your variants in 3D:** a Personal Genome trait variant opens in DNA Structure as the GRCh37 sequence 10 bp either side with your base at the centre
+- Atoms or cartoon; colour by base, element, minor-groove width or melting; click any atom for its base pair; save as PDB
+
+Benchmarks (CI, every change):
+- Base-pair, step and groove parameters equal 3DNA 2.4.9's on 98 crystal duplexes (≤ 1.6 Å, DNA only) to its printed precision
+- Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD 0.001 Å); every crystal rebuilt from its own parameters returns its bases to 0.03 Å
+- Built from sequence alone: B-DNA within a median 1.45 Å all-atom RMSD of 62 crystals; A-DNA 1.57 Å (17 crystals) and Z-DNA 0.44 Å (28) with each crystal left out of the parameters
+- Melting temperatures: mean error 1.66 °C against 92 measured duplexes at five salt concentrations (Owczarzy et al. 2004); identical to Biopython's Tm_NN
+
+Next:
+- **Backbone closure:** the backbone rides on each base, so O3′–P links in B- and A-DNA are 1.2–2.8 Å instead of 1.61 Å; a constrained relaxation of the sugar-phosphate would close them
+- **Groove shape from sequence:** minor-groove width, roll, propeller and helix twist predicted from sequence (DNAshape; Zhou et al., Nucleic Acids Res. 41, W56, 2013), benchmarked against its published values and crystal structures
+- **Why the helix holds together:** base-pairing and stacking energies computed with the Molecules engines, benchmarked against the S22 set
 - **Ancient damage in place:** cytosine deamination at the single-stranded ends of an ancient molecule, linked to the damage the Ancient DNA Lab measures
-- **Your variants in 3D:** open a Personal Genome variant and see the base change in the helix
 - **Zoom through the scales:** helix → nucleosome (147 bp; PDB 1KX5) → protein–DNA complexes → chromatin fibre → whole-chromosome 3D models from public Hi-C data (4D Nucleome)
-- **Later:** DNA dynamics on the GPU (OpenMM with a current nucleic-acid force field)
-
-Benchmarks:
-- Built structures vs high-resolution crystal structures (e.g. the Dickerson–Drew dodecamer), by atomic RMSD
-- Groove widths vs DNAshape's published values and crystal structures
-- Melting temperatures vs the published measured sets
-- Pairing and stacking energies vs the S22 reference values
-- Dynamics (later): helical parameters vs published simulations and NMR data
+- **Later:** DNA dynamics on the GPU (OpenMM with a current nucleic-acid force field), checked against published simulations and NMR data
 
 ## Deep Time (new)
 

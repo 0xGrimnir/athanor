@@ -24,7 +24,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Working (0.1–0.2) |
 | **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Working (0.3–0.4) |
 | **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, continental and regional ancestry, chromosome painting, Indigenous American ancestry, runs of homozygosity, X-chromosome ancestry, appearance, food and drink, fitness, and medicines (CPIC pharmacogenomics for 19 genes); relatives and opt-in health to come | AADR (ancient and present-day genomes), PhyloTree, YFull; trait variants checked against Ensembl, 1000 Genomes and the GWAS Catalog; CPIC, checked against PharmCAT | Working (0.5–0.7) |
-| **DNA Structure** | Any sequence as a 3D helix built from measured parameters; groove shape, melting, base-pairing energies, ancient damage in place, your variants in 3D, and a zoom from helix to chromosome | Molecules engines, DNAshape, nearest-neighbour thermodynamics, PDB, 4D Nucleome | Planned |
+| **DNA Structure** | Any sequence as a 3D helix, atom by atom, in B, A or Z form, built from parameters measured on crystal structures; base-pair, step and groove parameters for any duplex; melting temperature and which pairs open first; Personal Genome trait variants shown in the helix. Planned: groove shape from sequence, pairing and stacking energies, ancient damage in place, a zoom from helix to chromosome | 3DNA's methods (checked against 3DNA 2.4.9); PDB crystal structures; nearest-neighbour thermodynamics | Working (0.8) |
 | **Deep Time** | Ancient nuclear genomes, traits from ancient genomes, ancient proteins, DNA decay, radiocarbon calibration | minimap2, bwa-mem2, samtools; IntCal20 | Planned |
 | **Populations** | Evolution sandbox: drift, selection, bottlenecks and interbreeding, compared with real ancient data | msprime, SLiM | Planned |
 | **RNA and proteins** | RNA folding; Personal Genome variants placed on AlphaFold and PDB protein structures | Mol* | Planned |
@@ -38,6 +38,21 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | DFT | Matches Psi4's own frequency analysis; the GPU tier's code path (PySCF) matches Psi4 | Same reference set at B3LYP/cc-pVTZ, compared with published B3LYP statistics (Janoschek 2001; CCCBDB scale factors; Hait & Head-Gordon 2018) |
 
 Reference values and sources: [`core/benchmarks/reference/phase1.json`](core/benchmarks/reference/phase1.json). Run locally with `python -m athanor_core.benchmark`.
+
+## Validation (DNA Structure)
+
+Against 3DNA 2.4.9 and 112 DNA-only crystal duplexes from the PDB (X-ray, 1.6 Å or better; the entry list is pinned in [`tools/dnadata/entries.txt`](tools/dnadata/entries.txt)), and against measured melting temperatures:
+
+| Check | Result |
+|---|---|
+| Base-pair, step and groove parameters vs 3DNA's `analyze` | Equal to its printed precision on 98 duplexes (14 not comparable: 3DNA pairs the ends differently) |
+| Rebuild vs 3DNA's `rebuild` from the same parameters | 0.001 Å RMSD (15 duplexes) |
+| Each crystal rebuilt from its own parameters | Bases back to a median 0.03 Å |
+| B-DNA built from sequence alone (Olson et al. 1998 steps) | Median 1.45 Å all-atom RMSD to 62 crystals |
+| A- and Z-DNA from parameters measured on the other crystals | Median 1.57 Å (17 A-DNA) and 0.44 Å (28 Z-DNA) |
+| Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
+
+These run in CI on every change (`tools/dnadata/`, `.github/workflows/dna.yml`), and CI checks that the shipped parameter files regenerate exactly. One limit is reported in the app: the backbone rides on each base, so O3′–P links in built B- and A-DNA are 1.2–2.8 Å rather than 1.61 Å.
 
 ## Validation (Ancient DNA Lab)
 

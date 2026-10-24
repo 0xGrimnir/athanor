@@ -128,6 +128,8 @@ select.field { appearance: none; cursor: pointer;
 .badge { position: absolute; top: 20px; right: 24px; font-family: var(--f-display); font-size: 11px; letter-spacing: .16em;
   padding: 4px 10px; border: 1px solid currentColor; color: var(--ok); text-transform: uppercase; }
 .badge.raw { color: var(--arc); }
+#dnaPick { top: auto; bottom: 18px; left: 22px; right: 22px; max-width: 760px; font-family: var(--f-body); background: rgba(4,12,18,.82);
+  font-size: 12px; letter-spacing: 0; text-transform: none; line-height: 1.45; }
 .viewopts { position: absolute; top: 56px; right: 24px; display: flex; gap: 5px; }
 .spectrum { border-top: 1px solid var(--line); background: rgba(3,10,16,.6); height: 220px; display: flex; flex-direction: column; flex: none; margin: 0 1px 1px; }
 .spechead { display: flex; gap: 12px; align-items: baseline; padding: 7px 14px 2px; font-family: var(--f-display); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--holo); white-space: nowrap; min-width: 0; }

@@ -73,5 +73,13 @@ for s in seqs:
         diff.append(abs(a - b))
 gate("same melting temperatures as Biopython's Tm_NN (Allawi & SantaLucia parameters, both salt corrections)",
      max(diff) <= 0.01, f"largest difference {max(diff):.4f} C over {len(diff)} cases")
-OUT.write_text(json.dumps({"results": results, "errors": table}, indent=1))
+def _round(x):
+    if isinstance(x, float):
+        return round(x, 4)
+    if isinstance(x, dict):
+        return {k: _round(v) for k, v in x.items()}
+    return x
+
+
+OUT.write_text(json.dumps({"results": results, "errors": _round(table)}, indent=1))
 sys.exit(0 if all(r["pass"] for r in results) else 1)
