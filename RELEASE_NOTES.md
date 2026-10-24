@@ -1,7 +1,12 @@
-Athanor 0.8.0: DNA Structure.
+Athanor 0.9.0: DNA Structure, complete.
 
-- A new tab builds any DNA sequence as a 3D double helix, atom by atom, in the usual B form, the wider A form or the left-handed Z form, using shapes measured on real crystal structures.
-- Beside the helix: how each base pair and step is twisted, rolled and tilted, and how wide the grooves are, measured the same way as the standard tool for this (3DNA).
-- A temperature slider shows the helix melting, weakest base pairs first, with the melting temperature for your salt and strand concentrations.
-- From Personal Genome, a trait variant opens in the helix with your own base at the centre.
-- Checked against 3DNA on 112 crystal structures and against 92 measured melting temperatures.
+- The helix's backbone is now closed with a real force field (OpenMM, AMBER OL15). The helix can also move: molecular dynamics at the temperature and salt you choose, on your graphics card when it can.
+- The shape DNA takes in solution, predicted from its sequence (Deep DNAshape), on a plot and as colour on the helix.
+- What holds the helix together: the pairing energy of every base pair and the stacking energy of every step, with a DFT check for any pair you pick.
+- Ancient damage on a molecule: single-stranded ends and the cytosines turned to uracil, from the Briggs model or from the damage your Ancient DNA Lab run measured.
+- A zoom through the scales:
+  - your sequence wrapped on a nucleosome;
+  - proteins bending DNA (TBP, CAP, IHF and others);
+  - a six-nucleosome chromatin fibre;
+  - a whole human nucleus, where a Personal Genome variant can be found.
+- Every new feature is checked against published data or the original programs; the README lists the results.
