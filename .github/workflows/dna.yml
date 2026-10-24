@@ -71,6 +71,17 @@ jobs:
           if [ $rc -eq 0 ]; then echo "::notice title=ancient damage::$msg"; else echo "::error title=ancient damage failed::$msg"; tail -30 damage.txt | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' | sed 's/^/::error title=log tail::/'; echo; fi
           exit $rc
 
+      - name: Scales - nucleosome, protein-DNA complexes, chromatin fibre, nucleus
+        if: always()
+        run: |
+          set +e
+          python tools/dnadata/scales.py core/athanor_core/data/dna/scales work-scales > scales.txt 2>&1
+          rc=$?
+          cat scales.txt | cut -c1-400
+          msg=$(grep -E "^\[(PASS|FAIL)\]" scales.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=scales::$msg"; else echo "::error title=scales failed::$msg"; tail -30 scales.txt | cut -c1-300 | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' | sed 's/^/::error title=log tail::/'; echo; fi
+          exit $rc
+
       - name: Reference sequence around the Personal Genome trait variants (Ensembl GRCh37)
         if: always()
         run: python tools/dnadata/flanks.py core/athanor_core/data/dna/flanks.json
@@ -90,7 +101,7 @@ jobs:
           git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/dna/${GITHUB_SHA}" && \
-            cp melting.txt structure.txt damage.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
+            cp melting.txt structure.txt damage.txt scales.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
             mkdir -p "$d/dna/${GITHUB_SHA}/data" && cp core/athanor_core/data/dna/*.json "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "dna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
 
