@@ -4,11 +4,22 @@ import re
 import tarfile
 import urllib.request
 
-base = "https://bioinf.fisica.ufmg.br/software/tfreg-8.0/"
-html = urllib.request.urlopen(urllib.request.Request(base, headers={"User-Agent": "athanor-ci"}), timeout=60).read().decode("utf-8", "replace")
-links = re.findall(r'href="([^"]+)"', html)
-print("links:", links)
-tar = next((l for l in links if l.endswith((".tar.gz", ".tgz", ".tar.bz2", ".tar.xz"))), None)
+def page(u):
+    return urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "athanor-ci"}), timeout=90).read().decode("utf-8", "replace")
+
+
+tar = None
+for base in ["https://build.opensuse.org/package/show/home:drgweber/TfReg",
+             "https://download.opensuse.org/repositories/home:/drgweber/",
+             "https://bioinf.fisica.ufmg.br/software/tfreg-8.0/"]:
+    try:
+        html = page(base)
+    except Exception as e:  # noqa: BLE001
+        print(base, "ERROR", repr(e))
+        continue
+    links = re.findall(r'href="([^"]+)"', html)
+    print(base, "links:", [l for l in links if "tfreg" in l.lower() or l.endswith("/")][:60])
+    tar = tar or next((l for l in links if l.lower().endswith((".tar.gz", ".tgz", ".tar.bz2", ".tar.xz"))), None)
 if tar:
     url = tar if tar.startswith("http") else base + tar
     data = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "athanor-ci"}), timeout=180).read()
