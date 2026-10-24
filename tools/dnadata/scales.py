@@ -88,6 +88,27 @@ def protein_ca(text, chains=None):
     return out
 
 
+def entities(text):
+    """{chain: molecule name} from the PDB file's COMPND records."""
+    comp = "".join(l[10:80].rstrip() + " " for l in text.splitlines() if l.startswith("COMPND"))
+    out = {}
+    for block in comp.split("MOL_ID:")[1:]:
+        mol = block.split("MOLECULE:")[1].split(";")[0].strip() if "MOLECULE:" in block else ""
+        ch = block.split("CHAIN:")[1].split(";")[0] if "CHAIN:" in block else ""
+        for c in ch.split(","):
+            if c.strip():
+                out[c.strip()] = mol
+    return out
+
+
+def histone_type(name):
+    n = name.upper().replace(" ", "")
+    for t in ("H2A", "H2B", "H3", "H4", "H1", "H5"):
+        if t in n:
+            return t
+    return None
+
+
 def strands(residues, std=None):
     """Two strands from any number of DNA chains: chains that pair with each other go on opposite
     strands; chains on the same strand are joined in the order that keeps the duplex continuous."""
@@ -236,7 +257,9 @@ gate("the 1KX5 DNA follows a left-handed superhelix of the published radius, pit
      "2003: 41.9 A and 25.9 A; about 1.65 turns, Luger et al. 1997): within 1.5 A, 3 A and 1.55-1.80 turns",
      sh["hand"] == "left" and abs(sh["radius"] - 41.9) <= 1.5 and abs(sh["pitch"] - 25.9) <= 3.0 and 1.55 <= sh["turns"] <= 1.80,
      f"{sh['hand']}-handed, radius {sh['radius']:.1f} A, pitch {sh['pitch']:.1f} A, {sh['turns']:.2f} turns")
-HISTONE = {"A": "H3", "E": "H3", "B": "H4", "F": "H4", "C": "H2A", "G": "H2A", "D": "H2B", "H": "H2B"}
+ent = entities(txt)
+HISTONE = {c: histone_type(m) for c, m in ent.items() if histone_type(m)}
+print("1KX5 histones:", HISTONE)
 nuc = {"pdb": "1KX5", "title": "Nucleosome core particle, 147 bp on a Xenopus histone octamer (1.9 A)",
        "citation": "Davey, Sargent, Luger, Maeder & Richmond, J. Mol. Biol. 319, 1097 (2002)",
        "sequence": seq, "steps": np.round(steps, 3).tolist(), "pairs": np.round(pairs, 3).tolist(),
@@ -276,7 +299,7 @@ for c in COMPLEXES:
     c2.update({"strands": [g1, g2], "sequence": a["sequence"], "n_pairs": len(a["pairs"]), "bend": round(bend, 1),
                "steps": [{"step": s["step"], "params": np.round(s["params"], 2).tolist()} for s in a["steps"]],
                "dna": [[r.chain, r.number, r.name, nm, *np.round(x, 2).tolist()] for r in merged for nm, x in r.atoms.items()],
-               "protein": [{"chain": ch, "ca": ca} for ch, ca in protein_ca(t).items()]})
+               "protein": [{"chain": ch, "name": entities(t).get(ch, ""), "ca": ca} for ch, ca in protein_ca(t).items()]})
     # largest roll: where the protein kinks the DNA
     if a["steps"]:
         k = int(np.argmax([abs(s["params"][4]) for s in a["steps"]]))
@@ -294,6 +317,7 @@ gate("DNA bend angles measured on the crystal structures match the published ben
 t = pdb_text("6HKT")
 dna_res = [r for r in read_pdb(t) if r.chain in ("I", "J")]
 ca = protein_ca(t)
+ent6 = entities(t)
 # group histone chains into octamers by proximity of their centres
 cents = {c: np.mean(v, axis=0) for c, v in ca.items() if len(v) > 50}
 octs, used = [], set()
@@ -329,8 +353,9 @@ fibre = {"pdb": "6HKT", "title": "Six-nucleosome array with linker histone H1 (9
          "citation": "Garcia-Saez, Menoni, Boopathi, Shukla, Soueidan, Marcoux-Roussel, Nikolov, Elsasser, Bhatt, Dimitrov "
                      "& Petosa, Mol. Cell 72, 902 (2018)",
          "dna": pt, "nucleosomes": [{"chains": g, "centre": np.round(cc, 1).tolist(),
-                                    "ca": {c: ca[c] for c in g}} for g, cc in zip(octs, centres)],
-         "other": {c: v for c, v in ca.items() if c not in used},
+                                    "ca": {c: ca[c] for c in g}, "types": {c: histone_type(ent6.get(c, "")) for c in g}}
+                                   for g, cc in zip(octs, centres)],
+         "other": {c: {"name": ent6.get(c, ""), "ca": v} for c, v in ca.items() if c not in used},
          "distances": {"neighbour": round(float(np.mean(d1)), 1), "next_but_one": round(float(np.mean(d2)), 1)}}
 (OUT / "fibre.json").write_text(json.dumps(fibre, separators=(",", ":")) + "\n")
 
