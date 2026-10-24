@@ -2083,6 +2083,7 @@ function initDna() {
 
 function showMode(mode) {
   document.querySelectorAll("#view-dna [data-dnamode]").forEach((el) => { el.hidden = !el.dataset.dnamode.split(",").includes(mode); });
+  $("dnaEnergySec").hidden = mode !== "helix" || !D.energies;
   $("dnaViewopts").hidden = mode === "fibre" || mode === "nucleus";
 }
 
@@ -2323,10 +2324,10 @@ async function dnaDamage(lab) {
     d.p_uracil.B.forEach((x, i) => { if (x != null) probs["B" + (n + 1 + i)] = x; });
     const btn = document.querySelector('[data-dnacolor="damage"]'); btn.hidden = false;
     H.setData("damage", probs); setPressed("[data-dnacolor]", btn); H.setColor("damage");
-    $("dnaName").textContent = `Ancient molecule · ${n} bp`;
+    $("dnaName").textContent = `Ancient DNA · ${n} bp`;
     const oh = ([k, l]) => (l ? `${l} nt ${k}′` : "blunt");
     $("dnaFormula").textContent = `ends: ${oh(d.left)} · ${oh(d.right)} · ${d.uracils.length} uracil${d.uracils.length === 1 ? "" : "s"}`;
-    renderDna(m);
+    renderDna(m); dnaShape(); D.energies = null; $("dnaEnergySec").hidden = true;
     $("dnaDamageInfo").innerHTML = `${d.uracils.length ? `Uracils (magenta) at ${d.uracils.map(([s, i]) => `strand ${s === "A" ? "I" : "II"} position ${i + 1}`).join(", ")}.` : "No cytosine deaminated in this draw."}
       ${lab ? `Chances from ${escapeHtml(lab.source)}; overhangs drawn with λ = ${p.lambda}.` : `Each draw is one molecule: each end's overhang (5′ or 3′ strand protruding, equally likely), its length and the uracils are random with the parameters above. A cytosine at a 5′ end is a uracil ${pct(d.expected[0], 0)} of the time on average.`}
       <br><small>Briggs et al., PNAS 104, 14616 (2007). The formulas are checked in CI against gargammel's deamSim, the simulator the Ancient DNA Lab uses (its corrected 1.1.5 model and the 1.1.4 model the Lab ran). Single strands are drawn continuing the helix; in reality they are flexible.</small>`;
