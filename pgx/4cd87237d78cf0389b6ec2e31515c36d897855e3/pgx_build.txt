@@ -1,0 +1,27 @@
+CPIC level A: 96 pairs, genes ['ABCG2', 'CACNA1S', 'CFTR', 'CYP2B6', 'CYP2C19', 'CYP2C9', 'CYP2D6', 'CYP3A5', 'CYP4F2', 'DPYD', 'G6PD', 'HLA-A', 'HLA-B', 'MT-RNR1', 'NAT2', 'NUDT15', 'RYR1', 'SLCO1B1', 'TPMT', 'UGT1A1', 'VKORC1']
+ABCG2: 2 definitions, 2 allele rows
+CACNA1S: 3 definitions, 3 allele rows
+CFTR: 104 definitions, 104 allele rows
+CYP2B6: 49 definitions, 49 allele rows
+CYP2C19: 49 definitions, 49 allele rows
+CYP2C9: 94 definitions, 94 allele rows
+CYP2D6: 184 definitions, 208 allele rows
+CYP3A5: 8 definitions, 8 allele rows
+CYP4F2: 23 definitions, 23 allele rows
+DPYD: 84 definitions, 84 allele rows
+G6PD: 187 definitions, 187 allele rows
+HLA-A: 1 definitions, 1 allele rows
+HLA-B: 3 definitions, 3 allele rows
+MT-RNR1: 25 definitions, 25 allele rows
+NAT2: 59 definitions, 59 allele rows
+NUDT15: 23 definitions, 23 allele rows
+RYR1: 347 definitions, 347 allele rows
+SLCO1B1: 47 definitions, 47 allele rows
+TPMT: 49 definitions, 49 allele rows
+UGT1A1: 9 definitions, 9 allele rows
+VKORC1: 2 definitions, 2 allele rows
+Traceback (most recent call last):
+  File "/home/runner/work/athanor/athanor/tools/pgdata/build_pgx.py", line 120, in <module>
+    guideline_ids = sorted({p["guidelinename"] for p in pairs})
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'NoneType' and 'str'
