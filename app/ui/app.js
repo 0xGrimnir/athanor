@@ -1914,8 +1914,13 @@ const H = (() => {
       const d = [pa[5] - pb[5], pa[6] - pb[6], pa[7] - pb[7]], L = Math.hypot(...d) || 1;
       m.pair_dir.push(d.map((x) => x / L));
     }
-    m.groove = Array(nbp).fill(null);
-    (m.analysis.grooves || []).forEach((g) => { if (g.minor != null) m.groove[g.pair_index] = g.minor; });
+    // minor-groove width is defined per step (3DNA's P-P measure); a base pair takes the mean of its two steps
+    const gs = Array(nbp - 1).fill(null);
+    (m.analysis.grooves || []).forEach((g) => { if (g.minor != null) gs[g.step] = g.minor; });
+    m.groove = Array.from({ length: nbp }, (_, k) => {
+      const v = [gs[k - 1], gs[k]].filter((x) => x != null && x !== undefined);
+      return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null;
+    });
     const P = m.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
     const c = P.reduce((x, v) => x.add(v), new THREE.Vector3()).multiplyScalar(1 / P.length);
     let r = 0; for (const v of P) r = Math.max(r, v.distanceTo(c));
@@ -1983,7 +1988,7 @@ async function dnaMelt() {
 function renderDna(m) {
   const st = m.analysis.steps.map((s) => s.params), pr = m.analysis.pairs.map((p) => p.params);
   const avg = (k) => (st.length ? st.reduce((a, p) => a + p[k], 0) / st.length : NaN);
-  const g = m.analysis.grooves.map((x) => x.minor).filter((x) => x != null);
+  const g = m.analysis.grooves.map((x) => x.minor).filter((x) => x != null);  // already less 5.8 A
   $("dnaSummary").innerHTML = kvTable([
     ["Base pairs", m.sequence.length], ["Length", `${(avg(2) * Math.max(0, m.sequence.length - 1)).toFixed(1)} Å`],
     ["Mean twist", `${avg(5).toFixed(1)}° (${(360 / avg(5)).toFixed(1)} bp per turn)`], ["Mean rise", `${avg(2).toFixed(2)} Å`],
