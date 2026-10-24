@@ -1,0 +1,559 @@
+{'A': 11, 'C': 9, 'G': 12, 'T': 10, 'U': 9} {'B': {'A': 21, 'C': 19, 'G': 22, 'T': 20}, 'A': {'A': 21, 'C': 19, 'G': 22, 'T': 20}}
+459 DNA-only X-ray entries at <= 1.6 A
+   131D: 6 bp CGCGCG mean twist -26.0 slide 3.00 -> Z
+   145D: 3 pairs (3 Watson-Crick), 2 steps, chain lengths [4, 4] - left out
+   181D: 6 bp CACGCG mean twist -25.5 slide 2.85 -> Z
+   1D23: 10 bp CGATCGATCG mean twist 37.1 slide 0.18 -> B
+   1D39: 6 bp CGCGCG mean twist -25.8 slide 2.85 -> Z
+   1D48: 6 bp CGCGCG mean twist -26.0 slide 3.00 -> Z
+   1D49: 10 bp CGATTAATCG mean twist 37.4 slide 0.15 -> B
+   1D8X: 6 pairs (6 Watson-Crick), 3 steps, chain lengths [10, 10] - left out
+   1D9R: 5 pairs (4 Watson-Crick), 2 steps, chain lengths [9, 9] - left out
+   1DC0: 12 bp CATGGGCCCATG mean twist 30.9 slide -1.57 -> A
+   1DCG: 6 bp CGCGCG mean twist -25.4 slide 2.84 -> Z
+   1DCR: 4 pairs (3 Watson-Crick), 1 steps, chain lengths [9, 9] - left out
+   1DJ6: 6 bp CGCGCG mean twist -25.1 slide 2.80 -> Z
+   1DN4: 2 pairs (0 Watson-Crick), 1 steps, chain lengths [3, 3] - left out
+   1DN5: 2 pairs (0 Watson-Crick), 1 steps, chain lengths [3, 3] - left out
+   1DN8: 2 pairs (0 Watson-Crick), 1 steps, chain lengths [2, 2] - left out
+   1DNF: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   1DPL: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1DPN: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   1EDR: 11 bp CGCGATTCGCG mean twist 38.5 slide 0.03 -> B
+   1EI4: 10 pairs (8 Watson-Crick), 9 steps, chain lengths [10, 10] - left out
+   1ENN: chain lengths [9, 9] for 8 pairs - left out
+   1FD5: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [6, 6] - left out
+   1FDG: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [6, 6] - left out
+   1FN1: 3 pairs (2 Watson-Crick), 2 steps, chain lengths [4, 5] - left out
+   1FN2: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [5, 6] - left out
+   1FQ2: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.06 -> B
+   1G75: 11 bp CGCGAATCGCG mean twist 38.8 slide 0.05 -> B
+   1G8N: 11 bp CGCGAATCGCG mean twist 38.7 slide 0.03 -> B
+   1I0F: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0G: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0J: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0K: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0M: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0N: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0P: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0Q: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1I0T: 6 bp CGCGCG mean twist -25.9 slide 3.04 -> Z
+   1I3T: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   1I5W: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1ICK: 6 bp CGCGCG mean twist -24.9 slide 2.80 -> Z
+   1IKK: 10 bp CCTTTAAAGG mean twist 37.3 slide 0.09 -> B
+   1J8L: 11 bp CGCAAATTGCG mean twist 39.2 slide 0.11 -> B
+   1JES: 10 bp CGCGATCGCG mean twist -33.9 slide 2.96 -> Z
+   1JGR: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.14 -> B
+   1JPQ: 8 pairs (0 Watson-Crick), 6 steps, chain lengths [11, 11] - left out
+   1KGK: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1L6B: chain lengths [9, 9] for 6 pairs - left out
+   1M6R: 6 bp CGCGCG mean twist -25.1 slide 2.76 -> Z
+   1MA8: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1MF5: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [7, 7] - left out
+   1MLX: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1N1O: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   1NVY: chain lengths [10, 10] for 6 pairs - left out
+   1NZG: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1O55: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [1, 1] - left out
+   1O56: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [1, 1] - left out
+   1OMK: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   1PUY: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [12, 12] - left out
+   1PWF: 8 pairs (6 Watson-Crick), 7 steps, chain lengths [8, 8] - left out
+   1QYK: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [7, 7] - left out
+   1R3G: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1RQY: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [5, 6] - left out
+   1S2R: 12 bp CGCAAATTTGCG mean twist 35.4 slide 0.19 -> B
+   1SK5: 10 bp CTTTTAAAAG mean twist 37.3 slide 0.10 -> B
+   1VRO: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   1VTT: 6 pairs (4 Watson-Crick), 5 steps, chain lengths [6, 6] - left out
+   1VTV: 2 pairs (0 Watson-Crick), 1 steps, chain lengths [3, 3] - left out
+   1VTW: 3 pairs (2 Watson-Crick), 2 steps, chain lengths [4, 4] - left out
+   1VTY: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   1WOE: 6 bp CGCGCG mean twist -25.9 slide 3.00 -> Z
+   1XCS: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [6, 6] - left out
+   1XUW: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Y7F: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Y84: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Y8L: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Y8V: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Y9F: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Y9S: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   1Z3F: 6 bp CGATCG mean twist 29.4 slide 1.07 -> B
+   1Z5T: 10 pairs (8 Watson-Crick), 9 steps, chain lengths [10, 10] - left out
+   1ZF0: 10 bp CCGTTAACGG mean twist 34.7 slide 0.43 -> B
+   1ZF1: 10 bp CCGGGCCCGG mean twist 30.5 slide -1.76 -> A
+   1ZF6: 10 bp CCCCATGGGG mean twist 30.5 slide -1.49 -> A
+   1ZF7: 10 bp CCGTCGACGG mean twist 35.5 slide 0.63 -> B
+   1ZF8: 10 bp CCACCGGTGG mean twist 29.4 slide -1.76 -> A
+   1ZF9: 10 bp CCCCCGGGGG mean twist 28.8 slide -1.88 -> A
+   1ZFA: 10 bp CCTCCGGAGG mean twist 27.2 slide -1.80 -> A
+   1ZNA: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [4, 4] - left out
+   1ZPI: 12 bp CGCGAATTCGCG mean twist 35.4 slide 0.26 -> B
+   213D: 8 bp CCGGCCGG mean twist 38.3 slide -2.36 -> A
+   224D: 6 bp TGATCA mean twist 31.6 slide 0.12 -> B
+   245D: 6 bp TGATCA mean twist 31.6 slide 0.14 -> B
+   284D: 4 pairs (4 Watson-Crick), 2 steps, chain lengths [8, 8] - left out
+   292D: 6 bp CGCGCG mean twist -25.2 slide 2.84 -> Z
+   293D: 6 bp CGCGCG mean twist -25.3 slide 2.86 -> Z
+   2B2B: chain lengths [10, 10] for 6 pairs - left out
+   2B3E: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.33 -> B
+   2DCG: 6 bp CGCGCG mean twist -25.1 slide 2.81 -> Z
+   2DES: 6 bp CGTACG mean twist 33.4 slide 0.48 -> B
+   2DPC: 11 bp CGCGAATCGCG mean twist 39.1 slide -0.01 -> B
+   2DYW: 12 bp CGCGAATTCGCG mean twist 35.4 slide 0.15 -> B
+   2ELG: 6 bp CGCGCG mean twist -25.1 slide 2.83 -> Z
+   2F8W: 6 bp CACGTG mean twist -26.0 slide 3.04 -> Z
+   2FIH: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   2FII: 11 bp CGCGAATCGCG mean twist 38.7 slide 0.08 -> B
+   2FIJ: 8 bp GCGTACGC mean twist 39.9 slide -1.23 -> A
+   2HTO: 6 bp CGCGCA mean twist -23.2 slide 2.71 -> Z
+   2IE1: 6 bp CGCGCG mean twist -25.0 slide 2.87 -> Z
+   2OBZ: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   2PKV: 8 bp GGTATACC mean twist 31.6 slide -1.44 -> A
+   2PLB: 8 bp GGTATACC mean twist 32.9 slide -1.45 -> A
+   2PLO: 8 bp GGTATACC mean twist 31.7 slide -1.48 -> A
+   2QEF: 10 pairs (9 Watson-Crick), 9 steps, chain lengths [10, 10] - left out
+   2QEG: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   308D: 6 bp CGTACG mean twist 33.1 slide 0.59 -> B
+   336D: 6 bp CGCGCG mean twist -25.3 slide 2.83 -> Z
+   355D: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.09 -> B
+   362D: 6 bp TGCGCA mean twist -26.9 slide 2.75 -> Z
+   368D: 8 bp CCCGCGGG mean twist 33.3 slide -1.35 -> A
+   388D: 10 pairs (8 Watson-Crick), 9 steps, chain lengths [10, 10] - left out
+   389D: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   3BSE: chain lengths [17, 17] for 16 pairs - left out
+   3EY2: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3FT6: 6 bp CGATCG mean twist 29.7 slide 1.06 -> B
+   3GSK: 10 pairs (10 Watson-Crick), 7 steps, chain lengths [12, 12] - left out
+   3HGD: 6 pairs (4 Watson-Crick), 5 steps, chain lengths [6, 6] - left out
+   3I5L: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3NYP: 8 pairs (0 Watson-Crick), 6 steps, chain lengths [12, 12] - left out
+   3NZ7: 8 pairs (0 Watson-Crick), 6 steps, chain lengths [12, 12] - left out
+   3OMJ: 9 bp CAGTACTGG mean twist 37.3 slide 0.37 -> B
+   3OPI: 11 bp CGCGATTCGCG mean twist 38.6 slide 0.12 -> B
+   3OZ3: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3OZ4: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3OZ5: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3P4J: 6 bp CGCGCG mean twist -24.9 slide 2.78 -> Z
+   3PA0: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [10, 10] - left out
+   3Q61: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3QBA: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [5, 5] - left out
+   3TVB: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [4, 4] - left out
+   3U05: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.32 -> B
+   3U08: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.33 -> B
+   3U0U: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.32 -> B
+   3U2N: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.17 -> B
+   3UKB: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3UKC: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3V06: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3V07: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   3WBO: 6 bp CGCGCG mean twist -25.6 slide 2.79 -> Z
+   403D: 11 bp CGCAATTTGCG mean twist 39.1 slide 0.32 -> B
+   410D: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   417D: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   423D: 12 bp ACCGACGTCGGT mean twist 34.5 slide 0.08 -> B
+   431D: chain lengths [10, 10] for 8 pairs - left out
+   436D: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   440D: 10 bp AGGGGCCCCT mean twist 30.2 slide -1.71 -> A
+   442D: 12 bp CGCGAATTCGCG mean twist 36.0 slide 0.36 -> B
+   443D: 12 bp CGCGAATTCGCG mean twist 35.8 slide 0.31 -> B
+   455D: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.09 -> B
+   456D: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   460D: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   461D: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   463D: chain lengths [11, 11] for 10 pairs - left out
+   473D: chain lengths [10, 10] for 8 pairs - left out
+   476D: chain lengths [11, 11] for 10 pairs - left out
+   4AGZ: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.37 -> B
+   4AH0: 12 bp CGCAAATTTGCG mean twist 35.6 slide 0.31 -> B
+   4AH1: 12 bp CGCAAATTTGCG mean twist 35.9 slide 0.36 -> B
+   4C5X: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4C63: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4C64: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.10 -> B
+   4E1U: 9 pairs (9 Watson-Crick), 6 steps, chain lengths [12, 12] - left out
+   4EZ2: 6 pairs (4 Watson-Crick), 5 steps, chain lengths [10, 10] - left out
+   4F2Y: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   4F3U: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4F4N: 7 pairs (6 Watson-Crick), 6 steps, chain lengths [7, 7] - left out
+   4FS5: 6 bp CGCGCG mean twist -25.3 slide 2.95 -> Z
+   4GJU: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4HIF: 6 bp CGCGCG mean twist -25.5 slide 2.87 -> Z
+   4HIG: 6 bp CGCGCG mean twist -24.7 slide 2.79 -> Z
+   4I9V: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4IJ0: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4JD8: 6 bp ATGCAT mean twist 23.2 slide 0.67 -> B
+   4KW0: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4L25: 9 pairs (8 Watson-Crick), 6 steps, chain lengths [12, 12] - left out
+   4L26: 8 pairs (6 Watson-Crick), 5 steps, chain lengths [11, 11] - left out
+   4MKW: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4MNB: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [5, 6] - left out
+   4O5W: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4O5X: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   4P1D: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [12, 12] - left out
+   4R15: 6 bp CGCGCG mean twist -25.9 slide 3.07 -> Z
+   4R49: 10 bp CCGGTACCGG mean twist 34.4 slide 0.54 -> B
+   4R4A: 10 bp CCGGTACCGG mean twist 34.6 slide 0.20 -> B
+   4U8A: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.18 -> B
+   4U8B: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.32 -> B
+   4U8C: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.28 -> B
+   4U92: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [6, 6] - left out
+   4XSN: 5 pairs (4 Watson-Crick), 4 steps, chain lengths [5, 5] - left out
+   5AXE: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   5AXF: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   5CJY: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   5DSB: 6 pairs (5 Watson-Crick), 5 steps, chain lengths [9, 9] - left out
+   5JZQ: 6 bp CGCGCG mean twist -24.4 slide 2.71 -> Z
+   5LFW: 3 pairs (3 Watson-Crick), 2 steps, chain lengths [4, 3] - left out
+   5LFX: 3 pairs (3 Watson-Crick), 2 steps, chain lengths [4, 3] - left out
+   5MVK: 12 bp CTACGCGCGTAG mean twist 29.4 slide -1.66 -> A
+   5MVL: 11 pairs (10 Watson-Crick), 10 steps, chain lengths [11, 11] - left out
+   5T3L: 12 bp CGCGAATTCGCG mean twist 35.4 slide 0.13 -> B
+   5W20: 8 pairs (6 Watson-Crick), 7 steps, chain lengths [8, 8] - left out
+   5WSQ: 8 pairs (6 Watson-Crick), 7 steps, chain lengths [8, 8] - left out
+   5WV7: 14 bp CCGGGGTACCCCGG mean twist 29.8 slide -1.77 -> A
+   5XJZ: 4 pairs (4 Watson-Crick), 2 steps, chain lengths [8, 8] - left out
+   5XK1: 8 pairs (6 Watson-Crick), 7 steps, chain lengths [8, 8] - left out
+   5ZAS: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   5ZAT: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   6A85: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [17, 17] - left out
+   6BST: 6 bp CGCGCG mean twist -27.5 slide 2.99 -> Z
+   6CQ3: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.03 -> B
+   6DY5: 10 bp AGGGATCCCT mean twist 28.8 slide -1.71 -> A
+   6JJE: 2 pairs (0 Watson-Crick), 0 steps, chain lengths [13, 13] - left out
+   6JJF: 2 pairs (0 Watson-Crick), 0 steps, chain lengths [14, 14] - left out
+   6L75: 10 bp GTGGGCCGAC mean twist 32.6 slide -1.40 -> A
+   6LBW: 7 pairs (6 Watson-Crick), 5 steps, chain lengths [9, 9] - left out
+   6MC2: 3 pairs (2 Watson-Crick), 1 steps, chain lengths [9, 9] - left out
+   6N4G: 3 pairs (2 Watson-Crick), 1 steps, chain lengths [9, 9] - left out
+   6N65: 4 pairs (0 Watson-Crick), 0 steps, chain lengths [22, 22] - left out
+   6NIZ: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [6, 6] - left out
+   6S7D: 9 pairs (8 Watson-Crick), 8 steps, chain lengths [9, 9] - left out
+   6X5D: 11 bp CGCGAATCGCG mean twist 38.6 slide 0.03 -> B
+   7ATG: 6 bp CGCGCG mean twist -25.1 slide 2.77 -> Z
+   7BSF: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [10, 10] - left out
+   7BSH: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [9, 9] - left out
+   7D31: 2 pairs (0 Watson-Crick), 0 steps, chain lengths [15, 15] - left out
+   7D5E: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [28, 28] - left out
+   7JY2: 6 bp CGCGCG mean twist -25.0 slide 2.82 -> Z
+   7KU4: 12 bp CGCGAATTCGCG mean twist 35.2 slide 0.19 -> B
+   7KWK: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.22 -> B
+   7RQT: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.09 -> B
+   7XLV: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [9, 9] - left out
+   7ZQM: 6 bp CGCGCG mean twist -25.4 slide 2.81 -> Z
+   8ASO: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [7, 7] - left out
+   8BAE: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [7, 7] - left out
+   8BAF: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [6, 6] - left out
+   8BAG: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [6, 6] - left out
+   8C63: 12 bp CGCGAATTCGCG mean twist 35.3 slide 0.07 -> B
+   8CE2: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.10 -> B
+   8CRY: 4 pairs (4 Watson-Crick), 3 steps, chain lengths [4, 4] - left out
+   8CRZ: 2 pairs (2 Watson-Crick), 1 steps, chain lengths [2, 2] - left out
+   8EDB: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.15 -> B
+   8F2W: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.06 -> B
+   8FDQ: 12 bp CGCAAATTTGCG mean twist 36.0 slide 0.29 -> B
+   8FDR: 12 bp CGCGAAAACGCG mean twist 35.1 slide 0.12 -> B
+   8OE3: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [7, 7] - left out
+   8OE9: 6 bp CGCGCG mean twist -26.0 slide 2.98 -> Z
+   8OEX: 6 bp CGCGCG mean twist -25.7 slide 2.99 -> Z
+   8RI3: 12 bp CGCGAATTCGCG mean twist 35.0 slide 0.10 -> B
+   8RI5: 12 bp CGCGAATTCGCG mean twist 35.1 slide 0.09 -> B
+   8RMH: 1 pairs (0 Watson-Crick), 0 steps, chain lengths [7, 7] - left out
+   8WQ7: 8 bp CGTATACG mean twist 29.6 slide 0.70 -> B
+   9KHW: 0 pairs (0 Watson-Crick), 0 steps, chain lengths [16, 16] - left out
+   9PLB: 2 pairs (0 Watson-Crick), 0 steps, chain lengths [13, 13] - left out
+   9V89: 8 bp CGTTAACG mean twist 28.0 slide 0.48 -> B
+kept duplexes: {'A': 17, 'B': 62, 'Z': 33}
+   131D (Z) differs at pair 4 G-C: ours [-0.3, -0.2, -0.02, 5.39, 4.6, -2.91] 3DNA [0.3, -0.2, 0.02, -5.39, 4.6, 2.91]; 3DNA strand I A, ours ['A', 'B']
+   181D (Z) differs at pair 5 C-G: ours [0.44, -0.2, 0.01, -8.63, -1.84, -1.73] 3DNA [-0.44, -0.2, -0.01, 8.63, -1.84, 1.73]; 3DNA strand I A, ours ['A', 'B']
+   1D39 (Z) differs at pair 2 G-C: ours [-0.28, -0.11, -0.03, 6.71, -2.03, -0.97] 3DNA [0.28, -0.11, 0.03, -6.71, -2.03, 0.97]; 3DNA strand I A, ours ['A', 'B']
+   1D48 (Z) differs at pair 4 G-C: ours [-0.27, -0.18, -0.1, 6.18, 4.6, -2.67] 3DNA [0.27, -0.18, 0.1, -6.18, 4.6, 2.67]; 3DNA strand I A, ours ['A', 'B']
+   1DCG (Z) differs at pair 2 G-C: ours [-0.21, -0.15, 0.01, 4.74, -4.72, -3.03] 3DNA [0.21, -0.15, -0.01, -4.74, -4.72, 3.03]; 3DNA strand I A, ours ['A', 'B']
+   1DJ6 (Z) differs at pair 4 G-C: ours [-0.18, -0.13, -0.25, 6.89, -1.95, -2.16] 3DNA [0.18, -0.13, 0.25, -6.89, -1.95, 2.16]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 1EDR 12 11
+pair lists differ for 1G75 12 11
+pair lists differ for 1G8N 12 11
+   1I0T (Z) differs at pair 5 C-G: ours [0.18, -0.18, 0.05, -5.49, -7.91, -1.1] 3DNA [-0.18, -0.18, -0.05, 5.49, -7.91, 1.1]; 3DNA strand I A, ours ['A', 'B']
+   1ICK (Z) differs at pair 4 G-C: ours [-0.18, -0.12, -0.07, 6.81, -0.96, -2.8] 3DNA [0.18, -0.12, 0.07, -6.81, -0.96, 2.8]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 1J8L 12 11
+pair lists differ for 1JES 12 10
+   1M6R (Z) differs at pair 4 G-C: ours [-0.18, -0.09, -0.17, 7.92, -1.07, -2.23] 3DNA [0.18, -0.09, 0.17, -7.92, -1.07, 2.23]; 3DNA strand I A, ours ['A', 'B']
+   1WOE (Z) differs at pair 2 G-C: ours [-0.32, -0.13, -0.04, 5.45, -1.6, -1.17] 3DNA [0.32, -0.13, 0.04, -5.45, -1.6, 1.17]; 3DNA strand I A, ours ['A', 'B']
+   1ZFA (A) differs at pair 10 G-C: ours [-1.01, -2.08, 3.17, 7.33, 13.06, 14.01] 3DNA [4.27, -0.64, -1.62, -0.84, 37.31, -41.75]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 213D 10 8
+   292D (Z) differs at pair 4 G-C: ours [-0.21, -0.1, -0.17, 6.62, 0.84, -2.12] 3DNA [0.21, -0.1, 0.17, -6.62, 0.84, 2.12]; 3DNA strand I A, ours ['A', 'B']
+   293D (Z) differs at pair 3 C-G: ours [0.24, -0.15, -0.01, -6.64, -2.78, -1.47] 3DNA [-0.24, -0.15, 0.01, 6.64, -2.78, 1.47]; 3DNA strand I A, ours ['A', 'B']
+   2DCG (Z) differs at pair 4 G-C: ours [-0.21, -0.14, -0.11, 8.46, 0.75, -2.61] 3DNA [0.21, -0.14, 0.11, -8.46, 0.75, 2.61]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 2DPC 12 11
+   2ELG (Z) differs at pair 3 C-G: ours [0.31, -0.2, 0.07, -8.44, -2.67, -3.59] 3DNA [-0.31, -0.2, -0.07, 8.44, -2.67, 3.59]; 3DNA strand I A, ours ['A', 'B']
+   2F8W (Z) differs at pair 2 A-T: ours [-0.05, -0.19, 0.18, 10.17, -4.38, -1.38] 3DNA [0.05, -0.19, -0.18, -10.17, -4.38, 1.38]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 2FII 12 11
+pair lists differ for 2FIJ 10 8
+   2HTO (Z) differs at pair 6 A-T: ours [-2.01, -0.39, -0.18, 4.28, 6.98, -5.9] 3DNA [2.01, -0.39, 0.18, -4.28, 6.98, 5.9]; 3DNA strand I A, ours ['A', 'B']
+   2IE1 (Z) differs at pair 3 C-G: ours [0.34, -0.32, -0.06, -6.66, 7.13, 8.32] 3DNA [-0.34, -0.32, 0.06, 6.66, 7.13, -8.32]; 3DNA strand I A, ours ['A', 'B']
+   336D (Z) differs at pair 4 G-C: ours [-0.23, -0.05, -0.03, 7.62, -1.3, -1.22] 3DNA [0.23, -0.05, 0.03, -7.62, -1.3, 1.22]; 3DNA strand I A, ours ['A', 'B']
+   362D (Z) differs at pair 6 A-T: ours [-0.1, -0.06, 0.02, 8.65, -2.53, 1.08] 3DNA [0.1, -0.06, -0.02, -8.65, -2.53, -1.08]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 3OMJ 10 9
+pair lists differ for 3OPI 12 11
+   3P4J (Z) differs at pair 4 G-C: ours [-0.2, -0.13, -0.09, 6.23, -2.16, -2.19] 3DNA [0.2, -0.13, 0.09, -6.23, -2.16, 2.19]; 3DNA strand I A, ours ['A', 'B']
+   3WBO (Z) differs at pair 2 G-C: ours [-0.22, -0.16, -0.03, 5.63, 1.28, -1.66] 3DNA [0.22, -0.16, 0.03, -5.63, 1.28, 1.66]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 403D 12 11
+   4FS5 (Z) differs at pair 2 G-C: ours [-0.28, -0.12, 0.17, 8.41, 0.07, -0.83] 3DNA [0.28, -0.12, -0.17, -8.41, 0.07, 0.83]; 3DNA strand I A, ours ['A', 'B']
+   4HIF (Z) differs at pair 3 C-G: ours [0.22, -0.14, 0.07, -10.88, -7.72, -1.3] 3DNA [-0.22, -0.14, -0.07, 10.88, -7.72, 1.3]; 3DNA strand I A, ours ['A', 'B']
+   4HIG (Z) differs at pair 4 G-C: ours [-0.2, -0.14, -0.06, 8.23, 0.68, -2.37] 3DNA [0.2, -0.14, 0.06, -8.23, 0.68, 2.37]; 3DNA strand I A, ours ['A', 'B']
+   4R15 (Z) differs at pair 3 C-G: ours [0.28, -0.13, -0.06, -8.18, -1.13, -0.4] 3DNA [-0.28, -0.13, 0.06, 8.18, -1.13, 0.4]; 3DNA strand I A, ours ['A', 'B']
+   5JZQ (Z) differs at pair 2 G-C: ours [-0.49, -0.19, -0.35, 11.43, 2.24, 3.0] 3DNA [0.49, -0.19, 0.35, -11.43, 2.24, -3.0]; 3DNA strand I A, ours ['A', 'B']
+   6BST (Z) differs at pair 6 G-C: ours [-0.2, -0.13, 0.07, 12.5, 2.08, -1.06] 3DNA [0.2, -0.13, -0.07, -12.5, 2.08, 1.06]; 3DNA strand I A, ours ['A', 'B']
+pair lists differ for 6X5D 12 11
+   7ATG (Z) differs at pair 4 G-C: ours [-0.21, -0.13, -0.1, 5.07, -1.26, -2.61] 3DNA [0.21, -0.13, 0.1, -5.07, -1.26, 2.61]; 3DNA strand I A, ours ['A', 'B']
+   7JY2 (Z) differs at pair 4 G-C: ours [-0.22, -0.14, -0.12, 8.32, 1.04, -2.35] 3DNA [0.22, -0.14, 0.12, -8.32, 1.04, 2.35]; 3DNA strand I A, ours ['A', 'B']
+   7ZQM (Z) differs at pair 2 G-C: ours [-0.22, -0.2, 0.03, 7.13, -0.39, -2.52] 3DNA [0.22, -0.2, -0.03, -7.13, -0.39, 2.52]; 3DNA strand I A, ours ['A', 'B']
+   8OE9 (Z) differs at pair 5 C-G: ours [0.22, -0.21, -0.01, -5.86, -5.48, -2.01] 3DNA [-0.22, -0.21, 0.01, 5.86, -5.48, 2.01]; 3DNA strand I A, ours ['A', 'B']
+   8OEX (Z) differs at pair 5 C-G: ours [0.23, -0.16, 0.05, -5.65, -7.51, -1.14] 3DNA [-0.23, -0.16, -0.05, 5.65, -7.51, 1.14]; 3DNA strand I A, ours ['A', 'B']
+compared with 3DNA: 99 structures, 13 not comparable
+[FAIL] base-pair and step parameters equal 3DNA's on every kept crystal duplex (to its printed 0.01 A / 0.01 deg): 99 structures; largest difference 5.576 (pairs) and 2.684 (steps), translations in A, rotations in units of 10 deg
+[PASS] groove widths equal 3DNA's direct P-P distances (to its printed 0.1 A): largest difference 0.050 A
+{
+ "B": {
+  "dimers": {
+   "AA": [
+    -0.03,
+    -0.08,
+    3.27,
+    -1.4,
+    0.7,
+    35.1
+   ],
+   "AC": [
+    0.13,
+    -0.58,
+    3.36,
+    -0.1,
+    0.7,
+    31.5
+   ],
+   "AG": [
+    0.09,
+    -0.25,
+    3.34,
+    -1.7,
+    4.5,
+    31.9
+   ],
+   "AT": [
+    0.0,
+    -0.59,
+    3.31,
+    0.0,
+    1.1,
+    29.3
+   ],
+   "CA": [
+    0.09,
+    0.53,
+    3.33,
+    0.5,
+    4.7,
+    37.3
+   ],
+   "CG": [
+    0.0,
+    0.41,
+    3.39,
+    0.0,
+    5.4,
+    36.1
+   ],
+   "GA": [
+    -0.28,
+    0.09,
+    3.37,
+    -1.5,
+    1.9,
+    36.3
+   ],
+   "GC": [
+    0.0,
+    -0.38,
+    3.4,
+    0.0,
+    0.3,
+    33.6
+   ],
+   "GG": [
+    0.05,
+    -0.22,
+    3.42,
+    -0.1,
+    3.6,
+    32.9
+   ],
+   "TA": [
+    0.0,
+    0.05,
+    3.42,
+    0.0,
+    3.3,
+    37.8
+   ]
+  },
+  "pair_by_type": {
+   "AT": [
+    0.06,
+    -0.11,
+    0.01,
+    1.78,
+    -15.71,
+    3.7
+   ],
+   "GC": [
+    -0.2,
+    -0.14,
+    0.13,
+    3.68,
+    -8.81,
+    -0.78
+   ]
+  }
+ },
+ "A": {
+  "steps": {
+   "all": [
+    -0.01,
+    -1.62,
+    3.23,
+    0.09,
+    6.65,
+    30.82
+   ]
+  },
+  "pair_by_type": {
+   "GC": [
+    -0.22,
+    -0.14,
+    -0.07,
+    -5.3,
+    -9.06,
+    -0.02
+   ],
+   "AT": [
+    0.07,
+    -0.14,
+    0.07,
+    -1.15,
+    -9.99,
+    0.93
+   ]
+  },
+  "n_structures": 17
+ },
+ "Z": {
+  "steps": {
+   "CG": [
+    0.04,
+    5.4,
+    3.66,
+    0.3,
+    -2.05,
+    -7.65
+   ],
+   "GC": [
+    -0.06,
+    -0.96,
+    3.27,
+    0.32,
+    -3.08,
+    -51.69
+   ],
+   "CA": [
+    0.22,
+    5.23,
+    3.77,
+    1.58,
+    -3.13,
+    -6.22
+   ],
+   "AC": [
+    0.33,
+    -0.73,
+    3.21,
+    -2.26,
+    -3.25,
+    -51.92
+   ],
+   "GA": [
+    0.81,
+    4.68,
+    7.27,
+    -5.07,
+    -4.6,
+    -64.91
+   ],
+   "AT": [
+    0.02,
+    -2.41,
+    3.16,
+    1.92,
+    5.79,
+    -41.97
+   ],
+   "TC": [
+    -0.65,
+    4.93,
+    7.16,
+    7.64,
+    -8.17,
+    -66.53
+   ],
+   "GT": [
+    -0.34,
+    -0.99,
+    3.26,
+    2.02,
+    3.28,
+    -50.3
+   ],
+   "TG": [
+    -0.02,
+    5.47,
+    3.74,
+    3.64,
+    1.2,
+    -10.3
+   ]
+  },
+  "pair_by_type": {
+   "GC": [
+    -0.25,
+    -0.14,
+    -0.07,
+    3.27,
+    -0.29,
+    -1.82
+   ],
+   "AT": [
+    -0.11,
+    -0.17,
+    0.0,
+    7.67,
+    -3.43,
+    -1.46
+   ]
+  },
+  "n_structures": 33
+ }
+}
+Z C: 16 atoms; median spread 0.11 A
+Z G: 22 atoms; median spread 0.15 A
+A: 17 crystals; rebuilt from own parameters: base atoms median 0.027 A, all atoms median 0.59 A; generic parameters (leave-one-out): median 1.57 A, 90th percentile 2.90 A
+B: 62 crystals; rebuilt from own parameters: base atoms median 0.027 A, all atoms median 0.75 A; generic parameters (leave-one-out): median 1.45 A, 90th percentile 2.99 A
+Z: 28 crystals; rebuilt from own parameters: base atoms median 0.028 A, all atoms median 0.31 A; generic parameters (leave-one-out): median 0.44 A, 90th percentile 0.56 A
+[PASS] rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A): median 0.027 A over 107 crystals
+[PASS] B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median): median 1.45 A, 90th percentile 2.99 A over 62 crystals
+[PASS] A-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out): median 1.57 A, 90th percentile 2.90 A over 17 crystals
+[PASS] Z-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out): median 0.44 A, 90th percentile 0.56 A over 28 crystals
+   rebuild 1EDR: RMSD 1.407 A over 444 atoms; our sequence CGCGATTCGCG, 3DNA chains ['A', 'B'], residues 22
+   rebuild 1G75: RMSD 1.386 A over 446 atoms; our sequence CGCGAATCGCG, 3DNA chains ['A', 'B'], residues 22
+   rebuild 1G8N: RMSD 1.397 A over 446 atoms; our sequence CGCGAATCGCG, 3DNA chains ['A', 'B'], residues 22
+   rebuild 1J8L: RMSD 1.902 A over 444 atoms; our sequence CGCAAATTGCG, 3DNA chains ['A', 'B'], residues 22
+[FAIL] Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A): largest RMSD 1.9016 A over 15 duplexes
