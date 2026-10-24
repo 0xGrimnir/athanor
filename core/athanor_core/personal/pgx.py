@@ -308,22 +308,29 @@ class PgxGenotyper:
         called = g.a1 != MISSING
         self.by_pos, self.by_rs = {}, {}
         for i in np.flatnonzero(called & (pos37 > 0)):
-            self.by_pos.setdefault((int(g.chrom[i]), int(pos37[i])), int(i))
+            self.by_pos.setdefault((int(g.chrom[i]), int(pos37[i])), []).append(int(i))
         for i in np.flatnonzero(called & (g.rsid > 0)):
             self.by_rs.setdefault(int(g.rsid[i]), int(i))
         self.chips = self.ambiguous = 0
 
+    def _at(self, chrom, pos37, indel: bool):
+        """The row at a position whose call is of the right kind (a base, or I/D):
+        chips list an indel and a SNV at the same coordinate."""
+        for i in self.by_pos.get((chrom, pos37), []) if pos37 else []:
+            if (self.g.a1[i] > 3) == indel:
+                return i
+        return None
+
     def row(self, chrom: int, p: dict):
         rs = int(p["rsid"][2:]) if (p.get("rsid") or "").startswith("rs") else None
-        if p["kind"] == "snv":
-            i = self.by_pos.get((chrom, p["pos37"])) if p.get("pos37") else None
-            if i is None and rs:
-                i = self.by_rs.get(rs)
-        else:
-            i = self.by_rs.get(rs) if rs else None
-            if i is None and p.get("pos37"):
-                i = self.by_pos.get((chrom, p["pos37"]))
-        return i
+        indel = p["kind"] != "snv"
+        by_rs = self.by_rs.get(rs) if rs else None
+        if by_rs is not None and (self.g.a1[by_rs] > 3) != indel:
+            by_rs = None
+        if not indel:
+            i = self._at(chrom, p.get("pos37"), False)
+            return i if i is not None else by_rs
+        return by_rs if by_rs is not None else self._at(chrom, p.get("pos37"), True)
 
     def genotype(self, gene: Gene, chrom: int) -> np.ndarray:
         geno = np.full((len(gene.pos), 2), UNTESTED, dtype=np.uint8)
@@ -527,6 +534,10 @@ def _gene_card(sym, d, gene, c, rel, geno, drug_names, refs, make_card, haploid)
                        f"(for {drugs}).")
         elif c["status"] == "called":
             summary = f"{c['phenotype']} ({sym} {dtxt})."
+            if c.get("chosen_by"):
+                pp = (c.get("phenotype_probabilities") or {}).get(c["phenotype"])
+                summary += (f" Several diplotypes fit an unphased genotype here; this is the commonest by 1000 Genomes "
+                            f"haplotype frequencies, and diplotypes giving this phenotype carry {_pct(pp)} of the total.")
         else:
             summary = f"{sym} {dtxt}: the positions your file has cannot separate {' and '.join(c['possible'])}."
         if rel and rel.get("phenotype_agrees") is not None and not cyp2d6:

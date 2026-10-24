@@ -144,6 +144,9 @@ def test_chip_input_strand_and_indels():
     r2 = raw([("rs1", 6, 100, "GA"), ("rs2", 6, 200, "AA")])
     g2 = PgxGenotyper(r2, r2.pos, "the opposite strand").genotype(g, 6)
     assert g2[0].tolist() == [0, 1] and g2[1].tolist() == [0, 0]
+    # a chip row for an indel at the same coordinate as a SNV does not hide the SNV
+    r4 = raw([("rs77", 6, 100, "DI"), ("rs1", 6, 100, "TT")])
+    assert PgxGenotyper(r4, r4.pos, "the reference's + strand").genotype(g, 6)[0].tolist() == [1, 1]
     # found by rsID when the position differs (an indel placed elsewhere by the chip)
     r3 = raw([("rs9", 6, 399, "DD")])
     assert PgxGenotyper(r3, r3.pos, "the reference's + strand").genotype(g, 6)[3].tolist() == [1, 1]
@@ -207,3 +210,23 @@ def test_cards_end_to_end():
     s = cards[0]
     assert s["result"]["flagged"] == ["TPMT"]
     assert s["result"]["drugs"][0]["rows"][0]["recommendation"] == "start at 30-80%"
+
+
+def test_frequency_choice_for_unphased_nat2_like_genes():
+    # a double heterozygote fits *1/*5 (*5 carries both variants) and *4/*16 (one each)
+    d = {"chrom": 8, "chrom_name": "chr8", "lookup": "PHENOTYPE",
+         "positions": [pos("rs1", 10, ["T", "C"]), pos("rs2", 20, ["G", "A"])],
+         "alleles": [{"name": "*1", "ref": True, "def": [[0], [0]], "function": "Normal function"},
+                     {"name": "*4", "def": [None, [1]], "function": "Normal function"},
+                     {"name": "*5", "def": [[1], [1]], "function": "Decreased function"},
+                     {"name": "*16", "def": [[1], None], "function": "Decreased function"}],
+         "results": lookups([({"Normal function": 2}, "Rapid Metabolizer", None),
+                             ({"Normal function": 1, "Decreased function": 1}, "Intermediate Metabolizer", None),
+                             ({"Decreased function": 2}, "Poor Metabolizer", None)]),
+         "phenotypes": {}, "hap_freq": {"all": {"*1": 0.05, "*4": 0.5, "*5": 0.4, "*16": 0.05}}}
+    g = Gene("NAT2", d)
+    c = g.call(G(g, {"rs1": "TC", "rs2": "GA"}))
+    # by score *1/*5 would win; by frequency *4/*16 (2 x 0.5 x 0.05 = 0.05) beats *1/*5 (2 x 0.05 x 0.4 = 0.04)
+    assert c["chosen_by"] == "haplotype frequency" and c["diplotypes"] == ["*4/*16"]
+    assert abs(c["diplotype_probability"] - 0.025 / 0.045) < 1e-9
+    assert set(c["phenotype_probabilities"]) == {"Intermediate Metabolizer"}

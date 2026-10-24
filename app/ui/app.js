@@ -1490,6 +1490,7 @@ function pgxDetail(el, c) {
     ["Phenotype", escapeHtml(k.phenotype || (k.possible ? `one of: ${k.possible.join(", ")}` : k.status || "—"))],
   ];
   if (k.score) rows.push(["Activity score", escapeHtml(k.score)]);
+  if (k.chosen_by) rows.push(["Chosen by", `${escapeHtml(k.chosen_by)} <small>(${pct(k.diplotype_probability, 0)} of the diplotypes that fit)</small>`]);
   rows.push(["Positions read", `${(r.positions || []).length}`]);
   if (rel && rel.phenotype_agrees != null) {
     rows.push(["Same phenotype from a full reading", `${pct(rel.phenotype_agrees, 0)} <small>of ${rel.same_call.toLocaleString()} 1000 Genomes people with your call</small>`]);
