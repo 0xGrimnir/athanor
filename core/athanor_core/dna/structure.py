@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .geometry import bz_check, kabsch, pair_parameters, step_parameters
+from .geometry import FLIP, bz_check, kabsch, step_parameters
 
 PURINE_RING = ["N9", "C8", "N7", "C5", "C6", "N1", "C2", "N3", "C4"]
 PYRIMIDINE_RING = ["N1", "C2", "N3", "C4", "C5", "C6"]
@@ -177,19 +177,46 @@ def find_pairs(residues: list[Residue], std: dict, max_origin: float = 4.0):
 COMPLEMENT = {"A": "T", "T": "A", "G": "C", "C": "G", "U": "A"}
 
 
+TURN = np.diag([-1.0, 1.0, -1.0])
+
+
 def analyse(residues: list[Residue], std: dict | None = None) -> dict:
-    """Base-pair and step parameters, and minor/major groove widths, for a duplex."""
+    """Base-pair and step parameters, and minor/major groove widths, for a duplex.
+
+    As in 3DNA (analyze, ref_frames): each strand II base frame is reversed (y and z negated) to
+    run with strand I; and if every Watson-Crick base's z axis points against the direction to the next
+    pair - a left-handed, Z-DNA structure - all base frames are turned 180 degrees about y (x and z
+    negated) before any parameter is computed. Steps between Watson-Crick pairs then get 3DNA's B-Z
+    junction check."""
     std = std or standard_bases()
     s1, s2, f1, f2, pairs = find_pairs(residues, std)
+    RI = [f1[i][0] for i, _ in pairs]
+    oI = [f1[i][1] for i, _ in pairs]
+    RII = [f2[j][0] @ FLIP for _, j in pairs]
+    oII = [f2[j][1] for _, j in pairs]
+    wc = [COMPLEMENT.get(s1[i].base) == s2[j].base or (s1[i].base, s2[j].base) == ("A", "U") for i, j in pairs]
+    n = len(pairs)
+    left = total = 0
+    for Rs, os_ in ((RI, oI), (RII, oII)):
+        d = None
+        for k in range(n):
+            if k < n - 1:
+                d = os_[k + 1] - os_[k]
+            if d is not None and wc[k]:
+                total += 1
+                left += float(np.dot(d, Rs[k][:, 2])) < 0
+    z_dna = total > 0 and left == total
+    if z_dna:
+        RI = [R @ TURN for R in RI]
+        RII = [R @ TURN for R in RII]
     bps = []
-    for i, j in pairs:
-        (Ri, oi, ri), (Rj, oj, rj) = f1[i], f2[j]
-        p, Rm, om = pair_parameters(Ri, oi, Rj, oj)
+    for k, (i, j) in enumerate(pairs):
+        p, Rm, om = step_parameters(RII[k], oII[k], RI[k], oI[k])
         bps.append({"i": i, "j": j, "pair": f"{s1[i].base}-{s2[j].base}",
                     "residues": [f"{s1[i].chain}{s1[i].number}{s1[i].insertion}",
                                  f"{s2[j].chain}{s2[j].number}{s2[j].insertion}"],
-                    "watson_crick": COMPLEMENT.get(s1[i].base) == s2[j].base or (s1[i].base, s2[j].base) == ("A", "U"),
-                    "params": p.tolist(), "frame": (Rm.tolist(), om.tolist()), "fit_rmsd": [ri, rj]})
+                    "watson_crick": wc[k], "params": p.tolist(), "frame": (Rm.tolist(), om.tolist()),
+                    "fit_rmsd": [f1[i][2], f2[j][2]]})
     steps = []
     for a, b in zip(bps, bps[1:]):
         if b["i"] != a["i"] + 1:
@@ -201,7 +228,7 @@ def analyse(residues: list[Residue], std: dict | None = None) -> dict:
         p, _, _ = step_parameters(Ra, oa, Rb, ob)
         steps.append({"step": f"{a['pair'][0]}{b['pair'][0]}/{b['pair'][2]}{a['pair'][2]}", "params": p.tolist()})
     return {"strands": [s1[0].chain if s1 else None, s2[0].chain if s2 else None],
-            "sequence": "".join(s1[a["i"]].base for a in bps),
+            "sequence": "".join(s1[a["i"]].base for a in bps), "left_handed": z_dna,
             "pairs": bps, "steps": steps, "grooves": grooves(s1, s2, pairs)}
 
 

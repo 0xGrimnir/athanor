@@ -84,11 +84,11 @@ def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
     strand2 = []
     turn = np.diag([-1.0, 1.0, -1.0])
     for k, (b, (Rm, om), pp) in enumerate(zip(seq, frames, pairs)):
-        if form == "Z":
-            # Z-DNA step parameters are measured with every pair frame turned 180 degrees about y
-            # (3DNA's B-Z check); the pair parameters belong to the unturned frame
-            Rm = Rm @ turn
         (Ri, oi), (Rii, oii) = pair_frames(Rm, om, pp)
+        if form == "Z":
+            # Z-DNA parameters are measured with every base frame turned 180 degrees about y (3DNA's
+            # convention for left-handed duplexes); turn back to the bases' own frames
+            Ri, Rii = Ri @ turn, Rii @ turn
         for base, Rb, ob, chain, num in ((b, Ri, oi, "A", k + 1), (COMP[b], Rii, oii, "B", 2 * n - k)):
             t = tmpl[_key(form, base, k if chain == "A" else n - 1 - k, n)]
             res = [(chain, num, "D" + base, name, ob + Rb @ np.asarray(xyz)) for name, xyz in t.items()]

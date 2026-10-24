@@ -173,7 +173,15 @@ for k in kept:
         failed += 1
         print("pair lists differ for", k["id"], len(x["pairs"]), len(a["pairs"]))
         continue
+    theirs_ids = [(f"{c1}{n1}", f"{c2}{n2}") for c1, n1, _, _, _, _, n2, c2 in x["pair_ids"]]
+    ours_ids = [tuple(p["residues"]) for p in a["pairs"]]
+    if theirs_ids and theirs_ids != ours_ids:
+        diff = [(i + 1, t, o) for i, (t, o) in enumerate(zip(theirs_ids, ours_ids)) if t != o]
+        failed += 1
+        print("pairing differs for", k["id"], diff[:3])
+        continue
     compared += 1
+    k["same_pairs"] = True
     db = np.abs(np.array(x["pairs"]) - np.array([p["params"] for p in a["pairs"]]))
     ds = np.abs(np.array(x["steps"]) - np.array([s["params"] for s in a["steps"]]))
     if db.max() > 0.011 or ds.max() > 0.011:
@@ -360,7 +368,7 @@ for fm in "AZ":
 # against 3DNA's rebuild from the same parameters
 worst_rb = 0.0
 nrb = 0
-for k in [k for k in kept if k["form"] == "B"][:15]:
+for k in [k for k in kept if k["form"] == "B" and k.get("same_pairs")][:15]:
     d = WORK / f"x3_{k['file'].stem}"
     try:
         subprocess.run(["x3dna_utils", "cp_std", "BDNA"], cwd=d, env=ENV, capture_output=True, check=True)
