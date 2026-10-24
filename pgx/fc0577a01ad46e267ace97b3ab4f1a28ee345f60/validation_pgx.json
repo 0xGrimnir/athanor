@@ -1,0 +1,210 @@
+{
+ "results": [
+  {
+   "name": "pack: CPIC level-A genes with definitions and phenotype tables; medicines with recommendation tables",
+   "pass": true,
+   "detail": "19 genes (ABCG2, CACNA1S, CFTR, CYP2B6, CYP2C19, CYP2C9, CYP2D6, CYP3A5, CYP4F2, DPYD, G6PD, MT-RNR1, NAT2, NUDT15, RYR1, SLCO1B1, TPMT, UGT1A1, VKORC1); skipped ['HLA-A', 'HLA-B']; 78 drugs, 72 with recommendation tables (without: warfarin, siponimod, pitolisant, ondansetron, tropisetron, irinotecan); genes CPIC gives no phenotype: CYP4F2, VKORC1"
+  },
+  {
+   "name": "PharmCAT: same diplotype and phenotype on 1000 Genomes genotypes (every gene >= 99%)",
+   "pass": false,
+   "detail": "8,186 gene calls in 500 people; lowest agreement 0.486 (CYP2C19)"
+  },
+  {
+   "name": "no call where PharmCAT makes one (<= 0.5% of people in every gene)",
+   "pass": false,
+   "detail": "highest 57.2% (CYP2C19)"
+  },
+  {
+   "name": "every gene gives a call for >= 95% of 1000 Genomes people (the rest carry combinations CPIC does not define)",
+   "pass": true,
+   "detail": "highest no-call rate 3.04% (CYP2B6)"
+  },
+  {
+   "name": "chip input: 23andMe-style genotypes (GRCh37, both strands, indels as I/D) read back exactly",
+   "pass": true,
+   "detail": "139,640 genotypes, 0 differ"
+  },
+  {
+   "name": "reliability: agreement estimated on half of 1000 Genomes holds on the other half (weighted error <= 0.03)",
+   "pass": true,
+   "detail": "weighted error 0.0072 over 60 calls; largest 0.102 (CYP2C19, 30% of positions, Intermediate Metabolizer: 0.55 vs 0.65, n=34)"
+  }
+ ],
+ "summary": {
+  "genes": [
+   "ABCG2",
+   "CACNA1S",
+   "CFTR",
+   "CYP2B6",
+   "CYP2C19",
+   "CYP2C9",
+   "CYP2D6",
+   "CYP3A5",
+   "CYP4F2",
+   "DPYD",
+   "G6PD",
+   "MT-RNR1",
+   "NAT2",
+   "NUDT15",
+   "RYR1",
+   "SLCO1B1",
+   "TPMT",
+   "UGT1A1",
+   "VKORC1"
+  ],
+  "drugs": 78,
+  "pharmcat": {
+   "RYR1": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "VKORC1": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "G6PD": {
+    "n": 500,
+    "compared": 498,
+    "diplotype_agree": 498,
+    "phenotype_agree": 498,
+    "score_agree": 498,
+    "pharmcat_no_call": 2
+   },
+   "TPMT": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "UGT1A1": {
+    "n": 500,
+    "compared": 498,
+    "diplotype_agree": 498,
+    "phenotype_agree": 498,
+    "score_agree": 498,
+    "pharmcat_no_call": 2
+   },
+   "CYP4F2": {
+    "n": 500,
+    "compared": 498,
+    "diplotype_agree": 498,
+    "phenotype_agree": 498,
+    "score_agree": 498,
+    "pharmcat_no_call": 2
+   },
+   "CYP2C19": {
+    "n": 500,
+    "only_pharmcat": 286,
+    "compared": 212,
+    "diplotype_agree": 103,
+    "phenotype_agree": 103,
+    "score_agree": 212,
+    "pharmcat_no_call": 2,
+    "only_ours": 2
+   },
+   "CYP3A5": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "CYP2C9": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "SLCO1B1": {
+    "n": 500,
+    "compared": 489,
+    "diplotype_agree": 488,
+    "phenotype_agree": 489,
+    "score_agree": 489,
+    "pharmcat_no_call": 11,
+    "only_ours": 10,
+    "ours_ambiguous": 2,
+    "ambiguous_includes_pharmcat": 2
+   },
+   "CYP2B6": {
+    "n": 500,
+    "compared": 491,
+    "diplotype_agree": 491,
+    "phenotype_agree": 491,
+    "score_agree": 491,
+    "pharmcat_no_call": 9
+   },
+   "NAT2": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 499,
+    "phenotype_agree": 499,
+    "score_agree": 500
+   },
+   "DPYD": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "CACNA1S": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "NUDT15": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "CFTR": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   },
+   "ABCG2": {
+    "n": 500,
+    "compared": 500,
+    "diplotype_agree": 500,
+    "phenotype_agree": 500,
+    "score_agree": 500
+   }
+  },
+  "no_call": {
+   "ABCG2": 0.0,
+   "CACNA1S": 0.0,
+   "CFTR": 0.0007692307692307692,
+   "CYP2B6": 0.030384615384615385,
+   "CYP2C19": 0.0,
+   "CYP2C9": 0.0,
+   "CYP2D6": 0.010769230769230769,
+   "CYP3A5": 0.0,
+   "CYP4F2": 0.0015384615384615385,
+   "DPYD": 0.0,
+   "G6PD": 0.001153846153846154,
+   "NAT2": 0.0,
+   "NUDT15": 0.0,
+   "RYR1": 0.0,
+   "SLCO1B1": 0.004615384615384616,
+   "TPMT": 0.0,
+   "UGT1A1": 0.0019230769230769232,
+   "VKORC1": 0.0
+  }
+ }
+}
