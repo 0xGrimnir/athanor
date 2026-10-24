@@ -1,0 +1,24 @@
+1KX5: 147 base pairs, 146 steps, sequence ATCAATATCCACCTGCAGAT...
+[PASS] the 1KX5 nucleosome's DNA, rebuilt from its own parameters in place, puts the crystal's bases back (base-atom RMSD <= 0.1 A, no superposition): bases 0.018 A, all atoms 0.71 A over 6021 atoms
+superhelix: {'radius': 41.82, 'pitch': 25.87, 'turns': 1.83, 'hand': 'left', 'axis': [0.14332139634340746, -0.11764020639708168, -0.9826595337089179], 'centre': [12.698861201831852, 120.14718449099894, 236.5088540851638]}
+[PASS] the 1KX5 DNA follows a left-handed superhelix of the published radius and pitch (Richmond & Davey 2003: 41.9 A and 25.9 A; within 1.5 A and 3 A): left-handed, radius 41.8 A, pitch 25.9 A; first to last base pair 1.83 turns (reported as 1.65 to 1.84 depending on whether the straighter ends are counted)
+1KX5 histones: {'A': 'H3', 'E': 'H3', 'B': 'H4', 'F': 'H4', 'C': 'H2A', 'G': 'H2A', 'D': 'H2B', 'H': 'H2B'}
+1CDW: strands ['B'] / ['C'], 16 bp, bend 70.2 deg (published 80)
+1CGP: strands ['C', 'D'] / ['E', 'F'], 30 bp, bend 80.8 deg (published 90)
+1IHF: strands ['C'] / ['D', 'E'], 32 bp, bend 163.6 deg (published 160)
+1AAY: strands ['B'] / ['C'], 10 bp, bend 19.1 deg (published None)
+1TSR: strands ['E'] / ['F'], 20 bp, bend 14.3 deg (published None)
+1EFA: strands ['D'] / ['E'], 17 bp, bend 62.1 deg (published None)
+[PASS] DNA bend angles measured on the crystal structures match the published bends (TBP 80, CAP 90 deg within 15 deg; IHF more than 160 deg, measured >= 145 deg): 1CDW 70 deg; 1CGP 81 deg; 1IHF 164 deg
+6HKT: 6 octamers of [8, 8, 8, 8, 8, 8] chains; i,i+1 distances [202.0, 222.0, 224.0, 219.0, 201.0]; i,i+2 [61.0, 62.0, 63.0, 61.0]
+[PASS] the 6HKT array is a two-start zigzag: six nucleosomes, each nearer the nucleosome two along the DNA than its neighbour (mean centre distances): 6 nucleosomes; neighbours 214 A apart, next-but-one 61 A
+Dip-C cells: [('GSM3271347', 'gm12878_01'), ('GSM3271348', 'gm12878_02'), ('GSM3271349', 'gm12878_03'), ('GSM3271350', 'gm12878_04'), ('GSM3271351', 'gm12878_05'), ('GSM3271352', 'gm12878_06')]
+GSM3271347 gm12878_01: 42 homologs
+GSM3271348 gm12878_02: 46 homologs
+GSM3271349 gm12878_03: 46 homologs
+GSM3271350 gm12878_04: 38 homologs
+GSM3271351 gm12878_05: 46 homologs
+GSM3271352 gm12878_06: 46 homologs
+protein-coding genes per Mb: {'1': 8.3, '2': 5.3, '3': 5.4, '4': 4.0, '5': 4.9, '6': 6.1, '7': 5.8, '8': 4.8, '9': 5.7, '10': 5.7, '11': 9.8, '12': 8.0, '13': 2.9, '14': 6.1, '15': 6.0, '16': 9.7, '17': 14.9, '18': 3.7, '19': 25.0, '20': 8.9, '21': 5.0, '22': 8.8, 'X': 5.3}
+mean normalised radial position: {'1': 0.867, '2': 1.024, '3': 0.996, '4': 1.071, '5': 1.039, '6': 0.979, '7': 1.067, '8': 1.051, '9': 0.96, '10': 1.01, '11': 0.949, '12': 0.946, '13': 1.0, '14': 0.953, '15': 0.756, '16': 0.754, '17': 0.805, '18': 1.019, '19': 0.564, '20': 0.926, '21': 0.819, '22': 0.668, 'X': 1.088}
+[PASS] in the Dip-C single-cell structures, gene-rich chromosomes sit nearer the centre of the nucleus: chromosome 19 is more central than 18 in at least 5 of 6 cells, and radial position falls with gene density (Spearman rho <= -0.5): 19 inside 18 in 5 of 6 cells; rho -0.74
