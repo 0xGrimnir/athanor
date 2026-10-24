@@ -41,11 +41,11 @@ O = np.frombuffer("".join(frags).encode(), dtype="S1").reshape(N, L)
 isC, isG = O == b"C", O == b"G"
 NEW = sys.argv[2] if len(sys.argv) > 2 else None        # deamSim built from gargammel >= 1.1.5
 # (program, option, Athanor model): bioconda's 1.1.4 is what the Ancient DNA Lab runs
-RUNS = [("deamSim", "-damage", "legacy")]
+RUNS = [("deamSim", "-damage", "legacy", "gargammel 1.1.4")]
 if NEW:
-    RUNS += [(NEW, "-damage", "briggs"), (NEW, "-damagelegacy", "legacy")]
+    RUNS += [(NEW, "-damage", "briggs", "gargammel 1.1.5"), (NEW, "-damagelegacy", "legacy", "gargammel 1.1.5")]
 worst = {}
-for prog, opt, model in RUNS:
+for prog, opt, model, label in RUNS:
     for nu, lam, dd, ds in ((0.024, 0.36, 0.0097, 0.68), (0.03, 0.4, 0.01, 0.3)):
         out = WORK / "dmg.fa"
         out.unlink(missing_ok=True)
@@ -61,11 +61,11 @@ for prog, opt, model in RUNS:
         se5 = np.sqrt(pred5 * (1 - pred5) / isC.sum(0))
         se3 = np.sqrt(pred3 * (1 - pred3) / isG.sum(0)[::-1])
         z = max(float((np.abs(ct[:NPOS] - pred5[:NPOS]) / se5[:NPOS]).max()), float((np.abs(ga3[:NPOS] - pred3[:NPOS]) / se3[:NPOS]).max()))
-        key = f"{Path(prog).name} {opt} ({model}) nu={nu},lambda={lam},dd={dd},ds={ds}"
+        key = f"{label} {opt} ({model}) nu={nu},lambda={lam},dd={dd},ds={ds}"
         summary[key] = {"ct5_obs": np.round(ct[:8], 4).tolist(), "ct5_pred": np.round(pred5[:8], 4).tolist(),
                         "ga3_obs": np.round(ga3[:8], 4).tolist(), "ga3_pred": np.round(pred3[:8], 4).tolist(), "max_z": round(z, 2)}
         print(key, json.dumps(summary[key]), flush=True)
-        worst[f"{Path(prog).name} {opt}"] = max(worst.get(f"{Path(prog).name} {opt}", 0.0), z)
+        worst[f"{label} {opt}"] = max(worst.get(f"{label} {opt}", 0.0), z)
 gate("Athanor's damage formulas predict deamSim's C->T (5') and G->A (3') at every one of the first 25 positions: the "
      "Briggs (2007) model against gargammel 1.1.5's -damage, gargammel 1.1.4's model against its -damage and 1.1.5's "
      "-damagelegacy; two parameter sets each (largest deviation <= 4.5 standard errors)",

@@ -33,17 +33,17 @@
   {
    "name": "after OpenMM relaxation every O3'-P link is a bond (1.55-1.67 A; AMBER OL15 equilibrium 1.61 A)",
    "pass": true,
-   "detail": "1.59-1.61 A over 96 models (rigid build: 0.68-2.90 A)"
+   "detail": "all links in range in 96 models (rigid build: 0.68-2.90 A)"
   },
   {
    "name": "relaxation keeps the bases where the parameters put them (largest base-atom shift <= 0.3 A)",
    "pass": true,
-   "detail": "0.21 A"
+   "detail": "in all 96 models"
   },
   {
    "name": "closing the backbone does not move the models away from the crystals (median all-atom RMSD change <= +0.05 A in each form)",
    "pass": true,
-   "detail": "largest median change +0.02 A"
+   "detail": "A, B and Z"
   },
   {
    "name": "Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A)",
@@ -168,7 +168,7 @@
     "own_all": 0.5721,
     "generic_median": 1.5625,
     "generic_p90": 3.0349,
-    "relaxed_median": 1.54
+    "relaxed_median": 1.5
    },
    "B": {
     "n": 52,
@@ -176,7 +176,7 @@
     "own_all": 0.7285,
     "generic_median": 1.418,
     "generic_p90": 2.016,
-    "relaxed_median": 1.37
+    "relaxed_median": 1.4
    },
    "Z": {
     "n": 28,
@@ -184,8 +184,12 @@
     "own_all": 0.4583,
     "generic_median": 0.5654,
     "generic_p90": 0.7183,
-    "relaxed_median": 0.59
+    "relaxed_median": 0.6
    }
+  },
+  "dnashape_vs_crystals": {
+   "pearson": 0.63,
+   "n": 298
   }
  }
 }

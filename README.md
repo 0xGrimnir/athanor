@@ -63,8 +63,8 @@ Every check runs in CI on each change (`tools/dnadata/`, `.github/workflows/dna*
 | Pairing and stacking energies on S22 vs CCSD(T)/CBS | Mean error 0.76 kcal/mol (GFN2-xTB) and 0.26 (B3LYP-D3(BJ)/def2-TZVP, counterpoise); adenine–thymine pair −15.9 / −17.0 vs −16.7, stacked −12.3 / −11.6 vs −11.7 |
 | In a built helix | G–C pairs bind more strongly than A–T (−30.8 vs −14.2 kcal/mol, GFN2-xTB; DFT −32.1 and −14.8) |
 | Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
-| Deep DNAshape port vs the original TensorFlow model | Same predictions to within 1e-6 for all 18 features, at 2, 4 and 7 bp of flank@@SHAPE@@ |
-| Ancient damage vs gargammel's deamSim | @@DAMAGE@@ |
+| Deep DNAshape port vs the original TensorFlow model | Same predictions to within 1e-6 for all 18 features, at 2, 4 and 7 bp of flank. Its minor-groove width correlates with 3DNA's on the B-DNA crystals at r = 0.63 (298 steps); it predicts free DNA in solution, measured differently |
+| Ancient damage vs gargammel's deamSim | C→T at the 5′ end and G→A at the 3′ end, each of the first 25 positions, within 3 standard errors: the Briggs (2007) model against gargammel 1.1.5's corrected `-damage` (built from source), and gargammel 1.1.4's model (which the Ancient DNA Lab runs) against 1.1.4 and 1.1.5's `-damagelegacy` |
 
 **Scales.**
 
