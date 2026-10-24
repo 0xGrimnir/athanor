@@ -33,7 +33,7 @@ from athanor_core.dna.builder import build  # noqa: E402
 from athanor_core.dna.geometry import kabsch  # noqa: E402
 from athanor_core.dna.structure import analyse, base_frame, read_pdb, standard_bases  # noqa: E402
 
-X3, DATA, WORK = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3])
+X3, DATA, WORK = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]).resolve()
 WORK.mkdir(parents=True, exist_ok=True)
 ENV = {**os.environ, "X3DNA": str(X3), "PATH": f"{X3 / 'bin'}:{os.environ['PATH']}"}
 results, summary = [], {}
@@ -96,19 +96,24 @@ for pid in ids:
         continue
     try:
         a = analyse(res, std)
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
+        print(f"   {pid}: analysis failed {e!r}"[:160])
         continue
     n = len(a["pairs"])
     chains = {}
     for r in res:
         chains.setdefault(r.chain, []).append(r)
     if n < 6 or not all(p["watson_crick"] for p in a["pairs"]) or len(a["steps"]) != n - 1:
+        print(f"   {pid}: {n} pairs ({sum(p['watson_crick'] for p in a['pairs'])} Watson-Crick), {len(a['steps'])} steps, "
+              f"chain lengths {[len(c) for c in chains.values()]} - left out")
         continue
     if any(len(c) != n for c in chains.values()):
+        print(f"   {pid}: chain lengths {[len(c) for c in chains.values()]} for {n} pairs - left out")
         continue                        # overhangs, mismatches or missing residues
     st = np.array([s["params"] for s in a["steps"]])
     tw, sl = st[:, 5].mean(), st[:, 1].mean()
     form = "Z" if tw < 0 else "A" if sl < -1.2 else "B" if sl > -0.8 else None
+    print(f"   {pid}: {n} bp {a['sequence']} mean twist {tw:.1f} slide {sl:.2f} -> {form}")
     if form is None:
         continue
     kept.append({"id": pid, "form": form, "n": n, "analysis": a, "residues": res, "file": f})
@@ -122,7 +127,7 @@ NUM = r"(-?\d+\.\d+)"
 def x3dna_analyse(path: Path):
     d = WORK / f"x3_{path.stem}"
     d.mkdir(exist_ok=True)
-    subprocess.run(["find_pair", str(path), "out.inp"], cwd=d, env=ENV, capture_output=True, check=True)
+    subprocess.run(["find_pair", str(path.resolve()), "out.inp"], cwd=d, env=ENV, capture_output=True, check=True)
     subprocess.run(["analyze", "out.inp"], cwd=d, env=ENV, capture_output=True, check=True)
     txt = (d / "out.out").read_text()
     pairs = re.findall(r"^\s+\d+\s+\(\s*[\d.]+\)\s+\.*>(\S):\.*(-?\d+)_:\[\.*(\w+)\](\w)-[-*+x]+-(\w)\[\.*(\w+)\]:\.*(-?\d+)_:(\S)<",
