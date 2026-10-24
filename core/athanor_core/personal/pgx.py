@@ -89,6 +89,11 @@ class Gene:
                     for j in s:
                         self.allowed[i, k] |= 1 << j
         self.ref = next((i for i, a in enumerate(self.alleles) if a.get("ref")), 0)
+        # "wobble" cells: a defined cell allowing more than one base (an IUPAC code in CPIC's table). As in
+        # PharmCAT, such a cell scores only when the base it is matched to is not the reference
+        pop = np.vectorize(lambda x: bin(int(x)).count("1"))(self.allowed) if self.allowed.size else self.allowed
+        self.wobble = self.defined & (pop > 1)
+        self.wobble[self.ref] = False
         self.lookups = {}
         for r in d["results"]:
             self.lookups.setdefault(_key(Counter(r["key"])), r)
@@ -130,10 +135,30 @@ class Gene:
         if haploid:
             best = score[C].max()
             return [(self.names[i],) for i in np.flatnonzero(C & (score == best))], int(best)
-        S = score[:, None] + score[None, :]
+        S = score[:, None] + score[None, :] - self._wobble_penalty(geno)
         best = S[C].max()
         ij = np.argwhere(C & (S == best))
         return [tuple(sorted((self.names[i], self.names[j]), key=_order)) for i, j in ij], int(best)
+
+    def _wobble_penalty(self, geno: np.ndarray) -> np.ndarray:
+        """Per pair, the fewest wobble cells that must take a reference base,
+        choosing at each heterozygous position which allele gets which base."""
+        A = len(self.alleles)
+        pen = np.zeros((A, A), dtype=np.int64)
+        for k in np.flatnonzero(self.wobble.any(0) & (geno[:, 0] != UNTESTED)):
+            x, y = (int(v) for v in np.minimum(geno[k], NOVEL))
+            ax = (self.allowed[:, k] >> x) & 1 == 1
+            ay = (self.allowed[:, k] >> y) & 1 == 1
+            rx = bool((self.refmask[k] >> x) & 1) if x != NOVEL else False
+            ry = bool((self.refmask[k] >> y) & 1) if y != NOVEL else False
+            w = self.wobble[:, k].astype(np.int64)
+            o1 = ax[:, None] & ay[None, :]                  # first allele takes x
+            o2 = ay[:, None] & ax[None, :]
+            p1 = w[:, None] * rx + w[None, :] * ry
+            p2 = w[:, None] * ry + w[None, :] * rx
+            big = 10 ** 6
+            pen += np.minimum(np.where(o1, p1, big), np.where(o2, p2, big)) % big
+        return pen
 
     def alternatives(self, geno: np.ndarray, haploid: bool, called: set, phenotype: str | None, limit=4):
         """Lower-scoring diplotypes that also fit the genotypes and give a
