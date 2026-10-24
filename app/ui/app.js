@@ -620,7 +620,7 @@ function wire() {
     document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-pressed", String(t === b)));
     for (const v of ["molecule", "validation", "adna", "personal", "dna"]) $(`view-${v}`).hidden = b.dataset.view !== v;
     if (b.dataset.view === "validation") renderValidation();
-    if (b.dataset.view === "dna") initDna();
+    if (b.dataset.view === "dna") { initDna(); $("dnaDamageLab").hidden = !labDamageProfile(); }
     if (b.dataset.view === "adna") initAdna();
     if (b.dataset.view === "personal") initPersonal();
   };
@@ -823,7 +823,7 @@ function renderAdna() {
     const e = r.mapdamage_bayesian && r.mapdamage_bayesian[k];
     return `<td class="n">${e && e.Mean != null ? e.Mean.toFixed(4) : "—"}</td>`; }).join("")}</tr>`).join("");
   $("adnaDamageTable").innerHTML = `<table><thead><tr><th>Briggs parameter</th><th>Simulated</th>${R.references.map((r) => `<th>${escapeHtml(commonName(r.reference.organism))}</th>`).join("")}</tr></thead><tbody>${drows}</tbody></table>
-    <p class="note">mapDamage2 posterior means, estimated on the final (iterated) reference. δd and λ are recovered; δs comes out near 0.55 against gargammel's s = 0.3 on every reference including the sample's own, which points to the two programs defining that parameter differently. That is under investigation, so δs is reported but not used.</p>`;
+    <p class="note">mapDamage2 posterior means, estimated on the final (iterated) reference. δd and λ are recovered. δs comes out near 0.55 against gargammel's s = 0.3 on every reference, including the sample's own. The likely reason is that the two programs place overhangs differently. gargammel 1.1.4's deamSim gives every 5′ end an overhang. Briggs et al. (2007), whose model mapDamage2 fits, give one to only half of the ends. The same C→T at the first base therefore needs about twice the δs in mapDamage2's model (0.3 → about 0.6). gargammel's own later source code makes that correction, and DNA Structure's CI confirms deamSim 1.1.4's behaviour position by position. δs is reported but not used.</p>`;
   drawDamage(); drawCalibration(); drawTracks(); renderAdnaProv();
 }
 
@@ -1791,13 +1791,19 @@ async function boot() {
   }
 }
 // ------------------------------------------------------------------ DNA Structure
-const BASECOL = { A: 0xff5a4a, T: 0x4f8dff, G: 0x52f0b0, C: 0xffe066, U: 0x4f8dff };   // the NDB colours: A red, T blue, G green, C yellow
+const BASECOL = { A: 0xff5a4a, T: 0x4f8dff, G: 0x52f0b0, C: 0xffe066, U: 0xff4fd8 };   // NDB colours (A red, T blue, G green, C yellow); uracil magenta
+const HISTCOL = { H3: 0x4f8dff, H4: 0x52f0b0, H2A: 0xffe066, H2B: 0xff6a57, H1: 0xe8eef2, H5: 0xe8eef2 };
+const CHAINCOL = [0x9fdcff, 0xffb34a, 0xc8a8ff, 0x52f0b0, 0xff6a57, 0xffe066, 0x4f8dff, 0xe8eef2];
+const CHROMCOL = ["#e6194b", "#3cb44b", "#ffe119", "#4363d8", "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#bcf60c", "#fabebe",
+  "#008080", "#e6beff", "#9a6324", "#fffac8", "#ff7b7b", "#aaffc3", "#808000", "#ffd8b1", "#5f7bff", "#b0b0b0", "#ff4fd8", "#62d6ff", "#ffffff"];
+const ramp = (t, a = 0xff3b5c, b = 0x62d6ff) => new THREE.Color(a).lerp(new THREE.Color(b), Math.max(0, Math.min(1, t)));
 
 const H = (() => {
   let canvas, renderer, scene, camera, world, group, dist = 60, distTarget = 60, ready = false;
-  let model = null, style = "atoms", color = "base", melt = null, inst = null, bondInst = null, slabs = null;
+  let model = null, extras = null, style = "atoms", color = "base", melt = null, inst = null, bondInst = null, slabs = null;
+  let center = new THREE.Vector3(), data = {};
   const sph = new THREE.SphereGeometry(1, 16, 12), cyl = new THREE.CylinderGeometry(1, 1, 1, 10, 1, true);
-  const box = new THREE.BoxGeometry(1, 1, 1);
+  const lowSph = new THREE.SphereGeometry(1, 10, 8), box = new THREE.BoxGeometry(1, 1, 1);
   const m4 = new THREE.Matrix4(), qq = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), tmp = new THREE.Vector3();
 
   function init() {
@@ -1805,7 +1811,7 @@ const H = (() => {
     canvas = $("dnagl");
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); renderer.setClearColor(0x000000, 0);
-    scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(38, 1, 0.5, 2000);
+    scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(38, 1, 0.5, 200000);
     scene.add(new THREE.AmbientLight(0x6aa8c8, 0.65));
     const key = new THREE.DirectionalLight(0xdff4ff, 1.0); key.position.set(30, 40, 60); scene.add(key);
     const rim = new THREE.DirectionalLight(0x62d6ff, 0.7); rim.position.set(-40, -20, -30); scene.add(rim);
@@ -1821,16 +1827,15 @@ const H = (() => {
       ax.set(1, 0, 0); qq.setFromAxisAngle(ax, dy * .008); world.quaternion.premultiply(qq);
     });
     canvas.addEventListener("pointerup", (e) => { if (drag && drag.moved < 4) pick(e); drag = null; });
-    canvas.addEventListener("wheel", (e) => { e.preventDefault(); distTarget = Math.max(10, Math.min(400, distTarget * (1 + e.deltaY * .0012))); }, { passive: false });
+    canvas.addEventListener("wheel", (e) => { e.preventDefault(); distTarget = Math.max(5, Math.min(100000, distTarget * (1 + e.deltaY * .0012))); }, { passive: false });
     const frame = () => { dist += (distTarget - dist) * .1; camera.position.set(0, 0, dist); camera.lookAt(0, 0, 0);
       renderer.render(scene, camera); requestAnimationFrame(frame); };
     requestAnimationFrame(frame); ready = true;
   }
 
-  // positions after the melting displacement: an open base pair's bases move apart along their C1'-C1' line
   function positions() {
     const P = model.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
-    if (!melt || color !== "melt") return P;
+    if (!melt || color !== "melt" || model.numbering !== "duplex") return P;
     model.pair_of_atom.forEach((k, i) => {
       if (k < 0) return;
       const open = 1 - (melt.closed[k] ?? 1), dir = model.pair_dir[k];
@@ -1840,37 +1845,64 @@ const H = (() => {
     return P;
   }
 
-  function atomColor(i) {
-    const c = baseColor(i), k = model.pair_of_atom[i];
-    // a highlighted base pair (a variant): every other pair fades
-    if (model.highlight != null && k !== model.highlight) c.lerp(new THREE.Color(0x2a3a46), 0.6);
-    return c;
-  }
+  function perPair(arr, k) { return arr && k >= 0 && k < arr.length ? arr[k] : null; }
 
   function baseColor(i) {
-    const a = model.atoms[i];
+    const a = model.atoms[i], base = a[2].replace(/^D/, ""), k = model.pair_of_atom[i];
     if (color === "element") return new THREE.Color(elInfo(a[4])[0]);
-    const base = a[2].replace(/^D/, ""), k = model.pair_of_atom[i];
-    if (color === "groove" && k >= 0 && model.groove[k] != null) {
-      // narrow minor groove (3 A) hot, wide (9 A) cool
-      const t = Math.max(0, Math.min(1, (model.groove[k] - 3) / 6));
-      return new THREE.Color(0xff3b5c).lerp(new THREE.Color(0x62d6ff), t);
+    if (color === "groove" && model.groove[k] != null) return ramp((model.groove[k] - 3) / 6);          // narrow (3 A) hot, wide (9 A) cool
+    if (color === "shape" && perPair(data.shape, k) != null) {
+      const s = data.shapeRange; return ramp((data.shape[k] - s[0]) / Math.max(1e-6, s[1] - s[0]));
+    }
+    if (color === "energy" && perPair(data.energy, k) != null) {
+      const e = data.energyRange; return ramp((data.energy[k] - e[0]) / Math.max(1e-6, e[1] - e[0]), 0xff3b5c, 0x2a3a46);  // strongest hot
     }
     if (color === "melt" && melt && k >= 0) {
       const c = melt.closed[k] ?? 1;
       return new THREE.Color(0x7f9fb3).lerp(new THREE.Color(BASECOL[base] || 0xd0d8e0), c);
     }
+    if (color === "damage" && data.damage) {
+      if (base === "U") return new THREE.Color(BASECOL.U);
+      const p = data.damage[a[0] + a[1]];
+      if (p != null) return ramp(p / 0.3, 0x3a4a56, 0xff4fd8);
+      return model.backbone[i] ? new THREE.Color(0x52626e) : new THREE.Color(0x3a4a56);
+    }
     return model.backbone[i] ? new THREE.Color(0x9fb8c8) : new THREE.Color(BASECOL[base] || 0xd0d8e0);
   }
 
+  function atomColor(i) {
+    const c = baseColor(i), k = model.pair_of_atom[i];
+    if (model.highlight != null && k !== model.highlight) c.lerp(new THREE.Color(0x2a3a46), 0.6);
+    if (model.userRange && (k < model.userRange[0] || k >= model.userRange[1])) c.lerp(new THREE.Color(0x2a3a46), 0.55);
+    return c;
+  }
+
+  function tube(pts, col, r, seg = 6) {
+    if (pts.length < 2) return;
+    const v = pts.map((p) => new THREE.Vector3(p[0], p[1], p[2]).sub(center));
+    const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(v), Math.min(4000, v.length * seg), r, 8, false);
+    group.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: col, metalness: .25, roughness: .45 })));
+  }
+
   function draw() {
-    if (!model) return;
-    group.clear();
+    group.clear(); inst = slabs = bondInst = null;
+    if (model) drawModel();
+    if (extras) {
+      for (const t of extras.tubes || []) tube(t.pts, t.color, t.radius, t.seg);
+      for (const s of extras.spheres || []) {
+        const mesh = new THREE.InstancedMesh(lowSph, new THREE.MeshStandardMaterial({ metalness: .2, roughness: .4, emissive: s.emissive || 0x000000 }), s.pts.length);
+        s.pts.forEach((p, i) => { m4.compose(tmp.set(p[0], p[1], p[2]).sub(center), qq.identity(), new THREE.Vector3(s.radius, s.radius, s.radius));
+          mesh.setMatrixAt(i, m4); mesh.setColorAt(i, new THREE.Color(Array.isArray(s.color) ? s.color[i] : s.color)); });
+        group.add(mesh);
+      }
+    }
+  }
+
+  function drawModel() {
     const P = positions(), n = P.length;
-    const center = P.reduce((a, v) => a.add(v), new THREE.Vector3()).multiplyScalar(1 / n);
     if (style === "atoms") {
       const mat = new THREE.MeshStandardMaterial({ metalness: .2, roughness: .45 });
-      inst = new THREE.InstancedMesh(sph, mat, n);
+      inst = new THREE.InstancedMesh(n > 4000 ? lowSph : sph, mat, n);
       P.forEach((p, i) => {
         const r = 0.18 + elInfo(model.atoms[i][4])[1] * 0.22;
         m4.compose(tmp.copy(p).sub(center), qq.identity(), new THREE.Vector3(r, r, r));
@@ -1886,17 +1918,16 @@ const H = (() => {
       });
       group.add(bondInst);
     } else {
-      // cartoon: a tube along each strand's phosphorus atoms, a slab per base from C1' into the ring
-      inst = null;
-      for (const chain of ["A", "B"]) {
-        const pts = model.atoms.map((a, i) => (a[0] === chain && a[3] === "P" ? P[i].clone().sub(center) : null)).filter(Boolean);
-        if (pts.length > 1) {
-          const tube = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 8, 0.9, 10, false);
-          group.add(new THREE.Mesh(tube, new THREE.MeshStandardMaterial({ color: chain === "A" ? 0x9fdcff : 0xc8a8ff, metalness: .3, roughness: .4 })));
+      // cartoon: a tube along each strand's phosphorus atoms (C4' where there is no P), a slab per base from C1' into the ring
+      for (const chain of [...new Set(model.atoms.map((a) => a[0]))]) {
+        const pts = model.atoms.map((a, i) => (a[0] === chain && (a[3] === "P" || a[3] === "C4'") ? P[i] : null)).filter(Boolean);
+        const sel = pts.filter((_, i) => i % 1 === 0);
+        if (sel.length > 1) {
+          const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(sel.map((p) => p.clone().sub(center))), sel.length * 6, 0.9, 10, false);
+          group.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: chain === "A" ? 0x9fdcff : 0xc8a8ff, metalness: .3, roughness: .4 })));
         }
       }
-      const res = model.residues;
-      const sm = new THREE.MeshStandardMaterial({ metalness: .15, roughness: .5 });
+      const res = model.residues, sm = new THREE.MeshStandardMaterial({ metalness: .15, roughness: .5 });
       slabs = new THREE.InstancedMesh(box, sm, res.length);
       res.forEach((r, k) => {
         const c1 = P[r.c1].clone().sub(center), tip = P[r.tip].clone().sub(center), d = tip.clone().sub(c1), len = d.length();
@@ -1914,24 +1945,29 @@ const H = (() => {
     const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
     const hit = ray.intersectObjects([inst, slabs].filter(Boolean))[0];
-    if (!hit || hit.instanceId == null) { $("dnaPick").hidden = true; return; }
+    if (!hit || hit.instanceId == null) { if (!model.keepCaption) $("dnaPick").hidden = true; return; }
     const i = hit.object === inst ? hit.instanceId : model.residues[hit.instanceId].tip;
     const a = model.atoms[i], k = model.pair_of_atom[i];
-    const bp = k >= 0 ? model.analysis.pairs[k] : null;
-    $("dnaPick").hidden = false;
-    $("dnaPick").textContent = `${a[2].replace(/^D/, "")}${a[1]} strand ${a[0] === "A" ? "I" : "II"} · atom ${a[3]}` +
-      (bp ? ` · pair ${bp.pair}, propeller ${bp.params[4].toFixed(1)}°` : "") +
-      (k >= 0 && model.groove[k] != null ? ` · minor groove ${model.groove[k].toFixed(1)} Å` : "") +
-      (melt && k >= 0 ? ` · closed ${pct(melt.closed[k], 0)}` : "");
+    D.selected = k;
+    const bp = k >= 0 && model.analysis.pairs[k] ? model.analysis.pairs[k] : null;
+    const parts = [`${a[2].replace(/^D/, "")}${a[1]} strand ${a[0] === "A" ? "I" : "II"} · atom ${a[3]}`];
+    if (bp && model.numbering === "duplex") parts.push(`pair ${bp.pair}, propeller ${bp.params[4].toFixed(1)}°`);
+    if (k >= 0 && model.groove[k] != null) parts.push(`minor groove ${model.groove[k].toFixed(1)} Å`);
+    if (perPair(data.shape, k) != null) parts.push(`predicted ${data.shapeLabel} ${data.shape[k].toFixed(2)} ${data.shapeUnit}`);
+    if (perPair(data.energy, k) != null) parts.push(`pairing energy ${data.energy[k].toFixed(1)} kcal/mol`);
+    if (melt && k >= 0 && model.numbering === "duplex") parts.push(`closed ${pct(melt.closed[k], 0)}`);
+    if (data.damage && data.damage[a[0] + a[1]] != null) parts.push(`chance of uracil ${pct(data.damage[a[0] + a[1]], 0)}`);
+    $("dnaPick").hidden = false; $("dnaPick").textContent = parts.join(" · ");
+    $("dnaDftBtn").hidden = !(data.energy && k >= 0);
   }
 
-  function set(m) {
-    init(); model = m;
+  function prepare(m) {
     // which base pair each atom belongs to, the residues' C1' and ring-tip atoms, and backbone atoms
     const bb = new Set(["P", "OP1", "OP2", "O5'", "C5'", "C4'", "O4'", "C3'", "O3'", "C2'", "C1'", "O1P", "O2P"]);
     const nbp = m.sequence.length;
+    m.numbering = m.numbering || "duplex";
     m.backbone = m.atoms.map((a) => bb.has(a[3]));
-    m.pair_of_atom = m.atoms.map((a) => (a[0] === "A" ? a[1] - 1 : 2 * nbp - a[1]));
+    m.pair_of_atom = m.atoms.map((a) => (m.numbering !== "duplex" ? -1 : a[0] === "A" ? a[1] - 1 : 2 * nbp - a[1]));
     const byRes = new Map();
     m.atoms.forEach((a, i) => { const key = a[0] + a[1]; if (!byRes.has(key)) byRes.set(key, {}); byRes.get(key)[a[3]] = i; });
     m.residues = [...byRes.values()].map((r) => ({ c1: r["C1'"], tip: r["N1"] !== undefined && r["N9"] === undefined ? (r["N3"] ?? r["N1"]) : (r["N1"] ?? r["C1'"]) }))
@@ -1945,85 +1981,178 @@ const H = (() => {
       m.pair_dir.push(d.map((x) => x / L));
     }
     // minor-groove width is defined per step (3DNA's P-P measure); a base pair takes the mean of its two steps
-    const gs = Array(nbp - 1).fill(null);
-    (m.analysis.grooves || []).forEach((g) => { if (g.minor != null) gs[g.step] = g.minor; });
+    const gs = Array(Math.max(0, nbp - 1)).fill(null);
+    ((m.analysis && m.analysis.grooves) || []).forEach((g) => { if (g.minor != null) gs[g.step] = g.minor; });
     m.groove = Array.from({ length: nbp }, (_, k) => {
       const v = [gs[k - 1], gs[k]].filter((x) => x != null && x !== undefined);
       return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null;
     });
-    const P = m.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
-    const c = P.reduce((x, v) => x.add(v), new THREE.Vector3()).multiplyScalar(1 / P.length);
-    let r = 0; for (const v of P) r = Math.max(r, v.distanceTo(c));
+  }
+
+  function frameView(pts, axis, toward) {
+    const c = pts.reduce((x, v) => x.add(v), new THREE.Vector3()).multiplyScalar(1 / Math.max(1, pts.length));
+    let r = 0; for (const v of pts) r = Math.max(r, v.distanceTo(c));
+    center = c;
     distTarget = Math.max(25, (r * 1.2 + 6) / Math.tan(THREE.MathUtils.degToRad(17)));
-    // stand the helix up: the mean of the base-pair z axes (the helix axis direction) along screen y
-    const axis = new THREE.Vector3();
-    for (const [R] of m.frames) axis.add(new THREE.Vector3(R[0][2], R[1][2], R[2][2]));
-    if (axis.lengthSq() > 1e-6) group.quaternion.setFromUnitVectors(axis.normalize(), up);
+    dist = Math.min(dist, distTarget * 3) || distTarget;
+    group.quaternion.identity();
+    if (axis && axis.lengthSq() > 1e-6) group.quaternion.setFromUnitVectors(axis.clone().normalize(), toward || up);
     world.quaternion.identity();
+  }
+
+  function set(m, opts = {}) {
+    init(); model = m; extras = opts.extras || null; data = {};
+    prepare(m);
+    if (!opts.keepView) {
+      const pts = m.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
+      for (const t of (extras && extras.tubes) || []) for (const p of t.pts) pts.push(new THREE.Vector3(...p));
+      let axis = opts.axis || null;
+      if (!axis && m.frames && m.frames.length) {
+        // stand the helix up: the mean of the base-pair z axes (the helix axis direction) along screen y
+        axis = new THREE.Vector3();
+        for (const [R] of m.frames) axis.add(new THREE.Vector3(R[0][2], R[1][2], R[2][2]));
+      }
+      frameView(pts, axis, opts.toward);
+    }
     draw();
   }
-  return { set, setStyle: (s) => { style = s; draw(); }, setColor: (c) => { color = c; draw(); }, setMelt: (x) => { melt = x; if (color === "melt") draw(); } };
+
+  function sceneOnly(spec) {
+    init(); model = null; extras = spec; data = {};
+    const pts = [];
+    for (const t of spec.tubes || []) for (const p of t.pts) pts.push(new THREE.Vector3(...p));
+    for (const s of spec.spheres || []) for (const p of s.pts) pts.push(new THREE.Vector3(...p));
+    frameView(pts, spec.axis || null, spec.toward);
+    draw();
+  }
+
+  function update(coords) {
+    if (!model) return;
+    coords.forEach((x, i) => { const a = model.atoms[i]; if (a) { a[5] = x[0]; a[6] = x[1]; a[7] = x[2]; } });
+    draw();
+  }
+
+  return {
+    set, sceneOnly, update, redraw: draw, current: () => model,
+    setStyle: (s) => { style = s; draw(); }, setColor: (c) => { color = c; draw(); },
+    setMelt: (x) => { melt = x; if (color === "melt") draw(); },
+    setData: (k, v) => { data[k] = v; draw(); }, getData: (k) => data[k],
+  };
 })();
 
-const D = { inited: false, model: null, form: "B", melt: null };
+const D = { inited: false, model: null, form: "B", melt: null, scale: "helix", md: null, shape: null, energies: null, scales: null };
 const DNA_PRESETS = [
   ["Dickerson dodecamer", "CGCGAATTCGCG", "B"], ["A-tract (bent)", "GCAAAAAACGGCAAAAAACG", "B"],
   ["GC-rich 20-mer", "GCGGCGCCGCGGCCGCGGCG", "B"], ["Z-DNA 12-mer", "CGCGCGCGCGCG", "Z"],
   ["A-DNA octamer", "GGGGCCCC", "A"], ["Primer-length 24-mer", "ATGCTAGCTAGGCTAACGTTAGCA", "B"],
 ];
 
+function dnaBusy(on, text = "Building…") { $("dnaBusy").hidden = !on; $("dnaBusyText").textContent = text; }
+
+function setPressed(sel, el) { document.querySelectorAll(sel).forEach((x) => x.setAttribute("aria-pressed", String(x === el))); }
+
 function initDna() {
   if (D.inited) return; D.inited = true;
   $("dnaPresets").innerHTML = DNA_PRESETS.map(([n], i) => `<button type="button" class="btn" data-i="${i}">${escapeHtml(n)}</button>`).join("");
   $("dnaPresets").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; const [, s, f] = DNA_PRESETS[+b.dataset.i];
-    $("dnaSeq").value = s; setForm(f); dnaBuild(); };
+    $("dnaSeq").value = s; setForm(f); setScale("helix", false); dnaBuild(); };
   const setForm = (f) => { D.form = f; document.querySelectorAll("#dnaForm button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.form === f))); };
   $("dnaForm").onclick = (e) => { const b = e.target.closest("button"); if (b) setForm(b.dataset.form); };
-  $("dnaBuild").onclick = dnaBuild;
-  document.querySelectorAll("[data-dnastyle]").forEach((b) => (b.onclick = () => {
-    document.querySelectorAll("[data-dnastyle]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); H.setStyle(b.dataset.dnastyle); }));
-  document.querySelectorAll("[data-dnacolor]").forEach((b) => (b.onclick = () => {
-    document.querySelectorAll("[data-dnacolor]").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); H.setColor(b.dataset.dnacolor); }));
+  $("dnaBuild").onclick = () => { setScale("helix", false); dnaBuild(); };
+  document.querySelectorAll("[data-dnastyle]").forEach((b) => (b.onclick = () => { setPressed("[data-dnastyle]", b); H.setStyle(b.dataset.dnastyle); }));
+  document.querySelectorAll("[data-dnacolor]").forEach((b) => (b.onclick = () => { setPressed("[data-dnacolor]", b); H.setColor(b.dataset.dnacolor); }));
   let t = null;
   const meltLater = () => { $("dnaTempV").textContent = `${$("dnaTemp").value} °C`; clearTimeout(t); t = setTimeout(dnaMelt, 60); };
   $("dnaTemp").oninput = meltLater; $("dnaNa").onchange = dnaMelt; $("dnaCt").onchange = dnaMelt;
   $("dnaSavePdb").onclick = dnaSave;
+  $("dnaMdBtn").onclick = () => (D.md ? dnaMdStop() : dnaMdStart());
+  $("dnaEnergyBtn").onclick = dnaEnergies;
+  $("dnaDftBtn").onclick = dnaDft;
+  $("dnaDamageBtn").onclick = () => dnaDamage(null);
+  $("dnaDamageLab").onclick = () => dnaDamage(labDamageProfile());
+  $("dnaShapeFeat").onchange = () => applyShape();
+  $("dnaScale").onclick = (e) => { const b = e.target.closest("button"); if (b) setScale(b.dataset.scale, true); };
+  $("dnaNucFind").onclick = () => showNucleus({ chrom: $("dnaNucChrom").value, pos: +$("dnaNucPos").value });
+  $("dnaNucColor").onchange = () => D.nucleus && drawNucleus(D.nucleus);
+  $("dnaNucChrom").innerHTML = [...Array.from({ length: 22 }, (_, i) => String(i + 1)), "X"].map((c) => `<option value="${c}">chr${c}</option>`).join("");
   D.setForm = setForm;
+  rpc("dna_scales", {}).then((s) => { D.scales = s; renderComplexList(); }).catch(() => {});
   if (D.pending) dnaVariant(); else dnaBuild();
+}
+
+function showMode(mode) {
+  document.querySelectorAll("#view-dna [data-dnamode]").forEach((el) => { el.hidden = !el.dataset.dnamode.split(",").includes(mode); });
+  $("dnaViewopts").hidden = mode === "fibre" || mode === "nucleus";
+}
+
+function setScale(scale, act) {
+  D.scale = scale;
+  document.querySelectorAll("#dnaScale button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.scale === scale)));
+  showMode(scale);
+  if (scale !== "helix" && D.md) dnaMdStop();
+  if (!act) return;
+  if (scale === "helix") dnaBuild();
+  else if (scale === "nucleosome") showNucleosome();
+  else if (scale === "complex") showComplex((D.complex && D.complex.pdb) || "1CDW");
+  else if (scale === "fibre") showFibre();
+  else if (scale === "nucleus") showNucleus(D.nucleusTarget || null);
 }
 
 async function dnaVariant() {
   const want = D.pending; D.pending = null;
   if (!want) return;
-  $("dnaBusy").hidden = false;
+  setScale("helix", false);
+  dnaBusy(true);
   try {
     const m = await rpc("dna_variant", want), v = m.variant;
     D.setForm("B"); D.model = m; $("dnaSeq").value = m.sequence;
     m.highlight = v.index; H.set(m);
+    D.nucleusTarget = { chrom: v.chrom, pos: v.pos37, label: `${v.rsid}` };
     $("dnaName").textContent = `${v.rsid} · ${v.allele}`;
     $("dnaFormula").textContent = `chr${v.chrom}:${(v.pos37 - v.index).toLocaleString()}+${m.sequence.length - 1} · GRCh37 +`;
     renderDna(m); $("dnaSavePdb").hidden = false;
+    m.keepCaption = true;
     $("dnaPick").hidden = false;
-    $("dnaPick").textContent = `Base pair ${v.index + 1}: ${v.allele} at chr${v.chrom}:${v.pos37.toLocaleString()} ` +
-      `(reference ${v.ref}${v.alts.length ? `, alternative ${v.alts.join("/")}` : ""}). Reference sequence either side from ${v.source}. ` +
-      `The helix is ideal B-DNA from average step parameters; a single base change shifts its local shape only slightly.`;
-    await dnaMelt();
+    $("dnaPick").innerHTML = `Base pair ${v.index + 1}: ${escapeHtml(v.allele)} at chr${escapeHtml(v.chrom)}:${v.pos37.toLocaleString()} ` +
+      `(reference ${escapeHtml(v.ref)}${v.alts.length ? `, alternative ${escapeHtml(v.alts.join("/"))}` : ""}). Reference sequence either side from ${escapeHtml(v.source)}. ` +
+      `The helix is ideal B-DNA from average step parameters; a single base change shifts its local shape only slightly. ` +
+      `<button type="button" class="btn xs" id="dnaVarNuc">Where it sits in a nucleus</button>`;
+    $("dnaVarNuc").onclick = () => { setScale("nucleus", false); showNucleus(D.nucleusTarget); };
+    await Promise.all([dnaMelt(), dnaShape()]);
   } catch (e) { log(`Helix build failed: ${e.message || e}`, true); }
-  finally { $("dnaBusy").hidden = true; }
+  finally { dnaBusy(false); }
 }
 
 async function dnaBuild() {
   const seq = $("dnaSeq").value.replace(/\s+/g, "").toUpperCase();
-  $("dnaBusy").hidden = false; $("dnaPick").hidden = true;
+  if (D.md) await dnaMdStop();
+  dnaBusy(true); $("dnaPick").hidden = true;
   try {
     const m = await rpc("dna_build", { sequence: seq, form: D.form });
-    D.model = m; H.set(m);
+    D.model = m; D.energies = null; H.set(m);
     $("dnaName").textContent = `${m.form}-DNA · ${m.sequence.length} bp`;
     $("dnaFormula").textContent = `5'-${m.sequence}-3'`;
     renderDna(m); $("dnaSavePdb").hidden = false;
-    await dnaMelt();
+    $("dnaEnergySec").hidden = true; document.querySelector('[data-dnacolor="energy"]').hidden = true;
+    document.querySelector('[data-dnacolor="damage"]').hidden = true;
+    $("dnaMdBtn").disabled = !m.md_available;
+    await Promise.all([dnaMelt(), dnaShape()]);
+    if ($("dnaRelaxChk").checked && m.md_available) dnaRelax(seq);
   } catch (e) { log(`Helix build failed: ${e.message || e}`, true); }
-  finally { $("dnaBusy").hidden = true; }
+  finally { dnaBusy(false); }
+}
+
+async function dnaRelax(seq) {
+  const form = D.form;
+  $("dnaSummaryLabel").textContent = "Helix · closing the backbone…";
+  try {
+    const m = await rpc("dna_relax", { sequence: seq, form });
+    if (!D.model || D.model.sequence !== seq || D.scale !== "helix" || D.md) return;   // superseded
+    D.model = m; H.set(m, { keepView: true });
+    if (D.shape) applyShape(); if (D.melt) H.setMelt(D.melt);
+    renderDna(m);
+  } catch (e) { log(`Backbone relaxation failed: ${e.message || e}`, true); }
+  finally { $("dnaSummaryLabel").textContent = "Helix"; }
 }
 
 async function dnaMelt() {
@@ -2037,35 +2166,324 @@ async function dnaMelt() {
   } catch (e) { $("dnaMelt").textContent = String(e.message || e); }
 }
 
-function renderDna(m) {
-  const st = m.analysis.steps.map((s) => s.params), pr = m.analysis.pairs.map((p) => p.params);
+// ---- shape in solution (Deep DNAshape)
+async function dnaShape() {
+  if (!D.model) return;
+  try {
+    const r = await rpc("dna_shape", { sequence: D.model.sequence });
+    D.shape = r;
+    const sel = $("dnaShapeFeat"), keep = sel.value || "MGW";
+    sel.innerHTML = Object.keys(r.shape).map((f) => `<option value="${f}"${f === keep ? " selected" : ""}>${escapeHtml(r.names[f])}</option>`).join("");
+    applyShape();
+  } catch (e) { $("dnaShapeNote").textContent = `Shape prediction unavailable: ${e.message || e}`; }
+}
+
+function applyShape() {
+  const r = D.shape; if (!r) return;
+  const f = $("dnaShapeFeat").value || "MGW", vals = r.shape[f], n = D.model.sequence.length;
+  // a step feature belongs to the two pairs around it: a pair takes the mean of its steps
+  const perPair = r.per[f] === "step" ? Array.from({ length: n }, (_, k) => { const v = [vals[k - 1], vals[k]].filter((x) => x != null); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; }) : vals;
+  const finite = perPair.filter((x) => x != null);
+  H.setData("shapeRange", [Math.min(...finite), Math.max(...finite)]);
+  H.setData("shapeLabel", r.names[f]); H.setData("shapeUnit", r.units[f] === "deg" ? "°" : r.units[f]);
+  H.setData("shape", perPair);
+  drawShapePlot(f);
+  $("dnaShapeNote").innerHTML = `<span class="legend"><span><i style="background:${COLORS[0]}"></i>Deep DNAshape</span>${f === "MGW" ? `<span><i style="background:${COLORS[1]}"></i>built helix</span>` : ""}</span>
+    ${escapeHtml(r.method)} ${r.checked ? `<b>Checked:</b> ${escapeHtml(r.checked)}.` : ""}
+    Colour the helix by <i>Shape</i> to see it; for minor-groove width the plot also shows the built helix's groove (3DNA's P–P measure), which follows the step parameters, not the simulations.`;
+}
+
+function drawShapePlot(f) {
+  const cv = $("dnaShapePlot"), r = D.shape; if (!r || !cv.clientWidth) return;
+  const { g, l, r: rr, t, b } = plotFrame(cv);
+  const vals = r.shape[f], n = vals.length, unit = r.units[f] === "deg" ? "°" : r.units[f];
+  const built = f === "MGW" && D.model ? D.model.analysis.grooves.map((x) => x.minor) : null;
+  const all = [...vals, ...(built || []).filter((x) => x != null)];
+  let lo = Math.min(...all), hi = Math.max(...all); if (hi - lo < 1e-6) { lo -= 1; hi += 1; }
+  const X = (i, m) => l + (m > 1 ? (i / (m - 1)) * (rr - l) : (rr - l) / 2), Y = (v) => b - ((v - lo) / (hi - lo)) * (b - t);
+  g.strokeRect(l, t, rr - l, b - t);
+  g.fillText(`${hi.toFixed(1)} ${unit}`, 2, t + 8); g.fillText(`${lo.toFixed(1)}`, 2, b);
+  g.fillText(r.per[f] === "step" ? "base-pair step" : "base pair", l + 4, b + 18);
+  g.strokeStyle = COLORS[0]; g.lineWidth = 2; g.beginPath(); vals.forEach((v, i) => (i ? g.lineTo(X(i, n), Y(v)) : g.moveTo(X(i, n), Y(v)))); g.stroke();
+  if (built) {
+    g.strokeStyle = COLORS[1]; g.setLineDash([4, 3]); g.beginPath(); let on = false;
+    built.forEach((v, i) => { if (v == null) { on = false; return; } const x = X(i + 0.5, n), y = Y(v); if (on) g.lineTo(x, y); else g.moveTo(x, y); on = true; }); g.stroke(); g.setLineDash([]);
+  }
+  g.lineWidth = 1;
+}
+
+// ---- dynamics
+async function dnaMdStart() {
+  if (!D.model) return;
+  const seq = D.model.sequence, form = D.form;
+  $("dnaMdBtn").textContent = "Stop dynamics"; $("dnaMdInfo").textContent = "Setting up: adding hydrogens, minimising…";
+  try {
+    const r = await rpc("dna_md_start", { sequence: seq, form, temperature: +$("dnaMdTemp").value, salt: +$("dnaMdSalt").value, ps: 0.4 });
+    D.md = { run: r.run, method: r.method };
+    D.model = r; H.set(r, { keepView: true }); renderDna(r);
+    showMdFrame(r.frame);
+    let ps = 0.4;
+    while (D.md && D.md.run === r.run) {
+      const f = await rpc("dna_md_step", { run: r.run, ps });
+      // about one frame a second, whatever the hardware: ns/day -> ps per second
+      ps = Math.max(0.4, Math.min(20, Math.round(f.ns_per_day * 1000 / 86400 * 10) / 10));
+      if (!D.md || D.md.run !== r.run) break;
+      H.update(f.coords); showMdFrame(f);
+    }
+  } catch (e) { if (D.md) log(`Dynamics stopped: ${e.message || e}`, true); D.md = null; }
+  finally { $("dnaMdBtn").textContent = "Run dynamics"; }
+}
+
+async function dnaMdStop() {
+  const md = D.md; D.md = null;
+  $("dnaMdBtn").textContent = "Run dynamics";
+  if (md) try { await rpc("dna_md_stop", { run: md.run }); } catch (e) { /* already gone */ }
+}
+
+function showMdFrame(f) {
+  $("dnaMdInfo").innerHTML = `<b>${(f.time_ps / 1000).toFixed(3)} ns</b> · ${f.temperature.toFixed(0)} K · ${f.ns_per_day.toFixed(1)} ns/day on ${escapeHtml(f.platform)}
+    · ${f.n_frames} frames averaged<br><small>${escapeHtml(D.md ? D.md.method : "")}. Implicit water and salt: no explicit ions or water molecules.</small>`;
+  // the step table shows the running average and spread over the frames so far
+  const f1 = (x, d) => { const t = x.toFixed(d); return /^-0\.0*$/.test(t) ? t.slice(1) : t; };
+  const steps = D.model.analysis.steps;
+  $("dnaStepsLabel").textContent = "Base-pair steps · average over the run";
+  $("dnaSteps").innerHTML = `<table class="tight"><thead><tr><th>Step</th><th>Shift</th><th>Slide</th><th>Rise</th><th>Tilt</th><th>Roll</th><th>Twist</th></tr></thead><tbody>
+    ${f.mean_steps.map((p, i) => `<tr><td>${escapeHtml((steps[i] || {}).step || "")}</td>${p.map((v, k) => `<td class="n">${f1(v, k < 3 ? 2 : 1)}<small> ±${f1(f.sd_steps[i][k], k < 3 ? 2 : 1)}</small></td>`).join("")}</tr>`).join("")}
+    </tbody></table><p class="note">Mean ± standard deviation over the frames so far.</p>`;
+}
+
+// ---- energies
+async function dnaEnergies() {
+  if (!D.model) return;
+  dnaBusy(true, "Pairing and stacking energies (GFN2-xTB)…");
+  try {
+    const r = await rpc("dna_energies", { sequence: D.model.sequence, form: D.form });
+    D.energies = r;
+    const e = r.pairs; H.setData("energyRange", [Math.min(...e), Math.max(...e)]); H.setData("energy", e);
+    const btn = document.querySelector('[data-dnacolor="energy"]'); btn.hidden = false; setPressed("[data-dnacolor]", btn); H.setColor("energy");
+    renderEnergies();
+  } catch (e) { log(`Energies failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+function renderEnergies() {
+  const r = D.energies; if (!r) return;
+  const seq = r.sequence, comp = { A: "T", T: "A", G: "C", C: "G" };
+  const c = r.checked || {}, mad = c.s22_mad_kcal || {};
+  $("dnaEnergySec").hidden = false;
+  $("dnaEnergy").innerHTML = `<table class="tight"><thead><tr><th>#</th><th>Pair</th><th>Pairing</th><th>Step</th><th>Stacking</th></tr></thead><tbody>
+    ${r.pairs.map((p, k) => `<tr><td class="n">${k + 1}</td><td>${seq[k]}-${comp[seq[k]]}</td><td class="n">${p.toFixed(1)}</td>
+      <td>${k < r.steps.length ? `${seq[k]}${seq[k + 1]}` : ""}</td><td class="n">${k < r.steps.length ? r.steps[k].toFixed(1) : ""}</td></tr>`).join("")}
+    </tbody></table><p class="note">kcal/mol; more negative binds more strongly. ${escapeHtml(r.method)}.
+    ${mad.gfn2 != null ? `<b>Checked:</b> on the S22 set of complexes GFN2-xTB is off by ${mad.gfn2.toFixed(2)} kcal/mol on average${mad.dft != null ? ` and DFT (B3LYP-D3(BJ)/def2-TZVP) by ${mad.dft.toFixed(2)}` : ""}, against CCSD(T) reference energies.` : ""}
+    These are the bases alone in vacuum: water, ions and the backbone change what holds a real duplex together.</p>`;
+}
+
+async function dnaDft() {
+  if (!D.energies || D.selected == null || D.selected < 0) return;
+  const k = D.selected;
+  dnaBusy(true, `DFT for base pair ${k + 1} (B3LYP-D3(BJ)/def2-TZVP, a few minutes)…`);
+  try {
+    const r = await rpc("dna_energy_one", { sequence: D.model.sequence, form: D.form, kind: "pair", index: k });
+    $("dnaPick").hidden = false;
+    $("dnaPick").textContent = `Base pair ${k + 1}: ${r.energy.toFixed(2)} kcal/mol with DFT (GFN2-xTB gave ${D.energies.pairs[k].toFixed(2)}). ${r.method}.`;
+  } catch (e) { log(`DFT failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+// ---- ancient damage
+function labDamageProfile() {
+  const real = typeof R2 !== "undefined" && R2.result && R2.result.authentication && R2.result.authentication.damage_vs_consensus;
+  if (real) return { profile: real.raw_5p_CtoT.slice(0, 25), source: "your Ancient DNA Lab reads (measured against their consensus)" };
+  const sim = typeof A !== "undefined" && A.result && A.result.references && A.result.references[0];
+  if (sim) return { profile: sim.damage_profile.raw_5p_CtoT.slice(0, 25), source: "the Ancient DNA Lab's simulated reads" };
+  return null;
+}
+
+async function dnaDamage(lab) {
+  const seq = $("dnaSeq").value.replace(/\s+/g, "").toUpperCase();
+  setScale("helix", false);
+  if (D.md) await dnaMdStop();
+  dnaBusy(true, "Drawing an ancient molecule…");
+  try {
+    const p = { sequence: seq, lambda: +$("dnaLam").value, delta_s: +$("dnaDs").value, delta_d: +$("dnaDd").value };
+    if (lab) p.profile = lab.profile;
+    const m = await rpc("dna_damage", p), d = m.damage;
+    D.model = m; H.set(m);
+    // chance of uracil for each cytosine, keyed by residue (chain + number)
+    const n = seq.length, probs = {};
+    d.p_uracil.A.forEach((x, i) => { if (x != null) probs["A" + (i + 1)] = x; });
+    d.p_uracil.B.forEach((x, i) => { if (x != null) probs["B" + (n + 1 + i)] = x; });
+    const btn = document.querySelector('[data-dnacolor="damage"]'); btn.hidden = false;
+    H.setData("damage", probs); setPressed("[data-dnacolor]", btn); H.setColor("damage");
+    $("dnaName").textContent = `Ancient molecule · ${n} bp`;
+    $("dnaFormula").textContent = `5′ overhangs ${d.overhang5} and ${d.overhang3} nt · ${d.uracils.length} uracil${d.uracils.length === 1 ? "" : "s"}`;
+    renderDna(m);
+    $("dnaDamageInfo").innerHTML = `${d.uracils.length ? `Uracils (magenta) at ${d.uracils.map(([s, i]) => `strand ${s === "A" ? "I" : "II"} position ${i + 1}`).join(", ")}.` : "No cytosine deaminated in this draw."}
+      ${lab ? `Chances from ${escapeHtml(lab.source)}; overhangs drawn with λ = ${p.lambda}.` : `Each draw is one molecule: overhang lengths and uracils are random with the parameters above.`}
+      <br><small>Briggs et al., PNAS 104, 14616 (2007); the formulas are checked in CI against gargammel's deamSim, the simulator the Ancient DNA Lab uses. Single strands are drawn continuing the helix; in reality they are flexible.</small>`;
+  } catch (e) { log(`Damage view failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+// ---- scales
+async function showNucleosome() {
+  const seq = $("dnaSeq").value.replace(/\s+/g, "").toUpperCase();
+  dnaBusy(true, "Placing the sequence on a nucleosome…");
+  try {
+    const m = await rpc("dna_nucleosome", { sequence: seq });
+    m.userRange = m.user ? [m.user.start, m.user.start + m.user.length] : null;
+    const tubes = m.histones.map((h) => ({ pts: h.ca, color: HISTCOL[h.type] || 0xe8eef2, radius: 1.6 }));
+    const ax = new THREE.Vector3(...m.superhelix_axis);
+    H.set(m, { extras: { tubes }, axis: ax, toward: new THREE.Vector3(0, 0, 1) });
+    D.model = m;
+    $("dnaName").textContent = `Nucleosome · ${m.pdb}`;
+    $("dnaFormula").textContent = m.user ? `your ${m.user.length} bp at the dyad (bright); the rest is the crystal's sequence` : "the crystal's own 147 bp";
+    const v = (D.scales && D.scales.validation && D.scales.validation.nucleosome) || {}, sh = m.superhelix;
+    $("dnaSummary").innerHTML = kvTable([["DNA", `${m.sequence.length} bp, ${sh.turns.toFixed(2)} turns`], ["Superhelix", `${sh.hand}-handed`],
+      ["Radius", `${sh.radius.toFixed(1)} Å <small>(published 41.9)</small>`], ["Pitch", `${sh.pitch.toFixed(1)} Å <small>(published 25.9)</small>`],
+      ["Histones", '<span class="legend"><span><i style="background:#4f8dff"></i>H3</span><span><i style="background:#52f0b0"></i>H4</span><span><i style="background:#ffe066"></i>H2A</span><span><i style="background:#ff6a57"></i>H2B</span></span>']]);
+    $("dnaProv").innerHTML = `${escapeHtml(m.title)}. ${escapeHtml(m.citation)}. ${escapeHtml(m.method)}<br><b>Checked:</b> rebuilt from its own parameters the crystal's bases come back in place; the superhelix fitted to the base pairs matches Richmond &amp; Davey (Nature 423, 145, 2003) and Luger et al. (Nature 389, 251, 1997).`;
+    $("dnaPick").hidden = true;
+    if (!seq || seq.length < 147) $("dnaPick").hidden = false, $("dnaPick").textContent = seq ? `Your ${seq.length} bp sit at the dyad, the centre of the wrap; give 147 bp to fill the whole nucleosome.` : "";
+  } catch (e) { log(`Nucleosome view failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+function renderComplexList() {
+  const cx = (D.scales && D.scales.complexes) || [];
+  $("dnaComplexList").innerHTML = cx.map((c) => `<button type="button" class="btn" data-pdb="${escapeHtml(c.pdb)}">${escapeHtml(c.name)}
+    <small>PDB ${escapeHtml(c.pdb)} · bend ${c.bend != null ? Math.round(c.bend) + "°" : "—"}${c.published_bend ? ` (published ${c.at_least ? "> " : ""}${c.published_bend}°)` : ""}</small></button>`).join("")
+    || `<p class="note">The complexes are added with the data files; build them in CI first.</p>`;
+  $("dnaComplexList").onclick = (e) => { const b = e.target.closest("button"); if (b) showComplex(b.dataset.pdb); };
+}
+
+async function showComplex(pdb) {
+  dnaBusy(true, `Loading ${pdb}…`);
+  try {
+    const m = await rpc("dna_complex", { pdb });
+    m.numbering = "strands";
+    D.complex = m;
+    const tubes = m.protein.map((p, i) => ({ pts: p.ca, color: CHAINCOL[(i + 1) % CHAINCOL.length], radius: 1.4 }));
+    // the DNA's long axis upright
+    const pts = m.atoms.map((a) => new THREE.Vector3(a[5], a[6], a[7]));
+    const c = pts.reduce((x, v) => x.add(v), new THREE.Vector3()).multiplyScalar(1 / pts.length);
+    let far = pts[0]; for (const p of pts) if (p.distanceTo(c) > far.distanceTo(c)) far = p;
+    H.set(m, { extras: { tubes }, axis: far.clone().sub(c) });
+    D.model = m;
+    $("dnaName").textContent = `${m.pdb} · ${m.sequence.length} bp`;
+    $("dnaFormula").textContent = m.name;
+    $("dnaSummary").innerHTML = kvTable([["Protein", escapeHtml(m.name)], ["DNA bend", `${m.bend.toFixed(0)}°${m.published_bend ? ` <small>(published ${m.at_least ? "more than " : ""}${m.published_bend}°)</small>` : ""}`],
+      ["Largest roll", m.largest_roll ? `${m.largest_roll.roll.toFixed(0)}° at step ${m.largest_roll.step} (${escapeHtml(m.largest_roll.dimer)})` : "—"]]);
+    renderDna(m, { stepsOnly: true });
+    $("dnaProv").innerHTML = `${escapeHtml(m.note || "")}. ${escapeHtml(m.citation)}; coordinates from the RCSB Protein Data Bank (CC0).
+      <br>Bend: the angle between the mean base-pair axes of the four base pairs at each end, measured as 3DNA defines base-pair frames.
+      ${m.published_bend ? "<b>Checked:</b> within 15° of the bend the paper reports." : ""}`;
+  } catch (e) { log(`Complex view failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+async function showFibre() {
+  dnaBusy(true, "Loading the chromatin fibre…");
+  try {
+    const f = await rpc("dna_fibre", {});
+    const tubes = [{ pts: f.dna.I, color: 0x9fdcff, radius: 3 }, { pts: f.dna.J, color: 0xc8a8ff, radius: 3 }];
+    f.nucleosomes.forEach((n) => Object.entries(n.ca).forEach(([c, pts]) => tubes.push({ pts, color: HISTCOL[n.types[c]] || 0xe8eef2, radius: 2.2, seg: 2 })));
+    Object.values(f.other || {}).forEach((o) => tubes.push({ pts: o.ca, color: HISTCOL.H1, radius: 2.2, seg: 2 }));
+    H.sceneOnly({ tubes });
+    D.model = null;
+    $("dnaName").textContent = `Chromatin fibre · ${f.pdb}`;
+    $("dnaFormula").textContent = `${f.nucleosomes.length} nucleosomes on ${f.dna.I.length} bp`;
+    $("dnaSummary").innerHTML = kvTable([["Nucleosomes", f.nucleosomes.length], ["Neighbours on the DNA", `${(f.distances.neighbour / 10).toFixed(1)} nm apart`],
+      ["Next but one", `${(f.distances.next_but_one / 10).toFixed(1)} nm apart`], ["Arrangement", "two-start zigzag: nucleosomes stack with the one two along"]]);
+    $("dnaProv").innerHTML = `${escapeHtml(f.title)}. ${escapeHtml(f.citation)}; coordinates from the RCSB Protein Data Bank (CC0).
+      <br><b>Checked:</b> six nucleosomes, each closer to the nucleosome two along the DNA than to its neighbour, as the two-start zigzag model describes. A 9.7 Å structure: the DNA path and histone positions are reliable, atomic detail is not.`;
+    $("dnaPick").hidden = true;
+  } catch (e) { log(`Fibre view failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+async function showNucleus(target) {
+  dnaBusy(true, "Loading a 3D genome…");
+  try {
+    const p = target && target.chrom && target.pos ? { chrom: String(target.chrom), pos: +target.pos } : {};
+    const f = await rpc("dna_nucleus", p);
+    f.target = target; D.nucleus = f;
+    if (target && target.chrom) { $("dnaNucChrom").value = String(target.chrom).replace("chr", ""); $("dnaNucPos").value = target.pos || ""; }
+    drawNucleus(f);
+  } catch (e) { log(`Nucleus view failed: ${e.message || e}`, true); }
+  finally { dnaBusy(false); }
+}
+
+function drawNucleus(f) {
+  const mode = $("dnaNucColor").value, one = $("dnaNucChrom").value;
+  const chroms = [...Array.from({ length: 22 }, (_, i) => String(i + 1)), "X"];
+  const dens = f.gene_density || {}, dv = Object.values(dens), dlo = Math.min(...dv), dhi = Math.max(...dv);
+  const tubes = [];
+  for (const [hom, v] of Object.entries(f.homologs)) {
+    const ch = hom.split("(")[0], ci = chroms.indexOf(ch);
+    if (ci < 0) continue;
+    let col = new THREE.Color(CHROMCOL[ci]);
+    if (mode === "density" && dens[ch] != null) col = ramp((dens[ch] - dlo) / (dhi - dlo), 0x3a4a56, 0xff6a57);
+    if (mode === "one") col = ch === one ? new THREE.Color(0x62d6ff) : new THREE.Color(0x2a3a46);
+    if (hom.includes("pat")) col.lerp(new THREE.Color(0xffffff), 0.15);
+    tubes.push({ pts: v.xyz, color: col, radius: 0.35, seg: 3 });
+  }
+  const spheres = [];
+  const hl = f.highlight;
+  if (hl && hl.hits.length) spheres.push({ pts: hl.hits.map((h) => h.xyz), color: 0xffffff, radius: 1.6, emissive: 0x62d6ff });
+  H.sceneOnly({ tubes, spheres });
+  D.model = null;
+  $("dnaName").textContent = "Nucleus · GM12878 cell";
+  $("dnaFormula").textContent = hl ? `${f.target && f.target.label ? escapeHtml(f.target.label) + " · " : ""}chr${hl.chrom}:${(+hl.pos).toLocaleString()} (both copies, white)` : "46 chromosomes, 1 Mb per point";
+  const rad = f.radial || {};
+  const order = Object.entries(rad).sort((a, b) => a[1] - b[1]);
+  $("dnaSummary").innerHTML = kvTable([["Cell", "one human lymphoblastoid cell (GM12878)"], ["Resolution", "1 Mb (coarse-grained from 20 kb)"],
+    ["Most central", order.slice(0, 3).map(([c]) => `chr${c}`).join(", ")], ["Most peripheral", order.slice(-3).map(([c]) => `chr${c}`).join(", ")],
+    ["Gene density vs centre", `Spearman ρ ${f.rho_density_radial}`]]) +
+    `<p class="note">${mode === "density" ? "Colour: protein-coding genes per Mb (Ensembl), grey few, red many. " : ""}Maternal and paternal copies of each chromosome are separate strands (paternal slightly paler).</p>`;
+  const v = (D.scales && D.scales.validation && D.scales.validation.nucleus) || {};
+  $("dnaProv").innerHTML = `${escapeHtml(f.source)}, assembly ${escapeHtml(f.assembly)}. A real single-cell structure from chromosome-contact data, not a model of your own cells.
+    <br><b>Checked:</b> gene-rich chromosomes sit nearer the centre (chromosome 19 inside 18 in ${v.chr19_inside_18 ?? "?"} of ${v.cells ?? "?"} cells; radial position against gene density ρ = ${v.rho ?? "?"}), as Croft et al. (J. Cell Biol. 145, 1119, 1999) found by microscopy.`;
+  $("dnaPick").hidden = true;
+}
+
+// ---- tables
+function renderDna(m, opts = {}) {
+  const st = m.analysis.steps.map((s) => s.params);
   const avg = (k) => (st.length ? st.reduce((a, p) => a + p[k], 0) / st.length : NaN);
   const g = m.analysis.grooves.map((x) => x.minor).filter((x) => x != null);  // already less 5.8 A
-  $("dnaSummary").innerHTML = kvTable([
-    ["Base pairs", m.sequence.length], ["Length", `${(avg(2) * Math.max(0, m.sequence.length - 1)).toFixed(1)} Å`],
-    ["Mean twist", `${avg(5).toFixed(1)}° · ${(360 / Math.abs(avg(5))).toFixed(1)} bp/turn`], ["Handedness", avg(5) < 0 ? "left (Z-DNA)" : "right"], ["Mean rise", `${avg(2).toFixed(2)} Å`],
-    ["Minor groove", g.length ? `${Math.min(...g).toFixed(1)}–${Math.max(...g).toFixed(1)} Å` : "—"],
-    ["Backbone O3′–P", m.o3p.length ? `${Math.min(...m.o3p).toFixed(2)}–${Math.max(...m.o3p).toFixed(2)} Å (ideal 1.61)` : "—"],
-  ]);
+  if (!opts.stepsOnly) {
+    $("dnaSummary").innerHTML = kvTable([
+      ["Base pairs", m.sequence.length], ["Length", `${(avg(2) * Math.max(0, m.sequence.length - 1)).toFixed(1)} Å`],
+      ["Mean twist", `${avg(5).toFixed(1)}° · ${(360 / Math.abs(avg(5))).toFixed(1)} bp/turn`], ["Handedness", avg(5) < 0 ? "left (Z-DNA)" : "right"], ["Mean rise", `${avg(2).toFixed(2)} Å`],
+      ["Minor groove", g.length ? `${Math.min(...g).toFixed(1)}–${Math.max(...g).toFixed(1)} Å` : "—"],
+      ["Backbone O3′–P", m.o3p.length ? `${Math.min(...m.o3p).toFixed(2)}–${Math.max(...m.o3p).toFixed(2)} Å (ideal 1.61)` : "—"],
+      ["Backbone", m.relaxed ? `closed (OpenMM, ${m.relax.seconds.toFixed(0)} s)` : "rigid templates"],
+    ]);
+  }
   const f = (x, d = 1) => { const t = x.toFixed(d); return /^-0\.0*$/.test(t) ? t.slice(1) : t; };
+  const kink = m.largest_roll ? m.largest_roll.step - 1 : -1;
+  $("dnaStepsLabel").textContent = "Base-pair steps";
   $("dnaSteps").innerHTML = `<table class="tight"><thead><tr><th>Step</th><th>Shift</th><th>Slide</th><th>Rise</th><th>Tilt</th><th>Roll</th><th>Twist</th></tr></thead><tbody>
-    ${m.analysis.steps.map((s) => `<tr><td>${escapeHtml(s.step)}</td>${s.params.map((v, k) => `<td class="n">${f(v, k < 3 ? 2 : 1)}</td>`).join("")}</tr>`).join("")}
+    ${m.analysis.steps.map((s, i) => `<tr${i === kink ? ' class="hl"' : ""}><td>${escapeHtml(s.step)}</td>${s.params.map((v, k) => `<td class="n">${f(v, k < 3 ? 2 : 1)}</td>`).join("")}</tr>`).join("")}
     </tbody></table><p class="note">Å and degrees, in the standard reference frame (Olson et al. 2001).</p>`;
   $("dnaPairs").innerHTML = `<details><summary class="note">Shear, stretch, stagger, buckle, propeller, opening</summary><table class="tight"><thead><tr><th>Pair</th><th>Shear</th><th>Stretch</th><th>Stagger</th><th>Buckle</th><th>Prop.</th><th>Open.</th></tr></thead><tbody>
     ${m.analysis.pairs.map((p) => `<tr><td>${escapeHtml(p.pair)}</td>${p.params.map((v, k) => `<td class="n">${f(v, k < 3 ? 2 : 1)}</td>`).join("")}</tr>`).join("")}
     </tbody></table></details>`;
-  $("dnaProv").innerHTML = `${escapeHtml(m.method)}<ul>${(m.sources || []).map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>${m.validation ? `<b>Checked:</b> ${escapeHtml(m.validation)}` : ""}`;
+  if (!opts.stepsOnly) $("dnaProv").innerHTML = `${escapeHtml(m.method)}<ul>${(m.sources || []).map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>${m.validation ? `<b>Checked:</b> ${escapeHtml(m.validation)}` : ""}${m.relaxed ? `<br>${escapeHtml(m.relax.method)}; it took ${m.relax.seconds.toFixed(1)} s on ${escapeHtml(m.relax.platform)} and moved no base atom more than ${m.relax.base_shift_max.toFixed(2)} Å.` : m.md_available ? "<br>The backbone rides on each base, so the O3′–P links are not exact; tick the box under Build to close them with OpenMM." : ""}`;
 }
 
 async function dnaSave() {
   if (!D.model) return;
   try {
-    const path = await TAURI.core.invoke("pick_save_path", { title: "Save structure", defaultName: `${D.model.form}-DNA-${D.model.sequence.slice(0, 20)}.pdb`,
+    const path = await TAURI.core.invoke("pick_save_path", { title: "Save structure", defaultName: `${D.model.form || "DNA"}-DNA-${D.model.sequence.slice(0, 20)}.pdb`,
       filters: [["PDB", ["pdb"]]] });
     if (!path) return;
-    await rpc("dna_export", { path, sequence: D.model.sequence, form: D.form });
+    await rpc("dna_export", { path, atoms: D.model.atoms });
     log(`Saved ${baseName(path)}`);
   } catch (e) { log(`Save failed: ${e.message || e}`, true); }
 }
+
 
 boot();

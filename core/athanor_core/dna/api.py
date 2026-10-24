@@ -203,7 +203,11 @@ def m_dna_melt(p: dict) -> dict:
 
 
 def m_dna_export(p: dict) -> dict:
-    model = build(p["sequence"], p.get("form", "B"))
+    """Save the structure on screen (atoms as the app holds them), or a fresh build of a sequence."""
+    if p.get("atoms"):
+        model = {"atoms": [(a[0], int(a[1]), a[2], a[3], np.array(a[5:8], dtype=float)) for a in p["atoms"]]}
+    else:
+        model = build(p["sequence"], p.get("form", "B"))
     Path(p["path"]).write_text(to_pdb(model))
     return {"path": p["path"], "atoms": len(model["atoms"])}
 
@@ -312,6 +316,7 @@ def m_dna_nucleosome(p: dict) -> dict:
     atoms = [(c, k, r, a, R0 @ np.asarray(x) + o0) for c, k, r, a, x in m["atoms"]]
     resp = _response(full, "B", atoms, m["frames"], m["o3p"])
     resp.update({"scale": "nucleosome", "histones": nuc["histones"], "superhelix": nuc["superhelix"],
+                 "superhelix_axis": nuc.get("superhelix_axis"),
                  "user": {"start": start, "length": len(seq)} if seq else None, "dyad_index": nuc["dyad_index"],
                  "pdb": nuc["pdb"], "title": nuc["title"], "citation": nuc["citation"],
                  "method": "The 147 base-pair steps and pairs of the 1KX5 crystal structure, measured as in 3DNA, with your "
