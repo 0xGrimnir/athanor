@@ -1,0 +1,107 @@
+GSE117876 656 files
+   #Archive/File	Name	Time	Size	Type
+   Archive	GSE117876_RAW.tar	08/16/2018 12:01:25	4658462720	TAR
+   File	GSM3271347_gm12878_01.bad.reg.txt.gz	07/13/2018 16:10:04	72	TXT
+   File	GSM3271347_gm12878_01.clean.con.txt.gz	07/10/2018 16:58:08	5886357	TXT
+   File	GSM3271347_gm12878_01.dedup.con.txt.gz	07/10/2018 16:58:08	7606513	TXT
+   File	GSM3271347_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:05	1297839	TXT
+   File	GSM3271347_gm12878_01.impute.con.txt.gz	07/10/2018 16:58:09	1463342	TXT
+   File	GSM3271347_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:06	6464520	TXT
+   File	GSM3271347_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:08	6076775	TXT
+   File	GSM3271347_gm12878_01.impute3.round4.con.txt.gz	07/10/2018 16:58:09	3932524	TXT
+   File	GSM3271347_gm12878_01.raw.con.txt.gz	07/10/2018 16:58:10	10303190	TXT
+   File	GSM3271347_gm12878_01.reg.txt.con.txt.gz	07/10/2018 16:58:10	6325939	TXT
+  3dg files: 338
+     File	GSM3271347_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:05	1297839	TXT
+     File	GSM3271347_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:06	6464520	TXT
+     File	GSM3271347_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:08	6076775	TXT
+     File	GSM3271347_gm12878_01.reg.txt3.3dg.txt.gz	07/13/2018 16:10:09	6076763	TXT
+     File	GSM3271347_rep1_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:10	1298913	TXT
+     File	GSM3271347_rep1_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:11	6464477	TXT
+     File	GSM3271347_rep1_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:13	6077294	TXT
+     File	GSM3271347_rep2_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:13	1298958	TXT
+     File	GSM3271347_rep2_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:14	6465478	TXT
+     File	GSM3271347_rep2_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:15	6078260	TXT
+     File	GSM3271348_gm12878_02.impute.3dg.txt.gz	07/13/2018 16:10:16	1420124	TXT
+     File	GSM3271348_gm12878_02.impute3.round4.3dg.txt.gz	07/13/2018 16:10:17	7057607	TXT
+     File	GSM3271348_gm12878_02.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:19	6633237	TXT
+     File	GSM3271348_gm12878_02.reg.txt3.3dg.txt.gz	07/13/2018 16:10:20	6633225	TXT
+     File	GSM3271348_rep1_gm12878_02.impute.3dg.txt.gz	07/13/2018 16:10:21	1420964	TXT
+     File	GSM3271348_rep1_gm12878_02.impute3.round4.3dg.txt.gz	07/13/2018 16:10:22	7054933	TXT
+     File	GSM3271348_rep1_gm12878_02.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:24	6631042	TXT
+     File	GSM3271348_rep2_gm12878_02.impute.3dg.txt.gz	07/13/2018 16:10:24	1420520	TXT
+     File	GSM3271348_rep2_gm12878_02.impute3.round4.3dg.txt.gz	07/13/2018 16:10:26	7060515	TXT
+     File	GSM3271348_rep2_gm12878_02.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:27	6634298	TXT
+     File	GSM3271349_gm12878_03.impute.3dg.txt.gz	07/13/2018 16:10:28	1421231	TXT
+     File	GSM3271349_gm12878_03.impute3.round4.3dg.txt.gz	07/13/2018 16:10:29	7063366	TXT
+     File	GSM3271349_gm12878_03.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:31	6638587	TXT
+     File	GSM3271349_gm12878_03.reg.txt3.3dg.txt.gz	07/13/2018 16:10:32	6638575	TXT
+     File	GSM3271349_rep1_gm12878_03.impute.3dg.txt.gz	07/13/2018 16:10:33	1421293	TXT
+GSE117874 34 files
+   #Archive/File	Name	Time	Size	Type
+   Archive	GSE117874_RAW.tar	08/16/2018 12:01:24	814991360	TAR
+   File	GSM3314359_gm12878_01.tar.gz	07/30/2018 13:02:57	19716925	TAR
+   File	GSM3314360_gm12878_02.tar.gz	07/30/2018 13:02:58	17291410	TAR
+   File	GSM3314361_gm12878_03.tar.gz	07/30/2018 13:03:01	20489726	TAR
+   File	GSM3314363_gm12878_05.tar.gz	07/30/2018 13:03:03	19665208	TAR
+   File	GSM3314364_gm12878_06.tar.gz	07/30/2018 13:03:04	19715031	TAR
+   File	GSM3314365_gm12878_07.tar.gz	07/30/2018 13:03:06	24447936	TAR
+   File	GSM3314367_gm12878_09.tar.gz	07/30/2018 13:03:08	25658784	TAR
+   File	GSM3314368_gm12878_10.tar.gz	07/30/2018 13:03:10	24769731	TAR
+   File	GSM3314369_gm12878_11.tar.gz	07/30/2018 13:03:12	32329216	TAR
+   File	GSM3314370_gm12878_12.tar.gz	07/30/2018 13:03:14	30939972	TAR
+  3dg files: 0
+GSE117109 624 files
+   #Archive/File	Name	Time	Size	Type
+   Archive	GSE117109_RAW.tar	08/16/2018 11:55:35	3843471360	TAR
+   File	GSM3271347_gm12878_01.bad.reg.txt.gz	07/13/2018 16:10:04	72	TXT
+   File	GSM3271347_gm12878_01.clean.con.txt.gz	07/10/2018 16:58:08	5886357	TXT
+   File	GSM3271347_gm12878_01.dedup.con.txt.gz	07/10/2018 16:58:08	7606513	TXT
+   File	GSM3271347_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:05	1297839	TXT
+   File	GSM3271347_gm12878_01.impute.con.txt.gz	07/10/2018 16:58:09	1463342	TXT
+   File	GSM3271347_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:06	6464520	TXT
+   File	GSM3271347_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:08	6076775	TXT
+   File	GSM3271347_gm12878_01.impute3.round4.con.txt.gz	07/10/2018 16:58:09	3932524	TXT
+   File	GSM3271347_gm12878_01.raw.con.txt.gz	07/10/2018 16:58:10	10303190	TXT
+   File	GSM3271347_gm12878_01.reg.txt.con.txt.gz	07/10/2018 16:58:10	6325939	TXT
+  3dg files: 338
+     File	GSM3271347_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:05	1297839	TXT
+     File	GSM3271347_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:06	6464520	TXT
+     File	GSM3271347_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:08	6076775	TXT
+     File	GSM3271347_gm12878_01.reg.txt3.3dg.txt.gz	07/13/2018 16:10:09	6076763	TXT
+     File	GSM3271347_rep1_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:10	1298913	TXT
+     File	GSM3271347_rep1_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:11	6464477	TXT
+     File	GSM3271347_rep1_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:13	6077294	TXT
+     File	GSM3271347_rep2_gm12878_01.impute.3dg.txt.gz	07/13/2018 16:10:13	1298958	TXT
+     File	GSM3271347_rep2_gm12878_01.impute3.round4.3dg.txt.gz	07/13/2018 16:10:14	6465478	TXT
+     File	GSM3271347_rep2_gm12878_01.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:15	6078260	TXT
+     File	GSM3271348_gm12878_02.impute.3dg.txt.gz	07/13/2018 16:10:16	1420124	TXT
+     File	GSM3271348_gm12878_02.impute3.round4.3dg.txt.gz	07/13/2018 16:10:17	7057607	TXT
+     File	GSM3271348_gm12878_02.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:19	6633237	TXT
+     File	GSM3271348_gm12878_02.reg.txt3.3dg.txt.gz	07/13/2018 16:10:20	6633225	TXT
+     File	GSM3271348_rep1_gm12878_02.impute.3dg.txt.gz	07/13/2018 16:10:21	1420964	TXT
+     File	GSM3271348_rep1_gm12878_02.impute3.round4.3dg.txt.gz	07/13/2018 16:10:22	7054933	TXT
+     File	GSM3271348_rep1_gm12878_02.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:24	6631042	TXT
+     File	GSM3271348_rep2_gm12878_02.impute.3dg.txt.gz	07/13/2018 16:10:24	1420520	TXT
+     File	GSM3271348_rep2_gm12878_02.impute3.round4.3dg.txt.gz	07/13/2018 16:10:26	7060515	TXT
+     File	GSM3271348_rep2_gm12878_02.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:27	6634298	TXT
+     File	GSM3271349_gm12878_03.impute.3dg.txt.gz	07/13/2018 16:10:28	1421231	TXT
+     File	GSM3271349_gm12878_03.impute3.round4.3dg.txt.gz	07/13/2018 16:10:29	7063366	TXT
+     File	GSM3271349_gm12878_03.impute3.round4.clean.3dg.txt.gz	07/13/2018 16:10:31	6638587	TXT
+     File	GSM3271349_gm12878_03.reg.txt3.3dg.txt.gz	07/13/2018 16:10:32	6638575	TXT
+     File	GSM3271349_rep1_gm12878_03.impute.3dg.txt.gz	07/13/2018 16:10:33	1421293	TXT
+!Series_title	"Single-cell chromatin conformation capture of diploid cells by Dip-C (analyzed with the dip-c package)"
+!Sample_title	"GM12878 Cell 1"	"GM12878 Cell 2"	"GM12878 Cell 3"	"GM12878 Cell 4"	"GM12878 Cell 5"	"GM12878 Cell 6"	"GM12878 Cell 7"	"GM12878 Cell 8"	"GM12878 Cell 9"	"GM12878 Cell 10-1"	"GM12878 Cell 10-2"	"GM12878 Cell 11-1"	"GM12878 Cell 11-2"	"GM12878 Cell 12-1"	"GM12878 Cell 12-2"	"GM12878 Cell 13-1"	"GM12878 Cell 13-2"	"GM12878 Cell 14-1"	"GM12878 Cell 14-2"	"GM12878 Cell 15-1"	"GM12878 Cell 15-2"	"GM12878 Cell 16-1"	"GM12878 Cell 16-2"	"GM12878 Cell 17-1"	"GM12878 Cell 17-2"	"PBMC Cell 1-1"	"PBMC Cell 1-2"	"PBMC Cell 2-1"	"PBMC Cell 2-2"	"PBMC Cell 3-1"	"PBMC Cell 3-2"	"PBMC Cell 4-1"	"
+!Sample_geo_accession	"GSM3271347"	"GSM3271348"	"GSM3271349"	"GSM3271350"	"GSM3271351"	"GSM3271352"	"GSM3271353"	"GSM3271354"	"GSM3271355"	"GSM3271356"	"GSM3271357"	"GSM3271358"	"GSM3271359"	"GSM3271360"	"GSM3271361"	"GSM3271362"	"GSM3271363"	"GSM3271364"	"GSM3271365"	"GSM3271366"	"GSM3271367"	"GSM3271368"	"GSM3271369"	"GSM3271370"	"GSM3271371"	"GSM3271372"	"GSM3271373"	"GSM3271374"	"GSM3271375"	"GSM3271376"	"GSM3271377"	"GSM3271378"	"GSM3271379"	"GSM3271380"	"GSM3271381"	"GSM3271382"	"GSM3271383"	"GSM3271384"	"GSM3271385"	"GSM3271386"	"GSM3271387"	"GSM3271388"	"GSM3271389"	"GSM3271390"	"GSM32
+!Sample_source_name_ch1	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid cell line"	"lymphoblastloid
+!Sample_supplementary_file_1	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_gm12878_01.bad.reg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_gm12878_02.clean.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_gm12878_03.clean.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_gm12878_04.bad.reg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GSM3271351_gm12878_05.clean.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/sam
+!Sample_supplementary_file_10	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_gm12878_01.reg.txt.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_gm12878_02.reg.txt3.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_gm12878_03.reg.txt3.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_gm12878_04.reg.txt.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GSM3271351_gm12878_05.reg.txt3.3dg.txt.gz"	"ftp://ftp.ncbi.n
+!Sample_supplementary_file_11	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_gm12878_01.reg.txt3.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep1_gm12878_02.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep1_gm12878_03.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_gm12878_04.reg.txt3.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GSM3271351_rep1_gm12878_05.impute.3dg.txt.gz"	"ftp:/
+!Sample_supplementary_file_12	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep1_gm12878_01.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep1_gm12878_02.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep1_gm12878_03.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep1_gm12878_04.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GSM3271351_rep1_gm12878_05.imp
+!Sample_supplementary_file_13	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep1_gm12878_01.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep1_gm12878_02.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep1_gm12878_03.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep1_gm12878_04.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GS
+!Sample_supplementary_file_14	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep1_gm12878_01.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep1_gm12878_02.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep1_gm12878_03.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep1_gm12878_04.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GS
+!Sample_supplementary_file_15	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep1_gm12878_01.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep2_gm12878_02.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep2_gm12878_03.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep1_gm12878_04.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GSM3271351_rep2_gm12878_05.imp
+!Sample_supplementary_file_16	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep2_gm12878_01.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep2_gm12878_02.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep2_gm12878_03.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep2_gm12878_04.impute.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GSM3271351_rep2_gm12878_05.imp
+!Sample_supplementary_file_17	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep2_gm12878_01.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep2_gm12878_02.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep2_gm12878_03.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep2_gm12878_04.impute3.round4.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GS
+!Sample_supplementary_file_18	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep2_gm12878_01.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271348/suppl/GSM3271348_rep2_gm12878_02.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271349/suppl/GSM3271349_rep2_gm12878_03.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep2_gm12878_04.impute3.round4.clean.3dg.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271351/suppl/GS
+!Sample_supplementary_file_19	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271347/suppl/GSM3271347_rep2_gm12878_01.impute3.round4.con.txt.gz"	""	""	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271350/suppl/GSM3271350_rep2_gm12878_04.impute3.round4.con.txt.gz"	""	""	""	""	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271355/suppl/GSM3271355_rep2_gm12878_09.impute3.round4.con.txt.gz"	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271356/suppl/GSM3271356_rep2_gm12878_10.impute3.round4.con.txt.gz"	""	"ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3271nnn/GSM3271358
