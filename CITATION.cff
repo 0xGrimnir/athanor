@@ -5,6 +5,9 @@ type: software
 authors:
   - family-names: "Jones"
     given-names: "Tyler Lee"
+    orcid: "https://orcid.org/0009-0007-5393-7584"
+license: Apache-2.0
+repository-code: "https://github.com/0xGrimnir/athanor"
 version: "0.0.0"
 date-released: "2026-10-19"
 keywords:

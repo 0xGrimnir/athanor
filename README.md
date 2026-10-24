@@ -117,4 +117,6 @@ If Athanor contributes to your work, please cite it using [`CITATION.cff`](CITAT
 
 ## License
 
-Copyright © 2026 Tyler Lee Jones. All rights reserved for now; see [`LICENSE`](LICENSE). Third-party components keep their own licenses.
+Athanor is open source under the [Apache License 2.0](LICENSE). Copyright © 2026 Tyler Lee Jones.
+
+If you redistribute Athanor or build on it, keep the [`NOTICE`](NOTICE) file with it, as the license requires. Third-party components keep their own licenses; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

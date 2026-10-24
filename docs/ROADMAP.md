@@ -178,7 +178,7 @@ Planned:
 
 ## Before any public release
 
-- Choose Athanor's licence (open source is required for a JOSS paper and for scientific trust); review GPL/LGPL components and NVIDIA CUDA redistribution terms together
+- ~~Choose Athanor's licence~~ Done: Apache-2.0 (2026-10-24). Still to do: review GPL/LGPL components and NVIDIA CUDA redistribution terms against it
 - The Y-chromosome tree ships via Yleaf (GPL-3); the underlying YFull tree's terms need checking, and an alternative tree may be needed
 - The UCSC liftOver chain is free for academic use only; a commercial release needs a licence or a different chain
 - Data and tool licences to check before shipping: SNPedia (CC BY-NC-SA; avoided if Athanor is sold), PharmGKB (CC BY-SA 4.0), CPIC, ClinVar, gnomAD, PGS Catalog (per score), Ensembl and GWAS Catalog data (used to build the trait table), Beagle and PLINK 2 (GPL-3); ADMIXTURE and PLINK 1.9 are used only in CI and not shipped, DNAshape, ViennaRNA, SLiM (GPL-3), IntCal20, 4D Nucleome data use, AlphaFold DB (CC BY 4.0)

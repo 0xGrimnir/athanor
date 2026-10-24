@@ -3,6 +3,8 @@ name = "athanor"
 version = "0.6.0"
 description = "Athanor: a desktop science workbench"
 authors = ["Tyler Lee Jones"]
+license = "Apache-2.0"
+repository = "https://github.com/0xGrimnir/athanor"
 edition = "2021"
 publish = false
 

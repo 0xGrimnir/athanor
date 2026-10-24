@@ -1,0 +1,12 @@
+Athanor
+Copyright 2026 Tyler Lee Jones
+
+This product includes software developed by Tyler Lee Jones
+(https://github.com/0xGrimnir/athanor).
+
+Third-party components bundled with or used by Athanor are licensed under
+their own terms; see THIRD_PARTY_NOTICES.md.
+
+Citation request (informational; it does not modify the License): if Athanor
+contributes to published work, please cite it as described in CITATION.cff,
+along with the scientific engines it relies on.

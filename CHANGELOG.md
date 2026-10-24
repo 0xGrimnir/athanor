@@ -4,6 +4,9 @@ All notable changes to Athanor are recorded here. The format follows [Keep a Cha
 
 ## [Unreleased]
 
+### Changed
+- Athanor is now open source under the Apache License 2.0, with a NOTICE file that redistributions must carry. It was previously all rights reserved.
+
 ## [0.6.0] - 2026-10-23
 
 ### Added
