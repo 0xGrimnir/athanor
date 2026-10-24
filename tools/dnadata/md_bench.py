@@ -128,7 +128,17 @@ def by_term(system, positions):
     return out
 
 
-ours = by_term(s.system, pos * 0.1)
+# evaluate Athanor's system at exactly the coordinates tleap read (rounded to the PDB file's 0.001 A), matching
+# atoms by residue and name since tleap orders atoms by its own templates
+crd_nm = np.asarray(crd.positions.value_in_unit(u.nanometer))
+amber_xyz = {(a.residue.index, a.name): crd_nm[a.index] for a in prm.topology.atoms()}
+same_pos = []
+for a in s.topology.atoms():
+    x = amber_xyz.get((a.residue.index, a.name))
+    same_pos.append(x if x is not None else pos[a.index] * 0.1)
+missing = sum(1 for a in s.topology.atoms() if (a.residue.index, a.name) not in amber_xyz)
+print(f"atoms matched to tleap's: {s.topology.getNumAtoms() - missing} of {s.topology.getNumAtoms()}")
+ours = by_term(s.system, np.array(same_pos))
 prm_terms = by_term(sp, crd.positions)
 sander = {"bonds": terms.get("BOND"), "angles": terms.get("ANGLE"), "torsions": terms.get("DIHED"),
           "coulomb+vdW": sum(terms.get(k, 0.0) for k in ("VDWAALS", "EEL", "1-4 VDW", "1-4 EEL")), "GB solvation": terms.get("EGB")}
