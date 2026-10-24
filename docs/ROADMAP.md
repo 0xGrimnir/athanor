@@ -64,7 +64,7 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 ### Foundations
 - **Inputs:** AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA and Living DNA raw files; VCF from whole-genome sequencing. Detect the vendor and genome build; settle strand from unambiguous markers; lift over between GRCh37 and GRCh38.
 - **Imputation** (optional, Linux engines pack): Beagle 5 against the 1000 Genomes panel, with accuracy reported per allele-frequency bin from masked-genotype tests.
-- **Reference data pack:** the Allen Ancient DNA Resource (AADR), 1000 Genomes and HGDP at consumer-chip positions, archaic genomes, PhyloTree and Y-chromosome trees; later CPIC and PharmVar tables, ClinVar, PGS Catalog scores. Every file has a recorded version and hash.
+- **Reference data pack:** the Allen Ancient DNA Resource (AADR), 1000 Genomes and HGDP at consumer-chip positions, archaic genomes, PhyloTree and Y-chromosome trees; CPIC tables and 1000 Genomes high-coverage genotypes at every CPIC position; later ClinVar and PGS Catalog scores. Every file has a recorded version and hash.
 - **Every report card** shows the result, an evidence grade (A established, B moderate, C weak or fun), the effect size, what it cannot tell you, its sources and how it was validated.
 - **Gene lookup:** any gene or variant named in a report links to its Ensembl page and, where relevant, to DNA Structure or the protein view.
 
@@ -84,7 +84,7 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 
 **Fitness and sleep (1 done, 2 with imputation).** Done: ACTN3. With imputation (step 4): chronotype and sleep duration.
 
-**Medicines: pharmacogenomics (11).** CPIC level-A gene–drug pairs only: CYP2C19, CYP2C9 and VKORC1, CYP2D6 (copy-number limits stated), SLCO1B1, DPYD, TPMT and NUDT15, UGT1A1, CYP3A5, G6PD, HLA-B tag variants. Framed as something to show a clinician, never a reason to change a medicine.
+**Medicines: pharmacogenomics (19 genes + summary), done.** Every gene in a CPIC level-A gene–drug pair that CPIC defines by variant positions: ABCG2, CACNA1S, CFTR, CYP2B6, CYP2C19, CYP2C9, CYP2D6, CYP3A5, CYP4F2, DPYD, G6PD, MT-RNR1, NAT2, NUDT15, RYR1, SLCO1B1, TPMT, UGT1A1, VKORC1, and a summary of what CPIC recommends for each of its level-A medicines given your results. Star alleles are called as PharmCAT's Named Allele Matcher calls them (checked against PharmCAT in CI); each gene card says how often a call from your file's positions matches a full reading in 1000 Genomes people who got the same call, which common alleles your file cannot see, and flags rare variants as needing a clinical test. CYP2D6 gets no phenotype (deletions and duplications are invisible to a chip). HLA-A and HLA-B are not reported: CPIC defines them by HLA typing, not variants, and tag SNPs transfer poorly between populations. Framed as something to show a clinician, never a reason to change a medicine. Still to do: a direct GeT-RM consensus comparison; indels from whole-genome VCFs (the VCF reader keeps SNVs only, so a VCF's indel positions count as unread).
 
 **Health, opt-in and separated (10).** Blood type. Factor V Leiden and prothrombin. HFE haemochromatosis. Alpha-1 antitrypsin. Carrier status, with chip limits. APOE behind an explicit opt-in. Polygenic risk scores with each score's published accuracy and ancestry transferability. ClinVar scan in which any rare pathogenic call is marked as needing clinical confirmation (about 40% were false positives in clinical follow-up: Tandy-Connor et al., Genet. Med. 2018).
 
@@ -93,7 +93,7 @@ Load a consumer raw DNA file and get a library of reports, each graded for evide
 ### Validation
 - **Ancestry:** reference individuals cut down to each vendor's chip positions, scored against their known populations with leave-one-out
 - **Haplogroups:** published calls for AADR and 1000 Genomes individuals (done for deep ancestry)
-- **Pharmacogenomics:** GeT-RM consensus star alleles
+- **Pharmacogenomics:** done: PharmCAT on the same 1000 Genomes high-coverage genotypes; 23andMe-style input read back exactly; the reliability figure holds out of sample. To do: GeT-RM consensus star alleles
 - **Polygenic scores:** must match pgsc_calc on the same input
 - **Relatives:** known pairs in 1000 Genomes, plus simulated pedigrees
 - **Imputation:** masked-genotype concordance

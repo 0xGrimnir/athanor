@@ -26,7 +26,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "core"))
-from athanor_core.personal.pgx import NOVEL, UNTESTED, Gene, Panel, PgxGenotyper  # noqa: E402
+from athanor_core.personal.pgx import NOVEL, UNTESTED, Gene, Panel, PgxGenotyper, pgx_cards  # noqa: E402
 from athanor_core.personal.rawfile import CODE, RawGenotypes  # noqa: E402
 
 PACK, VAL, JAR, JAVA, WORK = Path(sys.argv[1]), Path(sys.argv[2]), sys.argv[3], sys.argv[4], Path(sys.argv[5])
@@ -151,7 +151,8 @@ def known_to_pharmcat(sym):
     d = pgx["genes"][sym]
     keep = set(written.get(sym, range(len(d["positions"]))))
     drop = [a["name"] for a in d["alleles"] if not a.get("ref") and any(
-        c is not None and k not in keep for k, c in enumerate(a["def"]))]
+        c is not None and sorted(c) != sorted(d["positions"][k].get("refset", [0])) and k not in keep
+        for k, c in enumerate(a["def"]))]
     return Gene(sym, {**d, "alleles": [a for a in d["alleles"] if a["name"] not in drop]}), drop
 
 
@@ -267,8 +268,29 @@ summary["no_call"] = nocall
 # ------------------------------------------------------------------ 2. chip input
 COMP = {"A": "T", "C": "G", "G": "C", "T": "A"}
 mism = tot = 0
+rare_cards = rare_unwarned = 0
+
+
+def rare_allele(sym, name):
+    a = genes[sym].by_name.get(name) or {}
+    f = [v for v in (a.get("freq") or {}).values() if isinstance(v, (int, float))]
+    return not a.get("ref") and bool(f) and max(f) < 0.01
+
+
+def carries_rare(s):
+    for sym in genes:
+        if panel.genotypes(sym) is None or sym == "CYP2D6":
+            continue
+        c = genes[sym].call(panel_geno(sym, s), haploid(sym, s))
+        if any(rare_allele(sym, n) for dp in c.get("diplotypes") or [] for n in dp.split("/")):
+            return True
+    return False
+
+
+carriers = [s for s in pick if carries_rare(s)]
+print(f"   {len(carriers)} of {len(pick)} compared people carry a rare (< 1%) allele somewhere")
 for flip in (False, True):
-    for s in pick[:60]:
+    for s in sorted(set(pick[:60]) | set(carriers[:40])):
         rows, expect = [], {}
         for sym, gene in genes.items():
             G = panel.genotypes(sym)
@@ -297,7 +319,17 @@ for flip in (False, True):
         rawg = RawGenotypes("23andMe", "sim.txt", "", np.array([r[0] for r in rows]), np.array([r[1] for r in rows], dtype=np.int8),
                             np.array([r[2] for r in rows]), np.array([CODE[r[3][0]] for r in rows], dtype=np.uint8),
                             np.array([CODE[r[3][1]] for r in rows], dtype=np.uint8))
-        gt = PgxGenotyper(rawg, rawg.pos, "the opposite strand" if flip else "the reference's + strand")
+        strand = "the opposite strand" if flip else "the reference's + strand"
+        gt = PgxGenotyper(rawg, rawg.pos, strand)
+        if not flip:
+            cards = pgx_cards(pgx, None, rawg, rawg.pos, strand, "XY" if z["male"][s] else "XX",
+                              lambda cid, title, group, grade, summary, result, limits, method, sources, ok=True:
+                              {"id": cid, "summary": summary, "result": result, "grade": grade})
+            for c in cards:
+                if (c["result"] or {}).get("rare_in_call"):
+                    rare_cards += 1
+                    if "clinical test" not in c["summary"] or c["grade"] == "A":
+                        rare_unwarned += 1
         for sym, gene in genes.items():
             if panel.genotypes(sym) is None:
                 continue
@@ -313,6 +345,8 @@ for flip in (False, True):
                                   f"flip={flip}: expected {expect[(sym, k)]}, read {got[k].tolist()}")
 gate("chip input: 23andMe-style genotypes (GRCh37, both strands, indels as I/D) read back exactly",
      tot > 1000 and mism == 0, f"{tot:,} genotypes, {mism} differ")
+gate("rare-variant gate: every call with a rare (< 1%) allele says it needs a clinical test and is not graded A",
+     rare_cards > 0 and rare_unwarned == 0, f"{rare_cards} gene cards with a rare allele, {rare_unwarned} without the warning")
 
 # ------------------------------------------------------------------ 3. reliability holds out of sample
 half = rng.permutation(unrel)
