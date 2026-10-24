@@ -11,6 +11,7 @@ dependencies:
   - rdkit
   - xtb>=6.7.1        # the GFN2-xTB engine; older builds write different output formats
   - psi4
+  - dftd3-python    # D3(BJ) dispersion for DFT (simple-dftd3), used by DNA Structure's DFT interaction energies
   - ase
   - openmm          # DNA Structure: backbone relaxation and molecular dynamics (AMBER OL15, GBn2)
   - pytest

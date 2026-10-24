@@ -22,6 +22,7 @@ from .geometry import next_frame, pair_frames
 from .structure import DATA
 
 COMP = {"A": "T", "T": "A", "G": "C", "C": "G"}
+RENAME = {"C5M": "C7"}      # 3DNA's old name for thymine's methyl carbon -> the PDB's (version 3) name
 
 
 def _data(name):
@@ -93,7 +94,7 @@ def build(seq: str, form: str = "B", steps=None, pairs=None) -> dict:
             t = tmpl[_key(form, base, k if chain == "A" else n - 1 - k, n)]
             # each strand's 5' end is a hydroxyl, as in synthetic and crystallised DNA: no phosphate
             five = (chain == "A" and k == 0) or (chain == "B" and k == n - 1)
-            res = [(chain, num, "D" + base, name, ob + Rb @ np.asarray(xyz)) for name, xyz in t.items()
+            res = [(chain, num, "D" + base, RENAME.get(name, name), ob + Rb @ np.asarray(xyz)) for name, xyz in t.items()
                    if not (five and name in ("P", "OP1", "OP2"))]
             (atoms if chain == "A" else strand2).append(res)
     ordered = [a for r in atoms for a in r] + [a for r in reversed(strand2) for a in r]

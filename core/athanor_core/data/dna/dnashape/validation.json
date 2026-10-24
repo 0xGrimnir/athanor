@@ -1,0 +1,45 @@
+{
+ "agreement": {
+  "Expt:HelT": {
+   "mae": 3.6,
+   "n": 21475,
+   "pearson": 0.17
+  },
+  "Expt:MGW": {
+   "mae": 1.6,
+   "n": 16627,
+   "pearson": 0.37
+  },
+  "Expt:ProT": {
+   "mae": 8.3,
+   "n": 24483,
+   "pearson": 0.05
+  },
+  "Expt:Roll": {
+   "mae": 4.58,
+   "n": 21475,
+   "pearson": 0.28
+  },
+  "MD:HelT": {
+   "mae": 2.83,
+   "n": 2070,
+   "pearson": 0.21
+  },
+  "MD:MGW": {
+   "mae": 1.06,
+   "n": 1985,
+   "pearson": 0.49
+  },
+  "MD:ProT": {
+   "mae": 5.03,
+   "n": 2197,
+   "pearson": 0.12
+  },
+  "MD:Roll": {
+   "mae": 3.79,
+   "n": 2070,
+   "pearson": 0.44
+  }
+ },
+ "equal_to_original": true
+}
