@@ -1,3 +1,503 @@
-https://build.opensuse.org/package/show/home:drgweber/TfReg ERROR <HTTPError 403: 'Forbidden'>
-https://download.opensuse.org/repositories/home:/drgweber/ links: ['/', '/debug/', '/factory/', '/ports/', '/source/', '/tumbleweed/', '/update/', '/', '/repositories/', '/repositories/home:/', '../', './15.4/', './15.5/', './15.6/', './16.0/', './CentOS_7/', './CentOS_8/', './Debian_9.0/', './Debian_10/', './Debian_11/', './Debian_12/', './Debian_13/', './Fedora_30/', './Fedora_31/', './Fedora_32/', './Fedora_33/', './Fedora_34/', './Fedora_35/', './Fedora_36/', './Fedora_37/', './Fedora_38/', './Fedora_39/', './Fedora_40/', './Fedora_41/', './Fedora_42/', './Fedora_43/', './Fedora_44/', './openSUSE_13.1/', './openSUSE_13.2/', './openSUSE_Leap_15.0/', './openSUSE_Leap_15.1/', './openSUSE_Leap_15.2/', './openSUSE_Leap_15.3/', './openSUSE_Leap_42.1/', './openSUSE_Leap_42.2/', './openSUSE_Leap_42.3/', './RHEL_7/', './ScientificLinux_7/', './xUbuntu_20.04/', './xUbuntu_21.04/', './xUbuntu_21.10/', './xUbuntu_22.04/', './xUbuntu_22.10/', './xUbuntu_23.04/', './xUbuntu_23.10/', './xUbuntu_24.04/', './xUbuntu_24.10/', './xUbuntu_25.04/', './xUbuntu_25.10/', './xUbuntu_26.04/']
-https://bioinf.fisica.ufmg.br/software/tfreg-8.0/ ERROR URLError(TimeoutError('timed out'))
+dists: ['15.4/', '15.5/', '15.6/', '16.0/', 'CentOS_7/', 'CentOS_8/', 'Debian_9.0/', 'Debian_10/', 'Debian_11/', 'Debian_12/', 'Debian_13/', 'Fedora_30/', 'Fedora_31/', 'Fedora_32/', 'Fedora_33/', 'Fedora_34/', 'Fedora_35/', 'Fedora_36/', 'Fedora_37/', 'Fedora_38/', 'Fedora_39/', 'Fedora_40/', 'Fedora_41/', 'Fedora_42/', 'Fedora_43/', 'Fedora_44/', 'openSUSE_13.1/', 'openSUSE_13.2/', 'openSUSE_Leap_15.0/', 'openSUSE_Leap_15.1/', 'openSUSE_Leap_15.2/', 'openSUSE_Leap_15.3/', 'openSUSE_Leap_42.1/', 'openSUSE_Leap_42.2/', 'openSUSE_Leap_42.3/', 'RHEL_7/', 'ScientificLinux_7/', 'xUbuntu_20.04/', 'xUbuntu_21.04/', 'xUbuntu_21.10/', 'xUbuntu_22.04/', 'xUbuntu_22.10/', 'xUbuntu_23.04/', 'xUbuntu_23.10/', 'xUbuntu_24.04/', 'xUbuntu_24.10/', 'xUbuntu_25.04/', 'xUbuntu_25.10/', 'xUbuntu_26.04/']
+https://download.opensuse.org/repositories/home:/drgweber/15.4/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/15.4/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/15.4/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/15.4/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/15.5/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/15.5/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/15.5/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/15.5/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/15.6/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/15.6/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/15.6/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/15.6/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/16.0/src/TfReg-8.2-1.1.15.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/16.0/src/TfReg-8.2-1.1.15.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/16.0/x86_64/TfReg-8.2-1.1.15.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/16.0/x86_64/TfReg-8.2-1.1.15.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_7/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_7/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_7/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_7/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_8/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_8/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_8/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/CentOS_8/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1-1.diff.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1-1.diff.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1-1.dsc
+https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1-1.dsc.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1.orig.tar.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1.orig.tar.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_11/tfreg_8.1-1.diff.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_11/tfreg_8.1-1.diff.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_11/tfreg_8.1-1.dsc
+https://download.opensuse.org/repositories/home:/drgweber/Debian_11/tfreg_8.1-1.dsc.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_11/tfreg_8.1.orig.tar.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_11/tfreg_8.1.orig.tar.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_12/tfreg_8.1-1.diff.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_12/tfreg_8.1-1.diff.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_12/tfreg_8.1-1.dsc
+https://download.opensuse.org/repositories/home:/drgweber/Debian_12/tfreg_8.1-1.dsc.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_12/tfreg_8.1.orig.tar.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_12/tfreg_8.1.orig.tar.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_13/tfreg_8.1-1.diff.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_13/tfreg_8.1-1.diff.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_13/tfreg_8.1-1.dsc
+https://download.opensuse.org/repositories/home:/drgweber/Debian_13/tfreg_8.1-1.dsc.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_13/tfreg_8.1.orig.tar.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_13/tfreg_8.1.orig.tar.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_9.0/tfreg_8.1-1.diff.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_9.0/tfreg_8.1-1.diff.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_9.0/tfreg_8.1-1.dsc
+https://download.opensuse.org/repositories/home:/drgweber/Debian_9.0/tfreg_8.1-1.dsc.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Debian_9.0/tfreg_8.1.orig.tar.gz
+https://download.opensuse.org/repositories/home:/drgweber/Debian_9.0/tfreg_8.1.orig.tar.gz.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_30/src/TfReg-8.2-1.1.1.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_30/src/TfReg-8.2-1.1.1.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_30/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_30/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_30/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_30/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_31/src/TfReg-8.2-1.1.1.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_31/src/TfReg-8.2-1.1.1.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_31/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_31/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_31/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_31/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_32/src/TfReg-8.2-1.1.1.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_32/src/TfReg-8.2-1.1.1.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_32/src/TfReg-8.2-1.1.2.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_32/src/TfReg-8.2-1.1.2.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_32/x86_64/TfReg-8.2-1.1.2.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_32/x86_64/TfReg-8.2-1.1.2.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_33/src/TfReg-8.1-1.1.1.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_33/src/TfReg-8.1-1.1.1.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_33/x86_64/TfReg-8.1-1.1.1.x86_64.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_33/x86_64/TfReg-8.1-1.1.1.x86_64.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_34/src/TfReg-6.0-1.2.1.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_34/src/TfReg-6.0-1.2.1.src.rpm.mirrorlist
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_34/src/TfReg-8.2-1.1.1.src.rpm
+https://download.opensuse.org/repositories/home:/drgweber/Fedora_34/src/TfReg-8.2-1.1.1.src.rpm.mirrorlist
+source: https://download.opensuse.org/repositories/home:/drgweber/Debian_10/tfreg_8.1.orig.tar.gz
+775 files
+TfReg-8.2/data/example2.dat
+TfReg-8.2/data/example2.dat
+TfReg-8.2/data/owczarzy04-1020.dat
+TfReg-8.2/data/owczarzy04-119.dat
+TfReg-8.2/data/owczarzy04-220.dat
+TfReg-8.2/data/owczarzy04-621.dat
+TfReg-8.2/data/owczarzy04-69.dat
+TfReg-8.2/data/owczarzy04.dat
+TfReg-8.2/data/xia98-t1.dat
+TfReg-8.2/data/watkins05ia.dat
+TfReg-8.2/data/watkins05ic.dat
+TfReg-8.2/data/watkins05ig.dat
+TfReg-8.2/data/watkins05ii.dat
+TfReg-8.2/data/watkins05it.dat
+TfReg-8.2/data/chen12_t2t5_adj_200.dat
+TfReg-8.2/data/rna_bulge_group1_adenosine_adj200.dat
+TfReg-8.2/data/rna_bulge_group1_cytosine_adj200.dat
+TfReg-8.2/data/rna_bulge_group1_guanosine_adj200.dat
+TfReg-8.2/data/rna_bulge_group1_uridine_adj200.dat
+TfReg-8.2/data/moreira15cy3.dat
+TfReg-8.2/data/moreira15cy5.dat
+TfReg-8.2/data/rna-dna-1000.dat
+TfReg-8.2/data/tna-tm.dat
+TfReg-8.2/data/dna_mm_60_tm.dat
+TfReg-8.2/data/ferreira19_121_f1.dat
+TfReg-8.2/data/ferreira19_221_f1.dat
+TfReg-8.2/data/ferreira19_621_f1.dat
+TfReg-8.2/data/ferreira19_71_f1.dat
+TfReg-8.2/data/fakhfakh15-t1.dat
+TfReg-8.2/data/fakhfakh15-t1-v2.dat
+TfReg-8.2/data/fakhfakh15-t2.dat
+TfReg-8.2/data/fakhfakh15-t2-v2.dat
+TfReg-8.2/data/you06.dat
+TfReg-8.2/data/mctigue04.dat
+TfReg-8.2/data/silva22-cc-ag.dat
+TfReg-8.2/data/silva22-cc-ctrl.dat
+TfReg-8.2/data/silva22-tt-ctrl.dat
+TfReg-8.2/data/silva22-tt-hg.dat
+TfReg-8.2/data/bustos22-Mg-0.5.dat
+TfReg-8.2/data/bustos22-Mg-10.dat
+TfReg-8.2/data/bustos22-Mg-125.dat
+TfReg-8.2/data/bustos22-Mg-1.5.dat
+TfReg-8.2/data/bustos22-Mg-20.dat
+TfReg-8.2/data/bustos22-Mg-3.dat
+TfReg-8.2/data/bustos22-Mg-50.dat
+TfReg-8.2/data/owczarzy12-Mg-0.5.dat
+TfReg-8.2/data/owczarzy12-Mg-10.dat
+TfReg-8.2/data/owczarzy12-Mg-125.dat
+TfReg-8.2/data/owczarzy12-Mg-1.5.dat
+TfReg-8.2/data/owczarzy12-Mg-1.dat
+TfReg-8.2/data/owczarzy12-Mg-20.dat
+TfReg-8.2/data/owczarzy12-Mg-3.dat
+TfReg-8.2/data/owczarzy12-Mg-50.dat
+TfReg-8.2/data/owczarzy12-MgK-0.5.dat
+TfReg-8.2/data/owczarzy12-MgK-10.dat
+TfReg-8.2/data/owczarzy12-MgK-1.5.dat
+TfReg-8.2/data/owczarzy12-MgK-20.dat
+TfReg-8.2/data/owczarzy12-MgK-3.dat
+TfReg-8.2/data/you06-v2.dat
+TfReg-8.2/data/you06-v2.dat
+TfReg-8.2/data/mctigue04-v2.dat
+TfReg-8.2/data/inosine-ig.dat
+TfReg-8.2/data/inosine-iu.dat
+TfReg-8.2/data/inosine-ic.dat
+TfReg-8.2/data/ghosh20.dat
+TfReg-8.2/data/ghosh23.dat
+TfReg-8.2/data/banerjee23.dat
+TfReg-8.2/data/sugimoto00-t1.dat
+TfReg-8.2/data/watkins11.dat
+TfReg-8.2/data/xiang22.dat
+TfReg-8.2/data/muniz26.dat
+TfReg-8.2/data/rna-dna-canonical.dat
+TfReg-8.2/data/rna-dna-100.dat
+TfReg-8.2/data/kierzek05-t1+2-2ome-tmln.dat
+TfReg-8.2/data/kierzek06-t2-2ome-tmln.dat
+TfReg-8.2/data/kierzek06b-t1-2ome-tmln.dat
+TfReg-8.2/data/carlucci09-t1-2ome-tmln.dat
+TfReg-8.2/data/pasternak07-t1-2ome.dat
+TfReg-8.2/data/kierzek09-t1-2ome.dat
+TfReg-8.2/data/yildirim14-t2-2ome.dat
+TfReg-8.2/data/dna_60_tm.dat
+TfReg-8.2/examples/verify/gauss-legendre-400.dat
+TfReg-8.2/examples/verify/epl2011-initial.dat
+TfReg-8.2/examples/verify/epl2011-table1.dat
+TfReg-8.2/examples/verify/epl2011-69.dat
+TfReg-8.2/examples/verify/np2009-1-69.dat
+TfReg-8.2/examples/verify/np2009-1-119.dat
+TfReg-8.2/examples/verify/np2009-1-220.dat
+TfReg-8.2/examples/verify/np2009-1-621.dat
+TfReg-8.2/examples/verify/np2009-1-1020.dat
+TfReg-8.2/examples/verify/np2009-2-69.dat
+TfReg-8.2/examples/verify/deoxyinosine_pb_ia.dat
+TfReg-8.2/examples/verify/deoxyinosine_pb_ic.dat
+TfReg-8.2/examples/verify/deoxyinosine_pb_ig.dat
+TfReg-8.2/examples/verify/deoxyinosine_pb_it.dat
+TfReg-8.2/examples/verify/deoxyinosine_pb_ii.dat
+TfReg-8.2/examples/verify/predict-1.dat
+TfReg-8.2/examples/verify/predict-2.dat
+TfReg-8.2/examples/verify/predict-salt50.dat
+TfReg-8.2/examples/verify/open-1/gauss-legendre-400.dat
+TfReg-8.2/examples/verify/open-1.dat
+TfReg-8.2/examples/verify/open-cy3-matrix-dir/gauss-legendre-400.dat
+TfReg-8.2/examples/verify/open-cy3-X-A-150.dat
+TfReg-8.2/examples/verify/open-cy3-X-C-150.dat
+TfReg-8.2/examples/verify/open-cy3-X-G-150.dat
+TfReg-8.2/examples/verify/open-cy3-X-T-150.dat
+TfReg-8.2/examples/verify/open-cy3-A-A-150.dat
+TfReg-8.2/examples/verify/open-cy3-A-C-150.dat
+TfReg-8.2/examples/verify/open-cy3-A-G-150.dat
+TfReg-8.2/examples/verify/open-cy3-A-T-150.dat
+TfReg-8.2/examples/verify/open-cy3-C-A-150.dat
+TfReg-8.2/examples/verify/open-cy3-C-C-150.dat
+TfReg-8.2/examples/verify/open-cy3-C-G-150.dat
+TfReg-8.2/examples/verify/open-cy3-C-T-150.dat
+TfReg-8.2/examples/verify/open-cy3-G-A-150.dat
+TfReg-8.2/examples/verify/open-cy3-G-C-150.dat
+TfReg-8.2/examples/verify/open-cy3-G-G-150.dat
+TfReg-8.2/examples/verify/open-cy3-G-T-150.dat
+TfReg-8.2/examples/verify/open-cy3-T-A-150.dat
+TfReg-8.2/examples/verify/open-cy3-T-C-150.dat
+TfReg-8.2/examples/verify/open-cy3-T-G-150.dat
+TfReg-8.2/examples/verify/open-cy3-T-T-150.dat
+TfReg-8.2/examples/verify/open-cy3-X-A-180.dat
+TfReg-8.2/examples/verify/open-cy3-X-C-180.dat
+TfReg-8.2/examples/verify/open-cy3-X-G-180.dat
+TfReg-8.2/examples/verify/open-cy3-X-T-180.dat
+TfReg-8.2/examples/verify/open-cy3-A-A-180.dat
+TfReg-8.2/examples/verify/open-cy3-A-C-180.dat
+TfReg-8.2/examples/verify/open-cy3-A-G-180.dat
+TfReg-8.2/examples/verify/open-cy3-A-T-180.dat
+TfReg-8.2/examples/verify/open-cy3-C-A-180.dat
+TfReg-8.2/examples/verify/open-cy3-C-C-180.dat
+TfReg-8.2/examples/verify/open-cy3-C-G-180.dat
+TfReg-8.2/examples/verify/open-cy3-C-T-180.dat
+TfReg-8.2/examples/verify/open-cy3-G-A-180.dat
+TfReg-8.2/examples/verify/open-cy3-G-C-180.dat
+TfReg-8.2/examples/verify/open-cy3-G-G-180.dat
+TfReg-8.2/examples/verify/open-cy3-G-T-180.dat
+TfReg-8.2/examples/verify/open-cy3-T-A-180.dat
+TfReg-8.2/examples/verify/open-cy3-T-C-180.dat
+TfReg-8.2/examples/verify/open-cy3-T-G-180.dat
+TfReg-8.2/examples/verify/open-cy3-T-T-180.dat
+TfReg-8.2/examples/verify/open-cy3-X-A-250.dat
+TfReg-8.2/examples/verify/open-cy3-X-C-250.dat
+TfReg-8.2/examples/verify/open-cy3-X-G-250.dat
+TfReg-8.2/examples/verify/open-cy3-X-T-250.dat
+TfReg-8.2/examples/verify/open-cy3-A-A-250.dat
+TfReg-8.2/examples/verify/open-cy3-A-C-250.dat
+TfReg-8.2/examples/verify/open-cy3-A-G-250.dat
+TfReg-8.2/examples/verify/open-cy3-A-T-250.dat
+TfReg-8.2/examples/verify/open-cy3-C-A-250.dat
+TfReg-8.2/examples/verify/open-cy3-C-C-250.dat
+TfReg-8.2/examples/verify/open-cy3-C-G-250.dat
+TfReg-8.2/examples/verify/open-cy3-C-T-250.dat
+TfReg-8.2/examples/verify/open-cy3-G-A-250.dat
+TfReg-8.2/examples/verify/open-cy3-G-C-250.dat
+TfReg-8.2/examples/verify/open-cy3-G-G-250.dat
+TfReg-8.2/examples/verify/open-cy3-G-T-250.dat
+TfReg-8.2/examples/verify/open-cy3-T-A-250.dat
+TfReg-8.2/examples/verify/open-cy3-T-C-250.dat
+TfReg-8.2/examples/verify/open-cy3-T-G-250.dat
+TfReg-8.2/examples/verify/open-cy3-T-T-250.dat
+TfReg-8.2/examples/verify/rna-bulges-predict-adenosine.dat
+TfReg-8.2/examples/verify/rna-bulges-predict-cytosine.dat
+TfReg-8.2/examples/verify/rna-bulges-predict-guanosine.dat
+TfReg-8.2/examples/verify/rna-bulges-predict-uridine.dat
+TfReg-8.2/examples/verify/verify-tna.dat
+TfReg-8.2/examples/verify/verify-mm-ci.dat
+TfReg-8.2/examples/verify/verify-mm-cd.dat
+TfReg-8.2/examples/verify/predict-mm-ci.dat
+TfReg-8.2/examples/verify/predict-mm-cd.dat
+TfReg-8.2/examples/verify/verify-rna-dna.dat
+TfReg-8.2/examples/verify/gauss-legendre-100.dat
+TfReg-8.2/examples/verify/predict-rna-1.dat
+TfReg-8.2/examples/verify/verify-rna-un.dat
+TfReg-8.2/examples/verify/verify-rna-ti.dat
+TfReg-8.2/examples/verify/verify-rna-ti-salt-71.dat
+TfReg-8.2/examples/verify/verify-rna-ti-salt-121.dat
+TfReg-8.2/examples/verify/verify-rna-ti-salt-221.dat
+TfReg-8.2/examples/verify/verify-rna-ti-salt-621.dat
+TfReg-8.2/examples/verify/verify-rna-un-salt-71.dat
+TfReg-8.2/examples/verify/verify-rna-un-salt-121.dat
+TfReg-8.2/examples/verify/verify-rna-un-salt-221.dat
+TfReg-8.2/examples/verify/verify-rna-un-salt-621.dat
+TfReg-8.2/examples/verify/regression-lna.dat
+TfReg-8.2/examples/verify/open-rna-gu.dat
+TfReg-8.2/examples/verify/rna-gu-regression/regression.dat
+TfReg-8.2/examples/verify/verify-terminal-dna/verify-regress-69.dat
+TfReg-8.2/examples/verify/verify-terminal-dna/verify-regress-119.dat
+TfReg-8.2/examples/verify/verify-terminal-dna/verify-regress-220.dat
+TfReg-8.2/examples/verify/verify-terminal-dna/verify-regress-621.dat
+TfReg-8.2/examples/verify/verify-terminal-dna/verify-regress-1020.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_0.5.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_1.5.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_3.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_10.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_20.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_50.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mg_125.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mgk_0.5.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mgk_1.5.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mgk_3.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mgk_10.dat
+TfReg-8.2/examples/verify/verify-dna-mg/dna_pb_mgk_20.dat
+TfReg-8.2/examples/verify/verify-dna-lna/dna_lna.dat
+TfReg-8.2/examples/verify/verify-dna-lna/dna_lna-v2.dat
+TfReg-8.2/examples/verify/verify-peg/verify-dd-peg.dat
+TfReg-8.2/examples/verify/verify-peg/verify-dr-peg.dat
+TfReg-8.2/examples/verify/verify-peg/verify-rr-peg.dat
+TfReg-8.2/examples/verify/verify-rna-dna-mm/verify-rna-dna-mm.dat
+TfReg-8.2/examples/verify/verify-nm-rna/reg-nm-rna-pb-121.dat
+--- TfReg-8.2/data/owczarzy04-1020.dat: 93 lines
+temperature
+ATCAATCATA TAGTTAGTAT 33.6 1020 2 
+TTGTAGTCAT AACATCAGTA 36.0 1020 2 
+GAAATGAAAG CTTTACTTTC 34.4 1020 2 
+CCAACTTCTT GGTTGAAGAA 40.6 1020 2 
+ATCGTCTGGA TAGCAGACCT 44.9 1020 2 
+AGCGTAAGTC TCGCATTCAG 40.3 1020 2 
+CGATCTGCGA GCTAGACGCT 49.1 1020 2 
+TGGCGAGCAC ACCGCTCGTG 55.3 1020 2 
+GATGCGCTCG CTACGCGAGC 53.5 1020 2 
+--- TfReg-8.2/data/owczarzy04-119.dat: 93 lines
+temperature
+ATCAATCATA TAGTTAGTAT 24.5 119 2 
+TTGTAGTCAT AACATCAGTA 28.2 119 2 
+GAAATGAAAG CTTTACTTTC 25.3 119 2 
+CCAACTTCTT GGTTGAAGAA 32.1 119 2 
+ATCGTCTGGA TAGCAGACCT 37.4 119 2 
+AGCGTAAGTC TCGCATTCAG 31.2 119 2 
+CGATCTGCGA GCTAGACGCT 42.3 119 2 
+TGGCGAGCAC ACCGCTCGTG 47.8 119 2 
+GATGCGCTCG CTACGCGAGC 47.0 119 2 
+--- TfReg-8.2/data/owczarzy04-220.dat: 93 lines
+temperature
+ATCAATCATA TAGTTAGTAT 27.9 220 2 
+TTGTAGTCAT AACATCAGTA 31.2 220 2 
+GAAATGAAAG CTTTACTTTC 29.1 220 2 
+CCAACTTCTT GGTTGAAGAA 35.9 220 2 
+ATCGTCTGGA TAGCAGACCT 40.5 220 2 
+AGCGTAAGTC TCGCATTCAG 34.6 220 2 
+CGATCTGCGA GCTAGACGCT 45.6 220 2 
+TGGCGAGCAC ACCGCTCGTG 51.3 220 2 
+GATGCGCTCG CTACGCGAGC 50.1 220 2 
+--- TfReg-8.2/data/owczarzy04-621.dat: 93 lines
+temperature
+ATCAATCATA TAGTTAGTAT 32.4 621 2 
+TTGTAGTCAT AACATCAGTA 34.8 621 2 
+GAAATGAAAG CTTTACTTTC 33.1 621 2 
+CCAACTTCTT GGTTGAAGAA 39.6 621 2 
+ATCGTCTGGA TAGCAGACCT 44.5 621 2 
+AGCGTAAGTC TCGCATTCAG 39.5 621 2 
+CGATCTGCGA GCTAGACGCT 48.4 621 2 
+TGGCGAGCAC ACCGCTCGTG 55.0 621 2 
+GATGCGCTCG CTACGCGAGC 53.6 621 2 
+--- TfReg-8.2/data/owczarzy04-69.dat: 93 lines
+temperature
+ATCAATCATA TAGTTAGTAT 21.3 69 2 
+TTGTAGTCAT AACATCAGTA 24.7 69 2 
+GAAATGAAAG CTTTACTTTC 22.1 69 2 
+CCAACTTCTT GGTTGAAGAA 29.0 69 2 
+ATCGTCTGGA TAGCAGACCT 33.8 69 2 
+AGCGTAAGTC TCGCATTCAG 27.4 69 2 
+CGATCTGCGA GCTAGACGCT 39.2 69 2 
+TGGCGAGCAC ACCGCTCGTG 44.4 69 2 
+GATGCGCTCG CTACGCGAGC 44.2 69 2 
+--- TfReg-8.2/data/owczarzy04.dat: 461 lines
+temperature
+ATCAATCATA TAGTTAGTAT 21.3 69 2 
+ATCAATCATA TAGTTAGTAT 24.5 119 2 
+ATCAATCATA TAGTTAGTAT 27.9 220 2 
+ATCAATCATA TAGTTAGTAT 32.4 621 2 
+ATCAATCATA TAGTTAGTAT 33.6 1020 2 
+TTGTAGTCAT AACATCAGTA 24.7 69 2 
+TTGTAGTCAT AACATCAGTA 28.2 119 2 
+TTGTAGTCAT AACATCAGTA 31.2 220 2 
+TTGTAGTCAT AACATCAGTA 34.8 621 2 
+--- TfReg-8.2/data/owczarzy12-Mg-0.5.dat: 97 lines
+temperature #owczarzy12patent table I 2 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#0.5 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 39.25 0.5 2
+ATACTTACTGATTAG TATGAATGACTAATC 39.85 0.5 2
+GTACACTGTCTTATA CATGTGACAGAATAT 43.35 0.5 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 43.45 0.5 2
+TTCTACCTATGTGAT AAGATGGATACACTA 43.25 0.5 2
+--- TfReg-8.2/data/owczarzy12-Mg-10.dat: 97 lines
+temperature #owczarzy12patent table I 2 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#10 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 47.15 10 2
+ATACTTACTGATTAG TATGAATGACTAATC 46.75 10 2
+GTACACTGTCTTATA CATGTGACAGAATAT 50.55 10 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 50.95 10 2
+TTCTACCTATGTGAT AAGATGGATACACTA 50.25 10 2
+--- TfReg-8.2/data/owczarzy12-Mg-125.dat: 97 lines
+temperature #owczarzy12patent table I 10 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#125 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 48.95 125 2
+ATACTTACTGATTAG TATGAATGACTAATC 49.25 125 2
+GTACACTGTCTTATA CATGTGACAGAATAT 52.45 125 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 52.85 125 2
+TTCTACCTATGTGAT AAGATGGATACACTA 51.45 125 2
+--- TfReg-8.2/data/owczarzy12-Mg-1.5.dat: 97 lines
+temperature #owczarzy12patent table I 2 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#1.5 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 42.85 1.5 2
+ATACTTACTGATTAG TATGAATGACTAATC 43.55 1.5 2
+GTACACTGTCTTATA CATGTGACAGAATAT 47.15 1.5 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 46.95 1.5 2
+TTCTACCTATGTGAT AAGATGGATACACTA 46.05 1.5 2
+--- TfReg-8.2/data/owczarzy12-Mg-1.dat: 97 lines
+temperature #owczarzy12patent table I 2 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#0.5 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 39.25 0.5 2
+ATACTTACTGATTAG TATGAATGACTAATC 39.85 0.5 2
+GTACACTGTCTTATA CATGTGACAGAATAT 43.35 0.5 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 43.45 0.5 2
+TTCTACCTATGTGAT AAGATGGATACACTA 43.25 0.5 2
+--- TfReg-8.2/data/owczarzy12-Mg-20.dat: 97 lines
+temperature #owczarzy12patent table I 2 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#20 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 47.45 20 2
+ATACTTACTGATTAG TATGAATGACTAATC 47.85 20 2
+GTACACTGTCTTATA CATGTGACAGAATAT 51.25 20 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 51.45 20 2
+TTCTACCTATGTGAT AAGATGGATACACTA 50.35 20 2
+--- TfReg-8.2/data/owczarzy12-Mg-3.dat: 97 lines
+temperature #owczarzy12patent table I 2 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#3 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 44.35 3 2
+ATACTTACTGATTAG TATGAATGACTAATC 44.95 3 2
+GTACACTGTCTTATA CATGTGACAGAATAT 48.65 3 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 48.55 3 2
+TTCTACCTATGTGAT AAGATGGATACACTA 47.85 3 2
+--- TfReg-8.2/data/owczarzy12-Mg-50.dat: 97 lines
+temperature #owczarzy12patent table I 10 mM Tris-HCl 
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table I
+#50 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 48.35 50 2
+ATACTTACTGATTAG TATGAATGACTAATC 48.65 50 2
+GTACACTGTCTTATA CATGTGACAGAATAT 52.15 50 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 52.25 50 2
+TTCTACCTATGTGAT AAGATGGATACACTA 50.95 50 2
+--- TfReg-8.2/data/owczarzy12-MgK-0.5.dat: 85 lines
+temperature
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table VI
+#50 mM K and 0.5 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 38.1 0.5 2
+ATACTTACTGATTAG TATGAATGACTAATC 38.7 0.5 2
+GTACACTGTCTTATA CATGTGACAGAATAT 42.8 0.5 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 42.1 0.5 2
+AGTAGTAATCACACC TCATCATTAGTGTGG 45.6 0.5 2
+--- TfReg-8.2/data/owczarzy12-MgK-10.dat: 85 lines
+temperature
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table VI
+#50 mM K and 10 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 46.3 10 2
+ATACTTACTGATTAG TATGAATGACTAATC 45.9 10 2
+GTACACTGTCTTATA CATGTGACAGAATAT 49.9 10 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 50.2 10 2
+AGTAGTAATCACACC TCATCATTAGTGTGG 52.6 10 2
+--- TfReg-8.2/data/owczarzy12-MgK-1.5.dat: 85 lines
+temperature
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table VI
+#50 mM K and 1.5 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 40.8 1.5 2
+ATACTTACTGATTAG TATGAATGACTAATC 41.3 1.5 2
+GTACACTGTCTTATA CATGTGACAGAATAT 45.3 1.5 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 45.1 1.5 2
+AGTAGTAATCACACC TCATCATTAGTGTGG 48.1 1.5 2
+--- TfReg-8.2/data/owczarzy12-MgK-20.dat: 85 lines
+temperature
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table VI
+#50 mM K and 20 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 47.4 20 2
+ATACTTACTGATTAG TATGAATGACTAATC 47.5 20 2
+GTACACTGTCTTATA CATGTGACAGAATAT 51.0 20 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 51.4 20 2
+AGTAGTAATCACACC TCATCATTAGTGTGG 53.6 20 2
+--- TfReg-8.2/data/owczarzy12-MgK-3.dat: 85 lines
+temperature
+#Owczarzy, Richard, et al. "Method for estimating a melting temperature of a nucleic acid in buffers containing magnesium ions." 
+#U.S. Patent No. 8,055,451. 8 Nov. 2011.
+#Table VI
+#50 mM K and 3.0 mM Mg2+
+TACTAACATTAACTA ATGATTGTAATTGAT 42.6 3 2
+ATACTTACTGATTAG TATGAATGACTAATC 43.2 3 2
+GTACACTGTCTTATA CATGTGACAGAATAT 47.1 3 2
+GTATGAGAGACTTTA CATACTCTCTGAAAT 47.1 3 2
+AGTAGTAATCACACC TCATCATTAGTGTGG 49.7 3 2
