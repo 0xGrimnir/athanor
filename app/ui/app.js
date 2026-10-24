@@ -2086,8 +2086,12 @@ function showMode(mode) {
   $("dnaViewopts").hidden = mode === "fibre" || mode === "nucleus";
 }
 
+const SCALE_LABEL = { helix: "Helix", nucleosome: "Nucleosome", complex: "Protein–DNA complex", fibre: "Chromatin fibre", nucleus: "Nucleus" };
+
 function setScale(scale, act) {
   D.scale = scale;
+  $("dnaSummaryLabel").textContent = SCALE_LABEL[scale];
+  $("dnaSavePdb").hidden = scale === "fibre" || scale === "nucleus";
   document.querySelectorAll("#dnaScale button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.scale === scale)));
   showMode(scale);
   if (scale !== "helix" && D.md) dnaMdStop();
@@ -2134,6 +2138,7 @@ async function dnaBuild() {
     $("dnaName").textContent = `${m.form}-DNA · ${m.sequence.length} bp`;
     $("dnaFormula").textContent = `5'-${m.sequence}-3'`;
     renderDna(m); $("dnaSavePdb").hidden = false;
+    const atomsBtn = document.querySelector('[data-dnastyle="atoms"]'); if (atomsBtn.getAttribute("aria-pressed") !== "true" && m.sequence.length <= 40) { setPressed("[data-dnastyle]", atomsBtn); H.setStyle("atoms"); }
     $("dnaEnergySec").hidden = true; document.querySelector('[data-dnacolor="energy"]').hidden = true;
     document.querySelector('[data-dnacolor="damage"]').hidden = true;
     $("dnaMdBtn").disabled = !m.md_available;
@@ -2338,8 +2343,9 @@ async function showNucleosome() {
     const ax = new THREE.Vector3(...m.superhelix_axis);
     H.set(m, { extras: { tubes }, axis: ax, toward: new THREE.Vector3(0, 0, 1) });
     D.model = m;
+    const cart = document.querySelector('[data-dnastyle="cartoon"]'); setPressed("[data-dnastyle]", cart); H.setStyle("cartoon");
     $("dnaName").textContent = `Nucleosome · ${m.pdb}`;
-    $("dnaFormula").textContent = m.user ? `your ${m.user.length} bp at the dyad (bright); the rest is the crystal's sequence` : "the crystal's own 147 bp";
+    $("dnaFormula").textContent = m.user ? `your ${m.user.length} bp at the dyad (bright)` : "the crystal's own 147 bp";
     const v = (D.scales && D.scales.validation && D.scales.validation.nucleosome) || {}, sh = m.superhelix;
     $("dnaSummary").innerHTML = kvTable([["DNA", `${m.sequence.length} bp, ${sh.turns.toFixed(2)} turns`], ["Superhelix", `${sh.hand}-handed`],
       ["Radius", `${sh.radius.toFixed(1)} Å <small>(published 41.9)</small>`], ["Pitch", `${sh.pitch.toFixed(1)} Å <small>(published 25.9)</small>`],
@@ -2432,7 +2438,7 @@ function drawNucleus(f) {
   }
   const spheres = [];
   const hl = f.highlight;
-  if (hl && hl.hits.length) spheres.push({ pts: hl.hits.map((h) => h.xyz), color: 0xffffff, radius: 1.6, emissive: 0x62d6ff });
+  if (hl && hl.hits.length) spheres.push({ pts: hl.hits.map((h) => h.xyz), color: 0xffffff, radius: 2.5, emissive: 0x62d6ff });
   H.sceneOnly({ tubes, spheres });
   D.model = null;
   $("dnaName").textContent = "Nucleus · GM12878 cell";
