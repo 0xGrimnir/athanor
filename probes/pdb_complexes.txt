@@ -1,0 +1,149 @@
+== 1KX5: MOLECULE: DNA | CHAIN: I; | MOLECULE: DNA | CHAIN: J; | MOLECULE: HISTONE H3; | CHAIN: A, E; | MOLECULE: HISTONE H4; | CHAIN: B, F; | MOLECULE: HISTONE H2A.1; | CHAIN: C, G; | MOLECULE: HISTONE H2B.2; | CHAIN: D, H;
+   chain I: 934 residues, 147 nucleotides, 3798 atoms  ATCAATATCCACCTGCAGATACTACCAAAAGTGTATTTGGAAACTGCTCCATCAAAAGGCATGTTCAGCTGGAATCCAGC
+   chain J: 955 residues, 147 nucleotides, 3818 atoms  ATCAATATCCACCTGCAGATACTACCAAAAGTGTATTTGGAAACTGCTCCATCAAAAGGCATGTTCAGCTGGATTCCAGC
+   chain A: 355 residues, 0 nucleotides, 1294 atoms  
+   chain B: 231 residues, 0 nucleotides, 921 atoms  
+   chain C: 342 residues, 0 nucleotides, 1192 atoms  
+   chain D: 319 residues, 0 nucleotides, 1146 atoms  
+   chain E: 358 residues, 0 nucleotides, 1297 atoms  
+   chain F: 304 residues, 0 nucleotides, 994 atoms  
+   chain G: 316 residues, 0 nucleotides, 1166 atoms  
+   chain H: 302 residues, 0 nucleotides, 1129 atoms  
+== 1ZBB: MOLECULE: DNA STRAND 1 (ARBITRARY MODEL SEQUENCE); | CHAIN: I; | MOLECULE: DNA STRAND 2 (ARBITRARY MODEL SEQUENCE); | CHAIN: J; | MOLECULE: HISTONE H3; | CHAIN: A, E, a, e; | MOLECULE: HISTONE H4; | CHAIN: B, F, b, f; | MOLECULE: HISTONE H2A.1; | CHAIN: C, G, c, g; | MOLECULE: HISTONE H2B.1; | CHAIN: D, H, d, h;
+   chain I: 347 residues, 347 nucleotides, 7111 atoms  ACTTACATGCACAGGATGTAACCTGCAGATACTACCAAAAGTGTATTTGGAAACTGCTCCATCAAAAGGCATGTTCAGCT
+   chain J: 347 residues, 347 nucleotides, 7110 atoms  TGCACTTACATGCGCATGTAAGTCTGGAGAATCACCTGCAGATACTACCAAAAGTGTATTTGGAAACTGCTCCATCAAAA
+   chain A: 97 residues, 0 nucleotides, 801 atoms  
+   chain B: 80 residues, 0 nucleotides, 634 atoms  
+   chain C: 111 residues, 0 nucleotides, 858 atoms  
+   chain D: 107 residues, 0 nucleotides, 843 atoms  
+   chain E: 97 residues, 0 nucleotides, 801 atoms  
+   chain F: 94 residues, 0 nucleotides, 750 atoms  
+   chain G: 109 residues, 0 nucleotides, 843 atoms  
+   chain H: 99 residues, 0 nucleotides, 785 atoms  
+   chain a: 97 residues, 0 nucleotides, 801 atoms  
+   chain b: 80 residues, 0 nucleotides, 634 atoms  
+   chain c: 111 residues, 0 nucleotides, 858 atoms  
+   chain d: 107 residues, 0 nucleotides, 843 atoms  
+   chain e: 97 residues, 0 nucleotides, 801 atoms  
+   chain f: 94 residues, 0 nucleotides, 750 atoms  
+   chain g: 109 residues, 0 nucleotides, 843 atoms  
+   chain h: 99 residues, 0 nucleotides, 785 atoms  
+== 6HKT: MOLECULE: HISTONE H3.1; | CHAIN: A, E, a, e, K, O, k, o, U, Y, u, y; | MOLECULE: HISTONE H4; | CHAIN: B, F, b, f, L, P, l, p, V, Z, v, z; | MOLECULE: HISTONE H2A TYPE 1-B/E; | CHAIN: C, G, c, g, M, Q, m, q, W, 0, w, 2; | MOLECULE: HISTONE H2B TYPE 1-J; | CHAIN: D, H, d, h, N, R, n, r, X, 1, x, 3; | MOLECULE: DNA (1122-MER); | CHAIN: I; | MOLECULE: DNA (1122-MER); | CHAIN: J;
+   chain A: 97 residues, 0 nucleotides, 801 atoms  
+   chain B: 82 residues, 0 nucleotides, 653 atoms  
+   chain C: 103 residues, 0 nucleotides, 796 atoms  
+   chain D: 96 residues, 0 nucleotides, 755 atoms  
+   chain E: 98 residues, 0 nucleotides, 807 atoms  
+   chain F: 82 residues, 0 nucleotides, 653 atoms  
+   chain G: 105 residues, 0 nucleotides, 810 atoms  
+   chain H: 95 residues, 0 nucleotides, 745 atoms  
+   chain I: 1122 residues, 1122 nucleotides, 22861 atoms  ATCACCCTATACGCGGCCGCCCTGGAGAATCCCGGTGCCGAGGCCGCTCAATTGGTCGTAGACAGCTCTAGCACCGCTTA
+   chain J: 1122 residues, 1122 nucleotides, 23141 atoms  ATCGCTGTTCAATACATGCACAGGATGTATATATCTGACACGTGCCTGGAGACTAGGGAGTAATCCCCTTGGCGGTTAAA
+   chain a: 98 residues, 0 nucleotides, 807 atoms  
+   chain b: 82 residues, 0 nucleotides, 653 atoms  
+   chain c: 105 residues, 0 nucleotides, 810 atoms  
+   chain d: 95 residues, 0 nucleotides, 745 atoms  
+   chain e: 97 residues, 0 nucleotides, 801 atoms  
+   chain f: 82 residues, 0 nucleotides, 653 atoms  
+   chain g: 103 residues, 0 nucleotides, 796 atoms  
+   chain h: 96 residues, 0 nucleotides, 755 atoms  
+   chain K: 97 residues, 0 nucleotides, 801 atoms  
+   chain L: 82 residues, 0 nucleotides, 653 atoms  
+   chain M: 103 residues, 0 nucleotides, 796 atoms  
+   chain N: 96 residues, 0 nucleotides, 755 atoms  
+   chain O: 98 residues, 0 nucleotides, 807 atoms  
+   chain P: 82 residues, 0 nucleotides, 653 atoms  
+   chain Q: 105 residues, 0 nucleotides, 810 atoms  
+   chain R: 95 residues, 0 nucleotides, 745 atoms  
+   chain k: 98 residues, 0 nucleotides, 807 atoms  
+   chain l: 82 residues, 0 nucleotides, 653 atoms  
+   chain m: 105 residues, 0 nucleotides, 810 atoms  
+   chain n: 95 residues, 0 nucleotides, 745 atoms  
+   chain o: 97 residues, 0 nucleotides, 801 atoms  
+   chain p: 82 residues, 0 nucleotides, 653 atoms  
+   chain q: 103 residues, 0 nucleotides, 796 atoms  
+   chain r: 96 residues, 0 nucleotides, 755 atoms  
+   chain U: 97 residues, 0 nucleotides, 801 atoms  
+   chain V: 82 residues, 0 nucleotides, 653 atoms  
+   chain W: 103 residues, 0 nucleotides, 796 atoms  
+   chain X: 96 residues, 0 nucleotides, 755 atoms  
+   chain Y: 98 residues, 0 nucleotides, 807 atoms  
+   chain Z: 82 residues, 0 nucleotides, 653 atoms  
+   chain 0: 105 residues, 0 nucleotides, 810 atoms  
+   chain 1: 95 residues, 0 nucleotides, 745 atoms  
+   chain u: 98 residues, 0 nucleotides, 807 atoms  
+   chain v: 82 residues, 0 nucleotides, 653 atoms  
+   chain w: 105 residues, 0 nucleotides, 810 atoms  
+   chain x: 95 residues, 0 nucleotides, 745 atoms  
+   chain y: 97 residues, 0 nucleotides, 801 atoms  
+   chain z: 82 residues, 0 nucleotides, 653 atoms  
+   chain 2: 103 residues, 0 nucleotides, 796 atoms  
+   chain 3: 96 residues, 0 nucleotides, 755 atoms  
+== 1YTB: MOLECULE: DNA (29MER); | CHAIN: C, D; | MOLECULE: PROTEIN (TATA BINDING PROTEIN (TBP)); | CHAIN: A, B;
+   chain C: 130 residues, 29 nucleotides, 698 atoms  GTATATAAAACGGGTGGCGTTTTATATAC
+   chain D: 126 residues, 29 nucleotides, 694 atoms  GTATATAAAACGGGTGGCGTTTTATATAC
+   chain A: 342 residues, 0 nucleotides, 1578 atoms  
+   chain B: 333 residues, 0 nucleotides, 1569 atoms  
+== 1CGP: MOLECULE: DNA (5'- | CHAIN: C, E; | MOLECULE: DNA (5'-D(*GP*TP*CP*AP*CP*AP*CP*TP*TP*TP*TP*CP*G)-3'); | CHAIN: D, F; | MOLECULE: PROTEIN (CATABOLITE GENE ACTIVATOR PROTEIN (CAP)); | CHAIN: A, B
+   chain C: 18 residues, 18 nucleotides, 411 atoms  GCGAAAAGTGTGACATAT
+   chain D: 13 residues, 13 nucleotides, 284 atoms  GTCACACTTTTCG
+   chain E: 18 residues, 18 nucleotides, 411 atoms  GCGAAAAGTGTGACATAT
+   chain F: 13 residues, 13 nucleotides, 284 atoms  GTCACACTTTTCG
+   chain A: 198 residues, 0 nucleotides, 1942 atoms  
+   chain B: 198 residues, 0 nucleotides, 1942 atoms  
+== 1IHF: MOLECULE: DNA (35-MER); | CHAIN: C; | MOLECULE: DNA (5'-D(*GP*GP*CP*CP*AP*AP*AP*AP*AP*AP*GP*CP*AP*TP*T)- | CHAIN: D; | MOLECULE: DNA (5'- | CHAIN: E; | SYNONYM: IHF ALPHA CHAIN; | MOLECULE: PROTEIN (INTEGRATION HOST FACTOR (ALPHA) (IHF)); | CHAIN: A; | SYNONYM: IHF BETA CHAIN; | MOLECULE: PROTEIN (INTEGRATION HOST FACTOR (BETA) (IHF)); | CHAIN: B
+   chain C: 134 residues, 35 nucleotides, 885 atoms  CGGTGCAACAAATTGATAAGCAATGCTTTTTTGGC
+   chain D: 68 residues, 15 nucleotides, 393 atoms  GGCCAAAAAAGCATT
+   chain E: 80 residues, 20 nucleotides, 499 atoms  GCTTATCAATTTGTTGCACC
+   chain A: 205 residues, 0 nucleotides, 1071 atoms  
+   chain B: 173 residues, 0 nucleotides, 1007 atoms  
+== 1AAY: MOLECULE: DNA (5'-D(*AP*GP*CP*GP*TP*GP*GP*GP*CP*GP*T)-3'); | CHAIN: B; | MOLECULE: DNA (5'-D(*TP*AP*CP*GP*CP*CP*CP*AP*CP*GP*C)-3'); | CHAIN: C; | MOLECULE: PROTEIN (ZIF268 ZINC FINGER PEPTIDE); | CHAIN: A;
+   chain B: 43 residues, 11 nucleotides, 260 atoms  AGCGTGGGCGT
+   chain C: 39 residues, 11 nucleotides, 245 atoms  TACGCCCACGC
+   chain A: 176 residues, 0 nucleotides, 825 atoms  
+== 1TSR: MOLECULE: DNA (5'- | CHAIN: E; | MOLECULE: DNA (5'- | CHAIN: F; | MOLECULE: PROTEIN (P53 TUMOR SUPPRESSOR); | CHAIN: A, B, C;
+   chain E: 44 residues, 21 nucleotides, 443 atoms  TTTCCTAGACTTGCCCAATTA
+   chain F: 35 residues, 21 nucleotides, 449 atoms  ATAATTGGGCAAGTCTAGGAA
+   chain A: 395 residues, 0 nucleotides, 1734 atoms  
+   chain B: 266 residues, 0 nucleotides, 1594 atoms  
+   chain C: 274 residues, 0 nucleotides, 1608 atoms  
+== 1RVA: MOLECULE: DNA (5'-D(*AP*AP*AP*GP*AP*TP*AP*TP*CP*TP*T)-3'); | CHAIN: C, D; | MOLECULE: PROTEIN (ECO RV (E.C.3.1.21.4)); | CHAIN: A, B;
+   chain C: 29 residues, 11 nucleotides, 241 atoms  AAAGATATCTT
+   chain D: 36 residues, 11 nucleotides, 248 atoms  AAAGATATCTT
+   chain A: 360 residues, 0 nucleotides, 2139 atoms  
+   chain B: 351 residues, 0 nucleotides, 2130 atoms  
+== 1EFA: MOLECULE: DNA (5'- | CHAIN: D, E; | MOLECULE: LAC REPRESSOR; | CHAIN: A, B, C;
+   chain D: 17 residues, 17 nucleotides, 345 atoms  TGTGAGCGCTCACAATT
+   chain E: 17 residues, 17 nucleotides, 349 atoms  AATTGTGAGCGCTCACA
+   chain A: 337 residues, 0 nucleotides, 2446 atoms  
+   chain B: 363 residues, 0 nucleotides, 2511 atoms  
+   chain C: 309 residues, 0 nucleotides, 2187 atoms  
+== 1CDW: MOLECULE: DNA (5'-D(*CP*TP*GP*CP*TP*AP*TP*AP*AP*AP*AP*GP*GP*CP*TP*G)- | CHAIN: B; | MOLECULE: DNA (5'-D(*CP*AP*GP*CP*CP*TP*TP*TP*TP*AP*TP*AP*GP*CP*AP*G)- | CHAIN: C; | MOLECULE: PROTEIN (TATA BINDING PROTEIN (TBP)); | CHAIN: A;
+   chain B: 57 residues, 16 nucleotides, 368 atoms  CTGCTATAAAAGGCTG
+   chain C: 66 residues, 16 nucleotides, 373 atoms  CAGCCTTTTATAGCAG
+   chain A: 368 residues, 0 nucleotides, 1610 atoms  
+== 3LZ0: MOLECULE: HISTONE H3.2; | CHAIN: A, E; | MOLECULE: HISTONE H4; | CHAIN: B, F; | MOLECULE: HISTONE H2A; | CHAIN: C, G; | MOLECULE: HISTONE H2B 1.1; | CHAIN: D, H; | MOLECULE: DNA (145-MER); | CHAIN: I; | MOLECULE: DNA (145-MER); | CHAIN: J;
+   chain A: 98 residues, 0 nucleotides, 803 atoms  
+   chain B: 83 residues, 0 nucleotides, 662 atoms  
+   chain C: 104 residues, 0 nucleotides, 796 atoms  
+   chain D: 95 residues, 0 nucleotides, 745 atoms  
+   chain E: 97 residues, 0 nucleotides, 801 atoms  
+   chain F: 78 residues, 0 nucleotides, 619 atoms  
+   chain G: 106 residues, 0 nucleotides, 810 atoms  
+   chain H: 93 residues, 0 nucleotides, 726 atoms  
+   chain I: 149 residues, 145 nucleotides, 2956 atoms  ATCAGAATCCCGGTGCCGAGGCCGCTCAATTGGTCGTAGACAGCTCTAGCACCGCTTAAACGCACGTACGCGCTGTCCCC
+   chain J: 148 residues, 145 nucleotides, 2990 atoms  ATCGATGTATATATCTGACACGTGCCTGGAGACTAGGGAGTAATCCCCTTGGCGGTTAAAACGCGGGGGACAGCGCGTAC
+== 1A1T: MOLECULE: SL3 STEM-LOOP RNA; | CHAIN: B; | MOLECULE: NUCLEOCAPSID PROTEIN; | CHAIN: A;
+   chain B: 20 residues, 20 nucleotides, 649 atoms  GGACUAGCGGAGGCUAGUCC
+   chain A: 57 residues, 0 nucleotides, 867 atoms  
+== 1HCQ: MOLECULE: DNA (5'- | CHAIN: C, G; | MOLECULE: DNA (5'- | CHAIN: D, H; | MOLECULE: PROTEIN (ESTROGEN RECEPTOR); | CHAIN: A, B, E, F;
+   chain C: 39 residues, 18 nucleotides, 386 atoms  CCAGGTCACAGTGACCTG
+   chain D: 32 residues, 18 nucleotides, 378 atoms  CCAGGTCACTGTGACCTG
+   chain G: 31 residues, 18 nucleotides, 378 atoms  CCAGGTCACAGTGACCTG
+   chain H: 34 residues, 18 nucleotides, 380 atoms  CCAGGTCACTGTGACCTG
+   chain A: 109 residues, 0 nucleotides, 607 atoms  
+   chain B: 102 residues, 0 nucleotides, 593 atoms  
+   chain E: 94 residues, 0 nucleotides, 585 atoms  
+   chain F: 87 residues, 0 nucleotides, 557 atoms  
+== 3DNB: MOLECULE: DNA (5'-D(*CP*CP*AP*AP*GP*AP*TP*TP*GP*G)-3'); | CHAIN: A;
+   chain A: 82 residues, 10 nucleotides, 276 atoms  CCAAGATTGG
