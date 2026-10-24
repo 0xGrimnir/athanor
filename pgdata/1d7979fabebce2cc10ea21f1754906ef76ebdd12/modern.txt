@@ -1,0 +1,43 @@
+[    0.3s] AADR 463 individuals 453101 SNPs (synthetic stand-in)
+[    0.3s] autosomal SNPs 433252 X SNPs (outside the pseudo-autosomal regions) 19849
+[    0.3s] region east_africa: only 6 individuals; left out
+[    0.3s] region south_central_africa: only 0 individuals; left out
+[    0.3s] region rainforest_hg: only 6 individuals; left out
+[    0.3s] region san: only 0 individuals; left out
+[    0.3s] region east_europe: only 0 individuals; left out
+[    0.3s] region basque: only 0 individuals; left out
+[    0.3s] region balkans: only 0 individuals; left out
+[    0.3s] region levant: only 0 individuals; left out
+[    0.3s] region arabia: only 0 individuals; left out
+[    0.3s] region caucasus: only 0 individuals; left out
+[    0.3s] region north_africa: only 0 individuals; left out
+[    0.3s] region bengal: only 0 individuals; left out
+[    0.3s] region south_india: only 0 individuals; left out
+[    0.3s] region south_china: only 0 individuals; left out
+[    0.3s] region se_asia: only 0 individuals; left out
+[    0.3s] region north_asia: only 1 individuals; left out
+[    0.3s] regions 14 panel individuals 320
+[    0.3s] genotype rows in memory: 0.04 GB
+[    0.4s] subset dosages (320, 80000)
+[    9.4s] outliers removed: 0 []
+[   36.7s] leave-one-out estimates for 161 calibration people
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe': 0.38, 'france': 0.04, 'finland': 0.16, 'iberia': 0.2, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] grouped france with nw_europe (own share 0.04)
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe+france': 0.44, 'finland': 0.16, 'iberia': 0.2, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] grouped finland with nw_europe (own share 0.16)
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe+france+finland': 0.62, 'iberia': 0.2, 'italy': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] grouped italy with nw_europe (own share 0.20)
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe+france+finland+italy': 0.8, 'iberia': 0.2, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] grouped iberia with nw_europe (own share 0.20)
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe+france+finland+iberia+italy': 0.98, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china': 0.62, 'japan_korea': 0.33, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] grouped japan_korea with north_china (own share 0.33)
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe+france+finland+iberia+italy': 0.98, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia': 0.44, 'gujarat': 0.5, 'north_china+japan_korea': 0.98, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] grouped gujarat with nw_south_asia (own share 0.44)
+[   36.7s] own-group means: {'west_africa': 1.0, 'nw_europe+france+finland+iberia+italy': 0.98, 'sardinia': 0.95, 'druze': 0.98, 'nw_south_asia+gujarat': 0.92, 'north_china+japan_korea': 0.98, 'papua': 1.0, 'americas': 0.95}
+[   36.7s] groups: ['West Africa', 'Europe (5 regions)', 'Sardinia', 'Druze', 'Northwestern South Asia / Gujarat', 'Northern and Northeast China / Japan and Korea', 'Papua New Guinea, Melanesia and Australia', 'Indigenous Americas']
+[   36.7s] detection floors: {'West Africa': np.float64(0.01), 'Europe (5 regions)': np.float64(0.01), 'Sardinia': np.float64(0.01), 'Druze': np.float64(0.069), 'Northwestern South Asia / Gujarat': np.float64(0.028), 'Northern and Northeast China / Japan and Korea': np.float64(0.056), 'Papua New Guinea, Melanesia and Australia': np.float64(0.01), 'Indigenous Americas': np.float64(0.03)} {'africa': 0.01, 'europe': 0.01, 'west_asia': 0.069, 'south_asia': 0.028, 'east_asia': 0.056, 'oceania': 0.01, 'americas': 0.03}
+[   37.1s] panel frequencies done
+[   37.2s] X frequencies done
+[  170.2s] painting calibration (temper -> accuracy, mean posterior): {0.25: (0.984, 0.983), 0.35: (0.988, 0.987), 0.5: (0.988, 0.99), 0.7: (0.986, 0.99), 1.0: (0.984, 0.99)} chosen 0.5
+[  176.5s] ROH reference groups 19
+[  180.2s] done
