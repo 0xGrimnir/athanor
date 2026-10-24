@@ -1,0 +1,95 @@
+{
+ "results": [
+  {
+   "name": "melting temperatures vs 92 measured duplexes at 1 M Na+ (Owczarzy 2004): mean error <= 2.0 C",
+   "pass": true,
+   "detail": "mean |error| 1.63 C, mean +1.05 C, worst 6.1 C"
+  },
+  {
+   "name": "melting temperatures vs the same duplexes at 69-621 mM Na+ (Owczarzy 2004 salt correction): mean error <= 2.0 C",
+   "pass": true,
+   "detail": "69 mM 1.70; 119 mM 1.67; 220 mM 1.59; 621 mM 1.71; 1020 mM 1.63"
+  },
+  {
+   "name": "same melting temperatures as Biopython's Tm_NN (Allawi & SantaLucia parameters, both salt corrections)",
+   "pass": true,
+   "detail": "largest difference 0.0044 C over 276 cases"
+  }
+ ],
+ "errors": {
+  "owczarzy2004": {
+   "69 mM": {
+    "mean_abs": 1.7043,
+    "mean": 1.049,
+    "max_abs": 6.3535,
+    "n": 92
+   },
+   "119 mM": {
+    "mean_abs": 1.6718,
+    "mean": 1.0875,
+    "max_abs": 6.3696,
+    "n": 92
+   },
+   "220 mM": {
+    "mean_abs": 1.5941,
+    "mean": 1.0172,
+    "max_abs": 6.1062,
+    "n": 92
+   },
+   "621 mM": {
+    "mean_abs": 1.7095,
+    "mean": 1.2005,
+    "max_abs": 6.3183,
+    "n": 92
+   },
+   "1020 mM": {
+    "mean_abs": 1.6347,
+    "mean": 1.0509,
+    "max_abs": 6.0531,
+    "n": 92
+   },
+   "all": {
+    "mean_abs": 1.6629,
+    "mean": 1.081,
+    "n": 460
+   }
+  },
+  "santalucia1998": {
+   "69 mM": {
+    "mean_abs": 0.919,
+    "mean": 0.408,
+    "max_abs": 5.9117,
+    "n": 92
+   },
+   "119 mM": {
+    "mean_abs": 1.0902,
+    "mean": -0.6424,
+    "max_abs": 4.4294,
+    "n": 92
+   },
+   "220 mM": {
+    "mean_abs": 1.4855,
+    "mean": -1.2277,
+    "max_abs": 3.685,
+    "n": 92
+   },
+   "621 mM": {
+    "mean_abs": 1.2187,
+    "mean": -0.0675,
+    "max_abs": 4.2952,
+    "n": 92
+   },
+   "1020 mM": {
+    "mean_abs": 1.6738,
+    "mean": 1.1151,
+    "max_abs": 6.1504,
+    "n": 92
+   },
+   "all": {
+    "mean_abs": 1.2774,
+    "mean": -0.0829,
+    "n": 460
+   }
+  }
+ }
+}
