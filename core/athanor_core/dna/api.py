@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 
-from . import md, melting
+from . import damage, energy, md, melting, shape
 from .builder import build, to_pdb
 from .structure import DATA, Residue, analyse
 
@@ -208,6 +208,157 @@ def m_dna_export(p: dict) -> dict:
     return {"path": p["path"], "atoms": len(model["atoms"])}
 
 
+# ------------------------------------------------------------------ shape, energies, damage, scales
+def m_dna_shape(p: dict) -> dict:
+    """Deep DNAshape's predicted shape of the sequence as free DNA in solution."""
+    seq = _seq(p)
+    feats = p.get("features") or ["MGW", "ProT", "Roll", "HelT", "EP", "MGW-FL"]
+    layer = int(p.get("layer", 4))
+    out = {f: [round(float(x), 3) for x in shape.predict(f, seq, layer)] for f in feats if f in shape.available()}
+    v = _load("dnashape/validation.json")
+    return {"sequence": seq, "layer": layer, "shape": out, "units": {f: shape.UNITS.get(f.replace("-FL", ""), "deg") for f in out},
+            "names": {f: shape.NAMES.get(f.replace("-FL", ""), f) + (" (fluctuation)" if f.endswith("-FL") else "") for f in out},
+            "per": {f: "step" if f.replace("-FL", "") in shape.INTER else "pair" for f in out},
+            "method": "Deep DNAshape (Li, Chiu & Rohs, Nature Commun. 15, 1243, 2024), trained on Monte Carlo simulations "
+                      "of free DNA; run by Athanor's NumPy implementation of the published network and weights "
+                      f"(BSD-3-Clause), {layer} bp of flanking sequence considered.",
+            "checked": "identical to the original TensorFlow model in CI" if v.get("equal_to_original") else None}
+
+
+_RELAXED: dict = {}
+
+
+def _relaxed(seq, form, salt=0.15):
+    key = (seq, form, round(float(salt), 3))
+    if key not in _RELAXED:
+        _RELAXED.clear()
+        _RELAXED[key] = md.relax(build(seq, form)["atoms"], salt=salt)
+    return _RELAXED[key]
+
+
+def m_dna_energies(p: dict) -> dict:
+    """Pairing energy of every base pair and stacking energy of every step (GFN2-xTB, gas phase)."""
+    seq, form = _seq(p), p.get("form", "B")
+    if len(seq) > 60:
+        raise ValueError("energies are computed for up to 60 base pairs")
+    r = _relaxed(seq, form)
+    from ..server import _progress
+    h = energy.helix_energies(r["atoms"], r["hydrogens"], len(seq), "gfn2-xtb", on_step=_progress({"tier": "dna"}))
+    return {"sequence": seq, "form": form, "pairs": [round(x, 2) for x in h["pairs"]], "steps": [round(x, 2) for x in h["steps"]],
+            "method": "GFN2-xTB interaction energies of the capped bases of the relaxed helix, in vacuum", "checked": _load("energy_validation.json")}
+
+
+def m_dna_energy_one(p: dict) -> dict:
+    """One pairing (kind 'pair', index k) or stacking (kind 'step', index k) energy with DFT."""
+    seq, form = _seq(p), p.get("form", "B")
+    r = _relaxed(seq, form)
+    fr = energy.fragments(r["atoms"], r["hydrogens"], len(seq))
+    k = int(p["index"])
+    if p.get("kind") == "step":
+        a, b = list(fr[k]), list(fr[k + 1])
+    else:
+        a, b = [fr[k][0]], [fr[k][1]]
+    e = energy.interaction_dft(a, b)
+    return {"kind": p.get("kind", "pair"), "index": k, "energy": round(e, 2),
+            "method": "B3LYP-D3(BJ)/def2-TZVP with counterpoise correction (Psi4), capped bases in vacuum"}
+
+
+def m_dna_damage(p: dict) -> dict:
+    """One ancient molecule: overhangs and uracils drawn from the Briggs model or a measured profile."""
+    seq = _seq(p)
+    rng = np.random.default_rng(int(p["seed"]) if p.get("seed") is not None else None)
+    lam, dd, ds = float(p.get("lambda", 0.4)), float(p.get("delta_d", 0.01)), float(p.get("delta_s", 0.3))
+    prof = p.get("profile")
+    m = damage.sample(seq, lam, dd, ds, rng, profile=prof)
+    resp = _response(seq, "B", m["atoms"], m["frames"], md._o3p(m["atoms"]) if hasattr(md, "_o3p") else [])
+    resp.update({"damage": {"overhang5": m["overhang5"], "overhang3": m["overhang3"], "uracils": m["uracils"],
+                            "p_uracil": m["p_uracil"], "model": m["model"],
+                            "expected_ct": damage.p_uracil(np.arange(min(25, len(seq))), lam, dd, ds).round(4).tolist(),
+                            "parameters": {"lambda": lam, "delta_d": dd, "delta_s": ds}}})
+    return resp
+
+
+def _scale(name):
+    return _load(f"scales/{name}.json")
+
+
+def m_dna_scales(p: dict) -> dict:
+    """What the zoom through the scales offers, with the checks CI ran."""
+    v = _load("scales/validation.json")
+    cx = _scale("complexes") or []
+    return {"available": bool(v), "validation": v,
+            "complexes": [{k: c.get(k) for k in ("pdb", "name", "citation", "published_bend", "at_least", "bend", "note",
+                                                  "largest_roll", "n_pairs", "sequence")} for c in cx]}
+
+
+def m_dna_nucleosome(p: dict) -> dict:
+    """A sequence threaded onto the 1KX5 nucleosome's DNA path, with the histone octamer."""
+    nuc = _scale("nucleosome")
+    if not nuc:
+        raise ValueError("nucleosome data are not installed")
+    ref = nuc["sequence"]
+    n = len(ref)
+    seq = "".join(str(p.get("sequence") or "").split()).upper()
+    # the user's sequence goes in the middle, centred on the dyad; the rest keeps the crystal's sequence
+    if seq:
+        seq = seq[:n]
+        start = max(0, nuc["dyad_index"] - len(seq) // 2)
+        start = min(start, n - len(seq))
+        full = ref[:start] + seq + ref[start + len(seq):]
+    else:
+        start, full = 0, ref
+    m = build(full, "B", steps=nuc["steps"], pairs=nuc["pairs"])
+    R0, o0 = np.array(nuc["frame0"][0]), np.array(nuc["frame0"][1])
+    atoms = [(c, k, r, a, R0 @ np.asarray(x) + o0) for c, k, r, a, x in m["atoms"]]
+    resp = _response(full, "B", atoms, m["frames"], m["o3p"])
+    resp.update({"scale": "nucleosome", "histones": nuc["histones"], "superhelix": nuc["superhelix"],
+                 "user": {"start": start, "length": len(seq)} if seq else None, "dyad_index": nuc["dyad_index"],
+                 "pdb": nuc["pdb"], "title": nuc["title"], "citation": nuc["citation"],
+                 "method": "The 147 base-pair steps and pairs of the 1KX5 crystal structure, measured as in 3DNA, with your "
+                           "sequence's bases placed in them (3DNA's 'mutate' approach): the DNA keeps the crystal's path, "
+                           "so this shows where your sequence would sit, not how well it positions a nucleosome."})
+    return resp
+
+
+def m_dna_complex(p: dict) -> dict:
+    cx = {c["pdb"]: c for c in (_scale("complexes") or [])}
+    c = cx.get(p.get("pdb"))
+    if not c:
+        raise ValueError("unknown complex")
+    atoms = [(a[0], a[1], a[2], a[3], np.array(a[4:7])) for a in c["dna"]]
+    seq = c["sequence"]
+    resp = _response(seq, "B", atoms, [], [])
+    resp.update({"scale": "complex", "protein": c["protein"], **{k: c.get(k) for k in ("pdb", "name", "citation", "published_bend",
+                                                                                      "at_least", "bend", "note", "largest_roll")}})
+    return resp
+
+
+def m_dna_fibre(p: dict) -> dict:
+    f = _scale("fibre")
+    if not f:
+        raise ValueError("fibre data are not installed")
+    return {"scale": "fibre", **f}
+
+
+def m_dna_nucleus(p: dict) -> dict:
+    f = _scale("nucleus")
+    if not f:
+        raise ValueError("nucleus data are not installed")
+    out = {"scale": "nucleus", **f}
+    chrom, pos = p.get("chrom"), p.get("pos")
+    if chrom and pos:
+        b = int(pos) // f["bin"]
+        hits = []
+        for hom, v in f["homologs"].items():
+            if hom.split("(")[0] == str(chrom).replace("chr", "") and b in v["bins"]:
+                hits.append({"homolog": hom, "xyz": v["xyz"][v["bins"].index(b)]})
+        out["highlight"] = {"chrom": chrom, "pos": pos, "bin": b, "hits": hits}
+    return out
+
+
 METHODS = {"dna_build": m_dna_build, "dna_relax": m_dna_relax, "dna_md_start": m_dna_md_start,
-           "dna_md_step": m_dna_md_step, "dna_md_stop": m_dna_md_stop, "dna_melt": m_dna_melt, "dna_export": m_dna_export,
+           "dna_md_step": m_dna_md_step, "dna_md_stop": m_dna_md_stop, "dna_shape": m_dna_shape,
+           "dna_energies": m_dna_energies, "dna_energy_one": m_dna_energy_one, "dna_damage": m_dna_damage,
+           "dna_scales": m_dna_scales, "dna_nucleosome": m_dna_nucleosome, "dna_complex": m_dna_complex,
+           "dna_fibre": m_dna_fibre, "dna_nucleus": m_dna_nucleus, "dna_melt": m_dna_melt, "dna_export": m_dna_export,
            "dna_variants": m_dna_variants, "dna_variant": m_dna_variant}

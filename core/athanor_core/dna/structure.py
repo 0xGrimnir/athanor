@@ -158,20 +158,24 @@ def find_pairs(residues: list[Residue], std: dict, max_origin: float = 4.0):
     s1, s2 = by[names[0]], by[names[1]]
     f1 = [base_frame(r, std) for r in s1]
     f2 = [base_frame(r, std) for r in s2]
-    pairs = []
+    cand = []
     for i, a in enumerate(f1):
         if a is None:
             continue
-        best = None
         for j, b in enumerate(f2):
             if b is None:
                 continue
             d = np.linalg.norm(a[1] - b[1])
-            if d < max_origin and np.dot(a[0][:, 2], b[0][:, 2]) < -0.5 and (best is None or d < best[0]):
-                best = (d, j)
-        if best:
-            pairs.append((i, best[1]))
-    return s1, s2, f1, f2, pairs
+            if d < max_origin and np.dot(a[0][:, 2], b[0][:, 2]) < -0.5:
+                cand.append((d, i, j))
+    # each base pairs at most once: closest candidates first
+    used1, used2, pairs = set(), set(), []
+    for d, i, j in sorted(cand):
+        if i not in used1 and j not in used2:
+            used1.add(i)
+            used2.add(j)
+            pairs.append((i, j))
+    return s1, s2, f1, f2, sorted(pairs)
 
 
 COMPLEMENT = {"A": "T", "T": "A", "G": "C", "C": "G", "U": "A"}

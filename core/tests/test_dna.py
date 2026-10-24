@@ -104,3 +104,35 @@ def test_every_nucleotide_has_its_backbone():
             assert need <= atoms, (form, chain, num, atoms)
             assert not five or "P" not in atoms
         assert len(m["o3p"]) == 2 * (len(seq) - 1)
+
+
+def test_deep_dnashape_matches_the_original():
+    """Values printed by the original TensorFlow Deep DNAshape (CI probe) for the Dickerson dodecamer."""
+    from athanor_core.dna import shape
+    if "MGW" not in shape.available():
+        return
+    tf_mgw = [5.4325, 5.5866, 5.6896, 5.6003, 4.6875, 3.8374, 3.8374, 4.6875, 5.6003, 5.6896, 5.5866, 5.4325]
+    tf_roll = [5.2676, -0.993, 4.1912, -0.3613, -3.4286, -6.217, -3.4286, -0.3613, 4.1912, -0.993, 5.2676]
+    assert np.allclose(shape.predict("MGW", "CGCGAATTCGCG"), tf_mgw, atol=2e-3)
+    assert np.allclose(shape.predict("Roll", "CGCGAATTCGCG"), tf_roll, atol=2e-3)
+
+
+def test_damage_model():
+    from athanor_core.dna import damage
+    # overhang beyond position i with chance (1-lambda)^(i+1); C->T is delta_s inside, delta_d outside
+    assert abs(damage.p_uracil(0, 0.4, 0.01, 0.3) - (0.3 * 0.6 + 0.01 * 0.4)) < 1e-12
+    prof = damage.read_profile(40, 0.03, 0.4, 0.01, 0.3)
+    assert prof[0] > prof[1] > prof[5] and prof[-1] < 0.01
+    m = damage.molecule("ATCGCCGATCCGATCGCCATGCATCGCCGGATCCAGTC", 5, 1, {("A", 2)})
+    names = {(a[0], a[1]): a[2] for a in m["atoms"]}
+    assert names[("A", 3)] == "DU" and ("B", 72) not in names and ("A", 38) not in names
+
+
+def test_relaxation_closes_the_backbone():
+    from athanor_core.dna import md
+    if not md.available():
+        return
+    from athanor_core.dna.builder import build
+    r = md.relax(build("CGCGAATTCGCG", "B")["atoms"])
+    assert 1.55 < min(r["o3p"]) and max(r["o3p"]) < 1.67
+    assert r["base_shift_max"] < 0.3
