@@ -83,8 +83,11 @@ Everything the module reports is checked before release, and each report card sh
 | Neanderthal ancestry | On held-out genomes reduced to chip size, the 95% interval contains the all-marker estimate in ≥ 90% of cases |
 | Y haplogroups | 586 of 600 ancient men on the same lineage as the published call, 204 identical |
 | mtDNA haplogroups | 1,476 of 1,500 ancient mitogenomes on the same lineage, 1,246 identical |
+| Medicines against PharmCAT 3.4.0 | On the same 1000 Genomes high-coverage genotypes of 500 people (100 per continental group), the same diplotype and phenotype in at least 99.8% of calls for every gene compared (8,472 calls) |
+| Medicines, chip input | 23andMe-style files written from 1000 Genomes genotypes (GRCh37, both strands, indels as I/D) read back exactly: 218,770 genotypes |
+| Medicines, reliability figure | The agreement figure each gene card shows, estimated on half of 1000 Genomes, holds on the other half to within 0.007 on average |
 
-These run as gated checks in CI whenever the reference data is rebuilt (`tools/pgdata/validate.py`, `tools/pgdata/crosscheck_qpadm.py`).
+These run as gated checks in CI whenever the reference data is rebuilt (`tools/pgdata/validate.py`, `tools/pgdata/crosscheck_qpadm.py`, `tools/pgdata/validate_pgx.py`).
 
 ## Architecture
 

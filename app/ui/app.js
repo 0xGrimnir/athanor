@@ -1470,7 +1470,8 @@ DETAIL.medicines = function (el, c) {
     const x = genes[g];
     if (!x) return `${escapeHtml(g)}: <i>not in the pack</i>`;
     if (g === "CYP2D6") return `${escapeHtml(g)}: <i>needs a clinical test</i>`;
-    return `${escapeHtml(g)}: ${escapeHtml(x.phenotype || x.status)}`;
+    if (x.status === "unreliable") return `${escapeHtml(g)}: <i>not determinable from your file</i>`;
+    return `${escapeHtml(g)}: ${escapeHtml(x.phenotype || (x.diplotypes || []).join(" or ") || x.status)}`;
   }).join("<br>");
   const recText = (d) => d.depends ? `<small>Depends on ${escapeHtml(d.unknown.join(", "))}, which your file cannot settle.</small>`
     : d.rows.map((x) => `${escapeHtml(x.recommendation || "")}${x.classification ? ` <small>(${escapeHtml(x.classification)})</small>` : ""}
@@ -1487,7 +1488,8 @@ function pgxDetail(el, c) {
   const r = c.result, k = r.call || {}, rel = r.reliability;
   const rows = [
     ["Diplotype", escapeHtml((k.diplotypes || []).join(" or ") || "—")],
-    ["Phenotype", escapeHtml(k.phenotype || (k.possible ? `one of: ${k.possible.join(", ")}` : k.status || "—"))],
+    ["Phenotype", k.status === "unreliable" ? `not determinable from your file <small>(the positions read suggest ${escapeHtml(k.presumptive || "")})</small>`
+      : escapeHtml(k.phenotype || (k.possible ? `one of: ${k.possible.join(", ")}` : k.status || "—"))],
   ];
   if (k.score) rows.push(["Activity score", escapeHtml(k.score)]);
   if (k.chosen_by) rows.push(["Chosen by", `${escapeHtml(k.chosen_by)} <small>(${pct(k.diplotype_probability, 0)} of the diplotypes that fit)</small>`]);
