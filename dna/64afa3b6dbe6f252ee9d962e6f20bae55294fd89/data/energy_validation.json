@@ -1,0 +1,21 @@
+{
+ "passed": true,
+ "s22_at": {
+  "dft": {
+   "stacked": -11.64,
+   "watson_crick": -17.02
+  },
+  "gfn2": {
+   "stacked": -12.29,
+   "watson_crick": -15.92
+  }
+ },
+ "s22_at_ref": {
+  "stacked": -11.73,
+  "watson_crick": -16.66
+ },
+ "s22_mad_kcal": {
+  "dft": 0.26,
+  "gfn2": 0.76
+ }
+}
