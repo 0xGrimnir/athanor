@@ -1,0 +1,187 @@
+psi4 1.11 ['S22.py', 'S22by5.py']
+#
+# @BEGIN LICENSE
+#
+# Psi4: an open-source quantum chemistry software package
+#
+# Copyright (c) 2007-2026 The Psi4 Developers.
+#
+# The copyrights for code used from other parties are included in
+# the corresponding files.
+#
+# This file is part of Psi4.
+#
+# Psi4 is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# Psi4 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License along
+# with Psi4; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# @END LICENSE
+#
+
+"""
+| Database (Hobza) of interaction energies for bimolecular complexes.
+| Geometries from Jurecka et al. PCCP 8 1985 (2006).
+| First revision to interaction energies (S22A) from Takatani et al. JCP 132 144104 (2010).
+| Second revision to interaction energies (S22B) from Marshall et al. JCP 135 194102 (2011).
+
+- **cp**  ``'off'`` || ``'on'``
+
+- **rlxd** ``'off'``
+
+- **benchmark**
+
+  - ``'S220'`` Jurecka et al. PCCP 8 1985 (2006).
+  - ``'S22A'`` Takatani et al. JCP 132 144104 (2010).
+  - |dl| ``'S22B'`` |dr| Marshall et al. JCP 135 194102 (2011).
+
+- **subset**
+
+  - ``'small'`` water dimer, methane dimer, ethene-ethine
+  - ``'large'`` adenine-thymine
+  - ``'HB'`` hydrogen-bonded systems
+  - ``'MX'`` mixed-influence systems
+  - ``'DD'`` dispersion-dominated systems
+  - ``'S11'`` smaller systems in S22
+  - ``'WATER'`` water dimer
+
+"""
+import qcdb
+
+# <<< S22 Database Module >>>
+dbse = 'S22'
+
+# <<< Database Members >>>
+HRXN = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+HRXN_SM = [2, 8, 16]
+HRXN_LG = [15]
+HB = [1, 2, 3, 4, 5, 6, 7]
+MX = [13, 15, 16, 17, 18, 19, 21, 22]
+DD = [8, 9, 10, 11, 12, 14, 20]
+S11 = [1, 2, 3, 4, 8, 9, 10, 16, 17, 18, 19]
+WATER = [2]
+
+# <<< Chemical Systems Involved >>>
+RXNM = {}     # reaction matrix of reagent contributions per reaction
+ACTV = {}     # order of active reagents per reaction
+ACTV_CP = {}  # order of active reagents per counterpoise-corrected reaction
+ACTV_SA = {}  # order of active reagents for non-supramolecular calculations
+for rxn in HRXN:
+
+    RXNM[   '%s-%s' % (dbse, rxn)] = {'%s-%s-dimer'      % (dbse, rxn) : +1,
+                                      '%s-%s-monoA-CP'   % (dbse, rxn) : -1,
+                                      '%s-%s-monoB-CP'   % (dbse, rxn) : -1,
+                                      '%s-%s-monoA-unCP' % (dbse, rxn) : -1,
+                                      '%s-%s-monoB-unCP' % (dbse, rxn) : -1 }
+
+    ACTV_SA['%s-%s' % (dbse, rxn)] = ['%s-%s-dimer'      % (dbse, rxn) ]
+
+    ACTV_CP['%s-%s' % (dbse, rxn)] = ['%s-%s-dimer'      % (dbse, rxn),
+               
+BIND_S22A = {}
+['BIND_S220', 'BIND_S22A', 'BIND_S22B']
+dftd3 
+s-dftd3 /home/runner/micromamba/envs/probe/bin/s-dftd3
+dftd3 python 1.6.0
+zenodo Processed Data of "Predicting DNA structure using a deep learning method" {'id': 'cc-by-4.0'} [('Processed_Data_Deep_DNAshape.zip', 29705078)]
+   Deep DNAshape Training data/Expt/ 0
+   Deep DNAshape Training data/Expt/Buckle_aggre.txt 274556
+   Deep DNAshape Training data/Expt/HelT_aggre.txt 245859
+   Deep DNAshape Training data/Expt/MGW_aggre.txt 213512
+   Deep DNAshape Training data/Expt/Opening_aggre.txt 265165
+   Deep DNAshape Training data/Expt/ProT_aggre.txt 287005
+   Deep DNAshape Training data/Expt/Rise_aggre.txt 228384
+   Deep DNAshape Training data/Expt/Roll_aggre.txt 238082
+   Deep DNAshape Training data/Expt/Shear_aggre.txt 274512
+   Deep DNAshape Training data/Expt/Shift_aggre.txt 243067
+   Deep DNAshape Training data/Expt/Slide_aggre.txt 248538
+   Deep DNAshape Training data/Expt/Stagger_aggre.txt 276338
+   Deep DNAshape Training data/Expt/Stretch_aggre.txt 274085
+   Deep DNAshape Training data/Expt/Tilt_aggre.txt 244887
+   Deep DNAshape Training data/MC/ 0
+   Deep DNAshape Training data/MC/Buckle_nonartifact.txt 494732
+   Deep DNAshape Training data/MC/Buckle-FL_nonartifact.txt 528160
+   Deep DNAshape Training data/MC/EP_nonartifact_filtered.txt 516775
+   Deep DNAshape Training data/MC/HelT_nonartifact.txt 505431
+   Deep DNAshape Training data/MC/HelT-FL_nonartifact.txt 498642
+   Deep DNAshape Training data/MC/MGW_nonartifact_filtered.txt 654238
+   Deep DNAshape Training data/MC/MGW-FL_nonartifact.txt 512192
+   Deep DNAshape Training data/MC/Opening_nonartifact.txt 489707
+   Deep DNAshape Training data/MC/Opening-FL_nonartifact.txt 523368
+   Deep DNAshape Training data/MC/ProT_nonartifact.txt 542701
+   Deep DNAshape Training data/MC/ProT-FL_nonartifact.txt 524144
+   Deep DNAshape Training data/MC/Rise_nonartifact.txt 434757
+   Deep DNAshape Training data/MC/Rise-FL_nonartifact.txt 498548
+   Deep DNAshape Training data/MC/Roll_nonartifact.txt 485237
+   Deep DNAshape Training data/MC/Roll-FL_nonartifact.txt 499040
+   Deep DNAshape Training data/MC/Shear_nonartifact.txt 493434
+   Deep DNAshape Training data/MC/Shear-FL_nonartifact.txt 522468
+   Deep DNAshape Training data/MC/Shift_nonartifact.txt 470103
+   Deep DNAshape Training data/MC/Shift-FL_nonartifact.txt 498548
+   Deep DNAshape Training data/MC/Slide_nonartifact.txt 505435
+   Deep DNAshape Training data/MC/Slide-FL_nonartifact.txt 498548
+   Deep DNAshape Training data/MC/Stagger_nonartifact.txt 500325
+   Deep DNAshape Training data/MC/Stagger-FL_nonartifact.txt 522468
+   Deep DNAshape Training data/MC/Stretch_nonartifact.txt 521127
+   Deep DNAshape Training data/MC/Stretch-FL_nonartifact.txt 522468
+   Deep DNAshape Training data/MC/Tilt_nonartifact.txt 470161
+   Deep DNAshape Training data/MC/Tilt-FL_nonartifact.txt 498562
+   Deep DNAshape Training data/MD/ 0
+   Deep DNAshape Training data/MD/Buckle_aggre.txt 19349
+   Deep DNAshape Training data/MD/Buckle-FL_aggre.txt 17183
+   Deep DNAshape Training data/MD/HelT_aggre.txt 19001
+   Deep DNAshape Training data/MD/HelT-FL_aggre.txt 15096
+   Deep DNAshape Training data/MD/MGW_aggre.txt 16478
+   Deep DNAshape Training data/MD/MGW-FL_aggre.txt 14416
+   Deep DNAshape Training data/MD/Opening_aggre.txt 18229
+   Deep DNAshape Training data/MD/Opening-FL_aggre.txt 16072
+   Deep DNAshape Training data/MD/ProT_aggre.txt 20836
+   Deep DNAshape Training data/MD/ProT-FL_aggre.txt 15990
+   Deep DNAshape Training data/MD/Rise_aggre.txt 17448
+   Deep DNAshape Training data/MD/Rise-FL_aggre.txt 11697
+   Deep DNAshape Training data/MD/Roll_aggre.txt 17855
+   Deep DNAshape Training data/MD/Roll-FL_aggre.txt 15167
+   Deep DNAshape Training data/MD/Shear_aggre.txt 19333
+   Deep DNAshape Training data/MD/Shear-FL_aggre.txt 12063
+   Deep DNAshape Training data/MD/Shift_aggre.txt 18702
+   Deep DNAshape Training data/MD/Shift-FL_aggre.txt 14958
+   Deep DNAshape Training data/MD/Slide_aggre.txt 19206
+   Deep DNAshape Training data/MD/Slide-FL_aggre.txt 13776
+   Deep DNAshape Training data/MD/Stagger_aggre.txt 18818
+   Deep DNAshape Training data/MD/Stagger-FL_aggre.txt 16076
+   Deep DNAshape Training data/MD/Stretch_aggre.txt 16439
+   Deep DNAshape Training data/MD/Stretch-FL_aggre.txt 16620
+   Deep DNAshape Training data/MD/Tilt_aggre.txt 18616
+   Deep DNAshape Training data/MD/Tilt-FL_aggre.txt 15082
+   TF-DNA Binding data/AbdA_uniq_TGAYNNAY_16.txt 264185
+   TF-DNA Binding data/AbdB_uniq_TGAYNNAY_16.txt 313086
+   TF-DNA Binding data/AntpHQ_uniq_TGAYNNAY_16.txt 412690
+   TF-DNA Binding data/AntpHQT_uniq_TGAYNNAY_16.txt 186710
+   TF-DNA Binding data/AntpHT_uniq_TGAYNNAY_16.txt 358965
+   TF-DNA Binding data/AntpLinkQT_uniq_TGAYNNAY_16.txt 502941
+   TF-DNA Binding data/AntpQT_uniq_TGAYNNAY_16.txt 359154
+   TF-DNA Binding data/AntpWT_uniq_TGAYNNAY_16.txt 258709
+   TF-DNA Binding data/bHLH_Bhlhb2_TCAAGG20NGAA_CACGTG_14_4.txt 322020
+   TF-DNA Binding data/bHLH_MAX_TGACCT20NGA_CACGTG_12_3.txt 109376
+   TF-DNA Binding data/bHLH_TCF3_TACCCG20NCCC_CACCTG_12_3.txt 211621
+HEAD Deep DNAshape Training data/Expt/Buckle_aggre.txt b'GGAAAATTTGTTTCATAG -5.17 0.58 9.46 6.2 1.15 -1.05 5.74 2.27 -2.98 -12.32 -1.38 -1.45 -0.39 -0.24 0.11 3.65 2.58 0.11\nCTATGAAACAAATTTTCC -0.11 -2.58 -3.65 -0.11 0.24 0.39 1.45 1.38 12.32 2.98 -2.27 -5.74 1.05 -1.15 -6.2 -9.46 -0.58 5.17\nCTCACACGTGGGACTAG nan nan nan nan nan 9.22 9.44 -5.3 nan nan nan'
+GEO suppl: ['/geo/series/GSE117nnn/GSE117876/', 'GSE117876_RAW.tar', 'filelist.txt', 'https://www.hhs.gov/vulnerability-disclosure-policy/index.html']
+1KX5 X-Ray Structure of the Nucleosome Core Particle, NCP147, at 1.9 A Resolution | [1.94] 16755 X-RAY DIFFRACTION | pdb format: ?
+1ZBB Structure of the 4_601_167 Tetranucleosome | [9.0] 26851 X-RAY DIFFRACTION | pdb format: ?
+6HKT Structure of an H1-bound 6-nucleosome array | [9.7] 82122 X-RAY DIFFRACTION | pdb format: ?
+1YTB CRYSTAL STRUCTURE OF A YEAST TBP/TATA-BOX COMPLEX | [1.8] 4539 X-RAY DIFFRACTION | pdb format: ?
+1CGP CATABOLITE GENE ACTIVATOR PROTEIN (CAP)/DNA COMPLEX + ADENOSINE-3',5'-CYCLIC-MONOPHOSPHATE | [3.0] 4418 X-RAY DIFFRACTION | pdb format: ?
+1IHF INTEGRATION HOST FACTOR/DNA COMPLEX | [2.5] 3337 X-RAY DIFFRACTION | pdb format: ?
+1AAY ZIF268 ZINC FINGER-DNA COMPLEX | [1.6] 1330 X-RAY DIFFRACTION | pdb format: ?
+1RVA MG2+ BINDING TO THE ACTIVE SITE OF ECO RV ENDONUCLEASE: A CRYSTALLOGRAPHIC STUDY OF COMPLE | [2.0] 4758 X-RAY DIFFRACTION | pdb format: ?
+1EFA CRYSTAL STRUCTURE OF THE LAC REPRESSOR DIMER BOUND TO OPERATOR AND THE ANTI-INDUCER ONPF | [2.6] 7838 X-RAY DIFFRACTION | pdb format: ?
+1TSR P53 CORE DOMAIN IN COMPLEX WITH DNA | [2.2] 5828 X-RAY DIFFRACTION | pdb format: ?
+3LZ0 Crystal Structure of Nucleosome Core Particle Composed of the Widom 601 DNA Sequence (orie | [2.5] 11908 X-RAY DIFFRACTION | pdb format: ?
