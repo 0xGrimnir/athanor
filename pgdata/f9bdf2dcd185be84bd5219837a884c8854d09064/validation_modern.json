@@ -1,0 +1,11 @@
+{
+ "summary": {
+  "continental_ancestry": "On 12 simulated genomes mixing two or three continents, built from the chromosomes of reference people left out of the panels whose own ancestry is unambiguous, the proportions were within 1.7 percentage points on average (5.0 at worst); the 95% intervals, which reflect statistical noise only, contained the true value 75% of the time. On genomes built from any reference people, including members of mixed groups, results matched the sources' own compositions within 1.5 points on average. Reference people left out of their panel are assigned on average at least 64% to their own continent; the rest mostly reflects real shared ancestry between neighbouring regions, which is why each region's typical profile is shown. ADMIXTURE's projection mode gives the same proportions to within 0.005.",
+  "regional_ancestry": "With 80,000 SNPs, people left out of the reference panels are assigned on average 82% to their own region (lowest region 63%); regions that could not be told apart were merged before the pack was built (14 merges).",
+  "chromosome_painting": "On simulated genomes with known ancestry segments, the pair of ancestries was right at 92% of SNPs, and the average confidence the method reported was 92%.",
+  "indigenous_american": "Detection limit 1.2%. On simulated genomes with known Indigenous American ancestry the proportion was recovered within 3.0 points from 5% upwards; detection rates at 2%, 5% and 10% were 67%, 100% and 100%; 0% of genomes with none, and 0% of left-out East Asian genomes, were reported as having some.",
+  "roh": "Segments match PLINK 1.9's --homozyg on the same genotypes (total length within 0.0%, overlap at least 1.00), and homozygous stretches of known length inserted into real genomes were found over 100% of their length.",
+  "x_ancestry": "From X-chromosome SNPs alone, people left out of the reference panels are assigned on average at least 91% to their own continent (people whose autosomes are unambiguous)."
+ },
+ "fails": []
+}
