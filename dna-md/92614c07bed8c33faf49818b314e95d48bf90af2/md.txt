@@ -1,0 +1,53 @@
+p/cmd to search path.
+-f: Source leap.in.
+
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap.in
+----- Source: /home/runner/micromamba/envs/md/dat/leap/cmd/leaprc.DNA.OL15
+----- Source of /home/runner/micromamba/envs/md/dat/leap/cmd/leaprc.DNA.OL15 done
+Log file: ./leap.log
+Loading library: /home/runner/micromamba/envs/md/dat/leap/lib/DNA.OL15.lib
+Loading parameters: /home/runner/micromamba/envs/md/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: /home/runner/micromamba/envs/md/dat/leap/parm/frcmod.DNA.OL15
+Reading force field modification type file (frcmod)
+Reading title:
+OL15 force field for DNA (99bsc0-betaOL1-eps-zetaOL1-chiOL4) see http://ffol.upol.cz
+Using ArgH and AspGluO modified Bondi2 radii
+Loading PDB file: ./ddd_amber.pdb
+  total atoms in file: 758
+Checking Unit.
+
+/home/runner/micromamba/envs/md/bin/teLeap: Warning!
+The unperturbed charge of the unit (-22.000000) is not zero.
+
+/home/runner/micromamba/envs/md/bin/teLeap: Note.
+Ignoring the warning from Unit Checking.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 260 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+ (no restraints)
+	Quit
+
+Exiting LEaP: Errors = 0; Warnings = 1; Notes = 1.
+
+sander terms: {'BOND': 36.163, 'ANGLE': 102.6419, 'DIHED': 624.728, 'VDWAALS': -417.7834, 'EEL': 3606.8546, 'EGB': -6404.4864, '1-4 VDW': 181.1533, '1-4 EEL': -3137.8566}
+atoms matched to tleap's: 758 of 758
+term                Athanor       prmtop       sander
+bonds               36.1474      36.1630      36.1630
+angles             102.6421     102.6419     102.6419
+torsions           624.7279     624.7280     624.7280
+coulomb+vdW        232.3842     232.3841     232.3679
+GB solvation     -6403.3809   -6403.3808   -6404.4864
+[FAIL] Athanor's OpenMM set-up gives AMBER's energies for the same coordinates (OL15 + GBn2, 150 mM): bonds, angles, torsions and coulomb + van der Waals each equal sander's and OpenMM-from-tleap's to 0.01 kcal/mol; GB solvation equal to tleap's parameters in OpenMM (0.1 kcal/mol) and within 0.05% of sander's: totals: Athanor -5407.56, prmtop -5407.46, sander -5408.59 kcal/mol; GB solvation differs from sander's by 0.017%

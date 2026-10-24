@@ -1,0 +1,38 @@
+{
+ "results": [
+  {
+   "name": "Athanor's OpenMM set-up gives AMBER's energies for the same coordinates (OL15 + GBn2, 150 mM): bonds, angles, torsions and coulomb + van der Waals each equal sander's and OpenMM-from-tleap's to 0.01 kcal/mol; GB solvation equal to tleap's parameters in OpenMM (0.1 kcal/mol) and within 0.05% of sander's",
+   "pass": false,
+   "detail": "totals: Athanor -5407.56, prmtop -5407.46, sander -5408.59 kcal/mol; GB solvation differs from sander's by 0.017%"
+  }
+ ],
+ "summary": {
+  "energy": {
+   "athanor": -5407.56,
+   "openmm_prmtop": -5407.46,
+   "sander": -5408.59,
+   "terms": {
+    "bonds": {
+     "athanor": 36.147,
+     "sander": 36.163
+    },
+    "angles": {
+     "athanor": 102.642,
+     "sander": 102.6419
+    },
+    "torsions": {
+     "athanor": 624.728,
+     "sander": 624.728
+    },
+    "coulomb+vdW": {
+     "athanor": 232.384,
+     "sander": 232.36790000000008
+    },
+    "GB solvation": {
+     "athanor": -6403.381,
+     "sander": -6404.4864
+    }
+   }
+  }
+ }
+}
