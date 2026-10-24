@@ -37,10 +37,10 @@ if src:
         print(len(names), "files")
         dats = [n for n in names if n.endswith(".dat") or "COPYING" in n or "LICENSE" in n.upper()]
         print("\n".join(dats))
-        for n in dats:
-            low = n.lower()
-            if any(k in low for k in ("owczarzy", "santalucia", "allawi")):
-                f = t.extractfile(n)
+        for m in t.getmembers():
+            low = m.name.lower()
+            if "owczarzy04" in low or low.endswith(("readme", "copying", "license")) or "readme" in low:
+                f = t.extractfile(m)
                 txt = f.read().decode("utf-8", "replace").splitlines() if f else []
-                print(f"--- {n}: {len(txt)} lines")
-                print("\n".join(txt[:10]))
+                print(f"--- {m.name} ({m.type!r}): {len(txt)} lines")
+                print("\n".join(txt[:14]))
