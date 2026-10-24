@@ -1,0 +1,51 @@
+{
+ "results": [
+  {
+   "name": "Athanor's NumPy Deep DNAshape equals the original TensorFlow model (largest difference, in units of each feature's normalisation range, <= 1e-4)",
+   "pass": true,
+   "detail": "MGW 3.6e-07, ProT 3.0e-07, Roll 3.1e-07, HelT 8.5e-07, EP 1.1e-07, Shear 2.1e-07, Stretch 4.0e-07, Stagger 3.0e-07, Buckle 2.8e-07, Opening 3.9e-07, Shift 2.5e-07, Slide 4.1e-07, Rise 6.3e-07, Tilt 2.8e-07, MGW-FL 2.6e-07, ProT-FL 4.8e-07, Roll-FL 8.5e-07, HelT-FL 4.7e-07"
+  }
+ ],
+ "agreement": {
+  "Expt:MGW": {
+   "n": 16627,
+   "pearson": 0.369,
+   "mae": 1.596
+  },
+  "Expt:ProT": {
+   "n": 24483,
+   "pearson": 0.051,
+   "mae": 8.304
+  },
+  "Expt:Roll": {
+   "n": 21475,
+   "pearson": 0.278,
+   "mae": 4.578
+  },
+  "Expt:HelT": {
+   "n": 21475,
+   "pearson": 0.168,
+   "mae": 3.599
+  },
+  "MD:MGW": {
+   "n": 1985,
+   "pearson": 0.487,
+   "mae": 1.061
+  },
+  "MD:ProT": {
+   "n": 2197,
+   "pearson": 0.125,
+   "mae": 5.034
+  },
+  "MD:Roll": {
+   "n": 2070,
+   "pearson": 0.444,
+   "mae": 3.789
+  },
+  "MD:HelT": {
+   "n": 2070,
+   "pearson": 0.207,
+   "mae": 2.828
+  }
+ }
+}
