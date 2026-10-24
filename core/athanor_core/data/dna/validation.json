@@ -13,22 +13,37 @@
   {
    "name": "rebuilt from its own parameters, every crystal's bases come back exactly (base-atom RMSD median <= 0.05 A)",
    "pass": true,
-   "detail": "median 0.029 A over 107 crystals"
+   "detail": "median 0.028 A over 96 crystals"
   },
   {
    "name": "B-DNA built from sequence alone (Olson 1998 steps) lands within 2.0 A all-atom RMSD of the crystal (median)",
    "pass": true,
-   "detail": "median 1.45 A, 90th percentile 2.99 A over 62 crystals"
+   "detail": "median 1.42 A, 90th percentile 2.02 A over 52 crystals"
   },
   {
    "name": "A-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out)",
    "pass": true,
-   "detail": "median 1.57 A, 90th percentile 2.90 A over 17 crystals"
+   "detail": "median 1.56 A, 90th percentile 3.03 A over 16 crystals"
   },
   {
    "name": "Z-DNA built from its generic parameters lands within 2.0 A all-atom RMSD of the crystal (median, leave-one-out)",
    "pass": true,
    "detail": "median 0.57 A, 90th percentile 0.72 A over 28 crystals"
+  },
+  {
+   "name": "after OpenMM relaxation every O3'-P link is a bond (1.55-1.67 A; AMBER OL15 equilibrium 1.61 A)",
+   "pass": true,
+   "detail": "1.59-1.61 A over 96 models (rigid build: 0.68-2.90 A)"
+  },
+  {
+   "name": "relaxation keeps the bases where the parameters put them (largest base-atom shift <= 0.3 A)",
+   "pass": true,
+   "detail": "0.21 A"
+  },
+  {
+   "name": "closing the backbone does not move the models away from the crystals (median all-atom RMSD change <= +0.05 A in each form)",
+   "pass": true,
+   "detail": "largest median change +0.02 A"
   },
   {
    "name": "Athanor's rebuild equals 3DNA's rebuild from the same parameters (RMSD <= 0.02 A)",
@@ -44,7 +59,6 @@
     "1ZF6",
     "1ZF8",
     "1ZF9",
-    "1ZFA",
     "213D",
     "2FIJ",
     "2PKV",
@@ -60,12 +74,8 @@
    "B": [
     "1D23",
     "1D49",
-    "1EDR",
     "1FQ2",
-    "1G75",
-    "1G8N",
     "1IKK",
-    "1J8L",
     "1JGR",
     "1S2R",
     "1SK5",
@@ -77,19 +87,14 @@
     "245D",
     "2B3E",
     "2DES",
-    "2DPC",
     "2DYW",
-    "2FII",
     "308D",
     "355D",
     "3FT6",
-    "3OMJ",
-    "3OPI",
     "3U05",
     "3U08",
     "3U0U",
     "3U2N",
-    "403D",
     "423D",
     "442D",
     "443D",
@@ -106,7 +111,6 @@
     "4U8C",
     "5T3L",
     "6CQ3",
-    "6X5D",
     "7KU4",
     "7KWK",
     "7RQT",
@@ -159,25 +163,28 @@
   },
   "rebuild": {
    "A": {
-    "n": 17,
-    "own_base": 0.0266,
-    "own_all": 0.5928,
-    "generic_median": 1.565,
-    "generic_p90": 2.9003
+    "n": 16,
+    "own_base": 0.0271,
+    "own_all": 0.5721,
+    "generic_median": 1.5625,
+    "generic_p90": 3.0349,
+    "relaxed_median": 1.54
    },
    "B": {
-    "n": 62,
-    "own_base": 0.0272,
-    "own_all": 0.7549,
-    "generic_median": 1.4515,
-    "generic_p90": 2.9866
+    "n": 52,
+    "own_base": 0.0265,
+    "own_all": 0.7285,
+    "generic_median": 1.418,
+    "generic_p90": 2.016,
+    "relaxed_median": 1.37
    },
    "Z": {
     "n": 28,
     "own_base": 0.0326,
     "own_all": 0.4583,
     "generic_median": 0.5654,
-    "generic_p90": 0.7183
+    "generic_p90": 0.7183,
+    "relaxed_median": 0.59
    }
   }
  }

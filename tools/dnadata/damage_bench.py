@@ -35,8 +35,6 @@ rng = np.random.default_rng(5)
 frags = ["".join(rng.choice(list("ACGT"), L)) for _ in range(N)]
 fa = WORK / "frags.fa"
 fa.write_text("".join(f">f{k}\n{s}\n" for k, s in enumerate(frags)))
-ver = subprocess.run(["conda", "list", "gargammel"], capture_output=True, text=True).stdout.strip().splitlines()[-1:]
-print("gargammel:", ver)
 worst = 0.0
 for nu, lam, dd, ds in ((0.03, 0.4, 0.01, 0.3), (0.01, 0.25, 0.005, 0.5)):
     out = WORK / f"dmg_{lam}.fa"

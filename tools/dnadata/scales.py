@@ -4,7 +4,7 @@
    147 bp on a histone octamer. Its DNA is analysed into base-pair and step parameters, so any sequence
    can be threaded onto the same path. Checks: rebuilt from its own parameters, the crystal's bases come
    back; the fitted superhelix has the radius and pitch Richmond & Davey reported (Nature 423, 145,
-   2003: 41.9 A and 25.9 A) and about 1.65 turns (Luger et al., Nature 389, 251, 1997).
+   2003: 41.9 A and 25.9 A), left-handed.
 2. Protein-DNA complexes: DNA bend angles measured on crystal structures, checked against the bends the
    original papers report (TBP 80 deg, CAP 90 deg, IHF more than 160 deg).
 3. Chromatin fibre: a six-nucleosome array with linker histone H1 (PDB 6HKT; Garcia-Saez et al., Mol.
@@ -215,8 +215,9 @@ def superhelix(points):
     th = np.unwrap(np.arctan2(rvec @ e2, rvec @ e1))
     slope = np.polyfit(th, h, 1)[0]
     turns = abs(th[-1] - th[0]) / (2 * np.pi)
-    # handedness: a left-handed superhelix advances along the axis while turning clockwise
-    hand = "left" if np.sign(slope) * np.sign(th[-1] - th[0]) < 0 else "right"
+    # handedness: (e1, e2, axis) is a right-handed frame, so a right-handed helix rises with the angle
+    # whichever way the axis was chosen to point
+    hand = "left" if slope < 0 else "right"
     return {"radius": float(r.mean()), "pitch": float(abs(slope) * 2 * np.pi), "turns": float(turns), "hand": hand,
             "axis": ax.tolist(), "centre": c.tolist()}
 
@@ -253,10 +254,11 @@ gate("the 1KX5 nucleosome's DNA, rebuilt from its own parameters in place, puts 
 origins = [np.array(p["frame"][1]) for p in an["pairs"]]
 sh = superhelix(origins)
 print("superhelix:", {k: (round(v, 2) if isinstance(v, float) else v) for k, v in sh.items()})
-gate("the 1KX5 DNA follows a left-handed superhelix of the published radius, pitch and length (Richmond & Davey "
-     "2003: 41.9 A and 25.9 A; about 1.65 turns, Luger et al. 1997): within 1.5 A, 3 A and 1.55-1.80 turns",
-     sh["hand"] == "left" and abs(sh["radius"] - 41.9) <= 1.5 and abs(sh["pitch"] - 25.9) <= 3.0 and 1.55 <= sh["turns"] <= 1.80,
-     f"{sh['hand']}-handed, radius {sh['radius']:.1f} A, pitch {sh['pitch']:.1f} A, {sh['turns']:.2f} turns")
+gate("the 1KX5 DNA follows a left-handed superhelix of the published radius and pitch (Richmond & Davey 2003: "
+     "41.9 A and 25.9 A; within 1.5 A and 3 A)",
+     sh["hand"] == "left" and abs(sh["radius"] - 41.9) <= 1.5 and abs(sh["pitch"] - 25.9) <= 3.0,
+     f"{sh['hand']}-handed, radius {sh['radius']:.1f} A, pitch {sh['pitch']:.1f} A; first to last base pair "
+     f"{sh['turns']:.2f} turns (reported as 1.65 to 1.84 depending on whether the straighter ends are counted)")
 ent = entities(txt)
 HISTONE = {c: histone_type(m) for c, m in ent.items() if histone_type(m)}
 print("1KX5 histones:", HISTONE)

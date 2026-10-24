@@ -102,7 +102,8 @@ jobs:
           d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
             mkdir -p "$d/dna/${GITHUB_SHA}" && \
             cp melting.txt structure.txt damage.txt scales.txt work/dna_report.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
-            mkdir -p "$d/dna/${GITHUB_SHA}/data" && cp core/athanor_core/data/dna/*.json "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null || true; \
+            mkdir -p "$d/dna/${GITHUB_SHA}/data" && cp core/athanor_core/data/dna/*.json "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null; \
+            cp -r core/athanor_core/data/dna/scales "$d/dna/${GITHUB_SHA}/data/" 2>/dev/null || true; \
             (cd "$d" && git add -A && git commit -qm "dna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
 
   dnashape:
