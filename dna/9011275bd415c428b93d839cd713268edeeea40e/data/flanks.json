@@ -1,0 +1,373 @@
+{
+ "flank": 10,
+ "source": "Ensembl GRCh37 REST (variation and sequence/region endpoints), forward strand",
+ "variants": {
+  "rs10246939": {
+   "alts": [
+    "C"
+   ],
+   "chrom": "7",
+   "left": "GAGATCAGGA",
+   "pos37": 141672604,
+   "ref": "T",
+   "right": "GGCTGCATGC"
+  },
+  "rs10741657": {
+   "alts": [
+    "C",
+    "G"
+   ],
+   "chrom": "11",
+   "left": "TTTAGCAGGC",
+   "pos37": 14914878,
+   "ref": "A",
+   "right": "AGGGCTGTCA"
+  },
+  "rs11547464": {
+   "alts": [
+    "A"
+   ],
+   "chrom": "16",
+   "left": "GCCGTGGACC",
+   "pos37": 89986091,
+   "ref": "G",
+   "right": "CTACATCTCC"
+  },
+  "rs11803731": {
+   "alts": [
+    "C",
+    "G",
+    "T"
+   ],
+   "chrom": "1",
+   "left": "TGCTCCCGCA",
+   "pos37": 152083325,
+   "ref": "A",
+   "right": "TGGGGGCCTG"
+  },
+  "rs12203592": {
+   "alts": [
+    "G",
+    "T"
+   ],
+   "chrom": "6",
+   "left": "TAAAAGAAGG",
+   "pos37": 396321,
+   "ref": "C",
+   "right": "AAATTCCCCT"
+  },
+  "rs1229984": {
+   "alts": [
+    "A",
+    "C",
+    "G"
+   ],
+   "chrom": "4",
+   "left": "GTCATCTGTG",
+   "pos37": 100239319,
+   "ref": "T",
+   "right": "GACAGATTCC"
+  },
+  "rs12821256": {
+   "alts": [
+    "A",
+    "C",
+    "G"
+   ],
+   "chrom": "12",
+   "left": "TTTCCTTTAG",
+   "pos37": 89328335,
+   "ref": "T",
+   "right": "GTGCCGTAGT"
+  },
+  "rs12913832": {
+   "alts": [
+    "C",
+    "G"
+   ],
+   "chrom": "15",
+   "left": "TGAGCATTAA",
+   "pos37": 28365618,
+   "ref": "A",
+   "right": "TGTCAAGTTC"
+  },
+  "rs1426654": {
+   "alts": [
+    "G",
+    "T"
+   ],
+   "chrom": "15",
+   "left": "TGTTGCAGGC",
+   "pos37": 48426484,
+   "ref": "A",
+   "right": "CAACTTTCAT"
+  },
+  "rs145946881": {
+   "alts": [
+    "G",
+    "T"
+   ],
+   "chrom": "2",
+   "left": "TGGTAACTTA",
+   "pos37": 136608746,
+   "ref": "C",
+   "right": "GTCTTTATGC"
+  },
+  "rs16891982": {
+   "alts": [
+    "A",
+    "G"
+   ],
+   "chrom": "5",
+   "left": "AGTTGATGCA",
+   "pos37": 33951693,
+   "ref": "C",
+   "right": "AAGCCCCAAC"
+  },
+  "rs1726866": {
+   "alts": [
+    "A"
+   ],
+   "chrom": "7",
+   "left": "GATGAAGGCA",
+   "pos37": 141672705,
+   "ref": "G",
+   "right": "CACAGGATGA"
+  },
+  "rs174537": {
+   "alts": [
+    "C",
+    "T"
+   ],
+   "chrom": "11",
+   "left": "GAAGAGACAG",
+   "pos37": 61552680,
+   "ref": "G",
+   "right": "GTCCAAGACA"
+  },
+  "rs17822931": {
+   "alts": [
+    "G",
+    "T"
+   ],
+   "chrom": "16",
+   "left": "CTTACTGGCC",
+   "pos37": 48258198,
+   "ref": "C",
+   "right": "GAGTACACTG"
+  },
+  "rs1800407": {
+   "alts": [
+    "T"
+   ],
+   "chrom": "15",
+   "left": "CACCCGTCCC",
+   "pos37": 28230318,
+   "ref": "C",
+   "right": "GGGAGAGCCG"
+  },
+  "rs1805006": {
+   "alts": [
+    "A",
+    "G"
+   ],
+   "chrom": "16",
+   "left": "CCTTGTCGGA",
+   "pos37": 89985918,
+   "ref": "C",
+   "right": "CTGCTGGTGA"
+  },
+  "rs1805007": {
+   "alts": [
+    "A",
+    "G",
+    "T"
+   ],
+   "chrom": "16",
+   "left": "CTACGCACTG",
+   "pos37": 89986117,
+   "ref": "C",
+   "right": "GCTACCACAG"
+  },
+  "rs1805008": {
+   "alts": [
+    "T"
+   ],
+   "chrom": "16",
+   "left": "GACCCTGCCG",
+   "pos37": 89986144,
+   "ref": "C",
+   "right": "GGGCGCGGCG"
+  },
+  "rs1805009": {
+   "alts": [
+    "A",
+    "C"
+   ],
+   "chrom": "16",
+   "left": "TGCCATCATC",
+   "pos37": 89986546,
+   "ref": "G",
+   "right": "ACCCCCTCAT"
+  },
+  "rs1815739": {
+   "alts": [
+    "C",
+    "A"
+   ],
+   "chrom": "11",
+   "left": "CGAGGCTGAC",
+   "pos37": 66328095,
+   "ref": "T",
+   "right": "GAGAGCGAGG"
+  },
+  "rs2187668": {
+   "alts": [
+    "T"
+   ],
+   "chrom": "6",
+   "left": "ATGGTCCTCA",
+   "pos37": 32605884,
+   "ref": "C",
+   "right": "TTACTCTCAG"
+  },
+  "rs2282679": {
+   "alts": [
+    "G"
+   ],
+   "chrom": "4",
+   "left": "ATACCTGGCT",
+   "pos37": 72608383,
+   "ref": "T",
+   "right": "TGTGAGATAA"
+  },
+  "rs2472297": {
+   "alts": [
+    "A",
+    "T"
+   ],
+   "chrom": "15",
+   "left": "GTTAGTAATG",
+   "pos37": 75027880,
+   "ref": "C",
+   "right": "CTCTTTACAT"
+  },
+  "rs3827760": {
+   "alts": [
+    "C",
+    "G"
+   ],
+   "chrom": "2",
+   "left": "CGTTTTCACA",
+   "pos37": 109513601,
+   "ref": "A",
+   "right": "CAGCCTTCTC"
+  },
+  "rs41380347": {
+   "alts": [
+    "C",
+    "G"
+   ],
+   "chrom": "2",
+   "left": "CAGGGGCTAC",
+   "pos37": 136608651,
+   "ref": "A",
+   "right": "TTATCTTATC"
+  },
+  "rs41525747": {
+   "alts": [
+    "C"
+   ],
+   "chrom": "2",
+   "left": "TTTGAGGCCA",
+   "pos37": 136608643,
+   "ref": "G",
+   "right": "GGGCTACATT"
+  },
+  "rs4410790": {
+   "alts": [
+    "C"
+   ],
+   "chrom": "7",
+   "left": "TTTATTACAT",
+   "pos37": 17284577,
+   "ref": "T",
+   "right": "AGCAGGGACC"
+  },
+  "rs4988235": {
+   "alts": [
+    "A",
+    "C",
+    "T"
+   ],
+   "chrom": "2",
+   "left": "GAGGCCAGGG",
+   "pos37": 136608646,
+   "ref": "G",
+   "right": "CTACATTATC"
+  },
+  "rs601338": {
+   "alts": [
+    "A"
+   ],
+   "chrom": "19",
+   "left": "CCCTGCTCCT",
+   "pos37": 49206674,
+   "ref": "G",
+   "right": "GACCTTCTAC"
+  },
+  "rs671": {
+   "alts": [
+    "A"
+   ],
+   "chrom": "12",
+   "left": "GGCATACACT",
+   "pos37": 112241766,
+   "ref": "G",
+   "right": "AAGTGAAAAC"
+  },
+  "rs713598": {
+   "alts": [
+    "A",
+    "G",
+    "T"
+   ],
+   "chrom": "7",
+   "left": "TTGCTCAGTG",
+   "pos37": 141673345,
+   "ref": "C",
+   "right": "CTGCCTCTTC"
+  },
+  "rs7454108": {
+   "alts": [
+    "C"
+   ],
+   "chrom": "6",
+   "left": "CTCCCTAATA",
+   "pos37": 32681483,
+   "ref": "T",
+   "right": "TCATGCTATT"
+  },
+  "rs762551": {
+   "alts": [
+    "A",
+    "G"
+   ],
+   "chrom": "15",
+   "left": "CTCTGTGGGC",
+   "pos37": 75041917,
+   "ref": "C",
+   "right": "CAGGACGCAT"
+  },
+  "rs869051967": {
+   "alts": [
+    "C"
+   ],
+   "chrom": "2",
+   "left": "ATGGTAACTT",
+   "pos37": 136608745,
+   "ref": "A",
+   "right": "CGTCTTTATG"
+  }
+ }
+}
