@@ -20,8 +20,6 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..molecule import Molecule
-
 HARTREE_KCAL = 627.509474
 PURINE = {"A", "G"}
 BASE_HEAVY = {
@@ -67,7 +65,8 @@ def fragments(atoms, hydrogens, n: int):
     return out
 
 
-def _mol(*frags) -> Molecule:
+def _mol(*frags):
+    from ..molecule import Molecule           # RDKit-backed; imported only when an energy is computed
     sym = [s for f in frags for s in f[0]]
     xyz = np.vstack([f[1] for f in frags])
     return Molecule(sym, xyz, 0, 1, [], "", [])
