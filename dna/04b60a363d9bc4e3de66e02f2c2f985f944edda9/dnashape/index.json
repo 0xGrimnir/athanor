@@ -1,0 +1,11554 @@
+{
+ "features": {
+  "Buckle": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "Buckle.f32"
+  },
+  "EP": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "EP.f32"
+  },
+  "HelT": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "HelT.f32"
+  },
+  "HelT-FL": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "HelT-FL.f32"
+  },
+  "MGW": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "MGW.f32"
+  },
+  "MGW-FL": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "MGW-FL.f32"
+  },
+  "Opening": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "Opening.f32"
+  },
+  "ProT": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "ProT.f32"
+  },
+  "ProT-FL": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "ProT-FL.f32"
+  },
+  "Rise": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "Rise.f32"
+  },
+  "Roll": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "Roll.f32"
+  },
+  "Roll-FL": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "Roll-FL.f32"
+  },
+  "Shear": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "Shear.f32"
+  },
+  "Shift": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "Shift.f32"
+  },
+  "Slide": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "Slide.f32"
+  },
+  "Stagger": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "Stagger.f32"
+  },
+  "Stretch": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      4,
+      64
+     ]
+    ]
+   },
+   "file": "Stretch.f32"
+  },
+  "Tilt": {
+   "arrays": {
+    "mp_layers/0/Bias1": [
+     0,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/BiasAll": [
+     64,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1": [
+     128,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight1_term2": [
+     4224,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2": [
+     8320,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/Weight2_term2": [
+     12416,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/0/bn/beta": [
+     16512,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/gamma": [
+     16576,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_mean": [
+     16640,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/bn/moving_variance": [
+     16704,
+     [
+      64
+     ]
+    ],
+    "mp_layers/0/gru_layer/bias": [
+     16768,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/kernel": [
+     17152,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/0/gru_layer/recurrent_kernel": [
+     29440,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/Bias1": [
+     41728,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/BiasAll": [
+     41792,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1": [
+     41856,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight1_term2": [
+     45952,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2": [
+     50048,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/Weight2_term2": [
+     54144,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/1/bn/beta": [
+     58240,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/gamma": [
+     58304,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_mean": [
+     58368,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/bn/moving_variance": [
+     58432,
+     [
+      64
+     ]
+    ],
+    "mp_layers/1/gru_layer/bias": [
+     58496,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/kernel": [
+     58880,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/1/gru_layer/recurrent_kernel": [
+     71168,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/Bias1": [
+     83456,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/BiasAll": [
+     83520,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1": [
+     83584,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight1_term2": [
+     87680,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2": [
+     91776,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/Weight2_term2": [
+     95872,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/2/bn/beta": [
+     99968,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/gamma": [
+     100032,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_mean": [
+     100096,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/bn/moving_variance": [
+     100160,
+     [
+      64
+     ]
+    ],
+    "mp_layers/2/gru_layer/bias": [
+     100224,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/kernel": [
+     100608,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/2/gru_layer/recurrent_kernel": [
+     112896,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/Bias1": [
+     125184,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/BiasAll": [
+     125248,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1": [
+     125312,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight1_term2": [
+     129408,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2": [
+     133504,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/Weight2_term2": [
+     137600,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/3/bn/beta": [
+     141696,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/gamma": [
+     141760,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_mean": [
+     141824,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/bn/moving_variance": [
+     141888,
+     [
+      64
+     ]
+    ],
+    "mp_layers/3/gru_layer/bias": [
+     141952,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/kernel": [
+     142336,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/3/gru_layer/recurrent_kernel": [
+     154624,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/Bias1": [
+     166912,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/BiasAll": [
+     166976,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1": [
+     167040,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight1_term2": [
+     171136,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2": [
+     175232,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/Weight2_term2": [
+     179328,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/4/bn/beta": [
+     183424,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/gamma": [
+     183488,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_mean": [
+     183552,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/bn/moving_variance": [
+     183616,
+     [
+      64
+     ]
+    ],
+    "mp_layers/4/gru_layer/bias": [
+     183680,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/kernel": [
+     184064,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/4/gru_layer/recurrent_kernel": [
+     196352,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/Bias1": [
+     208640,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/BiasAll": [
+     208704,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1": [
+     208768,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight1_term2": [
+     212864,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2": [
+     216960,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/Weight2_term2": [
+     221056,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/5/bn/beta": [
+     225152,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/gamma": [
+     225216,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_mean": [
+     225280,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/bn/moving_variance": [
+     225344,
+     [
+      64
+     ]
+    ],
+    "mp_layers/5/gru_layer/bias": [
+     225408,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/kernel": [
+     225792,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/5/gru_layer/recurrent_kernel": [
+     238080,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/Bias1": [
+     250368,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/BiasAll": [
+     250432,
+     [
+      1,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1": [
+     250496,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight1_term2": [
+     254592,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2": [
+     258688,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/Weight2_term2": [
+     262784,
+     [
+      64,
+      64
+     ]
+    ],
+    "mp_layers/6/bn/beta": [
+     266880,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/gamma": [
+     266944,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_mean": [
+     267008,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/bn/moving_variance": [
+     267072,
+     [
+      64
+     ]
+    ],
+    "mp_layers/6/gru_layer/bias": [
+     267136,
+     [
+      2,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/kernel": [
+     267520,
+     [
+      64,
+      192
+     ]
+    ],
+    "mp_layers/6/gru_layer/recurrent_kernel": [
+     279808,
+     [
+      64,
+      192
+     ]
+    ],
+    "selfconv/bias": [
+     292096,
+     [
+      64
+     ]
+    ],
+    "selfconv/kernel": [
+     292160,
+     [
+      1,
+      16,
+      64
+     ]
+    ]
+   },
+   "file": "Tilt.f32"
+  }
+ },
+ "params": {
+  "Buckle": {
+   "max": 53.66,
+   "mean": 9.102957620435265e-18,
+   "median": 0.0,
+   "method": "robust",
+   "min": -53.66,
+   "percentile_range": 19.21339999999998,
+   "std": 4.434051738350997
+  },
+  "Buckle-FL": {
+   "max": 153.93,
+   "mean": 8.240416851028154,
+   "median": 7.72,
+   "method": "robust",
+   "min": 4.48,
+   "percentile_range": 7.74,
+   "std": 4.820329155400036
+  },
+  "EP": {
+   "max": 189.16,
+   "mean": -6.782113572103729,
+   "median": -7.17,
+   "method": "standard",
+   "min": -142.2847,
+   "percentile_range": 27.92035,
+   "std": 6.022025377651401
+  },
+  "HelT": {
+   "max": 44.8,
+   "mean": 34.35988202342557,
+   "median": 34.49,
+   "method": "robust",
+   "min": -2.26,
+   "percentile_range": 6.91,
+   "std": 1.7859284058148794
+  },
+  "HelT-FL": {
+   "max": 49.83,
+   "mean": 3.800106784384326,
+   "median": 3.79,
+   "method": "robust",
+   "min": 1.62,
+   "percentile_range": 1.8700000000000006,
+   "std": 0.6095502291461872
+  },
+  "MGW": {
+   "max": 6.913333333333334,
+   "mean": 4.982309040189524,
+   "median": 5.01,
+   "method": "robust",
+   "min": 1.01,
+   "percentile_range": 3.116666666666667,
+   "std": 0.6352871842196891
+  },
+  "MGW-FL": {
+   "max": 5.71,
+   "mean": 1.0643126206914797,
+   "median": 1.03,
+   "method": "robust",
+   "min": 0.0,
+   "percentile_range": 2.08,
+   "std": 0.304793577300888
+  },
+  "Opening": {
+   "max": 9.1,
+   "mean": -0.19386126457949665,
+   "median": 0.19,
+   "method": "robust",
+   "min": -16.38,
+   "percentile_range": 2.93,
+   "std": 0.8157472374566701
+  },
+  "Opening-FL": {
+   "max": 137.75,
+   "mean": 3.417052700216576,
+   "median": 3.47,
+   "method": "robust",
+   "min": 1.58,
+   "percentile_range": 8.28,
+   "std": 5.1468003686141435
+  },
+  "ProT": {
+   "max": 9.26,
+   "mean": -6.797539434702539,
+   "median": -7.18,
+   "method": "robust",
+   "min": -35.27,
+   "percentile_range": 18.2867,
+   "std": 3.9908852307995493
+  },
+  "ProT-FL": {
+   "max": 169.8,
+   "mean": 6.559122051186512,
+   "median": 5.85,
+   "method": "robust",
+   "min": 4.86,
+   "percentile_range": 9.31,
+   "std": 5.918176509467125
+  },
+  "Rise": {
+   "max": 4.48,
+   "mean": 3.3636513325411643,
+   "median": 3.37,
+   "method": "robust",
+   "min": 1.36,
+   "percentile_range": 0.5800000000000001,
+   "std": 0.14037240595218406
+  },
+  "Rise-FL": {
+   "max": 2.34,
+   "mean": 0.2780697427803398,
+   "median": 0.27,
+   "method": "robust",
+   "min": 0.05,
+   "percentile_range": 0.21999999999999997,
+   "std": 0.05655328599108093
+  },
+  "Roll": {
+   "max": 16.74,
+   "mean": -0.5018712159791773,
+   "median": -1.45,
+   "method": "robust",
+   "min": -19.9,
+   "percentile_range": 16.71,
+   "std": 3.7652038738372857
+  },
+  "Roll-FL": {
+   "max": 29.63,
+   "mean": 5.2340109497151595,
+   "median": 5.02,
+   "method": "robust",
+   "min": 1.51,
+   "percentile_range": 4.629999999999999,
+   "std": 1.0979510134810668
+  },
+  "Shear": {
+   "max": 1.24,
+   "mean": 0.0,
+   "median": 0.0,
+   "method": "robust",
+   "min": -1.24,
+   "percentile_range": 0.66,
+   "std": 0.21350787184077646
+  },
+  "Shear-FL": {
+   "max": 3.07,
+   "mean": 0.2537409468806036,
+   "median": 0.25,
+   "method": "robust",
+   "min": 0.17,
+   "percentile_range": 0.10999999999999999,
+   "std": 0.08391295267245921
+  },
+  "Shift": {
+   "max": 2.27,
+   "mean": 4.0204987028806667e-19,
+   "median": 0.0,
+   "method": "robust",
+   "min": -2.27,
+   "percentile_range": 1.0,
+   "std": 0.22387370010627808
+  },
+  "Shift-FL": {
+   "max": 1.73,
+   "mean": 0.47669806900293477,
+   "median": 0.48,
+   "method": "robust",
+   "min": 0.19,
+   "percentile_range": 0.32999999999999996,
+   "std": 0.0667023226253512
+  },
+  "Slide": {
+   "max": 1.68,
+   "mean": -1.5369620324789228,
+   "median": -1.54,
+   "method": "robust",
+   "min": -2.38,
+   "percentile_range": 1.0599999999999998,
+   "std": 0.24067666773048138
+  },
+  "Slide-FL": {
+   "max": 1.96,
+   "mean": 0.42525487681570445,
+   "median": 0.42,
+   "method": "robust",
+   "min": 0.1,
+   "percentile_range": 0.26999999999999996,
+   "std": 0.05894555690495868
+  },
+  "Stagger": {
+   "max": 1.41,
+   "mean": -0.03942669549203299,
+   "median": -0.03,
+   "method": "robust",
+   "min": -4.24,
+   "percentile_range": 0.51,
+   "std": 0.13204870837129684
+  },
+  "Stagger-FL": {
+   "max": 2.14,
+   "mean": 0.3190100370275495,
+   "median": 0.32,
+   "method": "robust",
+   "min": 0.17,
+   "percentile_range": 0.2,
+   "std": 0.065081007372701
+  },
+  "Stretch": {
+   "max": 0.57,
+   "mean": -0.024233859129367177,
+   "median": -0.03,
+   "method": "robust",
+   "min": -2.21,
+   "percentile_range": 0.09669999999998254,
+   "std": 0.028817442686172562
+  },
+  "Stretch-FL": {
+   "max": 3.53,
+   "mean": 0.1274697841224005,
+   "median": 0.12,
+   "method": "robust",
+   "min": 0.08,
+   "percentile_range": 0.13,
+   "std": 0.06712241710568438
+  },
+  "Tilt": {
+   "max": 19.54,
+   "mean": 4.8245984434568e-18,
+   "median": 0.0,
+   "method": "robust",
+   "min": -19.54,
+   "percentile_range": 5.42,
+   "std": 1.4231056961195274
+  },
+  "Tilt-FL": {
+   "max": 35.59,
+   "mean": 3.4087913388739546,
+   "median": 3.34,
+   "method": "robust",
+   "min": 1.93,
+   "percentile_range": 1.7599999999999998,
+   "std": 0.4497462426105603
+  }
+ },
+ "source": "Deep DNAshape (Li, Chiu & Rohs, Nature Commun. 15, 1243, 2024), https://github.com/JinsenLi/deepDNAshape commit fe12e2444cb74d10bc870251345936d8adb65cde, BSD-3-Clause"
+}
