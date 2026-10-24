@@ -14,6 +14,7 @@ import numpy as np
 from . import fstats
 from .haplo import Tree
 from .modern_cards import modern_cards
+from .pgx import Panel, pgx_cards
 from .traits import Genotyper, trait_cards
 from .pca import nearest, normalise, project
 from .rawfile import RawGenotypes, file_check, parse
@@ -332,7 +333,7 @@ def haplogroup_cards(ref: RefData, g: RawGenotypes, pos37: np.ndarray, sex: str)
     return cards
 
 
-def analyse(path: str, ref: RefData | None = None, on_step=None, include=("deep", "modern", "traits")) -> dict:
+def analyse(path: str, ref: RefData | None = None, on_step=None, include=("deep", "modern", "traits", "medicines")) -> dict:
     ref = ref or RefData()
     t0 = time.time()
 
@@ -373,6 +374,11 @@ def analyse(path: str, ref: RefData | None = None, on_step=None, include=("deep"
     if "traits" in include and ref.traits:
         step("appearance, food and drink, fitness", 0.9)
         cards.extend(trait_cards(ref.traits, Genotyper(g, al["positions37"], al["stats"]["strand"]), make))
+    if "medicines" in include and ref.pgx:
+        step("medicines", 0.9)
+        panel = Panel(ref.pgx_panel, ref.pgx["genes"]) if ref.pgx_panel is not None else None
+        cards.extend(pgx_cards(ref.pgx, panel, g, al["positions37"], al["stats"]["strand"], fc["genetic_sex"],
+                               make, step))
     step("done", 1.0)
     return {"version": 2, "file": {k: fc[k] for k in ("vendor", "file", "sha256", "markers")},
             "reference_pack": {k: ref.manifest.get(k) for k in ("name", "built", "sources")},

@@ -21,6 +21,9 @@ downloaded once by the app. It holds:
   roh_reference.json  runs of homozygosity in present-day reference groups
   traits.json     trait-report variants, checked against Ensembl and the
                   GWAS Catalog, with their references
+  pgx.json        CPIC allele definitions, functions, phenotypes and
+                  recommendations (level-A gene-drug pairs)
+  pgx_1kg.npz     1000 Genomes high-coverage genotypes at every CPIC position
 """
 from __future__ import annotations
 
@@ -116,6 +119,19 @@ class RefData:
     def traits(self) -> dict | None:
         f = self.root / "traits.json"
         return json.loads(f.read_text()) if f.exists() else None
+
+    @cached_property
+    def pgx(self) -> dict | None:
+        f = self.root / "pgx.json"
+        return json.loads(f.read_text()) if f.exists() else None
+
+    @cached_property
+    def pgx_panel(self):
+        f = self.root / "pgx_1kg.npz"
+        if not f.exists():
+            return None
+        d = np.load(f, allow_pickle=False)
+        return {k: d[k] for k in d.files}
 
     def chain(self) -> Path:
         return self.root / "hg38ToHg19.over.chain.gz"

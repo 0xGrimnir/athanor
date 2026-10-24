@@ -1,0 +1,81 @@
+name: pgx
+# Pharmacogenomics data and validation on their own (minutes, not hours): CPIC
+# tables, 1000 Genomes genotypes at the CPIC positions, and the comparison
+# with PharmCAT. The full reference pack (pgdata.yml) runs the same scripts.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/pgdata/build_pgx.py"
+      - "tools/pgdata/validate_pgx.py"
+      - "core/athanor_core/personal/pgx.py"
+      - ".github/workflows/pgx.yml"
+
+permissions:
+  contents: write
+
+env:
+  PHARMCAT: "3.4.0"
+
+jobs:
+  pgx:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: pgx
+          create-args: >-
+            python=3.12 numpy bcftools=1.21 openjdk=21
+          condarc: |
+            channels: [conda-forge, bioconda]
+          cache-environment: true
+
+      - name: Chain file and PharmCAT
+        run: |
+          set -euo pipefail
+          mkdir -p ext
+          curl -fsSL --retry 3 -o ext/hg38ToHg19.over.chain.gz \
+            https://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.over.chain.gz
+          git clone -q --depth 1 --branch "v$PHARMCAT" https://github.com/PharmGKB/PharmCAT.git ext/PharmCAT
+          curl -fsSL --retry 3 -o ext/pharmcat.jar \
+            "https://github.com/PharmGKB/PharmCAT/releases/download/v$PHARMCAT/pharmcat-$PHARMCAT-all.jar"
+          java -version 2>&1 | head -1; bcftools --version | head -1; ls -la ext
+
+      - name: CPIC tables and 1000 Genomes genotypes
+        run: |
+          set +e
+          mkdir -p pack valdata
+          python tools/pgdata/build_pgx.py pack valdata ext/hg38ToHg19.over.chain.gz "$(which bcftools)" \
+            ext/PharmCAT/pharmcat_positions.vcf > pgx_build.txt 2>&1
+          rc=$?
+          cat pgx_build.txt | cut -c1-400
+          ls -la pack valdata
+          if [ $rc -ne 0 ]; then echo "::error title=pgx build::$(grep -E '^FAIL' pgx_build.txt | tail -c 2500 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc
+
+      - name: Validate (PharmCAT, chip input, reliability)
+        run: |
+          set +e
+          python tools/pgdata/validate_pgx.py pack valdata ext/pharmcat.jar "$(which java)" work > pgx_validate.txt 2>&1
+          rc=$?
+          cat pgx_validate.txt | cut -c1-600
+          msg=$(grep -E "^\[(PASS|FAIL)\]" pgx_validate.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=pgx validation::$msg"; else echo "::error title=pgx validation failed::$msg"; fi
+          exit $rc
+
+      - name: Publish the logs to ci-results
+        if: always()
+        run: |
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/pgx/${GITHUB_SHA}" && \
+            cp pgx_build.txt pgx_validate.txt pack/pgx.json pack/validation_pgx.json "$d/pgx/${GITHUB_SHA}/" 2>/dev/null || true; \
+            ls work/pc 2>/dev/null | head -3 > "$d/pgx/${GITHUB_SHA}/pharmcat_files.txt"; \
+            f=$(ls work/pc/*.tsv 2>/dev/null | head -1); [ -n "$f" ] && cp "$f" "$d/pgx/${GITHUB_SHA}/pharmcat_example.tsv"; \
+            (cd "$d" && git add -A && git commit -qm "pgx ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"
