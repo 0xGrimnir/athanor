@@ -2,7 +2,7 @@
 import random, subprocess, shutil, os
 import numpy as np
 print(shutil.which("deamSim"))
-print(subprocess.run(["deamSim"], capture_output=True, text=True).stderr[:3000])
+u = subprocess.run(["deamSim", "-h"], capture_output=True, text=True); print((u.stdout + u.stderr)[:4000])
 random.seed(1)
 N, L = 100000, 60
 with open("frags.fa", "w") as f:
@@ -15,7 +15,9 @@ if not os.path.exists("out.fa"):
     r = subprocess.run(f"deamSim -damage {nu},{lam},{dd},{ds} frags.fa > out.fa", shell=True, capture_output=True, text=True)
     print("rc2", r.returncode, r.stderr[:800])
 orig = [l.strip() for l in open("frags.fa") if not l.startswith(">")]
-out_lines = open("out.fa").read().splitlines()
+import gzip
+raw = open("out.fa","rb").read()
+out_lines = (gzip.decompress(raw) if raw[:2] == b"\x1f\x8b" else raw).decode().splitlines()
 print(out_lines[:6])
 dmg = [l.strip() for l in out_lines if not l.startswith(">")]
 print(len(orig), len(dmg))
