@@ -1,0 +1,51 @@
+name: dna
+# DNA Structure benchmarks: helix geometry against crystal structures, melting against measurements.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/dnadata/**"
+      - "core/athanor_core/dna/**"
+      - "core/athanor_core/data/dna/**"
+      - ".github/workflows/dna.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  dna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: dna
+          create-args: >-
+            python=3.12 numpy scipy biopython=1.84
+          condarc: |
+            channels: [conda-forge]
+          cache-environment: true
+
+      - name: Melting temperatures (Owczarzy 2004 measurements, Biopython)
+        run: |
+          set +e
+          python tools/dnadata/validate_melting.py melting.json > melting.txt 2>&1
+          rc=$?
+          cat melting.txt
+          msg=$(grep -E "^\[(PASS|FAIL)\]" melting.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=melting::$msg"; else echo "::error title=melting failed::$msg"; fi
+          exit $rc
+
+      - name: Publish the logs to ci-results
+        if: always()
+        run: |
+          git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          d=$(mktemp -d); git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/dna/${GITHUB_SHA}" && \
+            cp melting.txt melting.json "$d/dna/${GITHUB_SHA}/" 2>/dev/null || true; \
+            (cd "$d" && git add -A && git commit -qm "dna ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) || echo "could not publish"

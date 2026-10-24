@@ -6,6 +6,13 @@ initiation terms (by the identity of each terminal pair), and the symmetry corre
 self-complementary duplexes. Salt enters through the entropy, 0.368 cal/(K mol) x ln[Na+] per
 phosphate pair (SantaLucia 1998, eq. 8; N - 1 for an N-base-pair duplex).
 
+Salt: two corrections are available. SantaLucia (1998) corrects the entropy (above). Owczarzy et al.,
+Biochemistry 43, 3537 (2004), eq. 22, corrects the melting temperature directly and was fitted to 92
+duplexes measured at five sodium concentrations; it is the default:
+    1/Tm(Na) = 1/Tm(1 M) + (4.29 fGC - 3.95) x 1e-5 ln[Na+] + 9.40e-6 (ln[Na+])^2
+For the curves and the zipper the same correction is applied as an entropy shift spread evenly over the
+stacks, chosen so that the two-state melting temperature equals the corrected one.
+
 Two models are given:
 
 * ``two_state`` - the duplex is either fully formed or fully dissociated; this is the model the
@@ -77,17 +84,44 @@ def duplex_terms(s: str, na: float = 1.0) -> tuple[float, float]:
     return dh, ds
 
 
-def tm(seq: str, ct: float = 1e-6, na: float = 1.0) -> dict:
+OWCZARZY = ("Owczarzy et al., Effects of sodium ions on DNA duplex oligomers: improved predictions of "
+            "melting temperatures, Biochemistry 43, 3537 (2004)")
+
+
+def _tm_k(dh, ds, ct, sc):
+    return dh * 1000.0 / (ds + R * math.log(ct / (1.0 if sc else 4.0)))
+
+
+def tm(seq: str, ct: float = 1e-6, na: float = 1.0, salt: str = "owczarzy2004") -> dict:
     """Two-state melting temperature (deg C) for total strand concentration ct (M; equal amounts of the
     two strands, or ct of a self-complementary strand) at [Na+] = na (M)."""
     s = clean(seq)
-    dh, ds = duplex_terms(s, na)
     sc = self_complementary(s)
-    x = 1.0 if sc else 4.0
-    t = dh * 1000.0 / (ds + R * math.log(ct / x)) - T0
+    if salt == "santalucia1998":
+        dh, ds = duplex_terms(s, na)
+        t = _tm_k(dh, ds, ct, sc)
+    elif salt == "owczarzy2004":
+        dh, ds = duplex_terms(s, 1.0)
+        t1 = _tm_k(dh, ds, ct, sc)
+        f = sum(c in "GC" for c in s) / len(s)
+        L = math.log(na)
+        t = 1.0 / (1.0 / t1 + (4.29 * f - 3.95) * 1e-5 * L + 9.40e-6 * L * L)
+        ds = dh * 1000.0 / t - R * math.log(ct / (1.0 if sc else 4.0))      # the entropy that gives t
+    else:
+        raise ValueError(f"unknown salt correction {salt!r}")
     dg37 = dh - (37 + T0) * ds / 1000.0
-    return {"sequence": s, "tm": t, "dH": dh, "dS": ds, "dG37": dg37, "self_complementary": sc,
-            "ct": ct, "na": na, "source": SOURCE}
+    return {"sequence": s, "tm": t - T0, "dH": dh, "dS": ds, "dG37": dg37, "self_complementary": sc,
+            "ct": ct, "na": na, "salt": salt, "source": SOURCE,
+            "salt_source": OWCZARZY if salt == "owczarzy2004" else SOURCE}
+
+
+def _salt_per_stack(s, ct, na, salt):
+    """Entropy (cal/K/mol) added to each stack for the salt correction."""
+    if salt == "santalucia1998":
+        return SALT_DS * math.log(na)
+    r = tm(s, ct, na, salt)
+    dh1, ds1 = duplex_terms(s, 1.0)
+    return (r["dS"] - ds1) / (len(s) - 1)
 
 
 def _fraction(K: np.ndarray, ct: float, sc: bool) -> np.ndarray:
@@ -102,16 +136,17 @@ def _fraction(K: np.ndarray, ct: float, sc: bool) -> np.ndarray:
     return np.clip(t, 0.0, 1.0)
 
 
-def curve(seq: str, temps_c, ct: float = 1e-6, na: float = 1.0) -> np.ndarray:
+def curve(seq: str, temps_c, ct: float = 1e-6, na: float = 1.0, salt: str = "owczarzy2004") -> np.ndarray:
     """Two-state fraction of strands in duplex at each temperature."""
     s = clean(seq)
-    dh, ds = duplex_terms(s, na)
+    dh, ds = duplex_terms(s, 1.0)
+    ds += _salt_per_stack(s, ct, na, salt) * (len(s) - 1)
     T = np.asarray(temps_c, float) + T0
     K = np.exp(-(dh * 1000.0 - T * ds) / (R * T))
     return _fraction(K, ct, self_complementary(s))
 
 
-def zipper(seq: str, temp_c: float, ct: float = 1e-6, na: float = 1.0) -> dict:
+def zipper(seq: str, temp_c: float, ct: float = 1e-6, na: float = 1.0, salt: str = "owczarzy2004") -> dict:
     """Probability that each base pair is closed at temp_c, allowing any contiguous helical stretch
     i..j (ends frayed). Each stretch has the stacks it contains, initiation terms for its own end pairs,
     and the salt correction for its own phosphates."""
@@ -119,8 +154,8 @@ def zipper(seq: str, temp_c: float, ct: float = 1e-6, na: float = 1.0) -> dict:
     n = len(s)
     T = temp_c + T0
     sc = self_complementary(s)
-    g_stack = np.array([(NN[s[i:i + 2]][0] * 1000 - T * (NN[s[i:i + 2]][1] + SALT_DS * math.log(na)))
-                        for i in range(n - 1)])
+    extra = _salt_per_stack(s, ct, na, salt)
+    g_stack = np.array([(NN[s[i:i + 2]][0] * 1000 - T * (NN[s[i:i + 2]][1] + extra)) for i in range(n - 1)])
     g_end = np.array([(_end(c)[0] * 1000 - T * _end(c)[1]) for c in s])
     g_sym = (SYM[0] * 1000 - T * SYM[1]) if sc else 0.0
     cum = np.concatenate([[0.0], np.cumsum(g_stack)])

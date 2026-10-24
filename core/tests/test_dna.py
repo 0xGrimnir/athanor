@@ -51,7 +51,7 @@ def test_kabsch():
 
 
 def test_melting_matches_the_formula_and_its_parts():
-    r = M.tm("TGACGGAGCGATTCAGC", ct=2e-6, na=1.0)
+    r = M.tm("TGACGGAGCGATTCAGC", ct=2e-6, na=1.0, salt="santalucia1998")
     # 16 stacks (TG GA AC CG GG GA AG GC CG GA AT TT TC CA AG GC: -137.7 kcal/mol) + initiation with a
     # terminal A.T (2.3) and a terminal G.C (0.1), SantaLucia 1998 Table 2
     assert abs(r["dH"] - (-137.7 + 2.3 + 0.1)) < 1e-9
