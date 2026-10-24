@@ -1,11 +1,68 @@
 /home/runner/micromamba/envs/probe/bin/deamSim
+Usage:
+
+	deamSim [options]  [fasta or BAM file]
+
+ This program reads a fasta (default) or BAM file containing aDNA fragments and
+ adds deamination according to a certain model file
+ some model files are found the models/ directory
+ if the input is fasta, the output will be fasta as well
+
+ I/O Options:
+		-b	[BAM out]			Read BAM and write output as a BAM (default: fasta)
+		-u					Produce uncompressed BAM (good for unix pipe)
+		-o	[fasta out]			Write fasta output as a zipped fasta
+		-name					Put a tag in the read name with deam bases (default not on/not used)
+		-v					verbose mode
+		-last					If matfile is used, do not use the substitution rates of the
+							last row over the rest of the molecule (default: no data = use last row)
+ Generic options:
+		--seed	[int]				Use [seed] as seed for the random number generator (default random seed each execution)
+
+ Mandatory deamination options:
+	Specify either:
+		-mapdamage  [mis.txt] [protocol]	Read the miscorporation file [mis.txt]
+		                               		produced by mapDamage
+		                               		[protocol] can be either "single" or "double" (without quotes)
+		                               		Single strand will have C->T damage on both ends
+		                               		Double strand will have and C->T at the 5' end and G->A damage at the 3' end
+
+		-profile  [prof file prefix]		Read the profile of substitutions instead of the default
+		                               		Provide the prefix only, both files must end with
+		                               		5p.prof and 3p.prof
+
+		-matfile  [matrix file prefix]		Read the matrix file of substitutions instead of the default
+		                               		Provide the prefix only, both files must end with
+		                               		5.dat and 3.dat
+
+		-matfilenonmeth  [matrix file prefix]	Read the matrix file of substitutions for non-methylated Cs
+		                               		Provide the prefix only, both files must end with
+		                               		5.dat and 3.dat
+
+		-matfilemeth  [matrix file prefix]	Read the matrix file of substitutions for methylated Cs
+		                               		Provide the prefix only, both files must end with
+		                               		5.dat and 3.dat
+
+		-mat      [ancient DNA matrix]		For default matrices, use either "single" or "double" (without quotes)
+		                               		Single strand will have C->T damage on both ends
+		                               		Double strand will have and C->T at the 5p end and G->A damage at the 3p end
+		-damage     [v,l,d,s]			For the Briggs et al. 2007 model
+		                               		The parameters must be comma-separated e.g.: -damage 0.03,0.4,0.01,0.7
+		                               			v: nick frequency
+		                               			l: length of overhanging ends (geometric parameter)
+		                               			d: prob. of deamination of Cs in double-stranded parts
+		                               			s: prob. of deamination of Cs in single-stranded parts
+
 
 rc 0 Program deamSim terminated succesfully, wrote 100000 sequences
 
-Traceback (most recent call last):
-  File "/home/runner/work/athanor/athanor/tools/probes/deamsim.py", line 18, in <module>
-    out_lines = open("out.fa").read().splitlines()
-                ^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen codecs>", line 322, in decode
-UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
-exit 1
+['>f0', 'CAGATTTTCATATTATGCAGAAAATCTACTTCGCCTGATACGAGTCGGTTATCTTCGGAT', '>f1_DEAM:51', 'ACTGTATAGTCCCACCTGGTGATCCTATGCTTGTGAGTACCCAGAAAATAACGACGGACC', '>f2', 'GCGGTGTTAAGTGTCGAGCTACATCACTTCTCATGTAGCCAGAAGGCTGCAACTCATCGA']
+100000 100000
+lowercase letters: 0
+C->T from 5': [0.189, 0.1141, 0.0739, 0.0484, 0.0305, 0.0233, 0.0161, 0.0109, 0.0104, 0.0094, 0.0074, 0.0083, 0.0076, 0.0073, 0.0059] middle 0.004
+G->A from 3': [0.1784, 0.1106, 0.0699, 0.0451, 0.0305, 0.0216, 0.0148, 0.0134, 0.0102, 0.0099, 0.0082, 0.0088, 0.0084, 0.0085, 0.0087] middle 0.0062
+(1-l)^(i+1) [0.184, 0.1144, 0.0726, 0.0476, 0.0326, 0.0235, 0.0181, 0.0149] max |diff| 5' 0.005
+l^(i+1) [0.126, 0.0564, 0.0286, 0.0174, 0.013, 0.0112, 0.0105, 0.0102] max |diff| 5' 0.063
+(1-l)^i [0.3, 0.184, 0.1144, 0.0726, 0.0476, 0.0326, 0.0235, 0.0181] max |diff| 5' 0.111
+l^i [0.3, 0.126, 0.0564, 0.0286, 0.0174, 0.013, 0.0112, 0.0105] max |diff| 5' 0.111
+l(1-l)^i...geom P(len>i) [0.184, 0.1144, 0.0726, 0.0476, 0.0326, 0.0235, 0.0181, 0.0149] max |diff| 5' 0.005
