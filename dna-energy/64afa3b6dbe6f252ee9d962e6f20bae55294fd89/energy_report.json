@@ -1,0 +1,215 @@
+{
+ "results": [
+  {
+   "name": "GFN2-xTB on S22 against CCSD(T)/CBS (S22B): mean absolute error <= 1.5 kcal/mol",
+   "pass": true,
+   "detail": "MAD 0.76 kcal/mol; adenine-thymine Watson-Crick -15.92 vs -16.66, stacked -12.29 vs -11.73"
+  },
+  {
+   "name": "B3LYP-D3(BJ)/def2-TZVP (counterpoise) on S22 against CCSD(T)/CBS: mean absolute error <= 0.6 kcal/mol, and both adenine-thymine complexes within 1.0 kcal/mol",
+   "pass": true,
+   "detail": "MAD 0.26 kcal/mol; adenine-thymine Watson-Crick -17.02 vs -16.66, stacked -11.64 vs -11.73"
+  },
+  {
+   "name": "in a built helix, G-C pairs are more strongly bound than A-T pairs (GFN2-xTB; mean difference >= 5 kcal/mol)",
+   "pass": true,
+   "detail": "G-C -30.8, A-T -14.2 kcal/mol"
+  }
+ ],
+ "summary": {
+  "s22": {
+   "1": {
+    "name": "HB-1 Ammonia Dimer, C2H",
+    "ref": -3.133,
+    "gfn2": -2.044739621028615,
+    "atoms": 8,
+    "dft": -3.40651437171514
+   },
+   "2": {
+    "name": "HB-2 Water Dimer, CS",
+    "ref": -4.989,
+    "gfn2": -4.946738759773456,
+    "atoms": 6,
+    "dft": -5.552096456193152
+   },
+   "3": {
+    "name": "HB-3 Formic Acid Dimer, C2H",
+    "ref": -18.753,
+    "gfn2": -17.200084883097432,
+    "atoms": 10,
+    "dft": -19.64111111968878
+   },
+   "4": {
+    "name": "HB-4 Formamide Dimer, C2H",
+    "ref": -16.062,
+    "gfn2": -16.64171440294426,
+    "atoms": 12,
+    "dft": -16.4520173760899
+   },
+   "5": {
+    "name": "HB-5 Uracil Dimer HB, C2H",
+    "ref": -20.641,
+    "gfn2": -19.63399960480905,
+    "atoms": 24,
+    "dft": -21.11785165242862
+   },
+   "6": {
+    "name": "HB-6 2-Pyridone-2-Aminopyridine Complex, C1",
+    "ref": -16.934,
+    "gfn2": -16.725882248689203,
+    "atoms": 25,
+    "dft": -17.71929208758615
+   },
+   "7": {
+    "name": "HB-7 Adenine-Thymine Complex WC, C1",
+    "ref": -16.66,
+    "gfn2": -15.921000946769903,
+    "atoms": 30,
+    "dft": -17.023993609656067
+   },
+   "8": {
+    "name": "DD-1 Methane Dimer, D3D",
+    "ref": -0.527,
+    "gfn2": -0.3918733914192909,
+    "atoms": 10,
+    "dft": -0.48054000913905087
+   },
+   "9": {
+    "name": "DD-2 Ethene Dimer, D2D",
+    "ref": -1.472,
+    "gfn2": -1.0571965863208808,
+    "atoms": 12,
+    "dft": -1.4937352036717944
+   },
+   "10": {
+    "name": "DD-3 Benzene-Methane Complex, C3",
+    "ref": -1.448,
+    "gfn2": -1.2933472266706962,
+    "atoms": 17,
+    "dft": -1.4316719913186082
+   },
+   "11": {
+    "name": "DD-4 Benzene Dimer Parallel-Disp, C2H",
+    "ref": -2.654,
+    "gfn2": -3.8178052903839186,
+    "atoms": 24,
+    "dft": -2.9361598576693124
+   },
+   "12": {
+    "name": "DD-6 Pyrazine Dimer, CS",
+    "ref": -4.255,
+    "gfn2": -5.40702950914238,
+    "atoms": 20,
+    "dft": -4.292745584436505
+   },
+   "13": {
+    "name": "MX-5 Uracil Dimer Stack, C2",
+    "ref": -9.805,
+    "gfn2": -9.811066700329635,
+    "atoms": 24,
+    "dft": -10.18233536831574
+   },
+   "14": {
+    "name": "DD-7 Indole-Benzene Complex Stack, C1",
+    "ref": -4.524,
+    "gfn2": -5.579444012218576,
+    "atoms": 28,
+    "dft": -4.758151712851217
+   },
+   "15": {
+    "name": "MX-8 Adenine-Thymine Complex Stack, C1",
+    "ref": -11.73,
+    "gfn2": -12.287852869300757,
+    "atoms": 30,
+    "dft": -11.641420758435789
+   },
+   "16": {
+    "name": "MX-1 Ethene-Ethine Complex, C2V",
+    "ref": -1.496,
+    "gfn2": -1.3234300308553513,
+    "atoms": 10,
+    "dft": -1.7003227060132626
+   },
+   "17": {
+    "name": "MX-2 Benzene-Water Complex, CS",
+    "ref": -3.275,
+    "gfn2": -2.2779974427047085,
+    "atoms": 15,
+    "dft": -3.490925965124604
+   },
+   "18": {
+    "name": "MX-3 Benzene-Ammonia Complex, CS",
+    "ref": -2.312,
+    "gfn2": -1.8714152292161905,
+    "atoms": 16,
+    "dft": -2.3770973039514303
+   },
+   "19": {
+    "name": "MX-4 Benzene-HCN Complex, CS",
+    "ref": -4.541,
+    "gfn2": -2.604421595983395,
+    "atoms": 15,
+    "dft": -4.911183795821115
+   },
+   "20": {
+    "name": "DD-5 Benzene Dimer T-Shape, C2V",
+    "ref": -2.717,
+    "gfn2": -2.232954812659965,
+    "atoms": 24,
+    "dft": -2.7652743359750795
+   },
+   "21": {
+    "name": "MX-6 Indole-Benzene Complex T-Shape, C1",
+    "ref": -5.627,
+    "gfn2": -4.060494579453762,
+    "atoms": 28,
+    "dft": -5.6537560993818285
+   },
+   "22": {
+    "name": "MX-7 Phenol Dimer, C1",
+    "ref": -7.097,
+    "gfn2": -5.774204127664656,
+    "atoms": 26,
+    "dft": -7.110262652161125
+   }
+  },
+  "mad": {
+   "gfn2": 0.763,
+   "dft": 0.263
+  },
+  "helix": {
+   "sequence": "CGCGAATTCGCG",
+   "pairs_gfn2": [
+    -30.62,
+    -30.9,
+    -30.9,
+    -30.84,
+    -14.28,
+    -14.17,
+    -14.17,
+    -14.27,
+    -30.85,
+    -30.91,
+    -30.88,
+    -30.65
+   ],
+   "steps_gfn2": [
+    -16.74,
+    -17.06,
+    -16.77,
+    -11.44,
+    -14.64,
+    -14.22,
+    -14.65,
+    -11.43,
+    -16.76,
+    -17.06,
+    -16.72
+   ],
+   "dft_pairs": {
+    "C1-G24": -32.12,
+    "A6-T19": -14.8
+   }
+  }
+ }
+}
