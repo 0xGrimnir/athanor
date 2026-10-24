@@ -1,0 +1,11 @@
+/home/runner/micromamba/envs/probe/bin/deamSim
+
+rc 0 Program deamSim terminated succesfully, wrote 100000 sequences
+
+Traceback (most recent call last):
+  File "/home/runner/work/athanor/athanor/tools/probes/deamsim.py", line 18, in <module>
+    out_lines = open("out.fa").read().splitlines()
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen codecs>", line 322, in decode
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+exit 1
