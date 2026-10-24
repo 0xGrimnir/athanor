@@ -2,6 +2,27 @@
 
 All notable changes to Athanor are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.9.0] - 2026-10-24
+
+### Added
+- **DNA Structure, complete.**
+  - **Backbone closure.** Built helices are relaxed with OpenMM and the AMBER OL15 DNA force field in GBn2 implicit water, with the bases held where the parameters put them. Every O3′–P link becomes a real bond (1.59–1.61 Å; previously 0.7–2.9 Å).
+  - **Molecular dynamics.** The helix moves at the temperature and salt you choose, frame by frame, with running averages and spreads of every step parameter. It runs on your graphics card (CUDA or OpenCL) when it can, otherwise on the processor.
+  - **Shape in solution.** Deep DNAshape's predictions from sequence (minor-groove width, propeller twist, roll, helix twist, electrostatic potential and more) on a plot and as colour on the helix. Athanor runs the published network with its own NumPy code, checked in CI to give the original's numbers.
+  - **What holds it together.** Pairing energy of every base pair and stacking energy of every step (GFN2-xTB), with DFT (B3LYP-D3(BJ)/def2-TZVP, counterpoise-corrected) for any pair you pick.
+  - **Ancient damage in place.** A molecule as it survives in ancient bone: single-stranded 5′ overhangs and cytosines turned into uracil. The chances come from the Briggs model, or from the damage the Ancient DNA Lab measured on your reads.
+  - **Zoom through the scales.**
+    - Nucleosome: your sequence threaded onto the 1.9 Å nucleosome core particle (1KX5) around its histone octamer.
+    - Protein–DNA complexes: TBP, CAP, IHF, Zif268, p53 and the lac repressor, with their DNA bends measured.
+    - Chromatin fibre: a six-nucleosome array with linker histone H1 (6HKT).
+    - Nucleus: a single-cell 3D genome of a human cell (Dip-C), where any GRCh37 position, including a Personal Genome variant, can be found.
+- Every feature has its own checks in CI; the README lists them.
+
+### Changed
+- Base pairing in the structure analysis is one-to-one, as in 3DNA. Eleven crystal duplexes that 3DNA reads with fewer pairs now drop out of the parameter sets, so the B-DNA benchmark covers 52 crystals instead of 62.
+- Built strands start with a 5′ hydroxyl (no phosphate), as synthetic and crystallised DNA does. Thymine's methyl carbon is named C7, as in the PDB.
+- Ancient DNA Lab: the note on δs now gives the likely reason mapDamage2's estimate is about twice gargammel's setting.
+
 ## [0.8.0] - 2026-10-24
 
 ### Added

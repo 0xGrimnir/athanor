@@ -60,6 +60,11 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | IQ-TREE | Phylogenetic trees with model selection | GPL-2.0 | To verify |
 | BLAST+ | Sequence search | Public domain (US government work) | To verify |
 | Primer3 (primer3-py) | Primer design | GPL-2.0-or-later | Verified |
+| OpenMM 8.6 (Eastman et al., J. Phys. Chem. B 128, 109, 2024) | DNA Structure: backbone relaxation and molecular dynamics, with the AMBER OL15 DNA force field and GBn2 implicit solvent files it ships | MIT (library and force-field files); the CUDA and OpenCL platform plugins are LGPL-3.0 | Verified (conda metadata) |
+| Deep DNAshape (Li, Chiu & Rohs, Nature Commun. 15, 1243, 2024; commit fe12e24) | DNA Structure: trained network weights for DNA shape prediction, exported from the authors' checkpoints in CI and shipped with the licence (`core/athanor_core/data/dna/dnashape/LICENSE-DeepDNAshape.txt`); the network itself is reimplemented in NumPy | BSD-3-Clause | Verified |
+| simple-dftd3 / dftd3-python 1.4 | D3(BJ) dispersion for the DFT interaction energies | LGPL-3.0-or-later | Verified (conda metadata) |
+| AmberTools (tleap, sander) | Independent check in CI that Athanor's OpenMM set-up gives AMBER's energies (not shipped) | GPL-3.0 / LGPL / public domain components | Verified |
+| TensorFlow 2.15 | Running the original Deep DNAshape in CI to check Athanor's port (not shipped) | Apache-2.0 | Verified |
 | Biopython | Sequence utilities; independent cross-check of the melting temperatures in CI (Tm_NN) | Biopython License Agreement / BSD-3-Clause | Verified |
 | 3DNA 2.4.9 (Lu & Olson, Nucleic Acids Res. 31, 5108, 2003; Nat. Protoc. 3, 1213, 2008) | DNA Structure: the standard base geometries and the B- and A-DNA nucleotide sets ship with Athanor (with 3DNA's copyright notice); the program itself is the reference the analysis and rebuild are checked against in CI (not shipped) | BSD-3-Clause | Verified |
 | parasail | Pairwise alignment | BSD | Verified |
@@ -94,6 +99,12 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | SantaLucia, PNAS 95, 1460 (1998); Owczarzy et al., Biochemistry 43, 3537 (2004) | Nearest-neighbour parameters and salt correction (published values, cited) | Published scientific data | Verified source |
 | TfReg data files (Owczarzy et al. 2004 measured melting temperatures), from the openSUSE source mirror | CI check of the melting temperatures only: downloaded at test time, never redistributed | GPL | Verified |
 | Ensembl GRCh37 REST (sequence/region) | DNA Structure: reference sequence 10 bp either side of each trait variant, checked against the reference allele (in CI; the short sequences ship) | EMBL-EBI Terms of Use | To verify |
+| RCSB PDB entries 1KX5, 6HKT, 1CDW, 1CGP, 1IHF, 1AAY, 1TSR, 1EFA | DNA Structure scales: the nucleosome core particle, the six-nucleosome fibre and the protein–DNA complexes (coordinates reduced to what the views draw; cited in the app) | PDB data are CC0 1.0 | Verified |
+| Dip-C single-cell 3D genomes of GM12878 (Tan et al., Science 361, 924, 2018; GEO GSE117876) | DNA Structure nucleus view: one cell coarse-grained to 1 Mb ships; six cells are used for the CI check | GEO data: NCBI places no restrictions; cited | Verified source |
+| Ensembl GRCh37 REST (overlap) | Protein-coding gene density per chromosome for the nucleus check (in CI) | EMBL-EBI Terms of Use | To verify |
+| Deep DNAshape processed data (Zenodo 10403307) | CI report only: agreement of the predictions with the authors' published data (not shipped) | CC BY 4.0 | Verified |
+| Psi4 S22 database (Jurečka et al. 2006 geometries; Marshall et al. 2011 CCSD(T)/CBS energies) | CI benchmark of the interaction energies (not shipped) | LGPL-3.0 (Psi4); published data | Verified |
+| gargammel 1.1.4 deamSim | CI check of the ancient-damage formulas (also in the Linux engines pack) | GPL-3.0-only | Verified (conda metadata) |
 | PharmCAT 3.4.0 | Independent cross-check of the pharmacogenomic calls in CI (not shipped) | MPL-2.0 | Verified |
 
 ## Compute pack note
@@ -113,6 +124,41 @@ BSD 3-Clause License
 
 Copyright (c) 1999-2026, Xiang-Jun Lu and Wilma K. Olson
 All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+## Deep DNAshape licence
+
+The trained weights in `core/athanor_core/data/dna/dnashape/` come from Deep DNAshape (https://github.com/JinsenLi/deepDNAshape). Its licence is reproduced in `core/athanor_core/data/dna/dnashape/LICENSE-DeepDNAshape.txt`:
+
+```
+BSD 3-Clause License
+
+Copyright (c) 2023, JinsenLi
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
