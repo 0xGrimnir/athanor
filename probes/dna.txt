@@ -44,7 +44,7 @@ package() {
 ### https://x3dna.org/downloads
 ERROR <HTTPError 404: 'Not Found'>
 
-### http://forum.x3dna.org/downloads/3dna/  (23347 bytes, text/html; charset=UTF-8)
+### http://forum.x3dna.org/downloads/3dna/  (23329 bytes, text/html; charset=UTF-8)
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -159,3 +159,9 @@ ERROR <HTTPError 404: 'Not Found'>
 
 ### https://www.ebi.ac.uk/pdbe/api/pdb/entry/summary/355d  (654 bytes, application/json)
 {"355d":[{"title":"THE B-DNA DODECAMER AT HIGH RESOLUTION","processing_site":"NDB","deposition_site":"NDB","deposition_date":"19971007","release_date":"19971013","revision_date":"20230802","experimental_method_class":["x-ray"],"experimental_method":["X-ray diffraction"],"split_entry":[],"related_structures":[],"entry_authors":["Hu, L.D.","Shui, X.","McFail-Isom, L.","Williams, G.G."],"number_of_entities":{"water":1,"polypeptide":0,"dna":1,"rna":0,"sugar":0,"ligand":2,"dna/rna":0,"other":0,"carbohydrate_polymer":0,"peptide_nucleic_acid":0,"cyclic_pseudo_peptide":0},"assemblies":[{"assembly_id":"1","name":"dimer","form":"homo","preferred":true}]}]}
+
+### http://protein.bio.puc.cl/melting-temperatures.html
+ERROR URLError(gaierror(-2, 'Name or service not known'))
+
+### http://protein.bio.puc.cl/
+ERROR URLError(gaierror(-2, 'Name or service not known'))
