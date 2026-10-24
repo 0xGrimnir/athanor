@@ -261,8 +261,7 @@ summary["continental_ancestry"] = (
 summary["regional_ancestry"] = (
     f"With 80,000 SNPs, people left out of the reference panels are assigned on average "
     f"{100 * np.mean(list(loo[80_000]['region'].values())):.0f}% to their own region (lowest region "
-    f"{100 * rmin:.0f}%); regions that could not be told apart were merged before the pack was built"
-    + (f" ({len(man['merges'])} merges)" if man.get("merges") else "") + ".")
+    f"{100 * rmin:.0f}%); regions that could not be told apart are reported together.")
 summary["chromosome_painting"] = (
     f"On simulated genomes with known ancestry segments, the pair of ancestries was right at {100 * pa:.0f}% of SNPs, "
     f"and the average confidence the method reported was {100 * pp:.0f}%.") if paint_acc else None
