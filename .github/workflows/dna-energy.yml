@@ -30,6 +30,7 @@ jobs:
           tail -60 energy.txt
           msg=$(grep -E "^\[(PASS|FAIL)\]" energy.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
           if [ $rc -eq 0 ]; then echo "::notice title=dna energies::$msg"; else echo "::error title=dna energies failed::$msg"; fi
+          if [ $rc -ne 0 ]; then tail -45 energy.txt | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' | sed 's/^/::error title=log tail::/'; echo; fi
           exit $rc
       - name: Committed energy summary regenerates exactly
         if: always()

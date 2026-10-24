@@ -34,6 +34,7 @@ jobs:
           cat md.txt | tail -80
           msg=$(grep -E "^\[(PASS|FAIL)\]" md.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
           if [ $rc -eq 0 ]; then echo "::notice title=dna dynamics::$msg"; else echo "::error title=dna dynamics failed::$msg"; fi
+          if [ $rc -ne 0 ]; then tail -45 md.txt | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}' | sed 's/^/::error title=log tail::/'; echo; fi
           exit $rc
       - name: Publish
         if: always()
