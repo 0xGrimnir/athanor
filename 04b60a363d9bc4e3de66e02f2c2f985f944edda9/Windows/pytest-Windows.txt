@@ -1,0 +1,18 @@
+......ss.........sssss.s.sss............................................ [ 98%]
+.                                                                        [100%]
+============================== warnings summary ===============================
+tests/test_crosschecks.py: 29 warnings
+  C:\Users\runneradmin\micromamba\envs\athanor-core\Lib\site-packages\ase\atoms.py:432: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    a.shape = (-1,) + shape
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SKIPPED [1] tests\test_adna_pileup.py:5: could not import 'pysam': No module named 'pysam'
+SKIPPED [1] tests\test_adna_realdata.py:28: could not import 'pysam': No module named 'pysam'
+SKIPPED [1] tests\test_adna_realdata.py:63: could not import 'pysam': No module named 'pysam'
+SKIPPED [5] tests\test_crosschecks.py:98: needs both tblite and the xtb program
+SKIPPED [1] tests\test_crosschecks.py:130: needs Psi4 and PySCF
+SKIPPED [1] tests\test_crosschecks.py:197: PySCF not installed
+SKIPPED [2] tests\test_crosschecks.py:218: PySCF not installed
+62 passed, 12 skipped, 29 warnings in 90.94s (0:01:30)
