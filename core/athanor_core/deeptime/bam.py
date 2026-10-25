@@ -116,42 +116,75 @@ class Genome:
     def programs(self) -> list[str]:
         return [pg.get("PN") or pg.get("ID", "") for pg in self.bam.header.to_dict().get("PG", [])]
 
-    def sex(self) -> dict:
+    def _sex_counts(self, max_reads: int = 2_000_000) -> tuple[dict, bool]:
+        """Reads on each chromosome that pass the same filters the rest of the
+        module uses. The index's own counts include duplicates, secondary and
+        supplementary alignments and multi-mapping reads at mapping quality 0,
+        and the published R_y thresholds were set on filtered unique
+        alignments, so the index cannot answer this question."""
+        want = [*AUTOSOMES, "X", "Y"]
+        out, truncated, seen = {}, False, 0
+        for chrom in want:
+            ref = self.name_of(chrom)
+            if ref is None:
+                continue
+            n = 0
+            for r in self.bam.fetch(ref):
+                if r.is_unmapped or r.is_secondary or r.is_supplementary or r.is_qcfail or r.is_duplicate \
+                        or r.mapping_quality < self.min_mapq:
+                    continue
+                n += 1
+                seen += 1
+                if seen >= max_reads:
+                    truncated = True
+                    break
+            out[chrom] = n
+            if truncated:
+                break
+        return out, truncated
+
+    def sex(self, filtered: bool = False) -> dict:
         """Genetic sex from the numbers of reads on X and Y (R_y) and from the
-        X-to-autosome coverage ratio (R_x), both from the index.
+        X-to-autosome coverage ratio (R_x).
 
         These counts are whole chromosomes, so they answer only for shotgun
         sequencing. Capture data has as many reads on a chromosome as the
         experiment put targets there, and both ratios shift; ``sex_from_panel``
-        uses the panel's own positions instead and holds either way."""
-        c = self.counts()
+        uses the panel's own positions instead and holds either way. The
+        thresholds were set on filtered unique alignments, so a call is made
+        only from counts that pass the same filters (``filtered=True``);
+        otherwise the ratios are reported without one."""
+        c, truncated = (self._sex_counts() if filtered else (self.counts(), False))
         nx, ny = c.get("X", 0), c.get("Y", 0)
         auto = {k: c.get(k, 0) for k in AUTOSOMES}
-        res = {"reads_X": nx, "reads_Y": ny, "reads_autosomal": int(sum(auto.values()))}
+        res = {"reads_X": nx, "reads_Y": ny, "reads_autosomal": int(sum(auto.values())),
+               "counts_filtered": bool(filtered), "counts_truncated": truncated,
+               "basis": ("reads over whole chromosomes passing the mapping-quality and flag filters" if filtered
+                         else "read counts from the index, which include duplicates and multi-mapping reads")}
         if nx + ny < 100:
-            return {**res, "call": None, "reason": f"only {nx + ny} reads on the sex chromosomes"}
+            return {**res, "call": None, "r_y": None, "r_x": None,
+                    "reason": f"only {nx + ny} reads on the sex chromosomes"}
         ry = ny / (nx + ny)
         lo, hi = wilson(ny, nx + ny)
-        call = "XX" if hi < RY_FEMALE else "XY" if lo > RY_MALE else None
-        # R_x: the X's coverage against each autosome's, as in Mittnik et al. 2016
+        call = ("XX" if hi < RY_FEMALE else "XY" if lo > RY_MALE else None) if filtered else None
         lx = self.lengths.get("X")
-        rx = rx_lo = rx_hi = None
+        rx = rx_ci = None
         if lx and res["reads_autosomal"] > 0:
-            ratios = [(nx / lx) / (auto[k] / self.lengths[k]) for k in AUTOSOMES
-                      if auto.get(k, 0) > 0 and self.lengths.get(k)]
-            if ratios:
-                rx = float(np.mean(ratios))
-                se = float(np.std(ratios, ddof=1) / math.sqrt(len(ratios))) if len(ratios) > 1 else 0.0
-                rx_lo, rx_hi = rx - 1.96 * se, rx + 1.96 * se
-        return {**res, "r_y": ry, "r_y_ci": [lo, hi], "r_x": rx,
-                "r_x_ci": [rx_lo, rx_hi] if rx is not None else None, "call": call,
-                "reason": None if call else f"R_y = {ry:.3f}, interval {lo:.3f}-{hi:.3f}, spans the thresholds "
-                                           f"{RY_FEMALE} (XX) and {RY_MALE} (XY)",
+            rx, rx_ci = _ratio_of_rates(nx, lx, [(auto[k], self.lengths[k]) for k in AUTOSOMES
+                                                 if auto.get(k, 0) > 0 and self.lengths.get(k)])
+        reason = None
+        if not filtered:
+            reason = ("not called from these counts: they come from the index, which includes duplicates and "
+                      "reads of mapping quality 0, while the thresholds were set on filtered unique alignments")
+        elif not call:
+            reason = (f"R_y = {ry:.3f}, interval {lo:.3f}-{hi:.3f}, spans the thresholds "
+                      f"{RY_FEMALE} (XX) and {RY_MALE} (XY)")
+        return {**res, "r_y": ry, "r_y_ci": [lo, hi], "r_x": rx, "r_x_ci": rx_ci, "call": call, "reason": reason,
                 "method": f"R_y = n_Y/(n_X+n_Y) (Skoglund et al. 2013): below {RY_FEMALE} XX, above {RY_MALE} XY; "
                           "R_x is the X-to-autosome coverage ratio (Mittnik et al. 2016), about 1 with two X "
-                          "chromosomes and 0.5 with one. Reads counted from the index at mapping quality 0 and "
-                          "above, over whole chromosomes, so the thresholds hold for shotgun sequencing only.",
-                "basis": "whole-chromosome read counts"}
+                          "chromosomes and 0.5 with one. Whole chromosomes include regions where the X maps less "
+                          "well than the autosomes, so R_x reads low here; the panel-position R_x does not have "
+                          "that problem. The thresholds hold for shotgun sequencing only."}
 
 
     def lengths_and_damage_pass(self, chroms: list[str] | None = None, max_reads: int = 2_000_000,
@@ -196,6 +229,31 @@ class Genome:
 
 # Mittnik et al. 2016: the 95% interval of R_x decides, and nothing is called when it spans both
 RX_MALE, RX_FEMALE = 0.6, 0.8
+MIN_X_OBSERVATIONS = 400      # below this the counting noise alone is over 5%
+
+
+def _ratio_of_rates(x_count: float, x_denom: float, autosomes: list[tuple[float, float]],
+                    z: float = 1.96) -> tuple[float | None, list[float] | None]:
+    """R_x and an interval that carries both sources of uncertainty.
+
+    R_x is the X's reads per unit against each autosome's, averaged. The X's
+    own count appears in every one of those ratios, so the spread between them
+    says nothing about how well that count is known: at low coverage its
+    Poisson noise is the whole uncertainty, and an interval built from the
+    spread alone misses the truth most of the time. The two are combined here:
+    the relative variance of the X count and of the pooled autosomal count
+    (Poisson), plus the variance between the per-autosome ratios."""
+    autosomes = [(n, L) for n, L in autosomes if n > 0 and L]
+    if not autosomes or x_count <= 0 or x_denom <= 0:
+        return None, None
+    ratios = [(x_count / x_denom) / (n / L) for n, L in autosomes]
+    rx = float(np.mean(ratios))
+    n_auto = float(sum(n for n, _ in autosomes))
+    var_rel = 1.0 / x_count + 1.0 / n_auto                      # counting noise, both sides
+    if len(ratios) > 1:                                          # how much the autosomes disagree
+        var_rel += float(np.var(ratios, ddof=1)) / (len(ratios) * rx * rx)
+    half = z * rx * math.sqrt(var_rel)
+    return rx, [round(max(0.0, rx - half), 4), round(rx + half, 4)]
 
 
 def sex_from_panel(depth_by_chrom: dict, sites_by_chrom: dict) -> dict:
@@ -213,22 +271,21 @@ def sex_from_panel(depth_by_chrom: dict, sites_by_chrom: dict) -> dict:
            "reads_at_autosomal_sites": int(sum(depth_by_chrom.get(c, 0) for c in autos)),
            "autosomal_sites": int(sum(sites_by_chrom.get(c, 0) for c in autos)),
            "basis": "depth at the reference panel's positions"}
-    if not autos or x_sites < 100 or x_depth < 50:
+    if not autos or x_sites < 100 or x_depth < MIN_X_OBSERVATIONS:
         return {**res, "r_x": None, "call": None,
-                "reason": f"too little coverage at the panel's X positions ({int(x_depth)} observations)"}
-    per_x = x_depth / x_sites
-    ratios = [per_x / (depth_by_chrom[c] / sites_by_chrom[c]) for c in autos if depth_by_chrom[c] > 0]
-    rx = float(np.mean(ratios))
-    se = float(np.std(ratios, ddof=1) / math.sqrt(len(ratios))) if len(ratios) > 1 else 0.0
-    lo, hi = rx - 1.96 * se, rx + 1.96 * se
+                "reason": f"too little coverage at the panel's X positions ({int(x_depth)} observations; at least "
+                          f"{MIN_X_OBSERVATIONS} are needed before the ratio means anything)"}
+    rx, ci = _ratio_of_rates(x_depth, x_sites, [(depth_by_chrom[c], sites_by_chrom[c]) for c in autos])
+    lo, hi = ci
     call = "XX" if lo > RX_FEMALE else "XY" if hi < RX_MALE else None
-    return {**res, "r_x": rx, "r_x_ci": [lo, hi], "autosomes_used": len(ratios), "call": call,
+    return {**res, "r_x": rx, "r_x_ci": [lo, hi], "autosomes_used": len(autos), "call": call,
             "reason": None if call else f"R_x = {rx:.2f}, interval {lo:.2f}-{hi:.2f}, which does not sit wholly "
                                         f"below {RX_MALE} (XY) or above {RX_FEMALE} (XX)",
             "method": "R_x, the depth per panel position on the X against the same on each autosome, averaged over "
-                      f"the autosomes with a 95% interval (Mittnik et al. 2016): wholly below {RX_MALE} is XY, "
-                      f"wholly above {RX_FEMALE} is XX. Measured at the panel's positions, so capture data and "
-                      "shotgun data are read the same way."}
+                      f"the autosomes (Mittnik et al. 2016): wholly below {RX_MALE} is XY, wholly above "
+                      f"{RX_FEMALE} is XX. The 95% interval carries the counting noise in the X's own observations "
+                      "and in the autosomes', as well as the disagreement between the autosomes. Measured at the "
+                      "panel's positions, so capture data and shotgun data are read the same way."}
 
 
 def length_summary(hist: list[int] | np.ndarray, max_length: int = 200) -> dict:

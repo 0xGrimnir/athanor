@@ -12,6 +12,7 @@ Everything runs on the machine the reads are on. Nothing is uploaded.
 from __future__ import annotations
 
 import json
+import math
 import os
 from pathlib import Path
 
@@ -75,36 +76,39 @@ def m_heterozygosity(p):
     with Genome(_path(p), min_mapq=int(p.get("min_mapq", 25))) as g:
         if g.name_of(chrom) is None:
             raise ValueError(f"the alignment has no chromosome {chrom}")
-        _step({"task": "deeptime", "stage": f"counting bases on {chrom}", "fraction": 0.2})
-        counts = C.region_counts(g, chrom, start - 1, end, min_qual=int(p.get("min_qual", 25)))
         mask = None
         if p.get("mask_path"):
             mask = C.bed_mask(_path(p, "mask_path"), chrom, start - 1, end)
             if p.get("mask_is_excluded"):
                 mask = ~mask
-        _step({"task": "deeptime", "stage": "calling genotypes", "fraction": 0.7})
-        kw = {k: p[k] for k in ("min_depth", "max_depth", "err", "min_quality") if k in p}
-        res = C.heterozygosity(counts, callable_mask=mask, **kw)
+        kw = {k: p[k] for k in ("min_depth", "max_depth", "err", "min_quality", "trim") if k in p}
+        res = C.heterozygosity_over_region(g, chrom, start - 1, end, callable_mask=mask,
+                                           min_qual=int(p.get("min_qual", 25)), on_step=_step, **kw)
         _step({"task": "deeptime", "stage": "done", "fraction": 1.0})
         share = res.get("transition_share")
-        inflated = share is not None and share > 0.7
+        nh = res.get("heterozygous_sites") or 0
+        share_ci = None if not nh else [max(0.0, share - 1.96 * math.sqrt(share * (1 - share) / nh)),
+                                        min(1.0, share + 1.96 * math.sqrt(share * (1 - share) / nh))]
+        inflated = bool(share_ci and share_ci[0] > 0.72)   # above what human variation alone gives
         return {"region": {"chromosome": chrom, "start": start, "end": end, "bases": end - start + 1},
                 "transitions_inflated_by_damage": inflated,
-                "note": ("Transitions are "
-                         f"{100 * share:.0f}% of the heterozygous calls, well above the two-thirds or so of real "
-                         "variation, so deamination is being read as heterozygosity: take the transversion rate as "
-                         "the sample's, or trim the molecule ends. Checked against a published call set, the "
-                         "transversion rate agrees while the total does not."
+                "transition_share_ci": share_ci,
+                "note": (f"Transitions are {100 * share:.0f}% of the heterozygous calls "
+                         f"(95% {100 * share_ci[0]:.0f}-{100 * share_ci[1]:.0f}%), above the two thirds or so that "
+                         "human variation alone gives, so deamination is being read as heterozygosity: take the "
+                         "transversion rate as the sample's, or ignore the ends of the molecules."
                          if inflated else
-                         "Transitions are a normal share of the heterozygous calls, so the total is usable."),
+                         ("Transitions are a normal share of the heterozygous calls, so the total is usable."
+                          if nh else "No heterozygous sites were called.")),
                 "build": g.build, "mask": ({"path": os.path.basename(_path(p, "mask_path")),
                                             "callable_bases": int(mask.sum()),
                                             "excluded_file": bool(p.get("mask_is_excluded"))} if mask is not None
                                            else None),
-                "depth_mean": float(counts.sum(1).mean()), **res,
-                "limits": ["Heterozygosity here counts sites where the reads carry two alleles, so it needs enough "
-                           "depth to see both; published values use callers built for ancient DNA (snpAD) and the "
-                           "study's own filters, and a region is not the whole genome.",
+                "depth_mean": (res["observations"] / (end - start + 1)) if end > start else None, **res,
+                "limits": [f"A site counts towards the total only when it has {res['depth_floor']} reads or more, "
+                           "the depth at which a homozygote can be called as confidently as a heterozygote; "
+                           "published values use callers built for ancient DNA (snpAD) and the study's own "
+                           "filters, and a region is not the whole genome.",
                            "C->T and G->A deamination mimics heterozygous transitions, so the transversion rate is "
                            "the one that survives damage."]}
 

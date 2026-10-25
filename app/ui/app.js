@@ -1841,8 +1841,8 @@ function renderDtInspect() {
       ["Index", r.indexed ? "present" : `<span class="warn">missing: index it with samtools index</span>`],
       ["Mapped reads", (r.reads_mapped || 0).toLocaleString()],
       ["Molecule length", L.median == null ? "—" : `median ${L.median} bp, mean ${L.mean.toFixed(1)} bp <small>(quartiles ${L.quartiles[0]}–${L.quartiles[1]})</small>`],
-      ["Genetic sex", s.call ? `${escapeHtml(s.call)} <small>(R<sub>y</sub> ${s.r_y.toFixed(3)}, 95% ${s.r_y_ci.map((x) => x.toFixed(3)).join("–")}${s.r_x == null ? "" : `; R<sub>x</sub> ${s.r_x.toFixed(2)}`})</small>`
-        : `<span class="warn">not called</span> <small>${escapeHtml(s.reason || "")}</small>`],
+      ["Sex chromosomes", s.r_y == null ? `<small>${escapeHtml(s.reason || "too few reads")}</small>`
+        : `R<sub>y</sub> ${s.r_y.toFixed(3)} <small>(95% ${s.r_y_ci.map((x) => x.toFixed(3)).join("–")}${s.r_x == null ? "" : `, R<sub>x</sub> ${s.r_x.toFixed(2)}`}; from the index, so duplicates and multi-mapping reads are in it — the sex is called when you read the genome)</small>`],
       ["Libraries", (r.read_groups || []).length ? (r.read_groups || []).map((g) => escapeHtml([g.ID, g.LB, g.SM].filter(Boolean).join(" / "))).join("<br>") : "none recorded"],
       ["Programs recorded", (r.programs || []).length ? escapeHtml((r.programs || []).filter(Boolean).join(", ")) : "none recorded"],
     ])}
@@ -1939,7 +1939,7 @@ const DT_DETAIL = {
       ["R<sub>x</sub> (X against the autosomes, at those positions)", s.r_x == null ? "—" : `${s.r_x.toFixed(3)} <small>(95% ${s.r_x_ci.map((x) => x.toFixed(3)).join("–")}; below 0.6 XY, above 0.8 XX)</small>`],
       ["Reads on whole chromosomes (X / Y)", `${(w.reads_X || 0).toLocaleString()} / ${(w.reads_Y || 0).toLocaleString()}`],
       ["R<sub>y</sub> = Y / (X + Y), whole chromosomes", w.r_y == null ? "—" : `${w.r_y.toFixed(4)} <small>(95% ${(w.r_y_ci || []).map((x) => x.toFixed(4)).join("–")}; shotgun thresholds: below 0.016 XX, above 0.077 XY)</small>`],
-    ]) + (s.fell_back ? `<p class="note">Called from the whole-chromosome counts: the panel's X positions had too little coverage.</p>` : "");
+    ]) + (s.fell_back ? `<p class="note">Called from the whole-chromosome counts: ${escapeHtml(s.panel_reason || "the panel's X positions did not settle it")}.</p>` : "");
   },
 };
 

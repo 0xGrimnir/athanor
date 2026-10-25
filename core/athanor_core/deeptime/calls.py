@@ -16,11 +16,21 @@ snpAD's position-dependent error profile (Prüfer, BMC Bioinformatics 19, 136,
 2018), so a damaged library needs its read ends trimmed or its transitions
 set aside instead.
 
+A quality floor is also a depth floor, and a stricter one for homozygotes
+than for heterozygotes: each read of a clean homozygote adds the same fixed
+evidence, so at shallow depth homozygous sites fail the floor while
+heterozygous ones pass it. Leaving the two inconsistent would drop
+homozygotes from the denominator of every rate while keeping heterozygotes in
+the numerator, so the depth floor is raised to where a homozygote can reach
+the quality asked for.
+
 Deamination and genotypes. A C->T or G->A difference can always be damage, so
 every call here can be restricted to transversions, and bases near the ends
 of molecules, where damage concentrates, can be dropped.
 """
 from __future__ import annotations
+
+import math
 
 import numpy as np
 
@@ -58,20 +68,27 @@ def pseudo_haploid(p, ref: np.ndarray, alt: np.ndarray, seed: int = 1, min_qual:
     s = np.nonzero(have)[0]
     is_ref, is_alt = b == ref[s], b == alt[s]
     keep = is_ref | is_alt
+    is_ref_all = np.zeros(p.n_sites, dtype=bool); is_ref_all[s] = is_ref
+    is_alt_all = np.zeros(p.n_sites, dtype=bool); is_alt_all[s] = is_alt
     if transversions_only:
         keep &= ~_transition_mask(ref[s], alt[s])
+    keep_all = np.zeros(p.n_sites, dtype=bool); keep_all[s] = keep
     dos[s[keep]] = np.where(is_alt[keep], 2, 0).astype(np.int8)
     counts = q.counts()
     depth = counts.sum(1)
     return {"dosage": dos, "sites_called": int((dos >= 0).sum()),
             "sites_covered": int((depth > 0).sum()),
-            "sites_other_allele": int((have.sum() - keep.sum())),
+            "sites_with_an_unexpected_base": int((have & ~(is_ref_all | is_alt_all)).sum()),
+            "sites_set_aside_as_transitions": int(((is_ref_all | is_alt_all) & ~keep_all).sum()),
             "mean_depth_at_covered": float(depth[depth > 0].mean()) if (depth > 0).any() else 0.0,
             "observations_used": int(q.reads_used),
             "filters": {"min_base_quality": min_qual, "trim_ends": trim,
                         "transversions_only": bool(transversions_only)},
             "method": "one allele drawn at random (seeded) from the reads covering each site and counted twice "
                       "(Skoglund et al. 2014)"}
+
+
+GENOTYPES = [(a, b) for a in range(4) for b in range(a, 4)]
 
 
 def _genotype_loglik(counts: np.ndarray, err: float) -> tuple[np.ndarray, list]:
@@ -83,60 +100,118 @@ def _genotype_loglik(counts: np.ndarray, err: float) -> tuple[np.ndarray, list]:
     het = np.log(0.5 * (1 - err) + 0.5 * err / 3)
     tot = counts.sum(1)
     out = np.empty((n, 10), dtype=np.float64)
-    k = 0
-    pairs = []
-    for a in range(4):
-        for b in range(a, 4):
+    for k, (a, b) in enumerate(GENOTYPES):
+        if a == b:
+            out[:, k] = counts[:, a] * hom + (tot - counts[:, a]) * other
+        else:
+            m = counts[:, a] + counts[:, b]
+            out[:, k] = m * het + (tot - m) * other
+    return out, GENOTYPES
+
+
+def loglik_from_qualities(site: np.ndarray, base: np.ndarray, qual: np.ndarray, n_sites: int,
+                          max_error: float = 0.25) -> tuple[np.ndarray, np.ndarray]:
+    """The same likelihoods, but with each read's own error probability.
+
+    A base quality is the sequencer's estimate that the base is wrong, so a
+    Q20 base is forty times as likely to be an error as a Q36 one and should
+    not count the same. Observations are grouped by quality, which is a small
+    set of integers, and each group's contribution is added in one pass."""
+    ll = np.zeros((n_sites, 10), dtype=np.float64)
+    depth = np.bincount(site, minlength=n_sites).astype(np.int64)
+    for q in np.unique(qual):
+        err = min(max_error, 10.0 ** (-float(q) / 10.0)) if q >= 0 else max_error
+        hom, other = np.log(1 - err), np.log(err / 3)
+        het = np.log(0.5 * (1 - err) + 0.5 * err / 3)
+        m = qual == q
+        c = np.zeros((n_sites, 4), dtype=np.int64)
+        np.add.at(c, (site[m], base[m]), 1)
+        tot = c.sum(1)
+        for k, (a, b) in enumerate(GENOTYPES):
             if a == b:
-                out[:, k] = counts[:, a] * hom + (tot - counts[:, a]) * other
+                ll[:, k] += c[:, a] * hom + (tot - c[:, a]) * other
             else:
-                m = counts[:, a] + counts[:, b]
-                out[:, k] = m * het + (tot - m) * other
-            pairs.append((a, b))
-            k += 1
-    return out, pairs
+                pair = c[:, a] + c[:, b]
+                ll[:, k] += pair * het + (tot - pair) * other
+    return ll, depth
 
 
-def diploid(counts: np.ndarray, min_depth: int = 8, max_depth: int | None = None, err: float = 0.005,
-            min_quality: float = 30.0) -> dict:
-    """Diploid genotypes from per-site base counts (n_sites x 4).
+def minimum_depth_for_a_homozygote(err: float, min_quality: float) -> int:
+    """How deep a site must be before a homozygote can clear ``min_quality``.
 
-    Returns allele codes a1, a2 (-1 where no call) and the call's quality, the
-    log-odds against the next-best genotype in decibans (as a Phred-scaled
-    quality)."""
-    counts = np.asarray(counts, dtype=np.int64)
-    ll, pairs = _genotype_loglik(counts, err)
-    depth = counts.sum(1)
+    Each read of a clean homozygote adds the same fixed evidence against the
+    heterozygote that contains its allele, so a quality floor is also a depth
+    floor — and it is a stricter one for homozygotes than for heterozygotes.
+    Leaving the two inconsistent drops homozygous sites from the callable set
+    while keeping heterozygous ones, which inflates every rate computed from
+    them."""
+    per_read = 10.0 * math.log10((1 - err) / (0.5 * (1 - err) + err / 6))
+    return int(math.ceil(min_quality / per_read)) if per_read > 0 else 1
+
+
+def diploid(counts: np.ndarray = None, min_depth: int = 8, max_depth: int | None = None, err: float = 0.005,
+            min_quality: float = 30.0, pileup=None, n_sites: int | None = None) -> dict:
+    """Diploid genotypes, from per-site base counts or from a pileup's own base
+    qualities (``pileup=``, which is the better measurement).
+
+    Returns allele codes a1, a2 (-1 where no call) and the call's quality: the
+    evidence in decibans for the called genotype over the next best one, which
+    is a likelihood ratio between two genotypes and not a posterior
+    probability of being wrong. The depth
+    floor is raised, if needed, to the depth at which a homozygote can reach
+    the quality floor, so that callability does not depend on which genotype
+    the site has."""
+    if pileup is not None:
+        n = int(n_sites if n_sites is not None else pileup.n_sites)
+        ll, depth = loglik_from_qualities(pileup.site, pileup.base, pileup.qual, n)
+        counts = None
+        quality_source = "each read's own base quality"
+    else:
+        counts = np.asarray(counts, dtype=np.int64)
+        ll, _ = _genotype_loglik(counts, err)
+        depth = counts.sum(1)
+        quality_source = f"one error probability of {err} for every read"
+    floor = max(int(min_depth), minimum_depth_for_a_homozygote(err, min_quality))
     best = np.argmax(ll, axis=1)
     top = ll[np.arange(len(ll)), best]
     second = np.where(np.isneginf(top), -np.inf, np.partition(ll, -2, axis=1)[:, -2])
     qual = (top - second) * 10.0 / np.log(10.0)
-    ok = (depth >= min_depth) & (qual >= min_quality)
+    ok = (depth >= floor) & (qual >= min_quality)
     if max_depth:
         ok &= depth <= max_depth
-    pa = np.array([p[0] for p in pairs], dtype=np.int8)
-    pb = np.array([p[1] for p in pairs], dtype=np.int8)
+    pa = np.array([p[0] for p in GENOTYPES], dtype=np.int8)
+    pb = np.array([p[1] for p in GENOTYPES], dtype=np.int8)
     a1 = np.where(ok, pa[best], -1).astype(np.int8)
     a2 = np.where(ok, pb[best], -1).astype(np.int8)
-    return {"a1": a1, "a2": a2, "quality": qual, "depth": depth, "called": ok,
-            "method": f"genotype likelihoods with a flat prior, error probability {err}, depth at least "
-                      f"{min_depth}{'' if not max_depth else f' and at most {max_depth}'}, and at least "
-                      f"{min_quality} in favour of the called genotype over the next best"}
+    return {"a1": a1, "a2": a2, "quality": qual, "depth": depth, "called": ok, "depth_floor": floor,
+            "method": f"genotype likelihoods with a flat prior and {quality_source}; a site is called at depth "
+                      f"{floor} or more{'' if not max_depth else f' and at most {max_depth}'}, with at least "
+                      f"{min_quality} decibans in favour of the called genotype over the next best. The depth "
+                      f"floor is {floor} rather than the {min_depth} asked for because below it a homozygote "
+                      f"cannot reach {min_quality} decibans, and dropping homozygotes but not heterozygotes "
+                      "would inflate every rate computed from the calls"
+                      if floor > int(min_depth) else
+                      f"genotype likelihoods with a flat prior and {quality_source}; a site is called at depth "
+                      f"{floor} or more{'' if not max_depth else f' and at most {max_depth}'}, with at least "
+                      f"{min_quality} decibans in favour of the called genotype over the next best"}
 
 
 def panel_genotypes(p, ref: np.ndarray, alt: np.ndarray, min_qual: int = 20, trim: int = 0, **kw) -> dict:
     """Diploid alternative-allele dosage (0, 1, 2; -1 no call) at panel sites."""
     q = p.filtered(min_qual=min_qual, trim=trim)
-    g = diploid(q.counts(), **kw)
+    g = diploid(pileup=q, **kw)
     ref = np.asarray(ref, dtype=np.int8)
     alt = np.asarray(alt, dtype=np.int8)
     a1, a2 = g["a1"], g["a2"]
     known = g["called"] & np.isin(a1, [0, 1, 2, 3]) & ((a1 == ref) | (a1 == alt)) & ((a2 == ref) | (a2 == alt))
     dos = np.full(len(ref), -1, dtype=np.int8)
     dos[known] = ((a1[known] == alt[known]).astype(np.int8) + (a2[known] == alt[known]).astype(np.int8))
-    return {"dosage": dos, "quality": g["quality"], "depth": g["depth"],
+    depth = g["depth"]
+    return {"dosage": dos, "quality": g["quality"], "depth": depth,
             "sites_called": int(known.sum()), "sites_third_allele": int((g["called"] & ~known).sum()),
-            "method": g["method"]}
+            "sites_covered": int((depth > 0).sum()), "depth_floor": g["depth_floor"],
+            "mean_depth_at_covered": float(depth[depth > 0].mean()) if (depth > 0).any() else 0.0,
+            "observations_used": int(q.reads_used), "method": g["method"]}
 
 
 def haploid_calls(genome, chrom: str, positions: np.ndarray, min_depth: int = 2, min_fraction: float = 0.7,
@@ -159,27 +234,77 @@ def haploid_calls(genome, chrom: str, positions: np.ndarray, min_depth: int = 2,
 
 def region_counts(genome, chrom: str, start: int, end: int, min_qual: int = 25,
                   min_mapq: int | None = None) -> np.ndarray:
-    """Per-position base counts (A, C, G, T) over a region, 0-based half-open."""
+    """Per-position base counts (A, C, G, T) over a region, 0-based half-open.
+
+    Counting straight off the alignment, as this does, counts both reads of an
+    unmerged pair where they overlap; ``heterozygosity_over_region`` reads the
+    same region molecule by molecule instead."""
     ref = genome.name_of(chrom)
     mq = genome.min_mapq if min_mapq is None else int(min_mapq)
 
     def keep(r):
-        return not (r.is_unmapped or r.is_secondary or r.is_supplementary or r.is_duplicate) and r.mapping_quality >= mq
+        return not (r.is_unmapped or r.is_secondary or r.is_supplementary or r.is_qcfail
+                    or r.is_duplicate) and r.mapping_quality >= mq
 
     cov = genome.bam.count_coverage(ref, start, end, quality_threshold=min_qual, read_callback=keep)
     return np.array(cov, dtype=np.int32).T          # positions x 4
 
 
+def heterozygosity_over_region(genome, chrom: str, start: int, end: int, callable_mask=None, min_qual: int = 25,
+                               trim: int = 0, min_depth: int = 8, max_depth: int | None = None,
+                               min_quality: float = 30.0, err: float = 0.005, chunk: int = 100_000,
+                               on_step=None) -> dict:
+    """Heterozygous sites per callable base over a region, read in chunks.
+
+    Every position is piled up as the panel's positions are: one observation
+    per molecule (so the overlapping mates of a pair count once), each with its
+    own base quality, and with the option to ignore the ends of molecules where
+    deamination concentrates."""
+    from .sites import pileup
+    totals = {"callable_sites": 0, "heterozygous_sites": 0, "transitions": 0, "transversions": 0,
+              "observations": 0, "depth_floor": 0}
+    pos0 = start
+    while pos0 < end:
+        hi = min(end, pos0 + chunk)
+        if on_step:
+            on_step({"task": "deeptime", "stage": f"counting molecules on {chrom}:{pos0 + 1:,}-{hi:,}",
+                     "fraction": 0.1 + 0.8 * (pos0 - start) / max(1, end - start)})
+        positions = np.arange(pos0 + 1, hi + 1, dtype=np.int64)        # 1-based
+        p = pileup(genome, chrom, positions, max_depth=max_depth or 0).filtered(min_qual=min_qual, trim=trim)
+        mask = None if callable_mask is None else np.asarray(callable_mask, dtype=bool)[pos0 - start:hi - start]
+        r = heterozygosity(None, callable_mask=mask, min_depth=min_depth, max_depth=max_depth, err=err,
+                           min_quality=min_quality, pileup=p, n_sites=len(positions))
+        for k in ("callable_sites", "heterozygous_sites", "transitions", "transversions"):
+            totals[k] += r[k]
+        totals["observations"] += int(len(p.site))
+        totals["depth_floor"] = r["depth_floor"]
+        totals["method"] = r["method"]
+        pos0 = hi
+    n, nh, ntv = totals["callable_sites"], totals["heterozygous_sites"], totals["transversions"]
+    totals.update({"heterozygosity": (nh / n) if n else None, "heterozygosity_ci": _poisson_rate_ci(nh, n),
+                   "transversion_heterozygosity": (ntv / n) if n else None,
+                   "transversion_heterozygosity_ci": _poisson_rate_ci(ntv, n),
+                   "transition_share": (totals["transitions"] / nh) if nh else None})
+    return totals
+
+
 def heterozygosity(counts: np.ndarray, callable_mask: np.ndarray | None = None, min_depth: int = 8,
-                   max_depth: int | None = None, err: float = 0.005, min_quality: float = 30.0) -> dict:
+                   max_depth: int | None = None, err: float = 0.005, min_quality: float = 30.0,
+                   pileup=None, n_sites: int | None = None) -> dict:
     """Heterozygous sites per callable base, from per-position base counts.
 
     No reference sequence is needed: a site is heterozygous when the reads
     carry two alleles. Transitions are reported separately because C->T and
     G->A deamination mimics them, so the transversion rate is the one that
     survives damage; for an undamaged or enzyme-treated library the total is
-    the comparable number."""
-    g = diploid(counts, min_depth=min_depth, max_depth=max_depth, err=err, min_quality=min_quality)
+    the comparable number.
+
+    The denominator counts only sites deep enough for a homozygote to be
+    called, which is what makes the rate a rate: a floor that lets
+    heterozygotes through but not homozygotes would count the same site in the
+    numerator and not in the denominator."""
+    g = diploid(counts, min_depth=min_depth, max_depth=max_depth, err=err, min_quality=min_quality,
+                pileup=pileup, n_sites=n_sites)
     called = g["called"].copy()
     if callable_mask is not None:
         called &= np.asarray(callable_mask, dtype=bool)
@@ -194,8 +319,21 @@ def heterozygosity(counts: np.ndarray, callable_mask: np.ndarray | None = None, 
     ntv = nh - nts
     return {"callable_sites": n, "heterozygous_sites": nh, "transitions": nts, "transversions": ntv,
             "heterozygosity": (nh / n) if n else None,
+            "heterozygosity_ci": _poisson_rate_ci(nh, n),
             "transversion_heterozygosity": (ntv / n) if n else None,
-            "transition_share": (nts / nh) if nh else None, "method": g["method"]}
+            "transversion_heterozygosity_ci": _poisson_rate_ci(ntv, n),
+            "transition_share": (nts / nh) if nh else None, "depth_floor": g["depth_floor"],
+            "method": g["method"]}
+
+
+def _poisson_rate_ci(k: int, n: int, z: float = 1.96) -> list[float] | None:
+    """A rate this small is a count of rare events, so its uncertainty is the
+    count's: an interval from one event is not a measurement."""
+    if not n:
+        return None
+    lo = max(0.0, k - z * math.sqrt(max(k, 0)))
+    hi = k + z * math.sqrt(max(k, 1))
+    return [lo / n, hi / n]
 
 
 def bed_mask(path: str, chrom: str, start: int, end: int) -> np.ndarray:
@@ -207,7 +345,7 @@ def bed_mask(path: str, chrom: str, start: int, end: int) -> np.ndarray:
     opener = gzip.open if str(path).endswith(".gz") else open
     with opener(path, "rt") as fh:
         for line in fh:
-            if not line or line[0] in "#tb":
+            if not line.strip() or line.startswith(("#", "track", "browser")):
                 continue
             f = line.split()
             if len(f) < 3 or plain(f[0]) != want:

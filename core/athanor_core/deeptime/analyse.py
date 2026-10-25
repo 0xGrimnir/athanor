@@ -144,7 +144,7 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
             raise ValueError(f"the reads are mapped to {g.build}; this step needs GRCh37 (hs37d5, hg19 or "
                              "1000 Genomes naming), the build the reference panel is on")
         counts = g.counts()
-        sex = g.sex()
+        whole = g.sex(filtered=True)       # same filters as everything else, so the thresholds apply
         step("molecule lengths", 0.06)
         lp = g.lengths_and_damage_pass(max_reads=max_reads_for_lengths)
         lens = length_summary(lp["length_histogram"])
@@ -152,12 +152,17 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
         gt = genotype_panel(g, ref, mode=mode, seed=seed, min_qual=min_qual, trim=trim,
                             transversions_only=transversions_only, min_depth=min_depth, on_step=on_step)
         panel_sex = sex_from_panel(gt["depth_by_chrom"], gt["sites_by_chrom"])
-        sex = {**panel_sex, "whole_chromosome_counts": sex} if panel_sex.get("call") else \
-              {**panel_sex, "whole_chromosome_counts": sex,
-               "call": sex.get("call"), "fell_back": sex.get("call") is not None,
-               "method": panel_sex.get("method", "") + (
-                   " With too little coverage at the panel's X positions, the call falls back to the read counts "
-                   "over whole chromosomes (R_y), which hold for shotgun sequencing." if sex.get("call") else "")}
+        if panel_sex.get("call"):
+            sex = {**panel_sex, "whole_chromosome_counts": whole, "fell_back": False}
+        else:
+            sex = {**panel_sex, "whole_chromosome_counts": whole, "call": whole.get("call"),
+                   "fell_back": whole.get("call") is not None,
+                   "panel_reason": panel_sex.get("reason"),
+                   "reason": (None if whole.get("call") else
+                              f"{panel_sex.get('reason')}; from whole chromosomes, {whole.get('reason')}"),
+                   "method": panel_sex.get("method", "") + (
+                       " The panel's positions did not settle it here, so the call comes from R_y over whole "
+                       "chromosomes instead, which holds for shotgun sequencing." if whole.get("call") else "")}
         if reference_fasta:
             step("deamination against the reference", 0.58)
             try:
@@ -197,7 +202,11 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
                          f"({int(auto.sum()):,} autosomal, usable for ancestry); median molecule length "
                          f"{lens.get('median', 0):.0f} bp",
                          {**file_info, "panel": gt["stats"], "lengths": lens, "length_pass": lp},
-                         ["A BAM says which reference it was mapped to, not how it was mapped; read groups and "
+                         ["Reads carrying a non-reference allele map slightly less well than reads carrying the "
+                          "reference one, so a genome read this way carries a little less non-reference variation "
+                          "than it has; the ancestry analyses are affected by it in the same direction as every "
+                          "other study that uses mapped reads.",
+                          "A BAM says which reference it was mapped to, not how it was mapped; read groups and "
                           "programs are reported as the file states them.",
                           "Molecule lengths are read lengths, which are the molecules' lengths only when adapters "
                           "were trimmed and overlapping pairs merged, as ancient-DNA pipelines do."],
@@ -205,7 +214,7 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
                          "lengths from a pass over the autosomes.", [SOURCES["skoglund2014"], "aadr"], ref),
              pdeep._card("deeptime_authenticity", "Is this DNA ancient?", "The sample", "A",
                          (f"terminal deamination {100 * dmg:.1f}% outside CpG sites "
-                          f"({100 * (gt['damage'].get('terminal_deamination_including_cpg') or dmg):.1f}% with them): "
+                          f"({100 * (dmg if gt['damage'].get('terminal_deamination_including_cpg') is None else gt['damage']['terminal_deamination_including_cpg']):.1f}% with them): "
                           f"C→T at the 5′ end and G→A at the 3′ end above background; median molecule "
                           f"{lens.get('median', 0):.0f} bp"
                           if dmg is not None else "not enough covered sites to measure deamination"),
@@ -219,14 +228,18 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
                          ["A library treated with uracil-DNA glycosylase shows little or no damage even when the "
                           "DNA is genuinely ancient.",
                           "Damage and short molecules show that DNA is old and degraded. They cannot show whose it "
-                          "is: present-day contamination is measured separately."],
+                          "is: present-day human contamination of a nuclear genome is not measured here."]
+                         + ([] if gt["damage"].get("enough_observations", True) else
+                            [f"Fewer than {gt['damage'].get('minimum_observations')} observations sit behind the "
+                             "first-base rate, so read it as the interval rather than the number."]),
                          gt["damage"]["method"], [SOURCES["briggs2007"], SOURCES["skoglund2014"]], ref,
                          ok=dmg is not None),
              pdeep._card("deeptime_sex", "Genetic sex", "The sample", "A",
                          ((f"{sex['call']} (R_x = {sex['r_x']:.2f}, interval {sex['r_x_ci'][0]:.2f}–"
-                           f"{sex['r_x_ci'][1]:.2f}, at the panel's positions)" if sex.get("r_x") is not None
-                           else f"{sex['call']} (from read counts over whole chromosomes)") if sex.get("call")
-                          else f"not called: {sex.get('reason')}"),
+                           f"{sex['r_x_ci'][1]:.2f}, at the panel's positions)"
+                           if not sex.get("fell_back") else
+                           f"{sex['call']} (from R_y over whole chromosomes: the panel's X positions did not "
+                           f"settle it)") if sex.get("call") else f"not called: {sex.get('reason')}"),
                          sex, ["Genetic sex here means which sex chromosomes the reads come from.",
                                "Very low coverage, or contamination by DNA of the other sex, widens the interval "
                                "until neither range fits."],
@@ -243,6 +256,19 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
     cards.extend(pdeep.pca_cards(ref, dos))
     step("Neanderthal and Denisovan ancestry", 0.86)
     cards.extend(pdeep.archaic_cards(ref, dos, auto))
+    deep_ids = {"ancient_ancestry", "pca", "closest_ancients", "neanderthal", "denisovan", "archaic_alleles"}
+    warn = []
+    if dmg is not None and dmg > 0.02 and trim == 0 and not transversions_only:
+        warn.append(f"These calls were made without guarding against deamination, which this sample carries "
+                    f"({100 * dmg:.0f}% at the first base): a C read as a T, or a G as an A, is a wrong allele, "
+                    "not noise, and it pushes these numbers in one direction. Ignoring a few bases at each end of "
+                    "every molecule, or keeping only transversions, removes most of it; both are settings above.")
+    warn.append(f"These calls come from {gt['stats']['sites_called']:,} of the panel's {gt['stats']['sites']:,} "
+                f"positions, at a depth of {gt['stats']['mean_depth_at_covered_sites']:.2f} where they are "
+                f"covered{'' if mode == 'diploid' else ', one allele drawn per position'}.")
+    for c in cards:
+        if c["id"] in deep_ids:
+            c["limits"] = list(c.get("limits") or []) + warn
     step("haplogroups", 0.92)
     raw = _raw_from_haploid(ycalls, mtcalls)
     cards.extend(pdeep.haplogroup_cards(ref, raw, raw.pos, sex.get("call") or "unknown"))
