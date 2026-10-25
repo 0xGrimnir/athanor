@@ -599,6 +599,8 @@ function wire() {
   $("dtExport").onclick = () => dtExport();
   $("dtHetRun").onclick = () => dtHet();
   $("dtHetMask").onclick = () => dtPickMask();
+  $("dtRefFasta").onclick = () => dtPickReference();
+  $("dtRefClear").onclick = () => { DT.reference = null; $("dtRefName").textContent = "None: deamination will be measured at the panel's positions."; };
   $("dtHetMaskClear").onclick = () => { DT.mask = null; $("dtHetMaskName").textContent = "No mask: every position with enough depth counts."; };
   for (const [id, fmt] of [["dtDepth", (v) => v], ["dtMapq", (v) => v], ["dtBq", (v) => v], ["dtTrim", (v) => v]])
     $(id).oninput = (e) => ($(`${id}Val`).textContent = fmt(e.target.value));
@@ -1751,7 +1753,7 @@ function drawNean(cv, r, regions) {
 /* ============================== DEEP TIME ==============================
    Ancient nuclear genomes: a BAM in, authentication, sex, genotypes and the
    deep-ancestry reports out. Everything runs in the Linux engines pack. */
-const DT = { path: null, mask: null, result: null, inspect: null, busy: false, pack: null };
+const DT = { path: null, mask: null, reference: null, result: null, inspect: null, busy: false, pack: null };
 
 async function initDeeptime() {
   try { DT.pack = await rpc("personal_status", {}); } catch { DT.pack = null; }
@@ -1778,6 +1780,15 @@ async function dtChoose() {
     dtReady();
     dtInspect();
   } catch (e) { log(`File dialog: ${e}`, true); }
+}
+
+async function dtPickReference() {
+  if (!TAURI) return;
+  const [p] = await TAURI.core.invoke("pick_files", { title: "Reference genome the reads were mapped to (FASTA)",
+    multiple: false, filters: [["FASTA", ["fa", "fasta", "fna", "fas", "gz"]], ["All files", ["*"]]] }).catch(() => []);
+  if (!p) return;
+  DT.reference = p;
+  $("dtRefName").textContent = `${baseName(p)} — every aligned base will be compared with it (an .fai index is made if it is missing)`;
 }
 
 async function dtPickMask() {
@@ -1849,7 +1860,7 @@ async function dtRun() {
     DT.result = await rpc("deeptime_analyse", {
       path: DT.path, mode: $("dtMode").value, min_depth: +$("dtDepth").value,
       min_mapq: +$("dtMapq").value, min_qual: +$("dtBq").value, trim: +$("dtTrim").value,
-      transversions_only: $("dtTv").checked,
+      transversions_only: $("dtTv").checked, ...(DT.reference ? { reference_path: DT.reference } : {}),
     });
     job.done(`${DT.result.cards.length} reports`);
     renderDeeptime();
@@ -1903,13 +1914,18 @@ const DT_DETAIL = {
   deeptime_authenticity(el, c) {
     const d = c.result.damage || {}, L = c.result.lengths || {};
     const rows = [["ct5", "C→T from the molecule's 5′ end"], ["ga3", "G→A from its 3′ end"]];
+    const ctx = (x, k) => (x[k] && x[k].terminal_excess != null
+      ? `${pct(x[k].terminal_excess, 1)} <small>(${(x[k].observations[0] || 0).toLocaleString()} obs.)</small>` : "—");
     el.innerHTML = kvTable(rows.flatMap(([k, lab]) => {
       const x = d[k]; if (!x) return [];
-      return [[lab, x.terminal == null ? "—" : `${pct(x.terminal, 1)} at the first base <small>(background ${pct(x.background, 2)}, excess ${pct(x.terminal_excess, 1)}; ${(x.observations[0] || 0).toLocaleString()} observations)</small>`]];
+      return [[lab, x.terminal == null ? "—" : `${pct(x.terminal, 1)} at the first base <small>(background ${pct(x.background, 2)}, excess ${pct(x.terminal_excess, 1)}; ${(x.observations[0] || 0).toLocaleString()} observations)</small>`],
+              [`&nbsp;&nbsp;outside CpG / at CpG`, `${ctx(x, "not_cpg")} / ${ctx(x, "cpg")}`]];
     }).concat([
       ["Molecule length", L.median == null ? "—" : `median ${L.median} bp <small>(5% shorter than ${L.shortest_5pc}, 5% longer than ${L.longest_5pc})</small>`],
       ["Strands", c.result.reverse_fraction == null ? "—" : `${pct(c.result.reverse_fraction, 1)} of reads on the reverse strand`],
     ])) + `<div class="plotwrap"><canvas id="dtDamagePlot" height="220"></canvas></div>
+      <p class="note">${d.source === "reference" ? `Measured against the reference sequence${d.chromosomes ? ` on chromosome${d.chromosomes.length > 1 ? "s" : ""} ${escapeHtml(d.chromosomes.slice(0, 6).join(", "))}${d.chromosomes.length > 6 ? "…" : ""}` : ""}, over ${(d.reads_used || 0).toLocaleString()} reads.` : "Measured at the reference panel's positions; the non-CpG figure is the one to compare with a published rate."}
+      ${d.reference_error ? `<span class="warn">The reference could not be used: ${escapeHtml(d.reference_error)}</span>` : ""}</p>
       <p class="note">${d.terminal_deamination == null ? "Not enough covered sites to measure deamination."
         : d.terminal_deamination > 0.02 ? "Deamination rises towards both ends of the molecules, the pattern of authentic ancient DNA (Briggs et al. 2007). A library treated with uracil-DNA glycosylase keeps it only at the terminal base or two."
         : "Little or no terminal deamination: either the library was treated with uracil-DNA glycosylase, or the reads are not ancient."}</p>`;

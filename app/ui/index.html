@@ -408,6 +408,13 @@
       <label class="mini">Ignore this many bases at each end of a molecule <span class="val" id="dtTrimVal">0</span><input id="dtTrim" type="range" min="0" max="10" step="1" value="0"></label>
       <label class="mini check"><input type="checkbox" id="dtTv"> Transversions only (deamination cannot reach them)</label>
       <p class="note">Deamination turns C into T near a molecule's 5′ end and G into A near its 3′ end. Trimming the ends or keeping only transversions removes those errors at the cost of sites.</p>
+    </div>
+    <div class="sec">
+      <div class="label">Deamination</div>
+      <p class="note">With the reference genome the reads were mapped to, every aligned base is compared with it, as mapDamage2 does, and cytosines followed by guanine are counted separately: methylated CpG deaminates several times faster. Without it the rate can only be measured at the reference panel's own positions, which are few and CpG-rich, so it runs higher than a genome-wide figure.</p>
+      <div class="row"><button type="button" class="btn sm" id="dtRefFasta">Reference genome (FASTA)…</button>
+        <button type="button" class="btn sm" id="dtRefClear">None</button></div>
+      <p class="note" id="dtRefName">None: deamination will be measured at the panel's positions.</p>
       <button type="button" class="btn primary" id="dtRun" disabled>Read this genome</button>
     </div>
     <div class="sec">
