@@ -1,7 +1,8 @@
 """JSON-RPC methods for Deep Time (ancient nuclear genomes).
 
   deeptime_inspect {path}        -> what the alignment is: reference build, read counts, sex, molecule lengths
-  deeptime_analyse {path, ...}   -> authentication, sex, genotypes and the deep-ancestry report cards
+  deeptime_analyse {path, reference_path?, ...}
+                                -> authentication, sex, genotypes and the deep-ancestry report cards
   deeptime_heterozygosity {path, chrom, start, end, mask_path?}
                                  -> heterozygous sites per callable base in a region (high coverage)
   deeptime_export {path, what}   -> write the last report (JSON) or its genotypes (EIGENSTRAT-style text)
@@ -51,8 +52,10 @@ def m_inspect(p):
 
 def m_analyse(p):
     p = p or {}
-    kw = {k: p[k] for k in ("mode", "seed", "min_mapq", "min_qual", "trim", "transversions_only", "min_depth")
-          if k in p}
+    kw = {k: p[k] for k in ("mode", "seed", "min_mapq", "min_qual", "trim", "transversions_only", "min_depth",
+                            "damage_chromosomes", "damage_max_reads") if k in p}
+    if p.get("reference_path"):
+        kw["reference_fasta"] = _path(p, "reference_path")
     if kw.get("mode") not in (None, "pseudo_haploid", "diploid"):
         raise ValueError("mode must be pseudo_haploid or diploid")
     res = analyse(_path(p), on_step=_step, **kw)

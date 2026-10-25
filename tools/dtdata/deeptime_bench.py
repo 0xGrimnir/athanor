@@ -37,7 +37,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "core"))
 from athanor_core.deeptime import calls as C           # noqa: E402
 from athanor_core.deeptime.bam import Genome           # noqa: E402
-from athanor_core.deeptime.sites import damage_profile, pileup   # noqa: E402
+from athanor_core.deeptime import damage as D
+from athanor_core.deeptime.sites import pileup   # noqa: E402
 
 UA = {"User-Agent": "athanor-ci"}
 DATAVERSE = "https://dataverse.harvard.edu/api/access/datafile"
@@ -58,7 +59,7 @@ def opt(name, default):
 
 N_IND = int(opt("--individuals", "4"))
 REGION = opt("--region", "21:30000000-32000000")
-ARCHAIC = opt("--archaic", "Altai")
+ARCHAIC = opt("--archaic", "Vindija")
 results, report = [], {}
 
 
@@ -203,10 +204,11 @@ def samtools(*cmd):
 
 
 def genotype_bam(path: Path, aadr: AADRRemote, mode: str = "pseudo_haploid", trim: int = 0,
-                 min_qual: int = 20, min_mapq: int = 30, min_depth: int = 8) -> dict:
+                 min_qual: int = 20, min_mapq: int = 30, min_depth: int = 8,
+                 reference: str | None = None, damage_chroms: list | None = None) -> dict:
     """Calls at every 1240K site on the autosomes and the X."""
     dos = np.full(aadr.nsnp, -1, dtype=np.int8)
-    dmg = {}
+    acc = None
     covered = 0
     with Genome(str(path), min_mapq=min_mapq) as g:
         build = g.build
@@ -228,23 +230,38 @@ def genotype_bam(path: Path, aadr: AADRRemote, mode: str = "pseudo_haploid", tri
             dos[idx] = r["dosage"]
             covered += int(r.get("sites_covered", 0))
             if c <= 22:
-                d = damage_profile(pu, aadr.a1[idx], aadr.a2[idx], min_qual=min_qual)
-                for key in ("ct5", "ga3"):
-                    a = dmg.setdefault(key, [np.zeros(25), np.zeros(25)])
-                    tot = np.array(d[key]["observations"], dtype=float)
-                    freq = np.array([0.0 if x is None else x for x in d[key]["frequency"]], dtype=float)
-                    a[0] += freq * tot
-                    a[1] += tot
-    damage = {}
-    for key, (hit, tot) in dmg.items():
-        with np.errstate(invalid="ignore", divide="ignore"):
-            f = np.where(tot > 0, hit / np.maximum(tot, 1), np.nan)
-        bg = float(hit[15:].sum() / tot[15:].sum()) if tot[15:].sum() else float("nan")
-        damage[key] = {"terminal": float(f[0]), "background": bg, "excess": float(f[0] - bg),
-                       "observations_at_first_base": int(tot[0]),
-                       "profile": [round(float(x), 4) for x in f[:10]]}
+                acc = D.accumulate_panel(pu, aadr.a1[idx], aadr.a2[idx], acc, min_qual=min_qual)
+        panel_damage = D.finish_panel(acc) if acc else {}
+        reference_damage = None
+        if reference:
+            try:
+                reference_damage = D.from_reference(g, reference, chroms=damage_chroms, max_reads=400_000,
+                                                    min_qual=min_qual)
+            except Exception as e:                                       # noqa: BLE001
+                info(f"damage against the reference failed: {e}")
     return {"dosage": dos, "sites_covered": covered, "sites_called": int((dos >= 0).sum()),
-            "build": build, "sex": sex, "damage": damage}
+            "build": build, "sex": sex, "damage": panel_damage, "damage_reference": reference_damage}
+
+
+def _dsummary(d: dict | None) -> dict | None:
+    """The comparable numbers from a damage profile."""
+    if not d:
+        return None
+    out = {"terminal_deamination": d.get("terminal_deamination"),
+           "terminal_deamination_including_cpg": d.get("terminal_deamination_including_cpg"),
+           "reads_used": d.get("reads_used")}
+    for key in ("ct5", "ga3"):
+        x = d.get(key)
+        if not x:
+            continue
+        out[key] = {"terminal": x.get("terminal"), "background": x.get("background"),
+                    "excess": x.get("terminal_excess"), "observations_at_first_base": x["observations"][0],
+                    "not_cpg_excess": x["not_cpg"].get("terminal_excess"),
+                    "not_cpg_observations": x["not_cpg"]["observations"][0],
+                    "cpg_excess": x["cpg"].get("terminal_excess"),
+                    "cpg_observations": x["cpg"]["observations"][0],
+                    "profile": x["frequency"][:8]}
+    return out
 
 
 def compare_dosage(mine: np.ndarray, theirs: np.ndarray) -> dict:
@@ -264,21 +281,56 @@ def compare_dosage(mine: np.ndarray, theirs: np.ndarray) -> dict:
             "theirs_only": int(((mine < 0) & (theirs >= 0)).sum())}
 
 
+CHR21_FASTA = ("https://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/"
+               "Homo_sapiens.GRCh37.dna.chromosome.21.fa.gz")
+
+
+def chr21_reference() -> str | None:
+    """GRCh37 chromosome 21, so deamination can be measured against the
+    reference the reads were mapped to rather than at panel positions."""
+    gz = WORK / "chr21.fa.gz"
+    fa = WORK / "chr21.fa"
+    try:
+        if not fa.exists():
+            fetch(CHR21_FASTA, gz)
+            with gzip.open(gz, "rb") as fh, open(fa, "wb") as out:
+                while True:
+                    b = fh.read(1 << 22)
+                    if not b:
+                        break
+                    out.write(b)
+        if not (WORK / "chr21.fa.fai").exists():
+            samtools("faidx", fa)
+        return str(fa)
+    except Exception as e:                                           # noqa: BLE001
+        info(f"chromosome 21 reference unavailable ({e}); damage will come from panel positions only")
+        return None
+
+
 def step_1240k(aadr: AADRRemote) -> None:
     runs = ena_runs("PRJEB11450")
     info(f"{len(runs)} BAMs in PRJEB11450; smallest {runs[0]['bytes'] / 1e6:.0f} MB")
-    done, rows = 0, []
+    # take the smallest files, but make sure both published sexes are represented
+    chosen, seen_sex = [], set()
     for r in runs:
-        if done >= N_IND:
-            break
         gid = aadr.genetic_id(r["alias"])
         if gid is None:
-            info(f"{r['alias']}: no AADR annotation row; skipped")
             continue
+        sex = (aadr.field(gid, r"^molecular sex") or "?")[:1]
+        if len(chosen) < N_IND - 1 or sex not in seen_sex:
+            chosen.append((r, gid, sex))
+            seen_sex.add(sex)
+        if len(chosen) >= N_IND and {"M", "F"} <= seen_sex:
+            break
+    chosen = chosen[:max(N_IND, len(seen_sex))]
+    info(f"individuals: {', '.join(f'{g} ({x})' for _, g, x in chosen)}")
+    reference = chr21_reference()
+    done, rows = 0, []
+    for r, gid, _sex in chosen:
         bam = fetch(r["url"], WORK / f"{r['alias']}.bam", r["md5"] or None)
         if not (bam.with_suffix(".bam.bai")).exists():
             samtools("index", bam)
-        got = genotype_bam(bam, aadr)
+        got = genotype_bam(bam, aadr, reference=reference, damage_chroms=["21"] if reference else None)
         theirs = aadr.dosage(gid)
         cmp = compare_dosage(got["dosage"], theirs)
         row = {"individual": gid, "run": r["run"], "bytes": r["bytes"], "build": got["build"],
@@ -290,7 +342,8 @@ def step_1240k(aadr: AADRRemote) -> None:
                              "mt_haplogroup": aadr.field(gid, r"^mtdna haplogroup")},
                "ours": {"sites_called": got["sites_called"], "sites_covered": got["sites_covered"],
                         "sex": got["sex"]["call"], "r_y": got["sex"].get("r_y"),
-                        "damage": got["damage"]},
+                        "damage_at_panel_sites": _dsummary(got["damage"]),
+                        "damage_against_reference": _dsummary(got["damage_reference"])},
                "genotypes": cmp}
         rows.append(row)
         print(json.dumps(row, default=float)[:1200], flush=True)
@@ -315,19 +368,19 @@ def step_1240k(aadr: AADRRemote) -> None:
          "; ".join(f"{i}: {mine} vs {t}" for i, mine, t in sexes))
     dmg = []
     for r in rows:
-        ours = [r["ours"]["damage"].get(k, {}).get("excess") for k in ("ct5", "ga3")]
-        mine = None if any(x is None for x in ours) else float(np.mean(ours))
+        src = r["ours"]["damage_against_reference"] or r["ours"]["damage_at_panel_sites"] or {}
+        mine = src.get("terminal_deamination")
         try:
             theirs = float(r["published"]["damage"])
         except (TypeError, ValueError):
             theirs = None
-        dmg.append((r["individual"], mine, theirs))
-        r["ours"]["terminal_deamination"] = mine
-    have = [(i, m, t) for i, m, t in dmg if m is not None and t is not None]
+        dmg.append((r["individual"], mine, theirs, bool(r["ours"]["damage_against_reference"])))
+    have = [(i, m, t) for i, m, t, _ in dmg if m is not None and t is not None]
     ok = bool(have) and all(abs(m - t) <= max(0.02, 0.4 * t) for _, m, t in have)
-    gate("Terminal deamination matches the damage rate published for each individual (within 40%, or 0.02)",
-         ok, "; ".join(f"{i}: {m:.3f} vs {t:.3f}" for i, m, t in have) or "no published damage rates to compare")
-    measurable = [(i, m) for i, m, _ in dmg if m is not None]
+    gate("Terminal deamination outside CpG sites, measured against the reference, matches the first-base damage "
+         "rate published for each individual (within 40%, or 0.02)", ok,
+         "; ".join(f"{i}: {m:.3f} vs {t:.3f}" for i, m, t in have) or "no published damage rates to compare")
+    measurable = [(i, m) for i, m, _, _ in dmg if m is not None]
     gate("Terminal deamination is measurable on every individual", len(measurable) == len(rows),
          "; ".join(f"{i}: {m:.3f}" for i, m in measurable))
 
@@ -370,14 +423,19 @@ def step_archaic() -> None:
     chrom, span = REGION.split(":")
     start, end = (int(x) for x in span.split("-"))
     folder = {"Altai": "Altai_realigned", "Vindija": "Vindija33.19"}[ARCHAIC]
+    info(f"{ARCHAIC}: looking for an indexed chromosome-{chrom} alignment")
     vcf = f"{EVA}/VCF/{'Altai' if ARCHAIC == 'Altai' else 'Vindija33.19'}/chr{chrom}_mq25_mapab100.vcf.gz"
     mask = f"{EVA}/FilterBed/{'Altai' if ARCHAIC == 'Altai' else 'Vindija33.19'}/chr{chrom}_mask.bed.gz"
     listing = urllib.request.urlopen(urllib.request.Request(f"{EVA}/bam/Pruefer_etal_2017/{folder}/",
                                                             headers=UA), timeout=300).read().decode("utf-8", "replace")
-    names = re.findall(r'<a href="([^"?/][^"]*\.bam)">', listing)
-    want = next((n for n in names if re.search(rf"(^|\D){chrom}(\D|$)", n)), None)
+    names = re.findall(r'<a href="([^"?/][^"]*)">', listing)
+    bams = [n for n in names if n.endswith(".bam")]
+    indexed = {n for n in names if n.endswith((".bai", ".bam.bai"))}
+    want = next((n for n in bams if re.search(rf"(^|\D){chrom}(\D|$)", n)
+                 and (f"{n}.bai" in indexed or f"{n[:-4]}.bai" in indexed)), None)
     if want is None:
-        gate(f"{ARCHAIC}: a chromosome-{chrom} alignment is published", False, f"found {names[:6]}")
+        gate(f"{ARCHAIC}: an indexed chromosome-{chrom} alignment is published", False,
+             f"alignments {bams[:4]}, indexes {sorted(indexed)[:4]}")
         return
     url = f"{EVA}/bam/Pruefer_etal_2017/{folder}/{want}"
     info(f"streaming {REGION} from {want}")

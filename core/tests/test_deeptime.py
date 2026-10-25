@@ -6,8 +6,9 @@ import pytest
 pysam = pytest.importorskip("pysam")
 
 from athanor_core.deeptime import calls as C                      # noqa: E402
+from athanor_core.deeptime import damage as D                     # noqa: E402
 from athanor_core.deeptime.bam import GRCH37, Genome, length_summary, plain, wilson   # noqa: E402
-from athanor_core.deeptime.sites import damage_profile, pileup    # noqa: E402
+from athanor_core.deeptime.sites import pileup    # noqa: E402
 
 BASES = "ACGT"
 COMP = {"A": "T", "C": "G", "G": "C", "T": "A"}
@@ -84,7 +85,32 @@ def ancient(tmp_path_factory):
     pos, ref, alt = _sites(rng, ref_seq)
     d = tmp_path_factory.mktemp("deeptime")
     path, truth = _simulate(d, rng, ref_seq, pos, ref, alt, with_y=3000)
-    return {"path": path, "pos": pos, "ref": ref, "alt": alt, "truth": truth, "sequence": ref_seq}
+    fasta = d / "ref.fa"
+    fasta.write_text(">1\n" + "\n".join(ref_seq[i:i + 60] for i in range(0, len(ref_seq), 60)) + "\n")
+    pysam.faidx(str(fasta))
+    return {"path": path, "pos": pos, "ref": ref, "alt": alt, "truth": truth, "sequence": ref_seq,
+            "fasta": str(fasta)}
+
+
+def test_damage_against_the_reference_sequence(ancient):
+    """With the reference at hand every aligned base counts, so the profile is
+    the whole curve, split by dinucleotide context."""
+    with Genome(ancient["path"]) as g:
+        d = D.from_reference(g, ancient["fasta"], chroms=["1"])
+    model = DAMAGE0 * (1 - LAM) ** np.arange(10)
+    for key in ("ct5", "ga3"):
+        prof = d[key]
+        assert prof["observations"][0] > 20_000           # far more than the panel's positions give
+        assert prof["background"] < 0.01
+        assert abs(prof["terminal_excess"] - DAMAGE0) < 0.02
+        obs = np.array(prof["frequency"][:10], dtype=float) - prof["background"]
+        assert np.abs(obs - model).mean() < 0.01
+        # the simulation damages every cytosine alike, so the two contexts must agree
+        for context in ("cpg", "not_cpg"):
+            assert abs(prof[context]["terminal_excess"] - DAMAGE0) < 0.05, (key, context)
+        assert prof["cpg"]["observations"][0] + prof["not_cpg"]["observations"][0] == prof["observations"][0]
+    assert abs(d["terminal_deamination"] - DAMAGE0) < 0.02
+    assert d["reads_used"] > 1000 and d["chromosomes"] == ["1"]
 
 
 def test_names_and_intervals():
@@ -108,9 +134,11 @@ def test_build_is_read_off_the_chromosome_lengths(tmp_path):
 
 
 def test_damage_is_measured_at_the_simulated_rate(ancient):
+    """Without a reference sequence the panel's own positions are the only
+    places a reference base is known; the rate must still come back right."""
     with Genome(ancient["path"]) as g:
         p = pileup(g, "1", ancient["pos"])
-        d = damage_profile(p, ancient["ref"], ancient["alt"])
+        d = D.from_panel(p, ancient["ref"], ancient["alt"])
     model = DAMAGE0 * (1 - LAM) ** np.arange(10)
     for key in ("ct5", "ga3"):
         prof = d[key]

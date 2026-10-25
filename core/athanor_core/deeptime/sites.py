@@ -22,24 +22,31 @@ BASES = "ACGT"
 CODE = {b: i for i, b in enumerate(BASES)}
 CODE.update({b.lower(): i for i, b in enumerate(BASES)})
 MAXD = 25          # positions from each end kept for the damage profile
+COMPLEMENT = np.array([3, 2, 1, 0], dtype=np.int8)      # A<->T, C<->G
 
 
 class Pileup:
     """Observations at a set of positions on one chromosome.
 
-    site      index of the position (into the position array given)
-    base      0-3 (A, C, G, T)
-    qual      base quality
-    d5, d3    distance of the base from the molecule's 5' and 3' ends
-    reverse   the read is on the reverse strand
+    site       index of the position (into the position array given)
+    base       0-3 (A, C, G, T)
+    qual       base quality
+    d5, d3     distance of the base from the molecule's 5' and 3' ends
+    reverse    the read is on the reverse strand
+    prev, nxt  the molecule's own neighbours of this base (-1 at the ends),
+               which give the dinucleotide context: deamination is much faster
+               at a cytosine followed by a guanine
     """
 
-    __slots__ = ("site", "base", "qual", "d5", "d3", "reverse", "n_sites", "reads", "reads_used")
+    __slots__ = ("site", "base", "qual", "d5", "d3", "reverse", "prev", "nxt", "n_sites", "reads", "reads_used")
 
-    def __init__(self, site, base, qual, d5, d3, reverse, n_sites, reads, reads_used):
+    def __init__(self, site, base, qual, d5, d3, reverse, n_sites, reads, reads_used, prev=None, nxt=None):
         self.site, self.base, self.qual = site, base, qual
         self.d5, self.d3, self.reverse = d5, d3, reverse
         self.n_sites, self.reads, self.reads_used = n_sites, reads, reads_used
+        z = np.full(len(site), -1, dtype=np.int8)
+        self.prev = z if prev is None else prev
+        self.nxt = z.copy() if nxt is None else nxt
 
     def counts(self) -> np.ndarray:
         """n_sites x 4 counts of each base."""
@@ -50,7 +57,8 @@ class Pileup:
     def filtered(self, min_qual: int = 20, trim: int = 0):
         keep = (self.qual >= min_qual) & (self.d5 >= trim) & (self.d3 >= trim)
         return Pileup(self.site[keep], self.base[keep], self.qual[keep], self.d5[keep], self.d3[keep],
-                      self.reverse[keep], self.n_sites, self.reads, int(keep.sum()))
+                      self.reverse[keep], self.n_sites, self.reads, int(keep.sum()),
+                      self.prev[keep], self.nxt[keep])
 
 
 def pileup(genome, chrom: str, positions: np.ndarray, min_mapq: int | None = None, max_depth: int = 1000,
@@ -64,7 +72,7 @@ def pileup(genome, chrom: str, positions: np.ndarray, min_mapq: int | None = Non
         return Pileup(z, z.astype(np.int8), z.astype(np.int16), z, z, np.zeros(0, bool), n, 0, 0)
     mq = genome.min_mapq if min_mapq is None else int(min_mapq)
     lo, hi = int(positions[0]), int(positions[-1])
-    site_l, base_l, qual_l, d5_l, d3_l, rev_l = [], [], [], [], [], []
+    site_l, base_l, qual_l, d5_l, d3_l, rev_l, prev_l, next_l = [], [], [], [], [], [], [], []
     seen = np.zeros(n, dtype=np.int32)
     reads = used = 0
     for r in genome.bam.fetch(ref, max(0, lo - 1), hi):
@@ -105,55 +113,27 @@ def pileup(genome, chrom: str, positions: np.ndarray, min_mapq: int | None = Non
             d5, d3 = qpos, qlen - 1 - qpos
         used += 1
         np.add.at(seen, j, 1)
+        # the molecule's own neighbours: for a reverse read the stored sequence is
+        # the reverse complement, so the molecule's 3' neighbour lies to the left
+        s_arr = np.frombuffer(seq.encode(), dtype="S1")
+        codes_all = np.full(len(seq), -1, dtype=np.int8)
+        for b, c in (("A", 0), ("C", 1), ("G", 2), ("T", 3), ("a", 0), ("c", 1), ("g", 2), ("t", 3)):
+            codes_all[s_arr == b.encode()] = c
+        left = np.where(qpos > 0, codes_all[np.maximum(qpos - 1, 0)], -1)
+        right = np.where(qpos < len(seq) - 1, codes_all[np.minimum(qpos + 1, len(seq) - 1)], -1)
+        if r.is_reverse:
+            prev_m = np.where(right >= 0, COMPLEMENT[np.maximum(right, 0)], -1)
+            next_m = np.where(left >= 0, COMPLEMENT[np.maximum(left, 0)], -1)
+        else:
+            prev_m, next_m = left, right
         site_l.append(j.astype(np.int32)); base_l.append(codes); qual_l.append(quals)
         d5_l.append(d5.astype(np.int16)); d3_l.append(d3.astype(np.int16))
         rev_l.append(np.full(len(j), r.is_reverse, dtype=bool))
+        prev_l.append(prev_m.astype(np.int8)); next_l.append(next_m.astype(np.int8))
 
     def cat(parts, dtype):
         return np.concatenate(parts).astype(dtype) if parts else np.zeros(0, dtype=dtype)
 
     return Pileup(cat(site_l, np.int32), cat(base_l, np.int8), cat(qual_l, np.int16), cat(d5_l, np.int16),
-                  cat(d3_l, np.int16), cat(rev_l, bool), n, reads, used)
-
-
-COMPLEMENT = np.array([3, 2, 1, 0], dtype=np.int8)      # A<->T, C<->G
-
-
-def damage_profile(p: Pileup, ref: np.ndarray, alt: np.ndarray, min_qual: int = 20,
-                   background_from: int = 15) -> dict:
-    """C->T from the 5' end and G->A from the 3' end, at panel sites where the
-    deamination product is not the site's other allele.
-
-    Reads from the reverse strand are stored reverse-complemented, so their
-    bases and the reference's are complemented back to the molecule's own
-    strand; deamination is then C->T near the molecule's 5' end and G->A near
-    its 3' end whichever strand the read came from, as mapDamage2 reports it."""
-    ref = np.asarray(ref, dtype=np.int8)
-    alt = np.asarray(alt, dtype=np.int8)
-    q = p.qual >= min_qual
-    rb, ab = ref[p.site], alt[p.site]
-    refm = np.where(p.reverse, COMPLEMENT[rb], rb)
-    altm = np.where(p.reverse, COMPLEMENT[ab], ab)
-    basem = np.where(p.reverse, COMPLEMENT[p.base], p.base)
-    out = {}
-    for label, refbase, prod, dist in (("ct5", CODE["C"], CODE["T"], p.d5), ("ga3", CODE["G"], CODE["A"], p.d3)):
-        site_ok = (refm == refbase) & (altm != prod)
-        m = q & site_ok & (dist < MAXD) & ((basem == refbase) | (basem == prod))
-        d = dist[m]
-        tot = np.bincount(d, minlength=MAXD)[:MAXD]
-        hit = np.bincount(d, weights=(basem[m] == prod).astype(np.float64), minlength=MAXD)[:MAXD]
-        with np.errstate(invalid="ignore", divide="ignore"):
-            freq = np.where(tot > 0, hit / np.maximum(tot, 1), np.nan)
-        bg_tot, bg_hit = tot[background_from:].sum(), hit[background_from:].sum()
-        bg = float(bg_hit / bg_tot) if bg_tot else float("nan")
-        out[label] = {"frequency": [None if np.isnan(x) else round(float(x), 5) for x in freq],
-                      "observations": tot.tolist(), "background": None if np.isnan(bg) else round(bg, 5),
-                      "terminal": None if tot[0] == 0 else round(float(freq[0]), 5),
-                      "terminal_excess": None if (tot[0] == 0 or np.isnan(bg)) else round(float(freq[0] - bg), 5),
-                      "observations_usable": int(site_ok.sum())}
-    first = [out[k]["terminal_excess"] for k in ("ct5", "ga3")]
-    out["terminal_deamination"] = None if any(x is None for x in first) else round(float(np.mean(first)), 5)
-    out["method"] = ("C->T against the 5' end and G->A against the 3' end at panel SNP sites whose other allele is "
-                     f"not the deamination product; the rate at positions {background_from} and beyond is taken as "
-                     "the background of real differences and sequencing errors and subtracted.")
-    return out
+                  cat(d3_l, np.int16), cat(rev_l, bool), n, reads, used,
+                  cat(prev_l, np.int8), cat(next_l, np.int8))

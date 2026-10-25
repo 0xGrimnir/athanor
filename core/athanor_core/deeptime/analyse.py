@@ -18,8 +18,9 @@ from ..personal import deep as pdeep
 from ..personal.rawfile import RawGenotypes
 from ..personal.refdata import RefData
 from . import calls as C
+from . import damage as D
 from .bam import Genome, length_summary
-from .sites import damage_profile, pileup
+from .sites import pileup
 
 SOURCES = {
     "briggs2007": {"title": "Briggs et al., Patterns of damage in genomic DNA sequences from a Neandertal, "
@@ -71,19 +72,18 @@ def genotype_panel(g: Genome, ref: RefData, mode: str = "pseudo_haploid", seed: 
     p = _panel(ref)
     dos = np.full(len(p["pos"]), -1, dtype=np.int8)
     depth_sum = depth_n = 0
-    dmg_obs = {}
-    stats = {"sites": int(len(p["pos"])), "sites_covered": 0, "sites_called": 0, "chromosomes": []}
+    acc = None
+    stats = {"sites": int(len(p["pos"])), "sites_covered": 0, "sites_called": 0, "chromosomes": [], "method": ""}
     chroms = [c for c in range(1, 24) if (p["chrom"] == c).any()]
     for k, c in enumerate(chroms):
-        m = p["chrom"] == c
-        idx = np.nonzero(m)[0]
-        order = np.argsort(p["pos"][idx])
-        idx = idx[order]
+        idx = np.nonzero(p["chrom"] == c)[0]
+        idx = idx[np.argsort(p["pos"][idx])]
         name = "X" if c == 23 else str(c)
         if g.name_of(name) is None:
             continue
         if on_step:
-            on_step({"stage": f"reading chromosome {name}", "fraction": 0.1 + 0.5 * k / max(1, len(chroms))})
+            on_step({"task": "deeptime", "stage": f"reading chromosome {name}",
+                     "fraction": 0.1 + 0.5 * k / max(1, len(chroms))})
         pu = pileup(g, name, p["pos"][idx].astype(np.int64))
         if mode == "diploid":
             r = C.panel_genotypes(pu, p["ref"][idx], p["alt"][idx], min_qual=min_qual, trim=trim,
@@ -95,39 +95,17 @@ def genotype_panel(g: Genome, ref: RefData, mode: str = "pseudo_haploid", seed: 
         covered = int(r.get("sites_covered", 0))
         stats["sites_covered"] += covered
         stats["sites_called"] += int((r["dosage"] >= 0).sum())
+        stats["method"] = r["method"]
         if r.get("mean_depth_at_covered"):
             depth_sum += r["mean_depth_at_covered"] * covered
             depth_n += covered
         stats["chromosomes"].append({"chromosome": name, "sites": int(len(idx)), "covered": covered,
                                      "called": int((r["dosage"] >= 0).sum())})
         if c <= 22:
-            dp = damage_profile(pu, p["ref"][idx], p["alt"][idx], min_qual=min_qual)
-            for key in ("ct5", "ga3"):
-                a = dmg_obs.setdefault(key, {"hit": np.zeros(len(dp[key]["observations"])),
-                                             "tot": np.zeros(len(dp[key]["observations"]))})
-                tot = np.array(dp[key]["observations"], dtype=np.float64)
-                freq = np.array([0.0 if x is None else x for x in dp[key]["frequency"]], dtype=np.float64)
-                a["tot"] += tot
-                a["hit"] += freq * tot
+            acc = D.accumulate_panel(pu, p["ref"][idx], p["alt"][idx], acc, min_qual=min_qual)
     stats["mean_depth_at_covered_sites"] = (depth_sum / depth_n) if depth_n else 0.0
-    stats["method"] = r["method"] if stats["chromosomes"] else ""
-    damage = {}
-    for key, a in dmg_obs.items():
-        tot, hit = a["tot"], a["hit"]
-        with np.errstate(invalid="ignore", divide="ignore"):
-            freq = np.where(tot > 0, hit / np.maximum(tot, 1), np.nan)
-        bg = float(hit[15:].sum() / tot[15:].sum()) if tot[15:].sum() else float("nan")
-        damage[key] = {"frequency": [None if np.isnan(x) else round(float(x), 5) for x in freq],
-                       "observations": tot.astype(np.int64).tolist(),
-                       "background": None if np.isnan(bg) else round(bg, 5),
-                       "terminal": None if tot[0] == 0 else round(float(freq[0]), 5),
-                       "terminal_excess": None if (tot[0] == 0 or np.isnan(bg)) else round(float(freq[0] - bg), 5)}
-    first = [damage.get(k, {}).get("terminal_excess") for k in ("ct5", "ga3")]
-    damage["terminal_deamination"] = None if any(x is None for x in first) else round(float(np.mean(first)), 5)
-    damage["method"] = ("C->T against the 5' end and G->A against the 3' end at autosomal panel sites whose other "
-                        "allele is not the deamination product; the rate at positions 15 and beyond is taken as the "
-                        "background of real differences and sequencing errors and subtracted.")
-    return {"dosage": dos, "stats": stats, "damage": damage}
+    return {"dosage": dos, "stats": stats,
+            "damage": D.finish_panel(acc) if acc else {"terminal_deamination": None, "method": D.PANEL_METHOD}}
 
 
 def _raw_from_haploid(ycalls: dict, mtcalls: dict) -> RawGenotypes:
@@ -145,7 +123,8 @@ def _raw_from_haploid(ycalls: dict, mtcalls: dict) -> RawGenotypes:
 
 def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid", seed: int = 1,
             min_mapq: int = 25, min_qual: int = 20, trim: int = 0, transversions_only: bool = False,
-            min_depth: int = 8, max_reads_for_lengths: int = 500_000, on_step=None) -> dict:
+            min_depth: int = 8, max_reads_for_lengths: int = 500_000, reference_fasta: str | None = None,
+            damage_chromosomes: list[str] | None = None, damage_max_reads: int = 300_000, on_step=None) -> dict:
     ref = ref or RefData()
     t0 = time.time()
 
@@ -168,6 +147,15 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
         step("reading the panel's positions", 0.1)
         gt = genotype_panel(g, ref, mode=mode, seed=seed, min_qual=min_qual, trim=trim,
                             transversions_only=transversions_only, min_depth=min_depth, on_step=on_step)
+        if reference_fasta:
+            step("deamination against the reference", 0.58)
+            try:
+                gt["damage"] = D.from_reference(g, reference_fasta, chroms=damage_chromosomes,
+                                                max_reads=damage_max_reads, min_qual=min_qual, on_step=on_step)
+                gt["damage"]["source"] = "reference"
+            except Exception as e:                                        # noqa: BLE001
+                gt["damage"]["reference_error"] = str(e)
+        gt["damage"].setdefault("source", "panel")
         step("maternal and paternal lines", 0.62)
         ytree = ref.tree("y")
         mt_ok = g.mt_usable
@@ -205,14 +193,20 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
                          "Chromosome names and lengths against GRCh37 and GRCh38; read counts from the BAM index; "
                          "lengths from a pass over the autosomes.", [SOURCES["skoglund2014"], "aadr"], ref),
              pdeep._card("deeptime_authenticity", "Is this DNA ancient?", "The sample", "A",
-                         (f"terminal deamination {100 * dmg:.1f}% (C→T at the 5′ end and G→A at the 3′ end above "
-                          f"background); median molecule {lens.get('median', 0):.0f} bp"
+                         (f"terminal deamination {100 * dmg:.1f}% outside CpG sites "
+                          f"({100 * (gt['damage'].get('terminal_deamination_including_cpg') or dmg):.1f}% with them): "
+                          f"C→T at the 5′ end and G→A at the 3′ end above background; median molecule "
+                          f"{lens.get('median', 0):.0f} bp"
                           if dmg is not None else "not enough covered sites to measure deamination"),
                          {"damage": gt["damage"], "lengths": lens,
                           "reverse_fraction": lp["reverse_fraction"]},
-                         ["Deamination is measured at the panel's SNP sites, not genome-wide, because this step reads "
-                          "only those positions; a library treated with uracil-DNA glycosylase shows little or no "
-                          "damage even when the DNA is genuinely ancient.",
+                         ([] if gt["damage"].get("source") == "reference" else
+                          ["Without the reference sequence the rate can only be measured at the panel's own "
+                           "positions, where there are few observations and CpG sites, which deaminate several "
+                           "times faster, are over-represented; the non-CpG figure is the comparable one. Choose "
+                           "the reference FASTA the reads were mapped to for the full measurement."]) +
+                         ["A library treated with uracil-DNA glycosylase shows little or no damage even when the "
+                          "DNA is genuinely ancient.",
                           "Damage and short molecules show that DNA is old and degraded. They cannot show whose it "
                           "is: present-day contamination is measured separately."],
                          gt["damage"]["method"], [SOURCES["briggs2007"], SOURCES["skoglund2014"]], ref,
