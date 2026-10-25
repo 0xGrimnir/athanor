@@ -2,11 +2,22 @@
 
 All notable changes to Athanor are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.10.0] - 2026-10-25
+
+### Added
+- **Deep Time, step 1: ancient nuclear genomes.** An ancient genome as it is deposited — a BAM aligned to GRCh37 — read on your own computer.
+  - **What the alignment is.** Reference build from the chromosome lengths, read counts per chromosome from the index (quick whatever the file's size), libraries and programs as the file records them, molecule lengths.
+  - **Is this DNA ancient?** Deamination towards both ends of the molecules, as mapDamage2 measures it, when you give the reference genome the reads were mapped to; cytosines followed by guanine are counted separately, because methylated CpG deaminates several times faster. Without the reference, the rate is measured at the reference panel's own positions and the non-CpG figure, the comparable one, is reported.
+  - **Genetic sex** from the depth at the panel's X positions against its autosomal ones (R_x), which reads capture data and shotgun data alike, with the whole-chromosome read counts beside it.
+  - **Genotypes** at the panel's sites: pseudo-haploid (one allele drawn at random per site, seeded, as the published ancient panels are built) or diploid from the base qualities, with the two ways round deamination — trimming the molecule ends, or keeping only transversions.
+  - **The deep-ancestry reports** the Personal Genome tier already makes — ancient ancestry models, principal components and closest ancient individuals, Neanderthal and Denisovan ancestry, maternal and paternal lines — run on those genotypes.
+  - **Heterozygosity** over a region, counted from the reads without a reference sequence, with a study's own callable-regions mask; the transversion rate is reported beside the total, and the app says when deamination is inflating the total.
+- Checked in CI against published ancient genomes: pseudo-haploid calls agree with the AADR's own genotypes for four 1240K individuals at 98.3–99.9% of shared sites; genetic sex matches all four published calls; terminal deamination matches the published first-base rates (0.088 vs 0.092, 0.111 vs 0.093, 0.105 vs 0.091); and in two megabases of Vindija 33.19, diploid calls agree with that study's own call set at 99.86% of 1.3 million sites with transversion heterozygosity 6.22 against their 6.14 per 100,000.
 
 ### Changed
 - **Ancient DNA Lab: the simulator's damage model is now the one in the literature.** The Linux engines pack builds gargammel 1.1.5 from source (commit 4fc10b7) instead of installing 1.1.4 from bioconda. Version 1.1.4's deamSim gave every 5′ end a single-stranded overhang, where Briggs et al. (2007) give one to half of the ends, so it put about twice the deamination at the first base. All three damage parameters are now recovered from the simulated reads: δd 0.0112–0.0136 against 0.01, λ 0.428–0.452 against 0.4, and δs 0.324–0.344 against 0.3, where before δs came out near 0.55. δs is now a gated check rather than a reported mismatch, and ART's indels, which 1.1.4 dropped, are applied to the reads.
 - Simulations in CI are seeded, so a pack build's demo run repeats exactly.
+- The Linux engines pack is version 3; the app asks to install it on first run after the update.
 
 ## [0.9.0] - 2026-10-24
 

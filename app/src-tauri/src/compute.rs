@@ -33,7 +33,7 @@ use std::os::windows::process::CommandExt;
 const CREATE_NO_WINDOW: u32 = 0x0800_0000;
 
 /// Pack version this app build expects. Bump together with a new pack release.
-pub const PACK_VERSION: &str = "2";
+pub const PACK_VERSION: &str = "3";
 pub const DISTRO: &str = "AthanorCompute";
 const FEED: &str = "https://github.com/0xGrimnir/athanor-releases/releases/download";
 
@@ -124,7 +124,7 @@ impl Compute {
             }
             Some(inst) if inst.version != PACK_VERSION => self.set(app, ComputeStatus {
                 stage: "off".into(),
-                message: format!("This version of Athanor needs Linux engines pack {PACK_VERSION} (adds the ancient-DNA tools); click to install."),
+                message: format!("This version of Athanor needs Linux engines pack {PACK_VERSION} (corrected ancient-damage simulator, and the tools Deep Time needs); click to install."),
                 ..base }),
             _ => self.set(app, ComputeStatus {
                 stage: "off".into(),
