@@ -1,0 +1,58 @@
+name: deeptime
+# Deep Time step 1 against published ancient genomes: 1240K-capture individuals
+# from ENA compared with the AADR's own genotypes, sex and damage rates, and a
+# region of a high-coverage Neanderthal compared with the study's own call set.
+# Data is fetched in the job and never committed; only the report is published.
+on:
+  workflow_dispatch:
+    inputs:
+      individuals: {description: "how many 1240K individuals to run", required: false, default: "4"}
+      region: {description: "archaic region, CHR:START-END", required: false, default: "21:30000000-32000000"}
+      archaic: {description: "Altai or Vindija", required: false, default: "Altai"}
+  push:
+    paths:
+      - "core/athanor_core/deeptime/**"
+      - "tools/dtdata/**"
+      - ".github/workflows/deeptime.yml"
+permissions:
+  contents: write
+jobs:
+  deeptime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost || true
+          df -h / | tail -1
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: dt
+          create-args: python=3.12 numpy pysam samtools bcftools
+          condarc: |
+            channels: [conda-forge, bioconda]
+      - name: Ancient genomes against published values
+        run: |
+          set +e
+          export PYTHONPATH="$PWD/core"
+          mkdir -p dtout
+          timeout 19000 python tools/dtdata/deeptime_bench.py dtout \
+            --individuals "${{ inputs.individuals || '4' }}" \
+            --region "${{ inputs.region || '21:30000000-32000000' }}" \
+            --archaic "${{ inputs.archaic || 'Altai' }}" > dt.txt 2>&1
+          rc=$?
+          tail -c 20000 dt.txt
+          df -h / | tail -1
+          d=$(mktemp -d); git config --global user.name "athanor-ci"; git config --global user.email "ci@athanor.invalid"
+          git fetch -q --depth 1 origin ci-results && git worktree add -q "$d" FETCH_HEAD && \
+            mkdir -p "$d/deeptime/${GITHUB_SHA}" && cp dt.txt "$d/deeptime/${GITHUB_SHA}/" && \
+            (cp dtout/deeptime_report.json "$d/deeptime/${GITHUB_SHA}/" 2>/dev/null; true) && \
+            (cd "$d" && git add -A && git commit -qm "deeptime ${GITHUB_SHA::7}" && git push -q origin HEAD:ci-results) \
+            || echo "could not publish"
+          msg=$(grep -E "^\[(PASS|FAIL)\]|^total" dt.txt | tail -c 3000 | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')
+          if [ $rc -eq 0 ]; then echo "::notice title=deeptime::$msg"; else echo "::error title=deeptime failed::$(tail -c 3000 dt.txt | tr -d '\r' | sed 's/%/%25/g' | awk 'BEGIN{ORS="%0A"} {print}')"; fi
+          exit $rc

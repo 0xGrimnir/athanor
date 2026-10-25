@@ -20,8 +20,10 @@ async fn core_call(
     method: String,
     params: Value,
 ) -> Result<Value, String> {
-    // The GPU tier and the ancient-DNA tools run in the Linux engines pack (WSL2).
-    let linux = params.get("tier").and_then(Value::as_str) == Some("dft-gpu") || method.starts_with("adna_");
+    // The GPU tier, the ancient-DNA tools and Deep Time run in the Linux engines pack (WSL2).
+    let linux = params.get("tier").and_then(Value::as_str) == Some("dft-gpu")
+        || method.starts_with("adna_")
+        || method.starts_with("deeptime_");
     let core = if linux {
         let c = compute.inner().core.clone();
         if !c.is_running() {

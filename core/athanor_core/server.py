@@ -14,6 +14,8 @@ through pipes only: no network socket is opened. Methods:
   adna_catalog / adna_run       -> Ancient DNA Lab, simulated data (Linux engines pack)
   adna_real_run {inputs, ...}   -> Ancient DNA Lab, the user's own reads (Linux engines pack)
   adna_export {path, what}      -> save the last real-data consensus or report
+  deeptime_inspect / deeptime_analyse / deeptime_heterozygosity / deeptime_export
+                                -> Deep Time: ancient nuclear genomes (Linux engines pack)
   personal_status / personal_install / personal_remove -> Personal Genome reference data
   personal_analyse {path}       -> report cards from a consumer raw DNA file
   personal_export {path}        -> save the last Personal Genome report
@@ -343,6 +345,29 @@ METHODS = {"ping": m_ping, "engines": m_engines, "build": m_build, "parse_xyz": 
            "personal_export": m_personal_export}
 METHODS.update(DNA_METHODS)
 _dna_api.PROGRESS = lambda d: _notify("progress", {**d, "tier": "dna"})
+
+
+def _deeptime_methods() -> dict:
+    """Deep Time needs pysam, which lives in the Linux engines pack; the
+    Windows core lists the methods and says so if they are called there."""
+    from .deeptime import api as dt_api
+    dt_api.PROGRESS = lambda d: _notify("progress", {**d, "tier": "deeptime"})
+    return dt_api.METHODS
+
+
+def _deeptime(method):
+    def run(p):
+        try:
+            fn = _deeptime_methods()[method]
+        except ImportError as e:
+            raise RuntimeError("Deep Time needs the Linux engines pack (pysam); install or start it from the "
+                               f"Linux engines button ({e})") from e
+        return fn(p)
+    return run
+
+
+METHODS.update({m: _deeptime(m) for m in ("deeptime_inspect", "deeptime_analyse", "deeptime_heterozygosity",
+                                          "deeptime_export")})
 
 
 def handle(line: str) -> dict:
