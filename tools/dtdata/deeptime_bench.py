@@ -509,12 +509,28 @@ def step_archaic() -> None:
     maskf = fetch(mask, WORK / f"{ARCHAIC}_chr{chrom}_mask.bed.gz")
     callable_mask = C.bed_mask(str(maskf), chrom, start - 1, end)
     info(f"mask: {callable_mask.mean():.1%} of the region")
+    # in chunks: a megabase of a 30x genome is a few million observations, and
+    # the whole region at once would not fit in the runner's memory
+    a1 = np.full(len(pos), -1, dtype=np.int8)
+    a2 = np.full(len(pos), -1, dtype=np.int8)
+    called = np.zeros(len(pos), dtype=bool)
+    depth_floor = 0
     with Genome(str(local), min_mapq=25) as g:
-        pu = pileup(g, chrom, pos, max_depth=200)
-        dip = C.diploid(pileup=pu.filtered(min_qual=25, trim=0), n_sites=len(pos), min_depth=8, min_quality=30,
-                        max_depth=MAX_DEPTH)
+        step_bp = 1_000_000
+        for c0 in range(start, end + 1, step_bp):
+            c1 = min(end, c0 + step_bp - 1)
+            sel = (pos >= c0) & (pos <= c1)
+            if not sel.any():
+                continue
+            pu = pileup(g, chrom, pos[sel], max_depth=MAX_DEPTH)
+            d = C.diploid(pileup=pu.filtered(min_qual=25, trim=0), n_sites=int(sel.sum()), min_depth=8,
+                          min_quality=30, max_depth=MAX_DEPTH)
+            a1[sel], a2[sel], called[sel] = d["a1"], d["a2"], d["called"]
+            depth_floor = d["depth_floor"]
+            info(f"  {chrom}:{c0:,}-{c1:,}: {int(d['called'].sum()):,} of {int(sel.sum()):,} published positions called")
         region = C.heterozygosity_over_region(g, chrom, start - 1, end, callable_mask=callable_mask,
                                               min_qual=25, min_depth=8, max_depth=MAX_DEPTH)
+    dip = {"a1": a1, "a2": a2, "called": called, "depth_floor": depth_floor}
     in_mask = callable_mask[pos - start]
     pass_only = np.array([theirs[int(p)][0] in ("PASS", ".", "") for p in pos])
     theirs_bases = [theirs[int(p)][1] for p in pos]

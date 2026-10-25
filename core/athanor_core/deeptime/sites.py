@@ -137,6 +137,14 @@ def pileup(genome, chrom: str, positions: np.ndarray, min_mapq: int | None = Non
     lo, hi = int(positions[0]), int(positions[-1])
     site_l, base_l, qual_l, d5_l, d3_l, rev_l, prev_l, next_l, mol_l = [], [], [], [], [], [], [], [], []
     reads = used = no_qual = 0
+    # Everything collected is sampled down to max_depth afterwards, so an
+    # ordinary site is sampled from all of its reads. This much higher limit
+    # exists only so that a pathological pileup - a collapsed repeat at
+    # thousands of times the genome's depth - cannot fill memory; a site that
+    # reaches it keeps the reads that arrive first, which is a bias worth
+    # having over running out of memory.
+    collect_cap = (max_depth * 10) if max_depth else 0
+    seen = np.zeros(n, dtype=np.int32)
     for r in genome.bam.fetch(ref, max(0, lo - 1), hi):
         if r.is_unmapped or r.is_secondary or r.is_supplementary or r.is_qcfail \
                 or (drop_duplicates and r.is_duplicate):
@@ -158,6 +166,12 @@ def pileup(genome, chrom: str, positions: np.ndarray, min_mapq: int | None = Non
         if not on.any():
             continue
         j, qpos = j[on], qpos[on]
+        if collect_cap:
+            room = seen[j] < collect_cap
+            if not room.any():
+                continue
+            j, qpos = j[room], qpos[room]
+            np.add.at(seen, j, 1)
         codes = np.fromiter((CODE.get(seq[i], -1) for i in qpos), dtype=np.int8, count=len(qpos))
         ok = codes >= 0
         if not ok.any():
