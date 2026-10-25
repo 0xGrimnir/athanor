@@ -108,6 +108,26 @@ Every sample shows the terminal C→T excess of authentic ancient DNA. The one d
 
 Simulations with known answers check the rest. Contamination estimates were 0.00%, 1.95% and 10.40% against true values of 0%, 1.95% and 10.20%. The mammoth sequence, rebuilt starting from the African elephant genome (about 9% divergent), agreed with the truth at every one of 16,462 called bases (latest CI run; the simulations are random, so the figures vary slightly between runs). All of it runs in CI (`compute/ci_reproduce.py`).
 
+## Validation (Deep Time)
+
+Ancient genomes as other people published them: the same individuals, the same positions, compared with the values those studies report. Everything here runs in CI (`.github/workflows/deeptime.yml`), fetching the data at test time and redistributing none of it.
+
+**1240K-capture individuals** (Mathieson et al., Nature 528, 499, 2015; reads from ENA PRJEB11450), against the Allen Ancient DNA Resource's published genotypes and annotations for the same people:
+
+| Check | Result |
+|---|---|
+| Pseudo-haploid calls vs the AADR's genotypes, at sites both call | 98.30%, 99.41%, 99.79% and 99.85% agreement (32,595–78,157 sites per individual) |
+| Genetic sex vs the published Molecular Sex | 4 of 4, three male (R_x 0.34–0.43) and one female (R_x 0.85), from depth at the panel's X positions against its autosomal ones |
+| Terminal deamination vs the published first-base damage rate | 0.088 vs 0.092, 0.111 vs 0.093, 0.105 vs 0.091 (non-CpG, measured against the reference on chromosomes 19–22) |
+
+**A high-coverage Neanderthal** (Vindija 33.19; Prüfer et al., Science 358, 655, 2017), two megabases of chromosome 21 read remotely from the published alignment and compared with that study's own call set, inside its own filter mask:
+
+| Check | Result |
+|---|---|
+| Diploid genotypes vs the study's call set | 99.859% of 1,302,831 sites |
+| Heterozygous sites at transversions, which deamination cannot make | 6.22 per 100,000 vs their 6.14 |
+| Heterozygous sites at transitions, which it can | 1.60 per 1,000 vs their 1.90 per 10,000: a flat-error genotype caller reads deamination as heterozygosity on a library that keeps its damage. The app reports the transversion rate beside the total and says why they differ, rather than quoting one number |
+
 ## Validation (Personal Genome)
 
 Everything the module reports is checked before release, and each report card shows what was checked.

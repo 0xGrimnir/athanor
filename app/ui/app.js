@@ -1994,9 +1994,10 @@ async function dtHet() {
       ["Mean depth", `${r.depth_mean.toFixed(1)}×`],
       ["Callable sites", `${r.callable_sites.toLocaleString()}${r.mask ? ` <small>(inside ${escapeHtml(r.mask.path)}, which covers ${r.mask.callable_bases.toLocaleString()} bases)</small>` : ""}`],
       ["Heterozygous sites", `${r.heterozygous_sites.toLocaleString()} <small>(${r.transitions.toLocaleString()} transitions, ${r.transversions.toLocaleString()} transversions)</small>`],
-      ["Heterozygosity", r.heterozygosity == null ? "—" : `${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases <small>(${r.heterozygosity.toExponential(2)})</small>`],
-      ["Transversions only", r.transversion_heterozygosity == null ? "—" : `${(1e4 * r.transversion_heterozygosity).toFixed(2)} per 10,000 bases`],
-    ])}<p class="note">${(r.limits || []).map(escapeHtml).join(" ")}</p></div>`;
+      ["Heterozygosity, all sites", r.heterozygosity == null ? "—" : `${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases <small>(${r.heterozygosity.toExponential(2)})</small>`],
+      ["Heterozygosity at transversions", r.transversion_heterozygosity == null ? "—" : `${(1e4 * r.transversion_heterozygosity).toFixed(2)} per 10,000 bases <small>(${r.transversion_heterozygosity.toExponential(2)}; deamination cannot make these)</small>`],
+    ])}<p class="${r.transitions_inflated_by_damage ? "warnbox" : "note"}">${escapeHtml(r.note || "")}</p>
+      <p class="note">${(r.limits || []).map(escapeHtml).join(" ")}</p></div>`;
     log(`Deep Time: heterozygosity ${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases over ${r.callable_sites.toLocaleString()} callable sites`);
   } catch (e) { job.fail(String(e)); log(`Deep Time: ${e.message || e}`, true); }
   finally { dtEnd(); }

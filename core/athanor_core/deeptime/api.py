@@ -86,7 +86,17 @@ def m_heterozygosity(p):
         kw = {k: p[k] for k in ("min_depth", "max_depth", "err", "min_quality") if k in p}
         res = C.heterozygosity(counts, callable_mask=mask, **kw)
         _step({"task": "deeptime", "stage": "done", "fraction": 1.0})
+        share = res.get("transition_share")
+        inflated = share is not None and share > 0.7
         return {"region": {"chromosome": chrom, "start": start, "end": end, "bases": end - start + 1},
+                "transitions_inflated_by_damage": inflated,
+                "note": ("Transitions are "
+                         f"{100 * share:.0f}% of the heterozygous calls, well above the two-thirds or so of real "
+                         "variation, so deamination is being read as heterozygosity: take the transversion rate as "
+                         "the sample's, or trim the molecule ends. Checked against a published call set, the "
+                         "transversion rate agrees while the total does not."
+                         if inflated else
+                         "Transitions are a normal share of the heterozygous calls, so the total is usable."),
                 "build": g.build, "mask": ({"path": os.path.basename(_path(p, "mask_path")),
                                             "callable_bases": int(mask.sum()),
                                             "excluded_file": bool(p.get("mask_is_excluded"))} if mask is not None
