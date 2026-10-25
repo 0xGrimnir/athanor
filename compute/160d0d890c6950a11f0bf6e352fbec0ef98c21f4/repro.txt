@@ -1,0 +1,129 @@
+HOLF001.A PZ244049.1 16770 [('ERR15993875', 'WGS', 6), ('ERR15993904', 'Targeted-Capture', 5581)]
+HOLF003.A PZ244050.1 16773 [('ERR15993877', 'WGS', 20), ('ERR15993906', 'Targeted-Capture', 8395)]
+HOLF009.A PZ244054.1 16771 [('ERR15993912', 'Targeted-Capture', 10171), ('ERR15993883', 'WGS', 16)]
+HOLF010.B PZ244055.1 16770 [('ERR15993885', 'WGS', 30), ('ERR15993914', 'Targeted-Capture', 9849)]
+HOLF022.A PZ244058.1 16771 [('ERR15993897', 'WGS', 322), ('ERR15993926', 'Targeted-Capture', 28888)]
+HOLF024.B PZ244059.1 16771 [('ERR15993930', 'Targeted-Capture', 8709), ('ERR15993901', 'WGS', 13)]
+HOLF025.B PZ244060.1 16770 [('ERR15993903', 'WGS', 8), ('ERR15993932', 'Targeted-Capture', 4687)]
+contamination 0.0: true 0.0000 (0/2003) estimate 0.0000 [0.0000, 0.0019] human-read 5' C>T 0.000 target 5' C>T 0.080
+[PASS] contamination 0.0: estimate within 20% + 0.5 points of the truth: 0.0000 vs 0.0000
+contamination 0.02: true 0.0192 (39/2030) estimate 0.0196 [0.0140, 0.0267] human-read 5' C>T 0.000 target 5' C>T 0.075
+[PASS] contamination 0.02: estimate within 20% + 0.5 points of the truth: 0.0196 vs 0.0192
+contamination 0.1: true 0.1019 (227/2228) estimate 0.1037 [0.0912, 0.1173] human-read 5' C>T 0.000 target 5' C>T 0.077
+[PASS] contamination 0.1: estimate within 20% + 0.5 points of the truth: 0.1037 vs 0.1019
+divergent reference: iterations [(1, 3573, 626, 8), (2, 4610, 134, 1), (3, 4797, 17, 0), (4, 4827, 6, 0), (5, 4836, 0, 0)] converged True
+  agreement 1.000000 on 16443 sites; truth aligned 0.9840; uncalled 59; substitutions 0; indel differences 0; predicted errors 0.00
+[PASS] divergent reference: agreement with truth >= 99.9% of called sites: 1.000000
+[PASS] divergent reference: >= 95% of the truth called: 16443 of 16770
+
+== HOLF001.A -> PZ244049.1 (16770 bp; 2 BAMs; 5587 reads) 31 s
+  mapping {'reads': 5587, 'rescued_circular': 111, 'mapped_mapq': 5576, 'low_mapq': 6, 'unmapped': 5, 'duplicates': 2, 'kept': 5574, 'duplication_rate': 0.0003586800573888092}; coverage mean 19.6, >=3 reads 0.9677
+  iterations [(1, 223, 0), (2, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01362
+  fragments: whole 4409 median 54.0; cut by read length 1178
+  5' C>T pos1 0.0837 pos2 0.0012 interior 0.0002; 3' G>A pos1 0.0903
+  contamination 0.0005 [0.0001, 0.0016] (3/5518)
+  athanor: agreement 1.000000 on 16538 sites; aligned 0.9862; uncalled ours 0 theirs 0; substitutions 0; insertions 0; deletions 0
+  majority rule: agreement 1.000000 on 16461 sites; aligned 0.9860; uncalled ours 74 theirs 0; substitutions 0; insertions 0; deletions 0
+  predicted errors among called sites: 0.000
+[PASS] HOLF001.A: terminal deamination excess (authentic ancient DNA): 0.0837 vs interior 0.0002
+[PASS] HOLF001.A: Athanor consensus agrees with PZ244049.1 at >= 99.9% of sites both call: 1.0
+[PASS] HOLF001.A: majority-rule consensus agrees with PZ244049.1 at >= 99.9% of sites both call: 1.0
+
+== HOLF003.A -> PZ244050.1 (16773 bp; 2 BAMs; 8415 reads) 31 s
+  mapping {'reads': 8415, 'rescued_circular': 217, 'mapped_mapq': 8408, 'low_mapq': 4, 'unmapped': 3, 'duplicates': 2, 'kept': 8406, 'duplication_rate': 0.0002378686964795433}; coverage mean 28.2, >=3 reads 0.9823
+  iterations [(1, 221, 2), (2, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01329
+  fragments: whole 7147 median 52.0; cut by read length 1268
+  5' C>T pos1 0.1053 pos2 0.0000 interior 0.0005; 3' G>A pos1 0.0958
+  contamination 0.0013 [0.0007, 0.0024] (11/8344)
+  athanor: agreement 1.000000 on 16721 sites; aligned 1.0000; uncalled ours 37 theirs 11; substitutions 0; insertions 0; deletions 2
+      indel {'theirs_pos': 16293, 'ours_pos': 16293, 'sequence': 'NN', 'uncalled': True}
+      indel {'theirs_pos': 16302, 'ours_pos': 16300, 'sequence': 'AC', 'uncalled': False}
+  majority rule: agreement 1.000000 on 16691 sites; aligned 1.0000; uncalled ours 73 theirs 5; substitutions 0; insertions 0; deletions 1
+      indel {'theirs_pos': 16294, 'ours_pos': 16294, 'sequence': 'NNAC', 'uncalled': False}
+  predicted errors among called sites: 0.001
+[PASS] HOLF003.A: terminal deamination excess (authentic ancient DNA): 0.1053 vs interior 0.0005
+[PASS] HOLF003.A: Athanor consensus agrees with PZ244050.1 at >= 99.9% of sites both call: 1.0
+[PASS] HOLF003.A: majority-rule consensus agrees with PZ244050.1 at >= 99.9% of sites both call: 1.0
+
+== HOLF009.A -> PZ244054.1 (16771 bp; 2 BAMs; 10187 reads) 59 s
+  mapping {'reads': 10187, 'rescued_circular': 226, 'mapped_mapq': 10179, 'unmapped': 8, 'duplicates': 2, 'kept': 10177, 'duplication_rate': 0.00019648295510364477}; coverage mean 33.7, >=3 reads 0.9899
+  iterations [(1, 225, 2), (2, 4, 0), (3, 0, 1), (4, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01373
+  fragments: whole 8640 median 51.0; cut by read length 1547
+  5' C>T pos1 0.1078 pos2 0.0013 interior 0.0006; 3' G>A pos1 0.0893
+  contamination 0.0033 [0.0023, 0.0046] (33/10069)
+  athanor: agreement 1.000000 on 16767 sites; aligned 1.0000; uncalled ours 0 theirs 4; substitutions 0; insertions 0; deletions 0
+  majority rule: agreement 1.000000 on 16748 sites; aligned 1.0000; uncalled ours 22 theirs 1; substitutions 0; insertions 0; deletions 0
+  predicted errors among called sites: 0.000
+[PASS] HOLF009.A: terminal deamination excess (authentic ancient DNA): 0.1078 vs interior 0.0006
+[PASS] HOLF009.A: Athanor consensus agrees with PZ244054.1 at >= 99.9% of sites both call: 1.0
+[PASS] HOLF009.A: majority-rule consensus agrees with PZ244054.1 at >= 99.9% of sites both call: 1.0
+
+== HOLF010.B -> PZ244055.1 (16770 bp; 2 BAMs; 9879 reads) 46 s
+  mapping {'reads': 9879, 'rescued_circular': 198, 'mapped_mapq': 9856, 'low_mapq': 6, 'unmapped': 17, 'duplicates': 2, 'kept': 9854, 'duplication_rate': 0.00020292207792207794}; coverage mean 36.4, >=3 reads 0.9846
+  iterations [(1, 222, 0), (2, 0, 1), (3, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01356
+  fragments: whole 7055 median 57.0; cut by read length 2824
+  5' C>T pos1 0.0481 pos2 0.0020 interior 0.0006; 3' G>A pos1 0.0341
+  contamination 0.0011 [0.0006, 0.0020] (11/9734)
+  athanor: agreement 1.000000 on 16694 sites; aligned 1.0000; uncalled ours 73 theirs 1; substitutions 0; insertions 0; deletions 1
+      indel {'theirs_pos': 16289, 'ours_pos': 16289, 'sequence': 'NN', 'uncalled': True}
+  majority rule: agreement 1.000000 on 16674 sites; aligned 1.0000; uncalled ours 94 theirs 0; substitutions 0; insertions 0; deletions 1
+      indel {'theirs_pos': 16287, 'ours_pos': 16287, 'sequence': 'AC', 'uncalled': False}
+  predicted errors among called sites: 0.000
+[PASS] HOLF010.B: terminal deamination excess (authentic ancient DNA): 0.0481 vs interior 0.0006
+[PASS] HOLF010.B: Athanor consensus agrees with PZ244055.1 at >= 99.9% of sites both call: 1.0
+[PASS] HOLF010.B: majority-rule consensus agrees with PZ244055.1 at >= 99.9% of sites both call: 1.0
+
+== HOLF022.A -> PZ244058.1 (16771 bp; 2 BAMs; 29210 reads) 56 s
+  mapping {'reads': 29210, 'rescued_circular': 445, 'mapped_mapq': 29153, 'low_mapq': 4, 'unmapped': 53, 'duplicates': 3, 'kept': 29150, 'duplication_rate': 0.00010290536136932734}; coverage mean 124.1, >=3 reads 0.9983
+  iterations [(1, 229, 3), (2, 2, 0), (3, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01380
+  fragments: whole 12078 median 68.0; cut by read length 17132
+  5' C>T pos1 0.0942 pos2 0.0013 interior 0.0008; 3' G>A pos1 0.0940
+  contamination 0.0000 [0.0000, 0.0001] (0/28867)
+  athanor: agreement 1.000000 on 16767 sites; aligned 1.0000; uncalled ours 0 theirs 4; substitutions 0; insertions 0; deletions 0
+  majority rule: agreement 1.000000 on 16769 sites; aligned 1.0000; uncalled ours 2 theirs 0; substitutions 0; insertions 0; deletions 0
+  predicted errors among called sites: 0.000
+[PASS] HOLF022.A: terminal deamination excess (authentic ancient DNA): 0.0942 vs interior 0.0008
+[PASS] HOLF022.A: Athanor consensus agrees with PZ244058.1 at >= 99.9% of sites both call: 1.0
+[PASS] HOLF022.A: majority-rule consensus agrees with PZ244058.1 at >= 99.9% of sites both call: 1.0
+
+== HOLF024.B -> PZ244059.1 (16771 bp; 2 BAMs; 8722 reads) 31 s
+  mapping {'reads': 8722, 'rescued_circular': 186, 'mapped_mapq': 8686, 'low_mapq': 4, 'unmapped': 32, 'duplicates': 2, 'kept': 8684, 'duplication_rate': 0.00023025558369790466}; coverage mean 28.1, >=3 reads 0.9676
+  iterations [(1, 220, 1), (2, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01342
+  fragments: whole 7922 median 51.0; cut by read length 800
+  5' C>T pos1 0.2925 pos2 0.0056 interior 0.0017; 3' G>A pos1 0.2897
+  contamination 0.0002 [0.0000, 0.0008] (2/8513)
+  athanor: agreement 0.999940 on 16538 sites; aligned 0.9863; uncalled ours 1 theirs 3; substitutions 1; insertions 0; deletions 0
+      {'theirs_pos': 12195, 'ours_pos': 12195, 'theirs': 'T', 'ours': 'C', 'depth': 6, 'posterior': 1.0, 'base_counts_trimmed': {'A': 0, 'C': 3, 'G': 0, 'T': 0}}
+         read base {'base': 'C', 'strand': '-', 'from_5p': 0, 'from_3p': None, 'quality': 32}
+         read base {'base': 'C', 'strand': '-', 'from_5p': 1, 'from_3p': None, 'quality': 32}
+         read base {'base': 'C', 'strand': '+', 'from_5p': 40, 'from_3p': 1, 'quality': 41}
+         read base {'base': 'C', 'strand': '-', 'from_5p': 39, 'from_3p': 18, 'quality': 41}
+         read base {'base': 'C', 'strand': '+', 'from_5p': 4, 'from_3p': 43, 'quality': 37}
+         read base {'base': 'C', 'strand': '+', 'from_5p': 3, 'from_3p': 46, 'quality': 37}
+  majority rule: agreement 0.999939 on 16485 sites; aligned 0.9861; uncalled ours 52 theirs 1; substitutions 1; insertions 0; deletions 0
+      {'theirs_pos': 12195, 'ours_pos': 12195, 'theirs': 'T', 'ours': 'C', 'depth': 6, 'posterior': 1.0, 'base_counts_trimmed': {'A': 0, 'C': 3, 'G': 0, 'T': 0}}
+         read base {'base': 'C', 'strand': '-', 'from_5p': 0, 'from_3p': None, 'quality': 32}
+         read base {'base': 'C', 'strand': '-', 'from_5p': 1, 'from_3p': None, 'quality': 32}
+         read base {'base': 'C', 'strand': '+', 'from_5p': 40, 'from_3p': 1, 'quality': 41}
+         read base {'base': 'C', 'strand': '-', 'from_5p': 39, 'from_3p': 18, 'quality': 41}
+         read base {'base': 'C', 'strand': '+', 'from_5p': 4, 'from_3p': 43, 'quality': 37}
+         read base {'base': 'C', 'strand': '+', 'from_5p': 3, 'from_3p': 46, 'quality': 37}
+  predicted errors among called sites: 0.005
+[PASS] HOLF024.B: terminal deamination excess (authentic ancient DNA): 0.2925 vs interior 0.0017
+[PASS] HOLF024.B: Athanor consensus agrees with PZ244059.1 at >= 99.9% of sites both call: 0.9999395331962753
+[PASS] HOLF024.B: majority-rule consensus agrees with PZ244059.1 at >= 99.9% of sites both call: 0.999939338792842
+
+== HOLF025.B -> PZ244060.1 (16770 bp; 2 BAMs; 4695 reads) 82 s
+  mapping {'reads': 4695, 'rescued_circular': 104, 'mapped_mapq': 4691, 'unmapped': 4, 'duplicates': 2, 'kept': 4689, 'duplication_rate': 0.00042634832658281814}; coverage mean 16.2, >=3 reads 0.9702
+  iterations [(1, 218, 0), (2, 1, 1), (3, 4, 0), (4, 1, 0), (5, 0, 1), (6, 0, 0)] converged True oscillating False; pending []; theta vs NC_007596 0.01333
+  fragments: whole 3743 median 53.0; cut by read length 952
+  5' C>T pos1 0.2093 pos2 0.0043 interior 0.0001; 3' G>A pos1 0.1914
+  contamination 0.0000 [0.0000, 0.0008] (0/4624)
+  athanor: agreement 1.000000 on 16767 sites; aligned 1.0000; uncalled ours 0 theirs 3; substitutions 0; insertions 0; deletions 0
+  majority rule: agreement 1.000000 on 16690 sites; aligned 1.0000; uncalled ours 80 theirs 0; substitutions 0; insertions 0; deletions 0
+  predicted errors among called sites: 0.000
+[PASS] HOLF025.B: terminal deamination excess (authentic ancient DNA): 0.2093 vs interior 0.0001
+[PASS] HOLF025.B: Athanor consensus agrees with PZ244060.1 at >= 99.9% of sites both call: 1.0
+[PASS] HOLF025.B: majority-rule consensus agrees with PZ244060.1 at >= 99.9% of sites both call: 1.0
+
+total 458 s; 0 gate(s) failed: []
