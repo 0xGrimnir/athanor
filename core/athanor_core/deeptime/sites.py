@@ -116,20 +116,32 @@ def pileup(genome, chrom: str, positions: np.ndarray, min_mapq: int | None = Non
                   cat(d3_l, np.int16), cat(rev_l, bool), n, reads, used)
 
 
+COMPLEMENT = np.array([3, 2, 1, 0], dtype=np.int8)      # A<->T, C<->G
+
+
 def damage_profile(p: Pileup, ref: np.ndarray, alt: np.ndarray, min_qual: int = 20,
                    background_from: int = 15) -> dict:
     """C->T from the 5' end and G->A from the 3' end, at panel sites where the
-    deamination product is not the site's other allele."""
+    deamination product is not the site's other allele.
+
+    Reads from the reverse strand are stored reverse-complemented, so their
+    bases and the reference's are complemented back to the molecule's own
+    strand; deamination is then C->T near the molecule's 5' end and G->A near
+    its 3' end whichever strand the read came from, as mapDamage2 reports it."""
     ref = np.asarray(ref, dtype=np.int8)
     alt = np.asarray(alt, dtype=np.int8)
     q = p.qual >= min_qual
+    rb, ab = ref[p.site], alt[p.site]
+    refm = np.where(p.reverse, COMPLEMENT[rb], rb)
+    altm = np.where(p.reverse, COMPLEMENT[ab], ab)
+    basem = np.where(p.reverse, COMPLEMENT[p.base], p.base)
     out = {}
     for label, refbase, prod, dist in (("ct5", CODE["C"], CODE["T"], p.d5), ("ga3", CODE["G"], CODE["A"], p.d3)):
-        site_ok = (ref == refbase) & (alt != prod)
-        m = q & site_ok[p.site] & (dist < MAXD) & ((p.base == refbase) | (p.base == prod))
+        site_ok = (refm == refbase) & (altm != prod)
+        m = q & site_ok & (dist < MAXD) & ((basem == refbase) | (basem == prod))
         d = dist[m]
         tot = np.bincount(d, minlength=MAXD)[:MAXD]
-        hit = np.bincount(d, weights=(p.base[m] == prod).astype(np.float64), minlength=MAXD)[:MAXD]
+        hit = np.bincount(d, weights=(basem[m] == prod).astype(np.float64), minlength=MAXD)[:MAXD]
         with np.errstate(invalid="ignore", divide="ignore"):
             freq = np.where(tot > 0, hit / np.maximum(tot, 1), np.nan)
         bg_tot, bg_hit = tot[background_from:].sum(), hit[background_from:].sum()
@@ -138,7 +150,7 @@ def damage_profile(p: Pileup, ref: np.ndarray, alt: np.ndarray, min_qual: int = 
                       "observations": tot.tolist(), "background": None if np.isnan(bg) else round(bg, 5),
                       "terminal": None if tot[0] == 0 else round(float(freq[0]), 5),
                       "terminal_excess": None if (tot[0] == 0 or np.isnan(bg)) else round(float(freq[0] - bg), 5),
-                      "sites_usable": int(site_ok.sum())}
+                      "observations_usable": int(site_ok.sum())}
     first = [out[k]["terminal_excess"] for k in ("ct5", "ga3")]
     out["terminal_deamination"] = None if any(x is None for x in first) else round(float(np.mean(first)), 5)
     out["method"] = ("C->T against the 5' end and G->A against the 3' end at panel SNP sites whose other allele is "
