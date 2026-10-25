@@ -227,8 +227,14 @@ class Genome:
                 "chromosomes": chroms, "truncated": n >= max_reads}
 
 
-# Mittnik et al. 2016: the 95% interval of R_x decides, and nothing is called when it spans both
+# One X copy gives half an autosome's depth, two give the same: the call is
+# which of those the data is nearer, with the midpoint between them deciding and
+# nothing called when the interval straddles it. Mittnik et al. (2016) used
+# fixed thresholds of 0.6 and 0.8 on shotgun data; capture shifts R_x enough
+# (its targets are not spread like the genome) that a gap between two fixed
+# numbers leaves real samples uncalled, while the midpoint rule does not.
 RX_MALE, RX_FEMALE = 0.6, 0.8
+RX_MIDPOINT = 0.75
 MIN_X_OBSERVATIONS = 400      # below this the counting noise alone is over 5%
 
 
@@ -277,15 +283,25 @@ def sex_from_panel(depth_by_chrom: dict, sites_by_chrom: dict) -> dict:
                           f"{MIN_X_OBSERVATIONS} are needed before the ratio means anything)"}
     rx, ci = _ratio_of_rates(x_depth, x_sites, [(depth_by_chrom[c], sites_by_chrom[c]) for c in autos])
     lo, hi = ci
-    call = "XX" if lo > RX_FEMALE else "XY" if hi < RX_MALE else None
+    call = "XX" if lo > RX_MIDPOINT else "XY" if hi < RX_MIDPOINT else None
+    fits = ("one X chromosome" if hi < 0.75 and lo > 0.25 else "two X chromosomes") if call else None
+    off = None
+    if call == "XX" and hi < 1.0:
+        off = f"R_x is {rx:.2f} rather than 1, so the X's positions are covered less well than the autosomes'"
+    elif call == "XY" and (lo > 0.5 or hi < 0.5):
+        off = f"R_x is {rx:.2f} rather than 0.5"
     return {**res, "r_x": rx, "r_x_ci": [lo, hi], "autosomes_used": len(autos), "call": call,
-            "reason": None if call else f"R_x = {rx:.2f}, interval {lo:.2f}-{hi:.2f}, which does not sit wholly "
-                                        f"below {RX_MALE} (XY) or above {RX_FEMALE} (XX)",
+            "copies": fits, "ratio_note": off,
+            "reason": None if call else f"R_x = {rx:.2f}, interval {lo:.2f}-{hi:.2f}, which straddles the midpoint "
+                                        f"{RX_MIDPOINT} between one X copy and two",
             "method": "R_x, the depth per panel position on the X against the same on each autosome, averaged over "
-                      f"the autosomes (Mittnik et al. 2016): wholly below {RX_MALE} is XY, wholly above "
-                      f"{RX_FEMALE} is XX. The 95% interval carries the counting noise in the X's own observations "
-                      "and in the autosomes', as well as the disagreement between the autosomes. Measured at the "
-                      "panel's positions, so capture data and shotgun data are read the same way."}
+                      "the autosomes (Mittnik et al. 2016). One X copy gives about 0.5 and two about 1, so the "
+                      f"call is whichever side of {RX_MIDPOINT} the 95% interval falls on, and a sample whose "
+                      "interval straddles it is not called. The interval carries the counting noise in the X's own "
+                      "observations and in the autosomes', as well as the disagreement between the autosomes. "
+                      "Measured at the panel's positions, so capture data and shotgun data are read the same way; "
+                      "a capture that enriches the X a little differently moves R_x away from exactly 0.5 or 1, "
+                      "which is reported."}
 
 
 def length_summary(hist: list[int] | np.ndarray, max_length: int = 200) -> dict:

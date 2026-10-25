@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       individuals: {description: "how many 1240K individuals to run", required: false, default: "4"}
-      region: {description: "archaic region, CHR:START-END", required: false, default: "21:30000000-32000000"}
+      region: {description: "archaic region, CHR:START-END", required: false, default: "21:30000000-38000000"}
       archaic: {description: "Vindija or Altai (Altai's alignments are published without indexes)", required: false, default: "Vindija"}
   push:
     paths:
@@ -42,7 +42,7 @@ jobs:
           mkdir -p dtout
           timeout 19000 python tools/dtdata/deeptime_bench.py dtout \
             --individuals "${{ inputs.individuals || '4' }}" \
-            --region "${{ inputs.region || '21:30000000-32000000' }}" \
+            --region "${{ inputs.region || '21:30000000-38000000' }}" \
             --archaic "${{ inputs.archaic || 'Vindija' }}" > dt.txt 2>&1
           rc=$?
           tail -c 20000 dt.txt

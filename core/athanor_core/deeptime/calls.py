@@ -110,17 +110,26 @@ def _genotype_loglik(counts: np.ndarray, err: float) -> tuple[np.ndarray, list]:
 
 
 def loglik_from_qualities(site: np.ndarray, base: np.ndarray, qual: np.ndarray, n_sites: int,
-                          max_error: float = 0.25) -> tuple[np.ndarray, np.ndarray]:
+                          min_error: float = 0.005, max_error: float = 0.25) -> tuple[np.ndarray, np.ndarray]:
     """The same likelihoods, but with each read's own error probability.
 
     A base quality is the sequencer's estimate that the base is wrong, so a
     Q20 base is forty times as likely to be an error as a Q36 one and should
     not count the same. Observations are grouped by quality, which is a small
-    set of integers, and each group's contribution is added in one pass."""
+    set of integers, and each group's contribution is added in one pass.
+
+    Taken at face value a high quality says a base is almost certainly the
+    base that was in the molecule - and for ancient DNA that is false, because
+    the commonest way a base is not what the genome says is deamination, which
+    the sequencer cannot see and scores as a perfect read. A caller that
+    believes the qualities therefore reads two damaged reads in thirty as a
+    heterozygote. ``min_error`` is the floor on how wrong a base can be for
+    reasons outside the sequencer's knowledge - damage, misalignment, a little
+    contamination - and the quality is used only where it is worse than that."""
     ll = np.zeros((n_sites, 10), dtype=np.float64)
     depth = np.bincount(site, minlength=n_sites).astype(np.int64)
     for q in np.unique(qual):
-        err = min(max_error, 10.0 ** (-float(q) / 10.0)) if q >= 0 else max_error
+        err = (min(max_error, max(min_error, 10.0 ** (-float(q) / 10.0))) if q >= 0 else max_error)
         hom, other = np.log(1 - err), np.log(err / 3)
         het = np.log(0.5 * (1 - err) + 0.5 * err / 3)
         m = qual == q
@@ -163,9 +172,10 @@ def diploid(counts: np.ndarray = None, min_depth: int = 8, max_depth: int | None
     the site has."""
     if pileup is not None:
         n = int(n_sites if n_sites is not None else pileup.n_sites)
-        ll, depth = loglik_from_qualities(pileup.site, pileup.base, pileup.qual, n)
+        ll, depth = loglik_from_qualities(pileup.site, pileup.base, pileup.qual, n, min_error=err)
         counts = None
-        quality_source = "each read's own base quality"
+        quality_source = (f"each read's own base quality, with a floor of {err} on how wrong a base can be for "
+                          "reasons the sequencer cannot see, deamination above all")
     else:
         counts = np.asarray(counts, dtype=np.int64)
         ll, _ = _genotype_loglik(counts, err)
