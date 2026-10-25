@@ -1,0 +1,79 @@
+[INFO] fetched aadr.snp 77.7 MB in 2 s
+[INFO] fetched aadr.ind 1.0 MB in 1 s
+[INFO] fetched aadr.anno 13.4 MB in 1 s
+[INFO] AADR: 1,233,013 sites, 23,089 individuals, 23,089 annotation rows
+[INFO] 163 BAMs in PRJEB11450; smallest 5 MB
+[INFO] individuals: I1530.AG (M), I1302.AG (M), I0724.AG (M), I0725.AG (F)
+[INFO] fetched chr19.fa.gz 16.4 MB in 4 s
+[INFO] fetched chr20.fa.gz 18.1 MB in 2 s
+[INFO] fetched chr21.fa.gz 10.7 MB in 2 s
+[INFO] fetched chr22.fa.gz 10.5 MB in 2 s
+[INFO] fetched I1530.bam 5.0 MB in 10 s
+{"individual": "I1530.AG", "run": "ERR1136472", "bytes": 5033649, "build": "GRCh37", "published": {"sex": "M", "snps_hit_1240k": "32930", "coverage_1240k": "0.0299086", "damage": "0.092", "y_haplogroup": "R1", "mt_haplogroup": "H3ao"}, "ours": {"sites_called": 33476, "sites_covered": 33502, "sex": "XY", "r_x_at_panel_sites": 0.43410941614426085, "sex_from_panel": "XY", "sex_from_read_counts": null, "r_y_whole_chromosomes": 0.422680412371134, "damage_at_panel_sites": {"terminal_deamination": 0.11505, "terminal_deamination_including_cpg": 0.09946, "reads_used": null, "ct5": {"terminal": 0.14286, "background": 0.00487, "excess": 0.13799, "observations_at_first_base": 7, "not_cpg_excess": 0.14098, "not_cpg_observations": 7, "cpg_excess": null, "cpg_observations": 0, "profile": [0.14286, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "ga3": {"terminal": 0.0625, "background": 0.00158, "excess": 0.06092, "observations_at_first_base": 16, "not_cpg_excess": 0.08912, "not_cpg_observations": 11, "cpg_excess": 0.0, "cpg_observations": 5, "profile": [0.0625, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "damage_against_reference": {"terminal_deamination": 0.08853, "terminal_deamination_including_cpg": 0.10864, "
+[INFO] fetched I1302.bam 14.0 MB in 20 s
+{"individual": "I1302.AG", "run": "ERR1136457", "bytes": 13994231, "build": "GRCh37", "published": {"sex": "M", "snps_hit_1240k": "73031", "coverage_1240k": "0.0708163", "damage": "0.093", "y_haplogroup": "G-PF3359", "mt_haplogroup": "J2b1a3"}, "ours": {"sites_called": 74898, "sites_covered": 74993, "sex": "XY", "r_x_at_panel_sites": 0.38319500273503376, "sex_from_panel": "XY", "sex_from_read_counts": null, "r_y_whole_chromosomes": 0.2764900662251656, "damage_at_panel_sites": {"terminal_deamination": 0.19493, "terminal_deamination_including_cpg": 0.27751, "reads_used": null, "ct5": {"terminal": 0.23636, "background": 0.00135, "excess": 0.23501, "observations_at_first_base": 55, "not_cpg_excess": 0.15909, "not_cpg_observations": 44, "cpg_excess": 0.53653, "cpg_observations": 11, "profile": [0.23636, 0.06452, 0.0, 0.025, 0.02941, 0.0, 0.0, 0.0]}, "ga3": {"terminal": 0.32, "background": 0.0, "excess": 0.32, "observations_at_first_base": 50, "not_cpg_excess": 0.23077, "not_cpg_observations": 39, "cpg_excess": 0.63636, "cpg_observations": 11, "profile": [0.32, 0.05882, 0.03571, 0.05128, 0.0, 0.03226, 0.03125, 0.0]}}, "damage_against_reference": {"terminal_deamination": 0.11074, "termina
+[INFO] fetched I0724.bam 15.2 MB in 15 s
+{"individual": "I0724.AG", "run": "ERR1136422", "bytes": 15151240, "build": "GRCh37", "published": {"sex": "M", "snps_hit_1240k": "240320", "coverage_1240k": "0.2595271", "damage": null, "y_haplogroup": "I-L596", "mt_haplogroup": "K1a4"}, "ours": {"sites_called": 58551, "sites_covered": 58650, "sex": "XY", "r_x_at_panel_sites": 0.34069189204444084, "sex_from_panel": "XY", "sex_from_read_counts": null, "r_y_whole_chromosomes": 0.3155714765476324, "damage_at_panel_sites": {"terminal_deamination": 0.12588, "terminal_deamination_including_cpg": 0.2224, "reads_used": null, "ct5": {"terminal": 0.27273, "background": 0.0, "excess": 0.27273, "observations_at_first_base": 22, "not_cpg_excess": 0.11111, "not_cpg_observations": 18, "cpg_excess": 1.0, "cpg_observations": 4, "profile": [0.27273, 0.0, 0.0, 0.0, 0.0, 0.02941, 0.02941, 0.0]}, "ga3": {"terminal": 0.17391, "background": 0.00184, "excess": 0.17207, "observations_at_first_base": 23, "not_cpg_excess": 0.14066, "not_cpg_observations": 21, "cpg_excess": 0.5, "cpg_observations": 2, "profile": [0.17391, 0.09091, 0.03226, 0.0, 0.0, 0.0, 0.0, 0.0]}}, "damage_against_reference": {"terminal_deamination": 0.12796, "terminal_deamination_includin
+[INFO] fetched I0725.bam 15.5 MB in 21 s
+{"individual": "I0725.AG", "run": "ERR1136423", "bytes": 15481350, "build": "GRCh37", "published": {"sex": "F", "snps_hit_1240k": "45416", "coverage_1240k": "0.0431256", "damage": "0.091", "y_haplogroup": "n/a (female)", "mt_haplogroup": "N1a1a"}, "ours": {"sites_called": 47815, "sites_covered": 47884, "sex": null, "r_x_at_panel_sites": 0.8452950746345892, "sex_from_panel": null, "sex_from_read_counts": null, "r_y_whole_chromosomes": 0.07730418370556778, "damage_at_panel_sites": {"terminal_deamination": 0.12381, "terminal_deamination_including_cpg": 0.18509, "reads_used": null, "ct5": {"terminal": 0.04, "background": 0.0, "excess": 0.04, "observations_at_first_base": 25, "not_cpg_excess": 0.04762, "not_cpg_observations": 21, "cpg_excess": 0.0, "cpg_observations": 4, "profile": [0.04, 0.05, 0.04, 0.0, 0.0, 0.03226, 0.0, 0.03448]}, "ga3": {"terminal": 0.33333, "background": 0.00314, "excess": 0.33019, "observations_at_first_base": 30, "not_cpg_excess": 0.2, "not_cpg_observations": 25, "cpg_excess": 0.97368, "cpg_observations": 5, "profile": [0.33333, 0.0, 0.07407, 0.0, 0.04167, 0.0, 0.0, 0.0]}}, "damage_against_reference": {"terminal_deamination": 0.10479, "terminal_deamination_inclu
+[PASS] Pseudo-haploid calls from the reads agree with the AADR's published genotypes for the same individuals (sites called by both, excluding the published heterozygotes a single allele cannot match): at least 97%: I1530.AG 99.85% of 32,595; I1302.AG 99.41% of 73,366; I0724.AG 98.30% of 57,776; I0725.AG 99.79% of 46,777
+[FAIL] Genetic sex, from the depth at the panel's X positions against its autosomal ones, matches the sex published for each individual: I1530.AG: XY (R_x 0.43) vs M; I1302.AG: XY (R_x 0.38) vs M; I0724.AG: XY (R_x 0.34) vs M; I0725.AG: None (R_x 0.85) vs F
+[PASS] Terminal deamination outside CpG sites, measured against the reference, matches the first-base damage rate published for each individual (within 40%, or 0.02): I1530.AG: 0.089 vs 0.092; I1302.AG: 0.111 vs 0.093; I0725.AG: 0.105 vs 0.091
+[PASS] Terminal deamination is measurable on every individual: I1530.AG: 0.089; I1302.AG: 0.111; I0724.AG: 0.128; I0725.AG: 0.105
+[INFO] Vindija: looking for an indexed chromosome-21 alignment
+[INFO] streaming 21:30000000-32000000 from Vi33.19.chr21.indel_realn.bam
+[INFO] Vindija_21_30000000_32000000.bam: 72.5 MB
+[INFO] http://cdna.eva.mpg.de/neandertal/Vindija/VCF/README
+This directory contains genotypes for the Vindija, Altai and Denisova genomes
+generated using snpAD, an ancient DNA damage-aware genotyper developed in
+Leipzig for the analysis of the Vindija genome. The genotyper uses an empircal
+error profile that captures the position-dependent probabilities of base
+exchanges due to error and deamination to estimate the proportion of all
+possible genotypes by maximum likelihood. Using these estimate as priors the
+posterior genotype probability is calculated and the genotype with the the
+highest likelihood is reported at each position. Estimates were restricted to
+mappable regions (Heng Li's 35mer filter: a position is mappable if none of the
+overlapping 35mers align to any other position in the genome allowing for up to
+one mismatch) and required a MQ>=25 on sequences.
+
+The human genome hg19/GRCh37 was used as reference in all VCFs. See
+../bam/README for further details on alignments and reference genome.
+
+Contact: <Kay Pruefer> pruefer@eva.mpg.de
+[INFO] http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/README
+This directory contains general filters that are strongly encouraged to be applied to all ancient samples:
+- Coverage filter stratified by GC content
+- minimum coverage 10 
+- Heng Li's Mapability 35 (requiring all 35mers to be unique, i.e. map35_100) 
+- MQ25 
+- no tandem repeats (from UCSC tandem repeat finder track)
+- no indels (removes indels called with GATK)
+
+The bed files give positions that pass filters, i.e. they should be included in analyses.
+[INFO] http://cdna.eva.mpg.de/neandertal/Vindija/bam/Pruefer_etal_2017/README
+This directory contains indexed bam files for the ~30x coverage Vindija
+Neandertal 33.19. The alignments were produced by BWA (version:
+0.5.10-evan.9-1-g44db244, https://github.com/udo-stenzel/network-aware-bwa)
+against hg19 including the 1000 genomes decoy sequences (hs37d5), phi-X
+(NC_001422.1) and human herpesvirus 4 type 1 (NC007605). 
+
+This data was processed similar to previous archaic genomes: 
+- Pairs with overlapping ends were merged into one sequence (leeHom)
+- PCR duplicates were merged into one sequence based on their alignment
+  coordinates (bam-rmdup 0.6.3).  This step keeps only aligned sequences that
+  are properly paired or single reads.
+- Indels were realigned with GATK (version 1.3.14)
+
+The individual is female and the Y-chromosome alignments are only included for
+completeness.
+
+KP
+pruefer@eva.mpg.de
+[INFO] 1,441,591 published genotypes in the region
+[INFO] fetched Vindija_chr21_mask.bed.gz 1.6 MB in 2 s
+[INFO] mask: 67.9% of the region
+{"individual": "Vindija", "region": "21:30000000-32000000", "alignment": "Vi33.19.chr21.indel_realn.bam", "vcf": "http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr21_mq25_mapab100.vcf.gz", "mask": "http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/Vindija33.19/chr21_mask.bed.gz", "bam_bytes": 72501471, "published_sites": 1441591, "mask_fraction": 0.6793301603349199, "sites_compared": 1297536, "genotypes_agree": 0.9984956101410674, "sites_we_call_but_they_filter": 0, "heterozygous_ours": 2199, "heterozygous_theirs": 247, "heterozygosity_region": {"callable_sites": 1297603, "heterozygous_sites": 2260, "transitions": 2179, "transversions": 81, "heterozygosity": 0.0017416729153677973, "heterozygosity_ci": [0.0016698656397217044, 0.0018134801910138904], "transversion_heterozygosity": 6.24227903295538e-05, "transversion_heterozygosity_ci": [4.8828493768895414e-05, 7.601708689021219e-05], "transition_share": 0.9641592920353982, "depth_floor": 10, "method": "genotype likelihoods with a flat prior and one error probability of 0.005 for every read; a site is called at depth 10 or more, with at least 30.0 decibans in favour of the called genotype over the next best. The depth floor is 10 rather than the 8 asked for because below it a homozygote cannot reach 30.0 decibans, and dropping homozygotes but not heterozygotes would inflate every rate computed from the calls"}, "heterozygosity_shared_sites": {"ours": 0.0016947506658774784, "theirs": 0.00019036080694485549, "ours_t
+[PASS] Vindija Neanderthal, 21:30000000-32000000: diploid genotypes agree with the study's own call set at the sites both call, inside the study's filter mask (at least 99%): 99.850% of 1,297,536 sites
+[PASS] Vindija Neanderthal, 21:30000000-32000000: heterozygous sites at transversions - the ones deamination cannot make - within 25% of the published call set's, per shared site: ours 6.24e-05, theirs 6.17e-05 over 1,297,536 shared sites
+[PASS] Vindija Neanderthal, 21:30000000-32000000: at transitions, which deamination mimics, this genotype caller reports more heterozygotes than the study's damage-aware one, and says so rather than reporting a rate: ours 1.69e-03 (96% transitions), theirs 1.90e-04 (68% transitions)
+total 291 s
