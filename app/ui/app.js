@@ -352,7 +352,7 @@ function progressText(d) {
     for (const g of (A.catalog && A.catalog.references.genomes) || []) st = st.replaceAll(g.accession, commonName(g.organism));
     return `Step ${d.step ?? "?"} of ${d.steps ?? "?"} · ${st}`;
   }
-  if (d.task === "personal") return d.stage ? d.stage[0].toUpperCase() + d.stage.slice(1) : "";
+  if (d.task === "personal" || d.task === "deeptime") return d.stage ? d.stage[0].toUpperCase() + d.stage.slice(1) : "";
   if (d.task === "pgdata") {
     if (d.total_bytes) return `${d.stage} · ${(d.bytes / 1e6).toFixed(0)} of ${(d.total_bytes / 1e6).toFixed(0)} MB`;
     return d.stage || "";
@@ -593,6 +593,15 @@ function wire() {
   $("pgChoose").onclick = () => pgChoose();
   $("pgRun").onclick = () => pgRun();
   $("pgExport").onclick = () => pgExport();
+  $("dtChoose").onclick = () => dtChoose();
+  $("dtInspect").onclick = () => dtInspect();
+  $("dtRun").onclick = () => dtRun();
+  $("dtExport").onclick = () => dtExport();
+  $("dtHetRun").onclick = () => dtHet();
+  $("dtHetMask").onclick = () => dtPickMask();
+  $("dtHetMaskClear").onclick = () => { DT.mask = null; $("dtHetMaskName").textContent = "No mask: every position with enough depth counts."; };
+  for (const [id, fmt] of [["dtDepth", (v) => v], ["dtMapq", (v) => v], ["dtBq", (v) => v], ["dtTrim", (v) => v]])
+    $(id).oninput = (e) => ($(`${id}Val`).textContent = fmt(e.target.value));
   $("adnaCov").oninput = (e) => ($("adnaCovVal").textContent = `${e.target.value}×`);
   $("adnaCont").oninput = (e) => ($("adnaContVal").textContent = `${e.target.value}%`);
   $("adnaLen").oninput = (e) => ($("adnaLenVal").textContent = `${e.target.value} bp`);
@@ -618,11 +627,12 @@ function wire() {
   document.getElementById("tabs").onclick = (e) => {
     const b = e.target.closest(".tab"); if (!b) return;
     document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-pressed", String(t === b)));
-    for (const v of ["molecule", "validation", "adna", "personal", "dna"]) $(`view-${v}`).hidden = b.dataset.view !== v;
+    for (const v of ["molecule", "validation", "adna", "personal", "dna", "deeptime"]) $(`view-${v}`).hidden = b.dataset.view !== v;
     if (b.dataset.view === "validation") renderValidation();
     if (b.dataset.view === "dna") { initDna(); $("dnaDamageLab").hidden = !labDamageProfile(); }
     if (b.dataset.view === "adna") initAdna();
     if (b.dataset.view === "personal") initPersonal();
+    if (b.dataset.view === "deeptime") initDeeptime();
   };
 }
 
@@ -1738,6 +1748,254 @@ function drawNean(cv, r, regions) {
   g.fillText(`${(100 * v1).toFixed(1)}% Neanderthal`, rr - 110, b + 14);
 }
 
+/* ============================== DEEP TIME ==============================
+   Ancient nuclear genomes: a BAM in, authentication, sex, genotypes and the
+   deep-ancestry reports out. Everything runs in the Linux engines pack. */
+const DT = { path: null, mask: null, result: null, inspect: null, busy: false, pack: null };
+
+async function initDeeptime() {
+  try { DT.pack = await rpc("personal_status", {}); } catch { DT.pack = null; }
+  dtReady();
+}
+
+function dtReady() {
+  const have = !!(DT.pack && DT.pack.installed);
+  $("dtRun").disabled = DT.busy || !DT.path || !have;
+  $("dtInspect").disabled = DT.busy || !DT.path;
+  $("dtHetRun").disabled = DT.busy || !DT.path;
+  if (!have && DT.path) $("dtEmpty").textContent = "Download the Personal Genome reference data (Personal Genome tab) first: "
+    + "Deep Time calls genotypes at its panel of positions and uses its ancient reference individuals.";
+}
+
+async function dtChoose() {
+  if (!TAURI) return;
+  try {
+    const [p] = await TAURI.core.invoke("pick_files", { title: "Aligned ancient genome (BAM)", multiple: false,
+      filters: [["Alignments (BAM, CRAM)", ["bam", "cram"]], ["All files", ["*"]]] });
+    if (!p) return;
+    DT.path = p;
+    $("dtFile").innerHTML = `<div class="file"><span class="kind">BAM</span><span class="fn" title="${escapeHtml(p)}">${escapeHtml(baseName(p))}</span></div>`;
+    dtReady();
+    dtInspect();
+  } catch (e) { log(`File dialog: ${e}`, true); }
+}
+
+async function dtPickMask() {
+  if (!TAURI) return;
+  const [p] = await TAURI.core.invoke("pick_files", { title: "Callable regions (BED)", multiple: false,
+    filters: [["BED", ["bed", "gz"]], ["All files", ["*"]]] }).catch(() => []);
+  if (!p) return;
+  DT.mask = p;
+  $("dtHetMaskName").textContent = `Mask: ${baseName(p)} (only its intervals count)`;
+}
+
+function dtProgress(d) {
+  if (!DT.busy) return;
+  $("dtBar").style.width = `${(100 * (d.fraction || 0)).toFixed(1)}%`;
+  $("dtPct").textContent = `${Math.floor(100 * (d.fraction || 0))}%`;
+  $("dtEta").textContent = d.elapsed_seconds ? `· ${d.elapsed_seconds < 90 ? `${d.elapsed_seconds}s` : `${Math.round(d.elapsed_seconds / 60)} min`} so far` : "";
+  $("dtBusyText").textContent = d.stage || "Working…";
+}
+
+function dtStart(label) {
+  DT.busy = true; dtReady();
+  $("dtBusy").hidden = false; $("dtBar").style.width = "0%"; $("dtPct").textContent = "0%";
+  $("dtBusyText").textContent = "Starting…"; $("dtEta").textContent = "";
+  return addJob(label);
+}
+
+function dtEnd() { DT.busy = false; $("dtBusy").hidden = true; dtReady(); }
+
+async function dtInspect() {
+  if (!DT.path) return;
+  const job = dtStart(`Deep Time · inspect ${baseName(DT.path)}`);
+  try {
+    DT.inspect = await rpc("deeptime_inspect", { path: DT.path });
+    job.done(`${(DT.inspect.reads_mapped || 0).toLocaleString()} reads on ${DT.inspect.build}`);
+    renderDtInspect();
+  } catch (e) { job.fail(String(e)); log(`Deep Time: ${e.message || e}`, true); }
+  finally { dtEnd(); }
+}
+
+function renderDtInspect() {
+  const r = DT.inspect; if (!r) return;
+  $("dtEmpty").hidden = true; $("dtInspectOut").hidden = false;
+  const s = r.sex || {}, L = r.lengths || {};
+  const chrom = Object.entries(r.reads_by_chromosome || {}).filter(([k]) => /^(\d+|X|Y|MT)$/.test(k));
+  const mt = r.build_detail && r.build_detail.mitochondrion;
+  $("dtInspectOut").innerHTML = `<div class="sec"><div class="label">The alignment</div>
+    ${kvTable([
+      ["File", `${escapeHtml(baseName(r.file))} <small>(${(r.bytes / 1e9).toFixed(2)} GB)</small>`],
+      ["Reference build", `${escapeHtml(r.build)} <small>(${escapeHtml((r.build_detail || {}).naming || "")} names${mt ? `, mitochondrion ${escapeHtml(mt)}` : ""})</small>`],
+      ["Index", r.indexed ? "present" : `<span class="warn">missing: index it with samtools index</span>`],
+      ["Mapped reads", (r.reads_mapped || 0).toLocaleString()],
+      ["Molecule length", L.median == null ? "—" : `median ${L.median} bp, mean ${L.mean.toFixed(1)} bp <small>(quartiles ${L.quartiles[0]}–${L.quartiles[1]})</small>`],
+      ["Genetic sex", s.call ? `${escapeHtml(s.call)} <small>(R<sub>y</sub> ${s.r_y.toFixed(3)}, 95% ${s.r_y_ci.map((x) => x.toFixed(3)).join("–")}${s.r_x == null ? "" : `; R<sub>x</sub> ${s.r_x.toFixed(2)}`})</small>`
+        : `<span class="warn">not called</span> <small>${escapeHtml(s.reason || "")}</small>`],
+      ["Libraries", (r.read_groups || []).length ? (r.read_groups || []).map((g) => escapeHtml([g.ID, g.LB, g.SM].filter(Boolean).join(" / "))).join("<br>") : "none recorded"],
+      ["Programs recorded", (r.programs || []).length ? escapeHtml((r.programs || []).filter(Boolean).join(", ")) : "none recorded"],
+    ])}
+    <table><thead><tr><th>Chromosome</th><th>Mapped reads</th></tr></thead><tbody>
+      ${chrom.map(([k, v]) => `<tr><td>${escapeHtml(k)}</td><td class="n">${v.toLocaleString()}</td></tr>`).join("")}</tbody></table>
+    <p class="note">Read counts come from the index, so this is quick whatever the file's size. ${r.mitochondrion_is_rCRS
+      ? "The mitochondrial reference is the rCRS, so a maternal haplogroup can be called."
+      : "The mitochondrial reference is not the rCRS, so mitochondrial positions do not match the haplogroup tree and no maternal line is called."}</p></div>`;
+}
+
+async function dtRun() {
+  if (!DT.path) return;
+  const job = dtStart(`Deep Time · ${baseName(DT.path)}`);
+  try {
+    DT.result = await rpc("deeptime_analyse", {
+      path: DT.path, mode: $("dtMode").value, min_depth: +$("dtDepth").value,
+      min_mapq: +$("dtMapq").value, min_qual: +$("dtBq").value, trim: +$("dtTrim").value,
+      transversions_only: $("dtTv").checked,
+    });
+    job.done(`${DT.result.cards.length} reports`);
+    renderDeeptime();
+    log(`Deep Time: ${DT.result.cards.length} reports, ${(DT.result.genotypes || {}).sites_called?.toLocaleString() || "?"} sites called`);
+  } catch (e) { job.fail(String(e)); log(`Deep Time: ${e.message || e}`, true); }
+  finally { dtEnd(); }
+}
+
+function renderDeeptime() {
+  const R = DT.result; if (!R) return;
+  $("dtEmpty").hidden = true; $("dtCards").hidden = false; $("dtExport").hidden = false;
+  const groups = [];
+  for (const c of R.cards) {
+    let g = groups.find((x) => x.name === c.group);
+    if (!g) groups.push((g = { name: c.group, cards: [] }));
+    g.cards.push(c);
+  }
+  $("dtCards").innerHTML = groups.map((g) => `<div class="sec"><div class="label">${escapeHtml(g.name)}</div>
+    ${g.cards.map(cardHtml).join("")}</div>`).join("")
+    + (R.note ? `<p class="warnbox">${escapeHtml(R.note)}</p>` : "");
+  for (const c of R.cards) {
+    const el = $(`pgbody_${c.id}`);
+    const fn = DT_DETAIL[c.id] || DETAIL[c.id];
+    if (el && fn) { try { fn(el, c); } catch (e) { el.innerHTML = `<p class="note">${escapeHtml(String(e))}</p>`; } }
+  }
+  const f = R.file || {}, gt = R.genotypes || {};
+  $("dtProv").innerHTML = `<p><b>The alignment</b> (read on this computer, never uploaded)</p>
+    <ul><li>${escapeHtml(baseName(f.file || ""))} — ${escapeHtml(f.build || "")}, ${(f.reads_mapped || 0).toLocaleString()} mapped reads<br>
+      <small>${escapeHtml(f.sha256 ? `sha256 ${f.sha256.slice(0, 16)}…` : `sha256 of the first 256 MB ${String(f.sha256_first_256mb || "").slice(0, 16)}…`)}</small></li>
+    <li>Genotypes: ${escapeHtml(gt.mode === "diploid" ? "diploid, from the base qualities" : "pseudo-haploid, one allele at random per site")}
+      (seed ${gt.seed}), ${(gt.sites_called || 0).toLocaleString()} of ${(gt.sites || 0).toLocaleString()} panel sites</li></ul>
+    <p><b>Reference data</b></p><ul><li>${escapeHtml((R.reference_pack || {}).name || "")} built ${escapeHtml((R.reference_pack || {}).built || "")}</li></ul>`;
+}
+
+const DT_DETAIL = {
+  deeptime_file(el, c) {
+    const r = c.result, p = r.panel || {}, L = r.lengths || {};
+    el.innerHTML = kvTable([
+      ["Reference build", `${escapeHtml(r.build)} <small>(${escapeHtml((r.build_detail || {}).naming || "")})</small>`],
+      ["Mapped reads", (r.reads_mapped || 0).toLocaleString()],
+      ["Panel sites with reads", `${(p.sites_covered || 0).toLocaleString()} of ${(p.sites || 0).toLocaleString()}`],
+      ["Panel sites called", (p.sites_called || 0).toLocaleString()],
+      ["Depth where covered", (p.mean_depth_at_covered_sites || 0).toFixed(2) + "×"],
+      ["Molecule length", L.median == null ? "—" : `median ${L.median} bp, mean ${L.mean.toFixed(1)} bp`],
+      ["Libraries", (r.read_groups || []).length ? (r.read_groups || []).map((g) => escapeHtml([g.ID, g.LB].filter(Boolean).join(" / "))).join("<br>") : "none recorded"],
+    ]) + `<details><summary class="note">Sites called on each chromosome</summary>
+      <table><thead><tr><th>Chromosome</th><th>Sites</th><th>With reads</th><th>Called</th></tr></thead><tbody>
+      ${(p.chromosomes || []).map((x) => `<tr><td>${escapeHtml(x.chromosome)}</td><td class="n">${x.sites.toLocaleString()}</td>
+        <td class="n">${x.covered.toLocaleString()}</td><td class="n">${x.called.toLocaleString()}</td></tr>`).join("")}</tbody></table></details>`;
+  },
+  deeptime_authenticity(el, c) {
+    const d = c.result.damage || {}, L = c.result.lengths || {};
+    const rows = [["ct5", "C→T from the molecule's 5′ end"], ["ga3", "G→A from its 3′ end"]];
+    el.innerHTML = kvTable(rows.flatMap(([k, lab]) => {
+      const x = d[k]; if (!x) return [];
+      return [[lab, x.terminal == null ? "—" : `${pct(x.terminal, 1)} at the first base <small>(background ${pct(x.background, 2)}, excess ${pct(x.terminal_excess, 1)}; ${(x.observations[0] || 0).toLocaleString()} observations)</small>`]];
+    }).concat([
+      ["Molecule length", L.median == null ? "—" : `median ${L.median} bp <small>(5% shorter than ${L.shortest_5pc}, 5% longer than ${L.longest_5pc})</small>`],
+      ["Strands", c.result.reverse_fraction == null ? "—" : `${pct(c.result.reverse_fraction, 1)} of reads on the reverse strand`],
+    ])) + `<div class="plotwrap"><canvas id="dtDamagePlot" height="220"></canvas></div>
+      <p class="note">${d.terminal_deamination == null ? "Not enough covered sites to measure deamination."
+        : d.terminal_deamination > 0.02 ? "Deamination rises towards both ends of the molecules, the pattern of authentic ancient DNA (Briggs et al. 2007). A library treated with uracil-DNA glycosylase keeps it only at the terminal base or two."
+        : "Little or no terminal deamination: either the library was treated with uracil-DNA glycosylase, or the reads are not ancient."}</p>`;
+    drawDtDamage($("dtDamagePlot"), d);
+  },
+  deeptime_sex(el, c) {
+    const s = c.result;
+    el.innerHTML = kvTable([
+      ["Reads on the X", (s.reads_X || 0).toLocaleString()],
+      ["Reads on the Y", (s.reads_Y || 0).toLocaleString()],
+      ["Reads on the autosomes", (s.reads_autosomal || 0).toLocaleString()],
+      ["R<sub>y</sub> = Y / (X + Y)", s.r_y == null ? "—" : `${s.r_y.toFixed(4)} <small>(95% ${s.r_y_ci.map((x) => x.toFixed(4)).join("–")}; below 0.016 XX, above 0.077 XY)</small>`],
+      ["R<sub>x</sub> (X against the autosomes)", s.r_x == null ? "—" : `${s.r_x.toFixed(3)} <small>(95% ${s.r_x_ci.map((x) => x.toFixed(3)).join("–")}; about 1 with two X chromosomes, 0.5 with one)</small>`],
+    ]);
+  },
+};
+
+function drawDtDamage(cv, d) {
+  if (!cv || !d || !d.ct5) return;
+  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight || 220;
+  cv.width = w * dpr; cv.height = h * dpr;
+  const g = cv.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
+  const l = 46, r = 12, t = 12, b = 36, n = 15;
+  const series = [["ct5", "#d08770", "C→T, 5′ end"], ["ga3", "#81a1c1", "G→A, 3′ end"]];
+  const top = Math.max(0.05, ...series.flatMap(([k]) => (d[k].frequency || []).slice(0, n).filter((x) => x != null)));
+  const X = (i) => l + (w - l - r) * i / (n - 1);
+  const Y = (v) => h - b - (h - t - b) * (v / top);
+  g.strokeStyle = "#2d3540"; g.lineWidth = 1;
+  g.beginPath(); g.moveTo(l, t); g.lineTo(l, h - b); g.lineTo(w - r, h - b); g.stroke();
+  g.fillStyle = "#8b98a5"; g.font = "11px system-ui, sans-serif";
+  for (let k = 0; k <= 4; k++) {
+    const v = top * k / 4;
+    g.fillText(`${(100 * v).toFixed(0)}%`, 6, Y(v) + 4);
+    g.strokeStyle = "#232a33"; g.beginPath(); g.moveTo(l, Y(v)); g.lineTo(w - r, Y(v)); g.stroke();
+  }
+  g.fillStyle = "#8b98a5";
+  for (let i = 0; i < n; i += 2) g.fillText(String(i + 1), X(i) - 3, h - 20);
+  g.fillText("position from the molecule's end", l + (w - l - r) / 2 - 80, h - 5);
+  for (const [k, colour, label] of series) {
+    const f = (d[k].frequency || []).slice(0, n);
+    g.strokeStyle = colour; g.lineWidth = 2; g.beginPath();
+    f.forEach((v, i) => { if (v == null) return; const x = X(i), y = Y(v); i ? g.lineTo(x, y) : g.moveTo(x, y); });
+    g.stroke();
+    if (d[k].background != null) {
+      g.strokeStyle = colour; g.setLineDash([3, 3]); g.lineWidth = 1; g.beginPath();
+      g.moveTo(l, Y(d[k].background)); g.lineTo(w - r, Y(d[k].background)); g.stroke(); g.setLineDash([]);
+    }
+    g.fillStyle = colour;
+    g.fillText(label, w - r - 110, t + 12 + series.findIndex((x) => x[0] === k) * 14);
+  }
+}
+
+async function dtHet() {
+  if (!DT.path) return;
+  const chrom = $("dtHetChrom").value.trim(), start = +$("dtHetStart").value, end = +$("dtHetEnd").value;
+  const job = dtStart(`Deep Time · heterozygosity ${chrom}:${start}-${end}`);
+  try {
+    const r = await rpc("deeptime_heterozygosity", {
+      path: DT.path, chrom, start, end, min_mapq: +$("dtMapq").value, min_qual: +$("dtBq").value,
+      min_depth: +$("dtDepth").value, ...(DT.mask ? { mask_path: DT.mask } : {}),
+    });
+    job.done(`${(r.heterozygosity * 1e4).toFixed(2)} per 10,000 bases`);
+    $("dtEmpty").hidden = true; $("dtHetOut").hidden = false;
+    $("dtHetOut").innerHTML = `<div class="sec"><div class="label">Heterozygosity</div>${kvTable([
+      ["Region", `${escapeHtml(r.region.chromosome)}:${r.region.start.toLocaleString()}–${r.region.end.toLocaleString()} <small>(${(r.region.bases / 1e6).toFixed(2)} Mb, ${escapeHtml(r.build)})</small>`],
+      ["Mean depth", `${r.depth_mean.toFixed(1)}×`],
+      ["Callable sites", `${r.callable_sites.toLocaleString()}${r.mask ? ` <small>(inside ${escapeHtml(r.mask.path)}, which covers ${r.mask.callable_bases.toLocaleString()} bases)</small>` : ""}`],
+      ["Heterozygous sites", `${r.heterozygous_sites.toLocaleString()} <small>(${r.transitions.toLocaleString()} transitions, ${r.transversions.toLocaleString()} transversions)</small>`],
+      ["Heterozygosity", r.heterozygosity == null ? "—" : `${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases <small>(${r.heterozygosity.toExponential(2)})</small>`],
+      ["Transversions only", r.transversion_heterozygosity == null ? "—" : `${(1e4 * r.transversion_heterozygosity).toFixed(2)} per 10,000 bases`],
+    ])}<p class="note">${(r.limits || []).map(escapeHtml).join(" ")}</p></div>`;
+    log(`Deep Time: heterozygosity ${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases over ${r.callable_sites.toLocaleString()} callable sites`);
+  } catch (e) { job.fail(String(e)); log(`Deep Time: ${e.message || e}`, true); }
+  finally { dtEnd(); }
+}
+
+async function dtExport() {
+  try {
+    const path = await TAURI.core.invoke("pick_save_path", { title: "Save report",
+      defaultName: "athanor-deep-time.json", filters: [["JSON", ["json"]]] });
+    if (!path) return;
+    await rpc("deeptime_export", { path, what: "report" });
+    log(`Saved ${baseName(path)}`);
+  } catch (e) { log(`Save failed: ${e.message || e}`, true); }
+}
+
 function renderPgProv() {
   const R = PG.result, st = PG.status || {};
   const src = st.sources || {};
@@ -1758,6 +2016,7 @@ async function boot() {
       const d = e.payload || {}, t = progressText(d);
       if (d.task === "adna") { if (A.busy) adnaProgress(d); return; }
       if (d.task === "personal") { pgProgress(d); return; }
+      if (d.task === "deeptime") { dtProgress(d); return; }
       if (d.task === "pgdata") { pgPackProgress(d); return; }
       if (d.task === "dna_energy") { if (!$("dnaBusy").hidden) $("dnaBusyText").textContent = `${d.stage} (${d.step} of ${d.steps})`; return; }
       if (t && S.busy) setBusy(true, t);

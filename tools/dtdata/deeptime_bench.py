@@ -134,14 +134,14 @@ class AADRRemote:
                 raise RuntimeError(f"the server ignored the range request (status {r.status})")
             return r.read()
 
-    def column(self, name_pattern: str) -> int:
-        return next(i for i, h in enumerate(self.hdr) if re.search(name_pattern, h, re.I))
+    def column(self, name_pattern: str) -> int | None:
+        return next((i for i, h in enumerate(self.hdr) if re.search(name_pattern, h, re.I)), None)
 
     def field(self, gid: str, pattern: str):
         r = self.anno.get(gid)
-        if not r:
-            return None
         i = self.column(pattern)
+        if not r or i is None:
+            return None
         v = r[i].strip() if i < len(r) else ""
         return None if v in ("", "..", "n/a", "N/A") else v
 
@@ -284,8 +284,8 @@ def step_1240k(aadr: AADRRemote) -> None:
         row = {"individual": gid, "run": r["run"], "bytes": r["bytes"], "build": got["build"],
                "published": {"sex": aadr.field(gid, r"^molecular sex"),
                              "snps_hit_1240k": aadr.field(gid, r"1240k snpset"),
-                             "coverage": aadr.field(gid, r"^mean coverage$"),
-                             "damage": aadr.field(gid, r"^damage"),
+                             "coverage_1240k": aadr.field(gid, r"^mean coverage on 1"),
+                             "damage": aadr.field(gid, r"^damage rate in first"),
                              "y_haplogroup": aadr.field(gid, r"^y haplogroup in terminal"),
                              "mt_haplogroup": aadr.field(gid, r"^mtdna haplogroup")},
                "ours": {"sites_called": got["sites_called"], "sites_covered": got["sites_covered"],

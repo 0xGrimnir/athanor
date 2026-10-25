@@ -15,6 +15,7 @@
     <button type="button" class="tab" data-view="adna" aria-pressed="false"><span class="k">03</span>Ancient DNA</button>
       <button type="button" class="tab" data-view="personal" aria-pressed="false"><span class="k">04</span>Personal Genome</button>
       <button type="button" class="tab" data-view="dna" aria-pressed="false"><span class="k">05</span>DNA Structure</button>
+      <button type="button" class="tab" data-view="deeptime" aria-pressed="false"><span class="k">06</span>Deep Time</button>
   </nav>
   <button type="button" class="btn update" id="updateBtn" hidden></button>
   <button type="button" class="btn gpu" id="gpuBtn" hidden></button>
@@ -383,6 +384,60 @@
     <div class="sec" data-dnamode="helix"><div class="label">Base pairs</div><div id="dnaPairs"></div></div>
     <div class="sec"><div class="label">Method and sources</div><div id="dnaProv" class="note"></div>
       <div class="row"><button type="button" class="btn sm" id="dnaSavePdb" hidden>Save PDB…</button></div></div>
+  </section>
+</main>
+
+<!-- ============================ DEEP TIME ============================ -->
+<main class="view deck" id="view-deeptime" hidden>
+  <section class="panel" aria-label="An ancient genome">
+    <div class="sec">
+      <div class="label">Aligned reads</div>
+      <p class="note">An ancient genome as a BAM aligned to the human reference GRCh37 (hs37d5, hg19 or 1000 Genomes naming), such as the file deposited with a publication. It is read on this computer and never uploaded. A whole-genome BAM can be hundreds of gigabytes; only the positions needed are read from it.</p>
+      <div id="dtFile" class="filelist"></div>
+      <div class="row"><button type="button" class="btn sm" id="dtChoose">Choose BAM…</button>
+        <button type="button" class="btn sm" id="dtInspect" disabled>Inspect</button></div>
+    </div>
+    <div class="sec">
+      <div class="label">Genotypes</div>
+      <label class="mini">How to call<select id="dtMode" class="field">
+        <option value="pseudo_haploid" selected>Pseudo-haploid: one allele at random per site (low coverage)</option>
+        <option value="diploid">Diploid: both alleles from the base qualities (high coverage)</option></select></label>
+      <label class="mini">Minimum depth for a diploid call <span class="val" id="dtDepthVal">8</span><input id="dtDepth" type="range" min="2" max="30" step="1" value="8"></label>
+      <label class="mini">Minimum mapping quality <span class="val" id="dtMapqVal">25</span><input id="dtMapq" type="range" min="0" max="37" step="1" value="25"></label>
+      <label class="mini">Minimum base quality <span class="val" id="dtBqVal">20</span><input id="dtBq" type="range" min="0" max="40" step="1" value="20"></label>
+      <label class="mini">Ignore this many bases at each end of a molecule <span class="val" id="dtTrimVal">0</span><input id="dtTrim" type="range" min="0" max="10" step="1" value="0"></label>
+      <label class="mini check"><input type="checkbox" id="dtTv"> Transversions only (deamination cannot reach them)</label>
+      <p class="note">Deamination turns C into T near a molecule's 5′ end and G into A near its 3′ end. Trimming the ends or keeping only transversions removes those errors at the cost of sites.</p>
+      <button type="button" class="btn primary" id="dtRun" disabled>Read this genome</button>
+    </div>
+    <div class="sec">
+      <div class="label">Heterozygosity (high coverage)</div>
+      <p class="note">Heterozygous sites per callable base in one region, counted from the reads without a reference sequence. Published values use callers built for ancient DNA and each study's own filters, so compare like with like.</p>
+      <div class="row small">
+        <label class="mini">Chromosome<input id="dtHetChrom" class="field" value="21" spellcheck="false"></label>
+        <label class="mini">From<input id="dtHetStart" class="field num" type="number" value="30000000" step="100000"></label>
+        <label class="mini">To<input id="dtHetEnd" class="field num" type="number" value="32000000" step="100000"></label>
+      </div>
+      <div class="row"><button type="button" class="btn sm" id="dtHetMask">Callable-regions BED…</button>
+        <button type="button" class="btn sm" id="dtHetMaskClear">None</button></div>
+      <p class="note" id="dtHetMaskName">No mask: every position with enough depth counts.</p>
+      <button type="button" class="btn" id="dtHetRun" disabled>Count heterozygous sites</button>
+    </div>
+  </section>
+  <section class="panel center-scroll" aria-label="Reports">
+    <div class="busy progress" id="dtBusy" hidden>
+      <div class="pbar"><i id="dtBar"></i></div>
+      <div class="ptext"><b id="dtPct">0%</b> <span id="dtEta"></span></div>
+      <div class="pstage" id="dtBusyText">Starting…</div>
+    </div>
+    <div id="dtEmpty" class="note">Choose an aligned ancient genome. Requires the Linux engines (top bar) and the Personal Genome reference data.</div>
+    <div id="dtInspectOut" hidden></div>
+    <div id="dtHetOut" hidden></div>
+    <div id="dtCards" hidden></div>
+  </section>
+  <section class="panel" aria-label="Provenance">
+    <div class="sec"><div class="label">Provenance</div><div id="dtProv" class="note">No report yet.</div>
+      <div class="row"><button type="button" class="btn sm" id="dtExport" hidden>Save report (JSON)…</button></div></div>
   </section>
 </main>
 
