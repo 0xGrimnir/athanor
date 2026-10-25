@@ -1,0 +1,1349 @@
+#### MPI EVA archaic genomes
+
+== http://cdna.eva.mpg.de/neandertal/altai/ (4 entries)
+  AltaiNeandertal/                                                       -
+  Denisovan/                                                             -
+  ModernHumans/                                                          -
+  catalog/                                                               -
+
+== http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/ (3 entries)
+  VCF/                                                                   -
+  bam/                                                                   -
+  catalog/                                                               -
+
+== http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/ (26 entries)
+  AltaiNea.hg19_1000g.1.mod.vcf.gz                                       5.6G
+  AltaiNea.hg19_1000g.2.mod.vcf.gz                                       5.9G
+  AltaiNea.hg19_1000g.3.mod.vcf.gz                                       4.6G
+  AltaiNea.hg19_1000g.4.mod.vcf.gz                                       4.8G
+  AltaiNea.hg19_1000g.5.mod.vcf.gz                                       4.5G
+  AltaiNea.hg19_1000g.6.mod.vcf.gz                                       4.3G
+  AltaiNea.hg19_1000g.7.mod.vcf.gz                                       3.9G
+  AltaiNea.hg19_1000g.8.mod.vcf.gz                                       3.6G
+  AltaiNea.hg19_1000g.9.mod.vcf.gz                                       2.9G
+  AltaiNea.hg19_1000g.10.mod.vcf.gz                                      3.1G
+  AltaiNea.hg19_1000g.11.mod.vcf.gz                                      3.3G
+  AltaiNea.hg19_1000g.12.mod.vcf.gz                                      3.2G
+  AltaiNea.hg19_1000g.13.mod.vcf.gz                                      2.4G
+  AltaiNea.hg19_1000g.14.mod.vcf.gz                                      2.2G
+  AltaiNea.hg19_1000g.15.mod.vcf.gz                                      2.0G
+  AltaiNea.hg19_1000g.16.mod.vcf.gz                                      1.9G
+  AltaiNea.hg19_1000g.17.mod.vcf.gz                                      1.9G
+  AltaiNea.hg19_1000g.18.mod.vcf.gz                                      1.9G
+  AltaiNea.hg19_1000g.19.mod.vcf.gz                                      1.3G
+  AltaiNea.hg19_1000g.20.mod.vcf.gz                                      1.5G
+  AltaiNea.hg19_1000g.21.mod.vcf.gz                                      898M
+  AltaiNea.hg19_1000g.22.mod.vcf.gz                                      857M
+  AltaiNea.hg19_1000g.MT.mod.vcf.gz                                      508K
+  AltaiNea.hg19_1000g.X.mod.vcf.gz                                       3.6G
+  AltaiNea.hg19_1000g.Y.mod.vcf.gz                                       89M
+  AltaiNea.hg19_1000g.nonchrom.mod.vcf.gz                                107M
+
+== http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/bam/ (52 entries)
+  AltaiNea.hg19_1000g.1.dq.bam                                           13G
+  AltaiNea.hg19_1000g.1.dq.bam.bai                                       742K
+  AltaiNea.hg19_1000g.2.dq.bam                                           13G
+  AltaiNea.hg19_1000g.2.dq.bam.bai                                       780K
+  AltaiNea.hg19_1000g.3.dq.bam                                           11G
+  AltaiNea.hg19_1000g.3.dq.bam.bai                                       633K
+  AltaiNea.hg19_1000g.4.dq.bam                                           11G
+  AltaiNea.hg19_1000g.4.dq.bam.bai                                       612K
+  AltaiNea.hg19_1000g.5.dq.bam                                           9.9G
+  AltaiNea.hg19_1000g.5.dq.bam.bai                                       579K
+  AltaiNea.hg19_1000g.6.dq.bam                                           9.3G
+  AltaiNea.hg19_1000g.6.dq.bam.bai                                       545K
+  AltaiNea.hg19_1000g.7.dq.bam                                           8.7G
+  AltaiNea.hg19_1000g.7.dq.bam.bai                                       507K
+  AltaiNea.hg19_1000g.8.dq.bam                                           8.1G
+  AltaiNea.hg19_1000g.8.dq.bam.bai                                       467K
+  AltaiNea.hg19_1000g.9.dq.bam                                           6.8G
+  AltaiNea.hg19_1000g.9.dq.bam.bai                                       401K
+  AltaiNea.hg19_1000g.10.dq.bam                                          7.6G
+  AltaiNea.hg19_1000g.10.dq.bam.bai                                      429K
+  AltaiNea.hg19_1000g.11.dq.bam                                          7.2G
+  AltaiNea.hg19_1000g.11.dq.bam.bai                                      425K
+  AltaiNea.hg19_1000g.12.dq.bam                                          7.1G
+  AltaiNea.hg19_1000g.12.dq.bam.bai                                      423K
+  AltaiNea.hg19_1000g.13.dq.bam                                          5.3G
+  AltaiNea.hg19_1000g.13.dq.bam.bai                                      319K
+  AltaiNea.hg19_1000g.14.dq.bam                                          4.8G
+  AltaiNea.hg19_1000g.14.dq.bam.bai                                      295K
+  AltaiNea.hg19_1000g.15.dq.bam                                          4.5G
+  AltaiNea.hg19_1000g.15.dq.bam.bai                                      275K
+  ... 22 more; last: ('unmapped_qualfail/', '-')
+
+== http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/catalog/ (3 entries)
+  ArchaicSpecific/                                                       -
+  HumanSpecific/                                                         -
+  README                                                                 2.5K
+
+== http://cdna.eva.mpg.de/neandertal/altai/Denisovan/ (52 entries)
+  DenisovaPinky.hg19_1000g.1.mod.vcf.gz                                  5.0G
+  DenisovaPinky.hg19_1000g.1.mod.vcf.gz.tbi                              210K
+  DenisovaPinky.hg19_1000g.2.mod.vcf.gz                                  5.2G
+  DenisovaPinky.hg19_1000g.2.mod.vcf.gz.tbi                              222K
+  DenisovaPinky.hg19_1000g.3.mod.vcf.gz                                  4.1G
+  DenisovaPinky.hg19_1000g.3.mod.vcf.gz.tbi                              182K
+  DenisovaPinky.hg19_1000g.4.mod.vcf.gz                                  4.2G
+  DenisovaPinky.hg19_1000g.4.mod.vcf.gz.tbi                              175K
+  DenisovaPinky.hg19_1000g.5.mod.vcf.gz                                  4.0G
+  DenisovaPinky.hg19_1000g.5.mod.vcf.gz.tbi                              166K
+  DenisovaPinky.hg19_1000g.6.mod.vcf.gz                                  3.8G
+  DenisovaPinky.hg19_1000g.6.mod.vcf.gz.tbi                              156K
+  DenisovaPinky.hg19_1000g.7.mod.vcf.gz                                  3.4G
+  DenisovaPinky.hg19_1000g.7.mod.vcf.gz.tbi                              145K
+  DenisovaPinky.hg19_1000g.8.mod.vcf.gz                                  3.2G
+  DenisovaPinky.hg19_1000g.8.mod.vcf.gz.tbi                              134K
+  DenisovaPinky.hg19_1000g.9.mod.vcf.gz                                  2.6G
+  DenisovaPinky.hg19_1000g.9.mod.vcf.gz.tbi                              113K
+  DenisovaPinky.hg19_1000g.10.mod.vcf.gz                                 2.8G
+  DenisovaPinky.hg19_1000g.10.mod.vcf.gz.tbi                             123K
+  DenisovaPinky.hg19_1000g.11.mod.vcf.gz                                 2.9G
+  DenisovaPinky.hg19_1000g.11.mod.vcf.gz.tbi                             122K
+  DenisovaPinky.hg19_1000g.12.mod.vcf.gz                                 2.8G
+  DenisovaPinky.hg19_1000g.12.mod.vcf.gz.tbi                             122K
+  DenisovaPinky.hg19_1000g.13.mod.vcf.gz                                 2.1G
+  DenisovaPinky.hg19_1000g.13.mod.vcf.gz.tbi                             90K
+  DenisovaPinky.hg19_1000g.14.mod.vcf.gz                                 2.0G
+  DenisovaPinky.hg19_1000g.14.mod.vcf.gz.tbi                             82K
+  DenisovaPinky.hg19_1000g.15.mod.vcf.gz                                 1.8G
+  DenisovaPinky.hg19_1000g.15.mod.vcf.gz.tbi                             76K
+  ... 22 more; last: ('DenisovaPinky.hg19_1000g.nonchrom.mod.vcf.gz.tbi', '4.2K')
+
+== http://cdna.eva.mpg.de/neandertal/altai/ModernHumans/ (2 entries)
+  bam/                                                                   -
+  vcf/                                                                   -
+
+== http://cdna.eva.mpg.de/neandertal/altai/ModernHumans/bam/ (29 entries)
+  SS6004467-dedup.rg.bam                                                 98G
+  SS6004467-dedup.rg.bam.bai                                             8.4M
+  SS6004468-dedup.rg.bam                                                 104G
+  SS6004468-dedup.rg.bam.bai                                             8.4M
+  SS6004469-dedup.rg.bam                                                 94G
+  SS6004469-dedup.rg.bam.bai                                             8.4M
+  SS6004470-dedup.rg.bam                                                 98G
+  SS6004470-dedup.rg.bam.bai                                             8.4M
+  SS6004471-dedup.rg.bam                                                 98G
+  SS6004471-dedup.rg.bam.bai                                             8.4M
+  SS6004472-dedup.rg.bam                                                 108G
+  SS6004472-dedup.rg.bam.bai                                             8.4M
+  SS6004473-dedup.rg.0.0457.bam                                          4.5G
+  SS6004473-dedup.rg.bam                                                 98G
+  SS6004473-dedup.rg.bam.bai                                             8.4M
+  SS6004474-dedup.rg.bam                                                 92G
+  SS6004474-dedup.rg.bam.bai                                             8.4M
+  SS6004475-dedup.rg.bam                                                 100G
+  SS6004475-dedup.rg.bam.bai                                             8.4M
+  SS6004476-dedup.rg.bam                                                 87G
+  SS6004476-dedup.rg.bam.bai                                             8.4M
+  SS6004477-dedup.rg.bam                                                 101G
+  SS6004477-dedup.rg.bam.bai                                             8.4M
+  SS6004478-dedup.rg.bam                                                 107G
+  SS6004478-dedup.rg.bam.bai                                             8.4M
+  SS6004479-dedup.rg.bam                                                 106G
+  SS6004479-dedup.rg.bam.bai                                             8.4M
+  SS6004480-dedup.rg.bam                                                 119G
+  SS6004480-dedup.rg.bam.bai                                             8.5M
+
+== http://cdna.eva.mpg.de/neandertal/altai/ModernHumans/vcf/ (729 entries)
+  README_Bteam                                                           712
+  SS6004467.hg19_1000g.1.mod.vcf.gz                                      5.3G
+  SS6004467.hg19_1000g.1.mod.vcf.gz.tbi                                  210K
+  SS6004467.hg19_1000g.2.mod.vcf.gz                                      5.5G
+  SS6004467.hg19_1000g.2.mod.vcf.gz.tbi                                  222K
+  SS6004467.hg19_1000g.3.mod.vcf.gz                                      4.3G
+  SS6004467.hg19_1000g.3.mod.vcf.gz.tbi                                  182K
+  SS6004467.hg19_1000g.4.mod.vcf.gz                                      4.4G
+  SS6004467.hg19_1000g.4.mod.vcf.gz.tbi                                  175K
+  SS6004467.hg19_1000g.5.mod.vcf.gz                                      4.2G
+  SS6004467.hg19_1000g.5.mod.vcf.gz.tbi                                  166K
+  SS6004467.hg19_1000g.6.mod.vcf.gz                                      3.9G
+  SS6004467.hg19_1000g.6.mod.vcf.gz.tbi                                  156K
+  SS6004467.hg19_1000g.7.mod.vcf.gz                                      3.6G
+  SS6004467.hg19_1000g.7.mod.vcf.gz.tbi                                  145K
+  SS6004467.hg19_1000g.8.mod.vcf.gz                                      3.3G
+  SS6004467.hg19_1000g.8.mod.vcf.gz.tbi                                  134K
+  SS6004467.hg19_1000g.9.mod.vcf.gz                                      2.7G
+  SS6004467.hg19_1000g.9.mod.vcf.gz.tbi                                  113K
+  SS6004467.hg19_1000g.10.mod.vcf.gz                                     2.9G
+  SS6004467.hg19_1000g.10.mod.vcf.gz.tbi                                 123K
+  SS6004467.hg19_1000g.11.mod.vcf.gz                                     3.1G
+  SS6004467.hg19_1000g.11.mod.vcf.gz.tbi                                 122K
+  SS6004467.hg19_1000g.12.mod.vcf.gz                                     2.9G
+  SS6004467.hg19_1000g.12.mod.vcf.gz.tbi                                 122K
+  SS6004467.hg19_1000g.13.mod.vcf.gz                                     2.2G
+  SS6004467.hg19_1000g.13.mod.vcf.gz.tbi                                 90K
+  SS6004467.hg19_1000g.14.mod.vcf.gz                                     2.1G
+  SS6004467.hg19_1000g.14.mod.vcf.gz.tbi                                 82K
+  SS6004467.hg19_1000g.15.mod.vcf.gz                                     1.9G
+  ... 699 more; last: ('SS6004480.hg19_1000g.nonchrom.mod.vcf.gz.tbi', '4.3K')
+
+== http://cdna.eva.mpg.de/neandertal/altai/catalog/ (3 entries)
+  ArchaicCatalog/                                                        -
+  HumanCatalog/                                                          -
+  README                                                                 2.5K
+
+== http://cdna.eva.mpg.de/neandertal/altai/catalog/ArchaicCatalog/ (4 entries)
+  ArchaicDerived_Indel_bothgq30.all_combined_maxsco_ranked.tsv           17M
+  ArchaicDerived_SNC_bothgq30.all_combined_maxsco_ranked.tsv             84M
+  CCDS/                                                                  -
+  EnsemblGenes/                                                          -
+
+== http://cdna.eva.mpg.de/neandertal/altai/catalog/HumanCatalog/ (4 entries)
+  CCDS/                                                                  -
+  EnsemblGenes/                                                          -
+  HumanDerived_InDel_bothgq30.all_combined_maxsco_ranked.tsv             4.7M
+  HumanDerived_SNC_bothgq30.all_combined_maxsco_ranked.tsv               126M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/ (4 entries)
+  FilterBed/                                                             -
+  README                                                                 514
+  VCF/                                                                   -
+  bam/                                                                   -
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/ (7 entries)
+  Altai/                                                                 -
+  Denisova/                                                              -
+  LBK/                                                                   -
+  Loschbour/                                                             -
+  README                                                                 457
+  Ust_Ishim/                                                             -
+  Vindija33.19/                                                          -
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/Altai/ (23 entries)
+  chr1_mask.bed.gz                                                       13M
+  chr2_mask.bed.gz                                                       14M
+  chr3_mask.bed.gz                                                       12M
+  chr4_mask.bed.gz                                                       11M
+  chr5_mask.bed.gz                                                       10M
+  chr6_mask.bed.gz                                                       10M
+  chr7_mask.bed.gz                                                       8.7M
+  chr8_mask.bed.gz                                                       8.5M
+  chr9_mask.bed.gz                                                       6.4M
+  chr10_mask.bed.gz                                                      7.6M
+  chr11_mask.bed.gz                                                      7.7M
+  chr12_mask.bed.gz                                                      7.7M
+  chr13_mask.bed.gz                                                      5.9M
+  chr14_mask.bed.gz                                                      5.2M
+  chr15_mask.bed.gz                                                      4.6M
+  chr16_mask.bed.gz                                                      4.3M
+  chr17_mask.bed.gz                                                      4.3M
+  chr18_mask.bed.gz                                                      4.6M
+  chr19_mask.bed.gz                                                      2.9M
+  chr20_mask.bed.gz                                                      3.6M
+  chr21_mask.bed.gz                                                      2.0M
+  chr22_mask.bed.gz                                                      1.9M
+  chrX_mask.bed.gz                                                       8.3M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/Denisova/ (23 entries)
+  chr1_mask.bed.gz                                                       13M
+  chr2_mask.bed.gz                                                       14M
+  chr3_mask.bed.gz                                                       12M
+  chr4_mask.bed.gz                                                       11M
+  chr5_mask.bed.gz                                                       11M
+  chr6_mask.bed.gz                                                       10M
+  chr7_mask.bed.gz                                                       9.0M
+  chr8_mask.bed.gz                                                       8.7M
+  chr9_mask.bed.gz                                                       6.7M
+  chr10_mask.bed.gz                                                      8.0M
+  chr11_mask.bed.gz                                                      8.1M
+  chr12_mask.bed.gz                                                      8.0M
+  chr13_mask.bed.gz                                                      6.0M
+  chr14_mask.bed.gz                                                      5.4M
+  chr15_mask.bed.gz                                                      4.8M
+  chr16_mask.bed.gz                                                      4.6M
+  chr17_mask.bed.gz                                                      4.6M
+  chr18_mask.bed.gz                                                      4.7M
+  chr19_mask.bed.gz                                                      3.2M
+  chr20_mask.bed.gz                                                      3.8M
+  chr21_mask.bed.gz                                                      2.1M
+  chr22_mask.bed.gz                                                      2.1M
+  chrX_mask.bed.gz                                                       8.5M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/LBK/ (23 entries)
+  chr1_mask.bed.gz                                                       10M
+  chr2_mask.bed.gz                                                       11M
+  chr3_mask.bed.gz                                                       9.2M
+  chr4_mask.bed.gz                                                       8.9M
+  chr5_mask.bed.gz                                                       8.2M
+  chr6_mask.bed.gz                                                       7.9M
+  chr7_mask.bed.gz                                                       6.9M
+  chr8_mask.bed.gz                                                       6.7M
+  chr9_mask.bed.gz                                                       5.1M
+  chr10_mask.bed.gz                                                      6.1M
+  chr11_mask.bed.gz                                                      6.2M
+  chr12_mask.bed.gz                                                      6.1M
+  chr13_mask.bed.gz                                                      4.7M
+  chr14_mask.bed.gz                                                      4.2M
+  chr15_mask.bed.gz                                                      3.6M
+  chr16_mask.bed.gz                                                      3.5M
+  chr17_mask.bed.gz                                                      3.5M
+  chr18_mask.bed.gz                                                      3.6M
+  chr19_mask.bed.gz                                                      2.5M
+  chr20_mask.bed.gz                                                      2.9M
+  chr21_mask.bed.gz                                                      1.6M
+  chr22_mask.bed.gz                                                      1.5M
+  chrX_mask.bed.gz                                                       6.6M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/Loschbour/ (24 entries)
+  chr1_mask.bed.gz                                                       10M
+  chr2_mask.bed.gz                                                       11M
+  chr3_mask.bed.gz                                                       9.1M
+  chr4_mask.bed.gz                                                       8.5M
+  chr5_mask.bed.gz                                                       8.1M
+  chr6_mask.bed.gz                                                       7.8M
+  chr7_mask.bed.gz                                                       7.0M
+  chr8_mask.bed.gz                                                       6.6M
+  chr9_mask.bed.gz                                                       5.2M
+  chr10_mask.bed.gz                                                      6.3M
+  chr11_mask.bed.gz                                                      6.3M
+  chr12_mask.bed.gz                                                      6.1M
+  chr13_mask.bed.gz                                                      4.6M
+  chr14_mask.bed.gz                                                      4.2M
+  chr15_mask.bed.gz                                                      3.8M
+  chr16_mask.bed.gz                                                      3.7M
+  chr17_mask.bed.gz                                                      3.8M
+  chr18_mask.bed.gz                                                      3.6M
+  chr19_mask.bed.gz                                                      2.8M
+  chr20_mask.bed.gz                                                      3.1M
+  chr21_mask.bed.gz                                                      1.7M
+  chr22_mask.bed.gz                                                      1.8M
+  chrX_mask.bed.gz                                                       12M
+  chrY_mask.bed.gz                                                       759K
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/Ust_Ishim/ (24 entries)
+  chr1_mask.bed.gz                                                       9.3M
+  chr2_mask.bed.gz                                                       10M
+  chr3_mask.bed.gz                                                       8.5M
+  chr4_mask.bed.gz                                                       8.2M
+  chr5_mask.bed.gz                                                       7.5M
+  chr6_mask.bed.gz                                                       7.3M
+  chr7_mask.bed.gz                                                       6.4M
+  chr8_mask.bed.gz                                                       6.2M
+  chr9_mask.bed.gz                                                       4.7M
+  chr10_mask.bed.gz                                                      5.6M
+  chr11_mask.bed.gz                                                      5.6M
+  chr12_mask.bed.gz                                                      5.7M
+  chr13_mask.bed.gz                                                      4.3M
+  chr14_mask.bed.gz                                                      3.9M
+  chr15_mask.bed.gz                                                      3.4M
+  chr16_mask.bed.gz                                                      3.2M
+  chr17_mask.bed.gz                                                      3.2M
+  chr18_mask.bed.gz                                                      3.3M
+  chr19_mask.bed.gz                                                      2.3M
+  chr20_mask.bed.gz                                                      2.6M
+  chr21_mask.bed.gz                                                      1.5M
+  chr22_mask.bed.gz                                                      1.4M
+  chrX_mask.bed.gz                                                       9.5M
+  chrY_mask.bed.gz                                                       717K
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/FilterBed/Vindija33.19/ (23 entries)
+  chr1_mask.bed.gz                                                       9.8M
+  chr2_mask.bed.gz                                                       11M
+  chr3_mask.bed.gz                                                       8.9M
+  chr4_mask.bed.gz                                                       8.5M
+  chr5_mask.bed.gz                                                       7.9M
+  chr6_mask.bed.gz                                                       7.6M
+  chr7_mask.bed.gz                                                       6.6M
+  chr8_mask.bed.gz                                                       6.4M
+  chr9_mask.bed.gz                                                       4.9M
+  chr10_mask.bed.gz                                                      5.9M
+  chr11_mask.bed.gz                                                      5.9M
+  chr12_mask.bed.gz                                                      5.9M
+  chr13_mask.bed.gz                                                      4.5M
+  chr14_mask.bed.gz                                                      4.0M
+  chr15_mask.bed.gz                                                      3.5M
+  chr16_mask.bed.gz                                                      3.3M
+  chr17_mask.bed.gz                                                      3.4M
+  chr18_mask.bed.gz                                                      3.5M
+  chr19_mask.bed.gz                                                      2.4M
+  chr20_mask.bed.gz                                                      2.8M
+  chr21_mask.bed.gz                                                      1.6M
+  chr22_mask.bed.gz                                                      1.5M
+  chrX_mask.bed.gz                                                       6.4M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/ (9 entries)
+  Altai/                                                                 -
+  Denisova/                                                              -
+  LBK/                                                                   -
+  Loschbour/                                                             -
+  Mez1/                                                                  -
+  README                                                                 1.0K
+  Ust_Ishim/                                                             -
+  Vindija33.19/                                                          -
+  indels/                                                                -
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Altai/ (47 entries)
+  chr1_mq25_mapab100.vcf.gz                                              4.0G
+  chr1_mq25_mapab100.vcf.gz.tbi                                          205K
+  chr2_mq25_mapab100.vcf.gz                                              4.4G
+  chr2_mq25_mapab100.vcf.gz.tbi                                          219K
+  chr3_mq25_mapab100.vcf.gz                                              3.6G
+  chr3_mq25_mapab100.vcf.gz.tbi                                          181K
+  chr4_mq25_mapab100.vcf.gz                                              3.4G
+  chr4_mq25_mapab100.vcf.gz.tbi                                          174K
+  chr5_mq25_mapab100.vcf.gz                                              3.2G
+  chr5_mq25_mapab100.vcf.gz.tbi                                          163K
+  chr6_mq25_mapab100.vcf.gz                                              3.1G
+  chr6_mq25_mapab100.vcf.gz.tbi                                          156K
+  chr7_mq25_mapab100.vcf.gz                                              2.7G
+  chr7_mq25_mapab100.vcf.gz.tbi                                          142K
+  chr8_mq25_mapab100.vcf.gz                                              2.7G
+  chr8_mq25_mapab100.vcf.gz.tbi                                          132K
+  chr9_mq25_mapab100.vcf.gz                                              2.0G
+  chr9_mq25_mapab100.vcf.gz.tbi                                          103K
+  chr10_mq25_mapab100.vcf.gz                                             2.3G
+  chr10_mq25_mapab100.vcf.gz.tbi                                         120K
+  chr11_mq25_mapab100.vcf.gz                                             2.4G
+  chr11_mq25_mapab100.vcf.gz.tbi                                         121K
+  chr12_mq25_mapab100.vcf.gz                                             2.3G
+  chr12_mq25_mapab100.vcf.gz.tbi                                         122K
+  chr13_mq25_mapab100.vcf.gz                                             1.8G
+  chr13_mq25_mapab100.vcf.gz.tbi                                         88K
+  chr14_mq25_mapab100.vcf.gz                                             1.6G
+  chr14_mq25_mapab100.vcf.gz.tbi                                         82K
+  chr15_mq25_mapab100.vcf.gz                                             1.4G
+  chr15_mq25_mapab100.vcf.gz.tbi                                         73K
+  ... 17 more; last: ('md5sums.txt', '1.4K')
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Denisova/ (47 entries)
+  chr1_mq25_mapab100.vcf.gz                                              3.7G
+  chr1_mq25_mapab100.vcf.gz.tbi                                          205K
+  chr2_mq25_mapab100.vcf.gz                                              4.1G
+  chr2_mq25_mapab100.vcf.gz.tbi                                          219K
+  chr3_mq25_mapab100.vcf.gz                                              3.4G
+  chr3_mq25_mapab100.vcf.gz.tbi                                          181K
+  chr4_mq25_mapab100.vcf.gz                                              3.2G
+  chr4_mq25_mapab100.vcf.gz.tbi                                          174K
+  chr5_mq25_mapab100.vcf.gz                                              3.1G
+  chr5_mq25_mapab100.vcf.gz.tbi                                          163K
+  chr6_mq25_mapab100.vcf.gz                                              2.9G
+  chr6_mq25_mapab100.vcf.gz.tbi                                          156K
+  chr7_mq25_mapab100.vcf.gz                                              2.5G
+  chr7_mq25_mapab100.vcf.gz.tbi                                          142K
+  chr8_mq25_mapab100.vcf.gz                                              2.5G
+  chr8_mq25_mapab100.vcf.gz.tbi                                          132K
+  chr9_mq25_mapab100.vcf.gz                                              1.9G
+  chr9_mq25_mapab100.vcf.gz.tbi                                          103K
+  chr10_mq25_mapab100.vcf.gz                                             2.2G
+  chr10_mq25_mapab100.vcf.gz.tbi                                         120K
+  chr11_mq25_mapab100.vcf.gz                                             2.2G
+  chr11_mq25_mapab100.vcf.gz.tbi                                         121K
+  chr12_mq25_mapab100.vcf.gz                                             2.2G
+  chr12_mq25_mapab100.vcf.gz.tbi                                         121K
+  chr13_mq25_mapab100.vcf.gz                                             1.7G
+  chr13_mq25_mapab100.vcf.gz.tbi                                         88K
+  chr14_mq25_mapab100.vcf.gz                                             1.5G
+  chr14_mq25_mapab100.vcf.gz.tbi                                         82K
+  chr15_mq25_mapab100.vcf.gz                                             1.3G
+  chr15_mq25_mapab100.vcf.gz.tbi                                         73K
+  ... 17 more; last: ('md5sums.txt', '1.4K')
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/LBK/ (24 entries)
+  chr1_mq25_mapab100.vcf.gz                                              3.2G
+  chr2_mq25_mapab100.vcf.gz                                              3.5G
+  chr3_mq25_mapab100.vcf.gz                                              2.9G
+  chr4_mq25_mapab100.vcf.gz                                              2.7G
+  chr5_mq25_mapab100.vcf.gz                                              2.6G
+  chr6_mq25_mapab100.vcf.gz                                              2.5G
+  chr7_mq25_mapab100.vcf.gz                                              2.1G
+  chr8_mq25_mapab100.vcf.gz                                              2.1G
+  chr9_mq25_mapab100.vcf.gz                                              1.6G
+  chr10_mq25_mapab100.vcf.gz                                             1.9G
+  chr11_mq25_mapab100.vcf.gz                                             1.9G
+  chr12_mq25_mapab100.vcf.gz                                             1.9G
+  chr13_mq25_mapab100.vcf.gz                                             1.4G
+  chr14_mq25_mapab100.vcf.gz                                             1.3G
+  chr15_mq25_mapab100.vcf.gz                                             1.1G
+  chr16_mq25_mapab100.vcf.gz                                             1.0G
+  chr17_mq25_mapab100.vcf.gz                                             1.0G
+  chr18_mq25_mapab100.vcf.gz                                             1.1G
+  chr19_mq25_mapab100.vcf.gz                                             639M
+  chr20_mq25_mapab100.vcf.gz                                             912M
+  chr21_mq25_mapab100.vcf.gz                                             510M
+  chr22_mq25_mapab100.vcf.gz                                             473M
+  chrX_mq25_mapab100.vcf.gz                                              1.9G
+  chrY_mq25_mapab100.vcf.gz                                              289K
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Loschbour/ (48 entries)
+  chr1_mq25_mapab100.vcf.gz                                              3.2G
+  chr1_mq25_mapab100.vcf.gz.tbi                                          205K
+  chr2_mq25_mapab100.vcf.gz                                              3.6G
+  chr2_mq25_mapab100.vcf.gz.tbi                                          219K
+  chr3_mq25_mapab100.vcf.gz                                              3.0G
+  chr3_mq25_mapab100.vcf.gz.tbi                                          182K
+  chr4_mq25_mapab100.vcf.gz                                              2.8G
+  chr4_mq25_mapab100.vcf.gz.tbi                                          174K
+  chr5_mq25_mapab100.vcf.gz                                              2.7G
+  chr5_mq25_mapab100.vcf.gz.tbi                                          163K
+  chr6_mq25_mapab100.vcf.gz                                              2.5G
+  chr6_mq25_mapab100.vcf.gz.tbi                                          156K
+  chr7_mq25_mapab100.vcf.gz                                              2.2G
+  chr7_mq25_mapab100.vcf.gz.tbi                                          142K
+  chr8_mq25_mapab100.vcf.gz                                              2.2G
+  chr8_mq25_mapab100.vcf.gz.tbi                                          132K
+  chr9_mq25_mapab100.vcf.gz                                              1.6G
+  chr9_mq25_mapab100.vcf.gz.tbi                                          103K
+  chr10_mq25_mapab100.vcf.gz                                             1.9G
+  chr10_mq25_mapab100.vcf.gz.tbi                                         120K
+  chr11_mq25_mapab100.vcf.gz                                             1.9G
+  chr11_mq25_mapab100.vcf.gz.tbi                                         122K
+  chr12_mq25_mapab100.vcf.gz                                             1.9G
+  chr12_mq25_mapab100.vcf.gz.tbi                                         122K
+  chr13_mq25_mapab100.vcf.gz                                             1.5G
+  chr13_mq25_mapab100.vcf.gz.tbi                                         88K
+  chr14_mq25_mapab100.vcf.gz                                             1.3G
+  chr14_mq25_mapab100.vcf.gz.tbi                                         82K
+  chr15_mq25_mapab100.vcf.gz                                             1.1G
+  chr15_mq25_mapab100.vcf.gz.tbi                                         73K
+  ... 18 more; last: ('chrY_mq25_mapab100.vcf.gz.tbi', '11K')
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Mez1/ (23 entries)
+  chr1_mq25_mapab100.vcf.gz                                              1.6G
+  chr2_mq25_mapab100.vcf.gz                                              1.8G
+  chr3_mq25_mapab100.vcf.gz                                              1.5G
+  chr4_mq25_mapab100.vcf.gz                                              1.4G
+  chr5_mq25_mapab100.vcf.gz                                              1.3G
+  chr6_mq25_mapab100.vcf.gz                                              1.3G
+  chr7_mq25_mapab100.vcf.gz                                              1.1G
+  chr8_mq25_mapab100.vcf.gz                                              1.1G
+  chr9_mq25_mapab100.vcf.gz                                              846M
+  chr10_mq25_mapab100.vcf.gz                                             1.0G
+  chr11_mq25_mapab100.vcf.gz                                             1.0G
+  chr12_mq25_mapab100.vcf.gz                                             1.0G
+  chr13_mq25_mapab100.vcf.gz                                             773M
+  chr14_mq25_mapab100.vcf.gz                                             673M
+  chr15_mq25_mapab100.vcf.gz                                             586M
+  chr16_mq25_mapab100.vcf.gz                                             548M
+  chr17_mq25_mapab100.vcf.gz                                             532M
+  chr18_mq25_mapab100.vcf.gz                                             613M
+  chr19_mq25_mapab100.vcf.gz                                             316M
+  chr20_mq25_mapab100.vcf.gz                                             471M
+  chr21_mq25_mapab100.vcf.gz                                             265M
+  chr22_mq25_mapab100.vcf.gz                                             236M
+  chrX_mq25_mapab100.vcf.gz                                              1.0G
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Ust_Ishim/ (48 entries)
+  chr1_mq25_mapab100.vcf.gz                                              3.8G
+  chr1_mq25_mapab100.vcf.gz.tbi                                          205K
+  chr2_mq25_mapab100.vcf.gz                                              4.1G
+  chr2_mq25_mapab100.vcf.gz.tbi                                          219K
+  chr3_mq25_mapab100.vcf.gz                                              3.4G
+  chr3_mq25_mapab100.vcf.gz.tbi                                          181K
+  chr4_mq25_mapab100.vcf.gz                                              3.2G
+  chr4_mq25_mapab100.vcf.gz.tbi                                          174K
+  chr5_mq25_mapab100.vcf.gz                                              3.1G
+  chr5_mq25_mapab100.vcf.gz.tbi                                          163K
+  chr6_mq25_mapab100.vcf.gz                                              2.9G
+  chr6_mq25_mapab100.vcf.gz.tbi                                          156K
+  chr7_mq25_mapab100.vcf.gz                                              2.5G
+  chr7_mq25_mapab100.vcf.gz.tbi                                          142K
+  chr8_mq25_mapab100.vcf.gz                                              2.5G
+  chr8_mq25_mapab100.vcf.gz.tbi                                          132K
+  chr9_mq25_mapab100.vcf.gz                                              1.9G
+  chr9_mq25_mapab100.vcf.gz.tbi                                          103K
+  chr10_mq25_mapab100.vcf.gz                                             2.2G
+  chr10_mq25_mapab100.vcf.gz.tbi                                         120K
+  chr11_mq25_mapab100.vcf.gz                                             2.2G
+  chr11_mq25_mapab100.vcf.gz.tbi                                         121K
+  chr12_mq25_mapab100.vcf.gz                                             2.2G
+  chr12_mq25_mapab100.vcf.gz.tbi                                         122K
+  chr13_mq25_mapab100.vcf.gz                                             1.7G
+  chr13_mq25_mapab100.vcf.gz.tbi                                         88K
+  chr14_mq25_mapab100.vcf.gz                                             1.5G
+  chr14_mq25_mapab100.vcf.gz.tbi                                         82K
+  chr15_mq25_mapab100.vcf.gz                                             1.3G
+  chr15_mq25_mapab100.vcf.gz.tbi                                         73K
+  ... 18 more; last: ('chrY_mq25_mapab100.vcf.gz.tbi', '11K')
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/ (47 entries)
+  chr1_mq25_mapab100.vcf.gz                                              3.9G
+  chr1_mq25_mapab100.vcf.gz.tbi                                          205K
+  chr2_mq25_mapab100.vcf.gz                                              4.3G
+  chr2_mq25_mapab100.vcf.gz.tbi                                          219K
+  chr3_mq25_mapab100.vcf.gz                                              3.5G
+  chr3_mq25_mapab100.vcf.gz.tbi                                          181K
+  chr4_mq25_mapab100.vcf.gz                                              3.3G
+  chr4_mq25_mapab100.vcf.gz.tbi                                          174K
+  chr5_mq25_mapab100.vcf.gz                                              3.2G
+  chr5_mq25_mapab100.vcf.gz.tbi                                          163K
+  chr6_mq25_mapab100.vcf.gz                                              3.0G
+  chr6_mq25_mapab100.vcf.gz.tbi                                          156K
+  chr7_mq25_mapab100.vcf.gz                                              2.6G
+  chr7_mq25_mapab100.vcf.gz.tbi                                          141K
+  chr8_mq25_mapab100.vcf.gz                                              2.6G
+  chr8_mq25_mapab100.vcf.gz.tbi                                          132K
+  chr9_mq25_mapab100.vcf.gz                                              2.0G
+  chr9_mq25_mapab100.vcf.gz.tbi                                          103K
+  chr10_mq25_mapab100.vcf.gz                                             2.3G
+  chr10_mq25_mapab100.vcf.gz.tbi                                         120K
+  chr11_mq25_mapab100.vcf.gz                                             2.3G
+  chr11_mq25_mapab100.vcf.gz.tbi                                         121K
+  chr12_mq25_mapab100.vcf.gz                                             2.3G
+  chr12_mq25_mapab100.vcf.gz.tbi                                         122K
+  chr13_mq25_mapab100.vcf.gz                                             1.8G
+  chr13_mq25_mapab100.vcf.gz.tbi                                         88K
+  chr14_mq25_mapab100.vcf.gz                                             1.6G
+  chr14_mq25_mapab100.vcf.gz.tbi                                         82K
+  chr15_mq25_mapab100.vcf.gz                                             1.4G
+  chr15_mq25_mapab100.vcf.gz.tbi                                         73K
+  ... 17 more; last: ('md5sums.txt', '1.4K')
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/VCF/indels/ (4 entries)
+  Altai_chrALL_indels.vcf.gz                                             39M
+  Denisova_chrALL_indels.vcf.gz                                          33M
+  README                                                                 82
+  Vindija33.19_chrALL_indels.vcf.gz                                      33M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/bam/ (2 entries)
+  Green_etal_2010/                                                       -
+  Pruefer_etal_2017/                                                     -
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/bam/Green_etal_2010/ (6 entries)
+  Vi33.16-alllib.final.bam                                               1.4G
+  Vi33.16-alllib.final.bam.bai                                           6.3M
+  Vi33.25-alllib.final.bam                                               1.2G
+  Vi33.25-alllib.final.bam.bai                                           6.3M
+  Vi33.26-alllib.final.bam                                               1.2G
+  Vi33.26-alllib.final.bam.bai                                           6.2M
+
+== http://cdna.eva.mpg.de/neandertal/Vindija/bam/Pruefer_etal_2017/ (4 entries)
+  Altai_realigned/                                                       -
+  Denisova3_realigned/                                                   -
+  README                                                                 832
+  Vindija33.19/                                                          -
+
+== http://cdna.eva.mpg.de/neandertal/Chagyrskaya/ (5 entries)
+  BAM/                                                                   -
+  FilterBed/                                                             -
+  README                                                                 557
+  VCF/                                                                   -
+  rawBAM/                                                                -
+
+== http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/ (119 entries)
+  README                                                                 868
+  chr1-reali.bam                                                         5.8G
+  chr1-reali.bam.bai                                                     697K
+  chr1.bam                                                               5.7G
+  chr1.rh.bam                                                            5.7G
+  chr1.rh.bam.bai                                                        697K
+  chr2-reali.bam                                                         6.1G
+  chr2-reali.bam.bai                                                     726K
+  chr2.bam                                                               6.0G
+  chr2.rh.bam                                                            6.0G
+  chr2.rh.bam.bai                                                        727K
+  chr3-reali.bam                                                         5.0G
+  chr3-reali.bam.bai                                                     593K
+  chr3.bam                                                               4.8G
+  chr3.rh.bam                                                            4.8G
+  chr3.rh.bam.bai                                                        593K
+  chr4-reali.bam                                                         4.9G
+  chr4-reali.bam.bai                                                     572K
+  chr4.bam                                                               4.8G
+  chr4.rh.bam                                                            4.8G
+  chr4.rh.bam.bai                                                        572K
+  chr5-reali.bam                                                         4.6G
+  chr5-reali.bam.bai                                                     542K
+  chr5.bam                                                               4.5G
+  chr5.rh.bam                                                            4.5G
+  chr5.rh.bam.bai                                                        542K
+  chr6-reali.bam                                                         4.3G
+  chr6-reali.bam.bai                                                     510K
+  chr6.bam                                                               4.2G
+  chr6.rh.bam                                                            4.2G
+  ... 89 more; last: ('chrY.bam', '95M')
+
+== http://cdna.eva.mpg.de/neandertal/Chagyrskaya/FilterBed/ (24 entries)
+  README                                                                 853
+  chr1_mask.bed.gz                                                       11M
+  chr2_mask.bed.gz                                                       12M
+  chr3_mask.bed.gz                                                       10M
+  chr4_mask.bed.gz                                                       9.8M
+  chr5_mask.bed.gz                                                       9.2M
+  chr6_mask.bed.gz                                                       8.8M
+  chr7_mask.bed.gz                                                       7.7M
+  chr8_mask.bed.gz                                                       7.5M
+  chr9_mask.bed.gz                                                       5.7M
+  chr10_mask.bed.gz                                                      6.8M
+  chr11_mask.bed.gz                                                      6.9M
+  chr12_mask.bed.gz                                                      6.9M
+  chr13_mask.bed.gz                                                      5.2M
+  chr14_mask.bed.gz                                                      4.6M
+  chr15_mask.bed.gz                                                      4.1M
+  chr16_mask.bed.gz                                                      3.9M
+  chr17_mask.bed.gz                                                      3.9M
+  chr18_mask.bed.gz                                                      4.0M
+  chr19_mask.bed.gz                                                      2.7M
+  chr20_mask.bed.gz                                                      3.2M
+  chr21_mask.bed.gz                                                      1.8M
+  chr22_mask.bed.gz                                                      1.7M
+  chrX_mask.bed.gz                                                       7.5M
+
+== http://cdna.eva.mpg.de/neandertal/Chagyrskaya/VCF/ (47 entries)
+  README                                                                 570
+  chr1.noRB.vcf.gz                                                       3.6G
+  chr1.noRB.vcf.gz.tbi                                                   205K
+  chr2.noRB.vcf.gz                                                       4.0G
+  chr2.noRB.vcf.gz.tbi                                                   219K
+  chr3.noRB.vcf.gz                                                       3.3G
+  chr3.noRB.vcf.gz.tbi                                                   181K
+  chr4.noRB.vcf.gz                                                       3.1G
+  chr4.noRB.vcf.gz.tbi                                                   174K
+  chr5.noRB.vcf.gz                                                       2.9G
+  chr5.noRB.vcf.gz.tbi                                                   163K
+  chr6.noRB.vcf.gz                                                       2.8G
+  chr6.noRB.vcf.gz.tbi                                                   156K
+  chr7.noRB.vcf.gz                                                       2.4G
+  chr7.noRB.vcf.gz.tbi                                                   142K
+  chr8.noRB.vcf.gz                                                       2.4G
+  chr8.noRB.vcf.gz.tbi                                                   132K
+  chr9.noRB.vcf.gz                                                       1.8G
+  chr9.noRB.vcf.gz.tbi                                                   103K
+  chr10.noRB.vcf.gz                                                      2.1G
+  chr10.noRB.vcf.gz.tbi                                                  120K
+  chr11.noRB.vcf.gz                                                      2.1G
+  chr11.noRB.vcf.gz.tbi                                                  121K
+  chr12.noRB.vcf.gz                                                      2.1G
+  chr12.noRB.vcf.gz.tbi                                                  121K
+  chr13.noRB.vcf.gz                                                      1.6G
+  chr13.noRB.vcf.gz.tbi                                                  88K
+  chr14.noRB.vcf.gz                                                      1.4G
+  chr14.noRB.vcf.gz.tbi                                                  82K
+  chr15.noRB.vcf.gz                                                      1.3G
+  ... 17 more; last: ('chrX.noRB.vcf.gz.tbi', '138K')
+
+== http://cdna.eva.mpg.de/neandertal/Chagyrskaya/rawBAM/ (22 entries)
+  L5329.bam                                                              32G
+  L5727.bam                                                              14G
+  L5728.bam                                                              14G
+  L5729.bam                                                              13G
+  L5730.bam                                                              11G
+  L5794.bam                                                              485M
+  L5800.bam                                                              563M
+  L5819.bam                                                              528M
+  L5820.bam                                                              501M
+  L5821.bam                                                              454M
+  L5822.bam                                                              358M
+  L5823.bam                                                              503M
+  L5824.bam                                                              460M
+  L5830.bam                                                              30G
+  L5831.bam                                                              56G
+  L5832.bam                                                              38G
+  L5833.bam                                                              40G
+  L5848.bam                                                              33G
+  L5849.bam                                                              41G
+  L5850.bam                                                              12G
+  L5851.bam                                                              5.6G
+  README.txt                                                             219
+
+== http://cdna.eva.mpg.de/denisova/ (7 entries)
+  BAM/                                                                   -
+  Den4/                                                                  -
+  Den8/                                                                  -
+  Den25/                                                                 -
+  VCF/                                                                   -
+  alignments/                                                            -
+  raw_reads/                                                             -
+
+== http://cdna.eva.mpg.de/denisova/BAM/ (1 entries)
+  human/                                                                 -
+
+== http://cdna.eva.mpg.de/denisova/BAM/human/ (44 entries)
+  DNK02.bai                                                              8.4M
+  DNK02.bam                                                              92G
+  DNK02.bam.bai                                                          8.4M
+  DNK02.bam.flagstat                                                     663
+  HGDP00521.bai                                                          8.5M
+  HGDP00521.bam                                                          88G
+  HGDP00521.bam.bai                                                      8.5M
+  HGDP00521.bam.flagstat                                                 661
+  HGDP00542.bai                                                          8.5M
+  HGDP00542.bam                                                          84G
+  HGDP00542.bam.bai                                                      8.5M
+  HGDP00542.bam.flagstat                                                 661
+  HGDP00665.bai                                                          8.5M
+  HGDP00665.bam                                                          81G
+  HGDP00665.bam.bai                                                      8.4M
+  HGDP00665.bam.flagstat                                                 661
+  HGDP00778.bai                                                          8.5M
+  HGDP00778.bam                                                          89G
+  HGDP00778.bam.bai                                                      8.5M
+  HGDP00778.bam.flagstat                                                 661
+  HGDP00927.bai                                                          8.5M
+  HGDP00927.bam                                                          106G
+  HGDP00927.bam.bai                                                      8.5M
+  HGDP00927.bam.flagstat                                                 666
+  HGDP00998.bai                                                          8.5M
+  HGDP00998.bam                                                          88G
+  HGDP00998.bam.bai                                                      8.5M
+  HGDP00998.bam.flagstat                                                 661
+  HGDP01029.bai                                                          8.6M
+  HGDP01029.bam                                                          117G
+  ... 14 more; last: ('HGDP0456.bam.flagstat', '661')
+
+== http://cdna.eva.mpg.de/denisova/Den4/ (2 entries)
+  mapped/                                                                -
+  unmapped/                                                              -
+
+== http://cdna.eva.mpg.de/denisova/Den4/mapped/ (1 entries)
+  Denisova_4_nuclear_all.bam                                             99M
+
+== http://cdna.eva.mpg.de/denisova/Den4/unmapped/ (2 entries)
+  L9351_1/                                                               -
+  L9351_2/                                                               -
+
+== http://cdna.eva.mpg.de/denisova/Den8/ (2 entries)
+  mapped/                                                                -
+  unmapped/                                                              -
+
+== http://cdna.eva.mpg.de/denisova/Den8/mapped/ (1 entries)
+  Denisova_8_nuclear_all.bam                                             581M
+
+== http://cdna.eva.mpg.de/denisova/Den8/unmapped/ (8 entries)
+  s_1_sequence_unmapped.bam                                              36G
+  s_2_sequence_unmapped.bam                                              36G
+  s_3_sequence_unmapped.bam                                              36G
+  s_4_sequence_unmapped.bam                                              36G
+  s_5_sequence_unmapped.bam                                              36G
+  s_6_sequence_unmapped.bam                                              37G
+  s_7_sequence_unmapped.bam                                              36G
+  s_8_sequence_unmapped.bam                                              36G
+
+== http://cdna.eva.mpg.de/denisova/Den25/ (5 entries)
+  BAM/                                                                   -
+  FilterBed/                                                             -
+  README                                                                 532
+  VCF/                                                                   -
+  rawBAM/                                                                -
+
+== http://cdna.eva.mpg.de/denisova/Den25/BAM/ (3 entries)
+  Denisova25.hg19.ontarget.uniq.L35MQ25.indel_realigned.MDfixed.bam      41G
+  Denisova25.hg19.ontarget.uniq.L35MQ25.indel_realigned.MDfixed.bam.bai  7.9M
+  README                                                                 872
+
+== http://cdna.eva.mpg.de/denisova/Den25/FilterBed/ (50 entries)
+  Denisova25.chr1.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 13M
+  Denisova25.chr1.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 42K
+  Denisova25.chr2.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 14M
+  Denisova25.chr2.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 44K
+  Denisova25.chr3.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 12M
+  Denisova25.chr3.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 35K
+  Denisova25.chr4.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 11M
+  Denisova25.chr4.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 34K
+  Denisova25.chr5.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 10M
+  Denisova25.chr5.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 32K
+  Denisova25.chr6.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 9.9M
+  Denisova25.chr6.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 31K
+  Denisova25.chr7.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 8.7M
+  Denisova25.chr7.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 30K
+  Denisova25.chr8.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 8.4M
+  Denisova25.chr8.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 26K
+  Denisova25.chr9.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 6.5M
+  Denisova25.chr9.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 21K
+  Denisova25.chr10.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 7.8M
+  Denisova25.chr10.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 24K
+  Denisova25.chr11.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 7.9M
+  Denisova25.chr11.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 25K
+  Denisova25.chr12.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 7.7M
+  Denisova25.chr12.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 24K
+  Denisova25.chr13.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 5.8M
+  Denisova25.chr13.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 18K
+  Denisova25.chr14.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 5.3M
+  Denisova25.chr14.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 16K
+  Denisova25.chr15.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz 4.7M
+  Denisova25.chr15.hg19.L35MQ25.map35_100.GCcov.noSimpleRepeat.noIndel.min10x.bed.gz.tbi 16K
+  ... 20 more; last: ('to_copy', '960')
+
+== http://cdna.eva.mpg.de/denisova/Den25/VCF/ (49 entries)
+  Denisova25.chrY.L35MQ25.B30.map35_100.vcf.gz                           112M
+  README                                                                 617
+  chr1.Den25.L35MQ25.B30.map35_100.vcf.gz                                3.8G
+  chr1.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            205K
+  chr2.Den25.L35MQ25.B30.map35_100.vcf.gz                                4.2G
+  chr2.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            219K
+  chr3.Den25.L35MQ25.B30.map35_100.vcf.gz                                3.4G
+  chr3.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            181K
+  chr4.Den25.L35MQ25.B30.map35_100.vcf.gz                                3.3G
+  chr4.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            174K
+  chr5.Den25.L35MQ25.B30.map35_100.vcf.gz                                3.1G
+  chr5.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            163K
+  chr6.Den25.L35MQ25.B30.map35_100.vcf.gz                                2.9G
+  chr6.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            156K
+  chr7.Den25.L35MQ25.B30.map35_100.vcf.gz                                2.5G
+  chr7.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            142K
+  chr8.Den25.L35MQ25.B30.map35_100.vcf.gz                                2.5G
+  chr8.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            132K
+  chr9.Den25.L35MQ25.B30.map35_100.vcf.gz                                1.9G
+  chr9.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                            103K
+  chr10.Den25.L35MQ25.B30.map35_100.vcf.gz                               2.2G
+  chr10.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                           120K
+  chr11.Den25.L35MQ25.B30.map35_100.vcf.gz                               2.2G
+  chr11.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                           121K
+  chr12.Den25.L35MQ25.B30.map35_100.vcf.gz                               2.2G
+  chr12.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                           122K
+  chr13.Den25.L35MQ25.B30.map35_100.vcf.gz                               1.7G
+  chr13.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                           88K
+  chr14.Den25.L35MQ25.B30.map35_100.vcf.gz                               1.5G
+  chr14.Den25.L35MQ25.B30.map35_100.vcf.gz.tbi                           82K
+  ... 19 more; last: ('chrY.Den25.L35MQ25.B30.map35_100.vcf.gz', '114M')
+
+== http://cdna.eva.mpg.de/denisova/Den25/rawBAM/ (6 entries)
+  Denisova25.A43615.hg19.bam                                             112G
+  Denisova25.A43617.hg19.bam                                             119G
+  Denisova25.A45393.hg19.bam                                             125G
+  Denisova25.A45394.hg19.bam                                             65G
+  README                                                                 702
+  screeningData/                                                         -
+
+== http://cdna.eva.mpg.de/denisova/VCF/ (3 entries)
+  hg19_1000g/                                                            -
+  human/                                                                 -
+  pantro2/                                                               -
+
+== http://cdna.eva.mpg.de/denisova/VCF/hg19_1000g/ (52 entries)
+  T_hg19_1000g.1.mod.vcf.gz                                              4.4G
+  T_hg19_1000g.1.mod.vcf.gz.tbi                                          210K
+  T_hg19_1000g.2.mod.vcf.gz                                              4.6G
+  T_hg19_1000g.2.mod.vcf.gz.tbi                                          222K
+  T_hg19_1000g.3.mod.vcf.gz                                              3.5G
+  T_hg19_1000g.3.mod.vcf.gz.tbi                                          182K
+  T_hg19_1000g.4.mod.vcf.gz                                              3.7G
+  T_hg19_1000g.4.mod.vcf.gz.tbi                                          175K
+  T_hg19_1000g.5.mod.vcf.gz                                              3.5G
+  T_hg19_1000g.5.mod.vcf.gz.tbi                                          166K
+  T_hg19_1000g.6.mod.vcf.gz                                              3.3G
+  T_hg19_1000g.6.mod.vcf.gz.tbi                                          156K
+  T_hg19_1000g.7.mod.vcf.gz                                              3.0G
+  T_hg19_1000g.7.mod.vcf.gz.tbi                                          145K
+  T_hg19_1000g.8.mod.vcf.gz                                              2.8G
+  T_hg19_1000g.8.mod.vcf.gz.tbi                                          134K
+  T_hg19_1000g.9.mod.vcf.gz                                              2.2G
+  T_hg19_1000g.9.mod.vcf.gz.tbi                                          113K
+  T_hg19_1000g.10.mod.vcf.gz                                             2.4G
+  T_hg19_1000g.10.mod.vcf.gz.tbi                                         123K
+  T_hg19_1000g.11.mod.vcf.gz                                             2.5G
+  T_hg19_1000g.11.mod.vcf.gz.tbi                                         122K
+  T_hg19_1000g.12.mod.vcf.gz                                             2.4G
+  T_hg19_1000g.12.mod.vcf.gz.tbi                                         122K
+  T_hg19_1000g.13.mod.vcf.gz                                             1.8G
+  T_hg19_1000g.13.mod.vcf.gz.tbi                                         90K
+  T_hg19_1000g.14.mod.vcf.gz                                             1.7G
+  T_hg19_1000g.14.mod.vcf.gz.tbi                                         82K
+  T_hg19_1000g.15.mod.vcf.gz                                             1.6G
+  T_hg19_1000g.15.mod.vcf.gz.tbi                                         77K
+  ... 22 more; last: ('T_hg19_1000g.nonchrom.mod.vcf.gz.tbi', '4.2K')
+
+== http://cdna.eva.mpg.de/denisova/VCF/human/ (886 entries)
+  DNK02.hg19_1000g.1.mod.vcf.gz                                          4.4G
+  DNK02.hg19_1000g.1.mod.vcf.gz.tbi                                      211K
+  DNK02.hg19_1000g.2.mod.vcf.gz                                          4.6G
+  DNK02.hg19_1000g.2.mod.vcf.gz.tbi                                      222K
+  DNK02.hg19_1000g.3.mod.vcf.gz                                          3.5G
+  DNK02.hg19_1000g.3.mod.vcf.gz.tbi                                      182K
+  DNK02.hg19_1000g.4.mod.vcf.gz                                          3.7G
+  DNK02.hg19_1000g.4.mod.vcf.gz.tbi                                      175K
+  DNK02.hg19_1000g.5.mod.vcf.gz                                          3.5G
+  DNK02.hg19_1000g.5.mod.vcf.gz.tbi                                      166K
+  DNK02.hg19_1000g.6.mod.vcf.gz                                          3.3G
+  DNK02.hg19_1000g.6.mod.vcf.gz.tbi                                      156K
+  DNK02.hg19_1000g.7.mod.vcf.gz                                          3.0G
+  DNK02.hg19_1000g.7.mod.vcf.gz.tbi                                      145K
+  DNK02.hg19_1000g.8.mod.vcf.gz                                          2.8G
+  DNK02.hg19_1000g.8.mod.vcf.gz.tbi                                      134K
+  DNK02.hg19_1000g.9.mod.vcf.gz                                          2.3G
+  DNK02.hg19_1000g.9.mod.vcf.gz.tbi                                      113K
+  DNK02.hg19_1000g.10.mod.vcf.gz                                         2.4G
+  DNK02.hg19_1000g.10.mod.vcf.gz.tbi                                     123K
+  DNK02.hg19_1000g.11.mod.vcf.gz                                         2.6G
+  DNK02.hg19_1000g.11.mod.vcf.gz.tbi                                     122K
+  DNK02.hg19_1000g.12.mod.vcf.gz                                         2.4G
+  DNK02.hg19_1000g.12.mod.vcf.gz.tbi                                     122K
+  DNK02.hg19_1000g.13.mod.vcf.gz                                         1.9G
+  DNK02.hg19_1000g.13.mod.vcf.gz.tbi                                     90K
+  DNK02.hg19_1000g.14.mod.vcf.gz                                         1.7G
+  DNK02.hg19_1000g.14.mod.vcf.gz.tbi                                     82K
+  DNK02.hg19_1000g.15.mod.vcf.gz                                         1.6G
+  DNK02.hg19_1000g.15.mod.vcf.gz.tbi                                     77K
+  ... 856 more; last: ('pantro2/', '-')
+
+== http://cdna.eva.mpg.de/denisova/VCF/pantro2/ (56 entries)
+  T_pantro2.chr1.mod.vcf.gz                                              4.3G
+  T_pantro2.chr1.mod.vcf.gz.tbi                                          210K
+  T_pantro2.chr2a.mod.vcf.gz                                             2.0G
+  T_pantro2.chr2a.mod.vcf.gz.tbi                                         102K
+  T_pantro2.chr2b.mod.vcf.gz                                             2.5G
+  T_pantro2.chr2b.mod.vcf.gz.tbi                                         123K
+  T_pantro2.chr3.mod.vcf.gz                                              3.5G
+  T_pantro2.chr3.mod.vcf.gz.tbi                                          186K
+  T_pantro2.chr4.mod.vcf.gz                                              3.7G
+  T_pantro2.chr4.mod.vcf.gz.tbi                                          179K
+  T_pantro2.chr5.mod.vcf.gz                                              3.4G
+  T_pantro2.chr5.mod.vcf.gz.tbi                                          168K
+  T_pantro2.chr6.mod.vcf.gz                                              3.2G
+  T_pantro2.chr6.mod.vcf.gz.tbi                                          158K
+  T_pantro2.chr6_hla_hap1.mod.vcf.gz                                     72K
+  T_pantro2.chr6_hla_hap1.mod.vcf.gz.tbi                                 131
+  T_pantro2.chr7.mod.vcf.gz                                              2.9G
+  T_pantro2.chr7.mod.vcf.gz.tbi                                          146K
+  T_pantro2.chr8.mod.vcf.gz                                              2.7G
+  T_pantro2.chr8.mod.vcf.gz.tbi                                          133K
+  T_pantro2.chr9.mod.vcf.gz                                              2.1G
+  T_pantro2.chr9.mod.vcf.gz.tbi                                          107K
+  T_pantro2.chr10.mod.vcf.gz                                             2.3G
+  T_pantro2.chr10.mod.vcf.gz.tbi                                         121K
+  T_pantro2.chr11.mod.vcf.gz                                             2.4G
+  T_pantro2.chr11.mod.vcf.gz.tbi                                         119K
+  T_pantro2.chr12.mod.vcf.gz                                             2.4G
+  T_pantro2.chr12.mod.vcf.gz.tbi                                         125K
+  T_pantro2.chr13.mod.vcf.gz                                             1.7G
+  T_pantro2.chr13.mod.vcf.gz.tbi                                         84K
+  ... 26 more; last: ('T_pantro2.nonchrom.mod.vcf.gz.tbi', '133K')
+
+== http://cdna.eva.mpg.de/denisova/alignments/ (4 entries)
+  T_hg19_1000g.bam                                                       80G
+  T_hg19_1000g.bam.bai                                                   8.6M
+  T_pantro2.bam                                                          78G
+  T_pantro2.bam.bai                                                      8.9M
+
+== http://cdna.eva.mpg.de/denisova/raw_reads/ (39 entries)
+  B1087_SR.txt.gz                                                        396M
+  B1087_r1.txt.gz                                                        60M
+  B1087_r2.txt.gz                                                        60M
+  B1088_SR.txt.gz                                                        292M
+  B1088_r1.txt.gz                                                        42M
+  B1088_r2.txt.gz                                                        42M
+  B1101_SR.txt.gz                                                        353M
+  B1101_r1.txt.gz                                                        57M
+  B1101_r2.txt.gz                                                        57M
+  B1102_SR.txt.gz                                                        384M
+  B1102_r1.txt.gz                                                        61M
+  B1102_r2.txt.gz                                                        61M
+  B1107_SR.txt.gz                                                        16G
+  B1107_r1.txt.gz                                                        7.0G
+  B1107_r2.txt.gz                                                        7.1G
+  B1108_SR.txt.gz                                                        20G
+  B1108_r1.txt.gz                                                        3.7G
+  B1108_r2.txt.gz                                                        3.7G
+  B1109_SR.txt.gz                                                        12G
+  B1109_r1.txt.gz                                                        7.8G
+  B1109_r2.txt.gz                                                        7.9G
+  B1110_SR.txt.gz                                                        15G
+  B1110_r1.txt.gz                                                        3.0G
+  B1110_r2.txt.gz                                                        3.0G
+  B1128_SR.txt.gz                                                        11G
+  B1128_r1.txt.gz                                                        1.5G
+  B1128_r2.txt.gz                                                        1.5G
+  B1130_SR.txt.gz                                                        49G
+  B1130_r1.txt.gz                                                        5.8G
+  B1130_r2.txt.gz                                                        5.8G
+  ... 9 more; last: ('SL3004_r2.txt.gz', '1.5G')
+  !! http://cdna.eva.mpg.de/ust_ishim/: HTTP Error 404: Not Found
+
+== http://cdna.eva.mpg.de/ust_ishim/ (0 entries)
+
+== http://cdna.eva.mpg.de/ust-ishim/ (2 entries)
+  BAM/                                                                   -
+  VCF/                                                                   -
+
+== http://cdna.eva.mpg.de/ust-ishim/BAM/ (2 entries)
+  Ust_Ishim.hg19_1000g.all.bam                                           128G
+  unmapped_qualfail/                                                     -
+
+== http://cdna.eva.mpg.de/ust-ishim/BAM/unmapped_qualfail/ (78 entries)
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_1_unmapped.bam              20G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_2_unmapped.bam              20G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_3_unmapped.bam              21G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_4_unmapped.bam              21G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_5_unmapped.bam              20G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_6_unmapped.bam              20G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_7_unmapped.bam              20G
+  121116_SN7001204_0148_AD0Y9WACXX_PEdi_QF_1_8_unmapped.bam              21G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_1_unmapped.bam           11G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_2_unmapped.bam           11G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_3_unmapped.bam           11G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_4_unmapped.bam           11G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_5_unmapped.bam           11G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_6_unmapped.bam           11G
+  121119_SN7001204_0149_BD0YLMACXX_PEdi_RS_QF_2_7_unmapped.bam           11G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_1_unmapped.bam              19G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_2_unmapped.bam              18G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_3_unmapped.bam              19G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_4_unmapped.bam              19G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_5_unmapped.bam              19G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_6_unmapped.bam              18G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_7_unmapped.bam              19G
+  121204_SN7001204_0151_AC0TUVACXX_PEdi_QF_3_8_unmapped.bam              18G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_1_unmapped.bam              19G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_2_unmapped.bam              19G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_3_unmapped.bam              19G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_4_unmapped.bam              19G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_5_unmapped.bam              18G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_6_unmapped.bam              19G
+  121204_SN7001204_0152_BD1GKNACXX_PEdi_QF_4_7_unmapped.bam              19G
+  ... 48 more; last: ('130204_SN7001204_0179_BC1G8YACXX_PEdi_QF9_8_unmapped.bam', '14G')
+
+== http://cdna.eva.mpg.de/ust-ishim/VCF/ (49 entries)
+  Ust_Ishim.hg19_1000g.1.mod.vcf.gz                                      5.5G
+  Ust_Ishim.hg19_1000g.1.mod.vcf.gz.tbi                                  211K
+  Ust_Ishim.hg19_1000g.2.mod.vcf.gz                                      5.7G
+  Ust_Ishim.hg19_1000g.2.mod.vcf.gz.tbi                                  222K
+  Ust_Ishim.hg19_1000g.3.mod.vcf.gz                                      4.5G
+  Ust_Ishim.hg19_1000g.3.mod.vcf.gz.tbi                                  182K
+  Ust_Ishim.hg19_1000g.4.mod.vcf.gz                                      4.6G
+  Ust_Ishim.hg19_1000g.4.mod.vcf.gz.tbi                                  175K
+  Ust_Ishim.hg19_1000g.5.mod.vcf.gz                                      4.3G
+  Ust_Ishim.hg19_1000g.5.mod.vcf.gz.tbi                                  165K
+  Ust_Ishim.hg19_1000g.6.mod.vcf.gz                                      4.1G
+  Ust_Ishim.hg19_1000g.6.mod.vcf.gz.tbi                                  156K
+  Ust_Ishim.hg19_1000g.7.mod.vcf.gz                                      3.7G
+  Ust_Ishim.hg19_1000g.7.mod.vcf.gz.tbi                                  145K
+  Ust_Ishim.hg19_1000g.8.mod.vcf.gz                                      3.5G
+  Ust_Ishim.hg19_1000g.8.mod.vcf.gz.tbi                                  134K
+  Ust_Ishim.hg19_1000g.9.mod.vcf.gz                                      2.8G
+  Ust_Ishim.hg19_1000g.9.mod.vcf.gz.tbi                                  113K
+  Ust_Ishim.hg19_1000g.10.mod.vcf.gz                                     3.1G
+  Ust_Ishim.hg19_1000g.10.mod.vcf.gz.tbi                                 123K
+  Ust_Ishim.hg19_1000g.11.mod.vcf.gz                                     3.2G
+  Ust_Ishim.hg19_1000g.11.mod.vcf.gz.tbi                                 122K
+  Ust_Ishim.hg19_1000g.12.mod.vcf.gz                                     3.1G
+  Ust_Ishim.hg19_1000g.12.mod.vcf.gz.tbi                                 122K
+  Ust_Ishim.hg19_1000g.13.mod.vcf.gz                                     2.3G
+  Ust_Ishim.hg19_1000g.13.mod.vcf.gz.tbi                                 90K
+  Ust_Ishim.hg19_1000g.14.mod.vcf.gz                                     2.2G
+  Ust_Ishim.hg19_1000g.14.mod.vcf.gz.tbi                                 82K
+  Ust_Ishim.hg19_1000g.15.mod.vcf.gz                                     2.0G
+  Ust_Ishim.hg19_1000g.15.mod.vcf.gz.tbi                                 76K
+  ... 19 more; last: ('maskfiles/', '-')
+
+== http://cdna.eva.mpg.de/ust-ishim/VCF/maskfiles/ (50 entries)
+  chr1.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               802M
+  chr1.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           201K
+  chr2.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               888M
+  chr2.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           216K
+  chr3.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               732M
+  chr3.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           179K
+  chr4.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               693M
+  chr4.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           172K
+  chr5.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               656M
+  chr5.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           161K
+  chr6.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               620M
+  chr6.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           154K
+  chr7.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               534M
+  chr7.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           139K
+  chr8.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               533M
+  chr8.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           130K
+  chr9.Map35_99.MQ30.Cov.indels.TRF.bed.gz                               406M
+  chr9.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                           101K
+  chr10.Map35_99.MQ30.Cov.indels.TRF.bed.gz                              471M
+  chr10.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                          118K
+  chr11.Map35_99.MQ30.Cov.indels.TRF.bed.gz                              477M
+  chr11.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                          119K
+  chr12.Map35_99.MQ30.Cov.indels.TRF.bed.gz                              471M
+  chr12.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                          120K
+  chr13.Map35_99.MQ30.Cov.indels.TRF.bed.gz                              366M
+  chr13.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                          89K
+  chr14.Map35_99.MQ30.Cov.indels.TRF.bed.gz                              323M
+  chr14.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                          80K
+  chr15.Map35_99.MQ30.Cov.indels.TRF.bed.gz                              283M
+  chr15.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi                          71K
+  ... 20 more; last: ('chrY.Map35_99.MQ30.Cov.indels.TRF.bed.gz.tbi', '9.8K')
+
+== http://cdna.eva.mpg.de/neandertal/Mezmaiskaya1/ (2 entries)
+  Pruefer_etal_2014_bam/                                                 -
+  Pruefer_etal_2017_bam/                                                 -
+
+== http://cdna.eva.mpg.de/neandertal/Mezmaiskaya1/Pruefer_etal_2014_bam/ (1 entries)
+  E733.bam                                                               2.0G
+
+== http://cdna.eva.mpg.de/neandertal/Mezmaiskaya1/Pruefer_etal_2017_bam/ (1 entries)
+  Mez1_hg19evan_reali_mod.bam                                            7.3G
+
+== http://cdna.eva.mpg.de/neandertal/Denisova17/ (1 entries)
+  rawBAM/                                                                -
+
+== http://cdna.eva.mpg.de/neandertal/Denisova17/rawBAM/ (2 entries)
+  A26088_merged.T2T_CHM13v2.0_evan.bam                                   166G
+  README                                                                 265
+
+== http://cdna.eva.mpg.de/ (1 entries)
+  http://www.eva.mpg.de/imprint.html                                     <a
+
+#### ENA file reports
+
+PRJEB6622 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: The genome sequence of a 45,000-year-old modern human from Ust'-Ishim
+
+PRJEB6622 read_run: 1 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR566093	UstIshim1	OTHER	69222877641;496870481;526296961	ftp.sra.ebi.ac.uk/vol1/run/ERR566/ERR566093/Ust_Ishim.hg19_1000g.all.bam	137825671438	2039299094	122284670944
+  title: The genome sequence of a 45,000-year-old modern human from Ust'-Ishim
+
+PRJEB6272 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: Ancient human genomes suggest three ancestral populations for present-day Europeans
+
+PRJEB6272 read_run: 9 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR577491	Stuttgart	WGS	23256846747;196455;186318	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577491/LBK.hg19_1000g.bam	35843549748	791987680	55718162633
+  ERR577492	Motala1	WGS	518147869	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577492/Motala1.bam	659006208	8050873	547723588
+  ERR577498	Motala12	WGS	5628418551	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577498/Motala12.bam	7256141979	94818771	6911624742
+  ERR577490	Loschbour	WGS	25289044637;340345423;342915405	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577490/Loschbour.hg19_1000g.bam	50665593075	869739005	63323233944
+  ERR577497	Motala9	WGS	29110826	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577497/Motala9.bam	38261909	484149	31062714
+  ERR577493	Motala2	WGS	438968920	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577493/Motala2.bam	557680497	6670241	464998694
+  ERR577495	Motala4	WGS	204483410	ftp.sra.ebi.ac.uk/vol1/run/ERR577/ERR577495/Motala4.bam	262813589	3369460	215973409
+  title: Ancient human genomes suggest three ancestral populations for present-day Europeans
+
+PRJEB11450 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: Eight thousand years of natural selection in Europe
+
+PRJEB11450 read_run: 246 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR1136329	I0013	OTHER	73531213	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136329/I0013.1240k.bam	95151903	1066909	100896222
+  ERR1136332	I0017	OTHER	728320996	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136332/I0017.1240k.bam	1001436204	13814368	1112630345
+  ERR1136352	I0111	OTHER	176582834	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136352/I0111.1240k.bam	249591147	3384720	243843369
+  ERR1136354	I0113	OTHER	219445685	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136354/I0113.1240k.bam	308273020	4113680	294422947
+  ERR1136367	I0176	OTHER	27225260	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136367/I0176.1240k.bam	39660397	552762	35801961
+  ERR1136385	I0406	OTHER	458407803	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136385/I0406.1240k.bam	679686525	12151746	739794806
+  ERR1136387	I0408	OTHER	1971008773	ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136387/I0408.1240k.bam	3018655821	55581372	3218452854
+  title: Eight thousand years of natural selection in Europe
+
+PRJEB7618 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: Genomic Structure in Europeans dating back at least 36,200 years
+
+PRJEB7618 read_run: 87 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR668462	K14	WGS	1430140965	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668462/K14_10c_GAGTAG_USER.SE.R1.fastq.gz	1359221732	21901737	2058763278
+  ERR668463	K14	WGS	996906325	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668463/K14_10c_GCTACT_USER.SE.R1.fastq.gz	948388833	15178972	1426823368
+  ERR668466	K14	WGS	1187572339	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668466/K14_14c_CAGCAC_USER.SE.R1.fastq.gz	1127886976	18585648	1747050912
+  ERR668471	K14	WGS	2783281552	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668471/K14_D1_2_CGTATA.SE.R1.fastq.gz	2646553950	41484536	3899546384
+  ERR668474	K14	WGS	2132076000	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668474/K14_D2_2__GTGTAT.SE.R1.fastq.gz	2021230120	33861133	3182946502
+  ERR668483	K14	WGS	16058583664;16300619044	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668483/K14_10c_AGTGAG_USER.PE.R1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668483/K14_10c_AGTGAG_USER.PE.R2.fastq.gz	15256209818;15504966505	253914631	38595023912
+  ERR668490	K14	WGS	16513637190;15446110556	ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668490/K14_B2_S2_1_USER_GCCAAT.PE.R1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR668/ERR668490/K14_B2_S2_1_USER_GCCAAT.PE.R2.fastq.gz	15461709571;14443660460	332123765	50482812280
+  title: Genomic Structure in Europeans dating back at least 36,200 years
+
+PRJEB9783 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: Sequencing Chalcolithic human remains from El Portalón, Spain
+
+PRJEB9783 read_run: 67 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR957342	ATP2	OTHER	8727760570	ftp.sra.ebi.ac.uk/vol1/run/ERR957/ERR957342/ATP2.merged.hs37d5.fa.cons.90perc.bam	13285961533	271728143	16346002890
+  ERR957343	ATP3	OTHER	59930115	ftp.sra.ebi.ac.uk/vol1/run/ERR957/ERR957343/ATP3.merged.hs37d5.fa.cons.90perc.bam	85053274	1249947	97255777
+  ERR972819	ATP3	OTHER	1881689609;1868853867	ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972819/HPOR5_AGAACCG_L005_R1_001.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972819/HPOR5_AGAACCG_L005_R2_001.fastq.gz	2185506734;2172061609	24568204	4913640800
+  ERR972822	ATP3	OTHER	1005700212;987516195	ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972822/PBL_HPOR5_AGAACCG_L005_R1_001.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972822/PBL_HPOR5_AGAACCG_L005_R2_001.fastq.gz	1159659637;1142040167	12771645	2554329000
+  ERR972835	ATP9	OTHER	3926724047;4181548203	ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972835/ATP9_CGATGT_L008_R1_001.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972835/ATP9_CGATGT_L008_R2_001.fastq.gz	4612425890;4827749060	56258798	11251759600
+  ERR972836	ATP9	OTHER	1776038377;1803897516	ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972836/atp9_e1r1l1_AACCATG_L004_R1_001.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972836/atp9_e1r1l1_AACCATG_L004_R2_001.fastq.gz	1651425325;1680522102	24827034	6157104432
+  ERR972838	ATP9	OTHER	2335569995;2352429105	ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972838/atp9_e4l1_CTTGCGG_L008_R1_001.fastq.gz;ftp.sra.ebi.ac.uk/vol1/run/ERR972/ERR972838/atp9_e4l1_CTTGCGG_L008_R2_001.fastq.gz	2177778239;2197407378	33742456	8368129088
+  title: Sequencing Chalcolithic human remains from El Portalón, Spain
+
+PRJEB21037 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: Extensive farming in Estonia started through a sex-biased migration from the Steppe
+
+PRJEB21037 read_run: 9 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR1992787	MA968	WGS	597443462	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992787/MA968.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992787/MA968.bwa.map.nodup.bam.bai	903706805;6303312	16911023	761158508
+  ERR1992789	MA971	WGS	1403411130	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992789/MA971.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992789/MA971.bwa.map.nodup.bam.bai	1966429069;6943336	32335784	1791638313
+  ERR1992790	MA973	WGS	5217954283	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992790/MA973.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992790/MA973.bwa.map.nodup.bam.bai	7484202401;8027704	145633679	6587903160
+  ERR1992791	MA974	WGS	169801671	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992791/MA974.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992791/MA974.bwa.map.nodup.bam.bai	250821507;5937424	4429847	225191512
+  ERR1992788	MA969	WGS	2545790743	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992788/MA969.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992788/MA969.bwa.map.nodup.bam.bai	3665273715;7363368	73858018	3154126958
+  ERR1992786	MA826	WGS	794966682	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992786/MA826.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992786/MA826.bwa.map.nodup.bam.bai	1132727284;6437240	19745739	933926875
+  ERR1992792	MA975	WGS	276770000	ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992792/MA975.bwa.map.nodup.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR199/ERR1992792/MA975.bwa.map.nodup.bam.bai	390448737;6062656	6308694	345814889
+  title: Extensive farming in Estonia started through a sex-biased migration from the Steppe
+
+PRJEB29700 analysis: 0 rows
+  analysis_accession	sample_alias	analysis_type	submitted_ftp	submitted_bytes
+  title: The population history of northeastern Siberia since the Pleistocene
+
+PRJEB29700 read_run: 34 rows
+  run_accession	sample_alias	library_strategy	fastq_bytes	submitted_ftp	submitted_bytes	read_count	base_count
+  ERR3350383	M0831	WGS	1680051461	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350383/M0831.sort.rmdup.uniq.rg.realn.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350383/M0831.sort.rmdup.uniq.rg.realn.md.bam.bai	2735277365;7531112	45049925	2897615222
+  ERR3350398	NEO231	WGS	1169730209	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350398/NEO231.sort.rmdup.realign.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350398/NEO231.sort.rmdup.realign.md.bam.bai	1623567224;6829856	22050478	1524857797
+  ERR3350404	NEO235	WGS	2713993119	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350404/NEO235.sort.rmdup.realign.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350404/NEO235.sort.rmdup.realign.md.bam.bai	4025840651;7830144	58412096	3908605050
+  ERR3350435	NEO242	WGS	402035507	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350435/NEO242.sort.rmdup.realign.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350435/NEO242.sort.rmdup.realign.md.bam.bai	590634335;6193544	8270665	543808881
+  ERR3350444	NEO298	WGS	3934820891	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350444/NEO298.sort.rmdup.realign.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350444/NEO298.sort.rmdup.realign.md.bam.bai	5530169062;8140528	79710027	5679513007
+  ERR3350445	NEO299	WGS	223776482	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350445/NEO299.sort.rmdup.realign.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350445/NEO299.sort.rmdup.realign.md.bam.bai	333191269;5922432	4789390	264244393
+  ERR3350997	Yana1	WGS	49138065813	ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350997/Yana_old.sort.rmdup.realign.md.bam;ftp.sra.ebi.ac.uk/vol1/run/ERR335/ERR3350997/Yana_old.sort.rmdup.realign.md.bam.bai	82691815161;8877024	1404042088	78710969944
+  title: The population history of northeastern Siberia since the Pleistocene
+
+#### samtools remote reads
+chr21 BAMs: ['http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/bam/AltaiNea.hg19_1000g.21.dq.bam', 'http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/chr21.bam', 'http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/chr21.rh.bam']
+samtools view -H  -> 0
+   out: @HD	VN:1.0	SO:coordinate	GO:none
+   @SQ	SN:1	LN:249250621
+   @SQ	SN:2	LN:243199373
+   @SQ	SN:3	LN:198022430
+   @SQ	SN:4	LN:191154276
+   @SQ	SN:5	LN:180915260
+   err: 
+samtools view -c 21:30000000-30100000 -> 0
+   out: 79007
+   err: 
+samtools view http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/bam/AltaiNea.hg19_1000g.21.dq.bam  -> 0
+   out: SN7001204_0131_BC0M3YACXX_PEdi_SS_L9302_L9303_2:5:2213:16061:35532	0	21	29999850	37	164M	*	0	0	TAAGCGCTCTTCCATTTGAACTGCTTCCAATGCTAGAATTAACATAAGTCAGCTACCATCCATAAACTTTCTATACCTAGTGTTATTCATGTACCTTATATGTATAAAGATTTGTGTATATAGTGAGGCAGGAGAATAGGATCTGGAGGCAGGGAACCTAAGGT	#::9<??;;>?8>B<?>C??><?;=@>?D>>@=>E7D?==?B=?>??@;=?=/:>=:?<98BB@>??<@]]]]]]]A]]]]]]]][]]]]]]][Z@ALCC=@@F<DBEDA9>@A>AB?CI=L;<?CBA<CB=GGGB=H@BD@>A?CDA?@CABD@BBC@HC?A#	X0:f:1	X1:f:0	MD:Z:35A16G67C42C0	XF:i:2	RG:Z:L9303	XG:f:0	XI:Z:ACTAAGT	YI:Z:=?>;:>:	XJ:Z:AGAATTA	YJ:Z:<@<=BD<	XM:f:4	XO:f:0	YQ:f:201401	XT:A:U	NM:f:4
+   SN928_0068_BB022WACXX:1:1308:16073:192069	0	21	29999874	37	133M	*	0	0	TTCCAATGCTAAAATTAACATAAGTCAGGTACCATCCATAAACTTTCTATACCTAGTGTTATTCATGTACCTTATATGTATAAAGATTTGTGTATATAGTGAGGCAGGAGAATAGGATCTGGAGGCAGGGAAC	#]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]M]]]]]]]]]]]]]]]]]]]]]]]]]]	X0:i:1	X1:i:0	MD:Z:96C36	XF:i:2	RG:Z:L9198	XG:i:0	XI:Z:AGATGGN	YI:Z:4A7:@?!	XJ:Z:NCGGTAC	YJ:Z:!.<9/,9	NM:i:1	XM:i:1	XO:i:0	XP:i:3	XT:A:U
+   SN7001204_0130_AC0M6HACXX_PEdi_SS_L9302_L9303_1:3:2112:17456:34441	16	21	29999896	37	174M	*	0	0	AATCAGGTACCATCCATAAACTTTCTATACCTAGTGTTATTCATGTACCTTATATGTATAAAGATTTGTGTATATAGTGAGGCAGGAGAATAGGATCTGGAGGCAGGTAACCTAAGGCCAATTCACACTGACTTCCTAGAACTAAATCAAAAGGAAAACCCCAAGTTACCACAC	##9898<:8999792=?@86:9<>7@:B<<6A99@6:=>DB??=CA7?9?C6<?@C;>?A:==8?=8A<>9<9<=?<;6SS[T][VVO]\]PRPY8=9:;C66<C9<7>99>??899?<>8<C9;@9=?>8<:>B=?<>DA=AE=BA>CC=BA<=?A9=>B=?<>;77;:996
+   err: 
+samtools view -H  -> 0
+   out: @HD	VN:1.4	SO:coordinate
+   @PG	ID:bam-rmdup	PN:bam-rmdup	CL:L5329.bam -o L5329-rmdup.bam	VN:0.2	PP:bwa	pp:bwa-489413F1	pp:bwa-44FC5DDD	pp:bwa-37460D2C	pp:bwa-75F6D165	pp:bwa-6A6DEF61	pp:bwa-7F2E14A7	pp:bwa-17A351EC	pp:bwa-3C59DD14	pp:bwa-33A09973	pp:bwa-14039EB4	pp:bwa-58D4BDA3	pp:bwa-26DF7E54	pp:bwa-7A755DC7	pp:bwa-75BB614D	pp:bwa-5FA14D79	pp:bwa-9D07964	pp:bwa-69C7FB57	pp:bwa-755D99D	pp:bwa-C09AB44	pp:bwa-6E22A7CD	pp:bwa-14FE943E	pp:bwa-4B2AD802	pp:bwa-489413F1-3E1ED154	pp:bwa-44FC5DDD-7B7C8A82	pp:bwa-37460D2C-151BD16F
+   @RG	ID:L5329
+   @RG	ID:controlA
+   @RG	ID:controlC
+   @RG	ID:controlG
+   err: 
+samtools view -c 21:30000000-30100000 -> 1
+   out: 
+   err: [E::idx_find_and_load] Could not retrieve index file for 'http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/chr21.bam'
+samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.
+
+samtools view http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/chr21.bam  -> 1
+   out: 
+   err: [E::idx_find_and_load] Could not retrieve index file for 'http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/chr21.bam'
+samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.
+
+samtools view -H  -> 0
+   out: @HD	VN:1.4	SO:coordinate
+   @SQ	SN:1	LN:249250621
+   @SQ	SN:2	LN:243199373
+   @SQ	SN:3	LN:198022430
+   @SQ	SN:4	LN:191154276
+   @SQ	SN:5	LN:180915260
+   err: 
+samtools view -c 21:30000000-30100000 -> 0
+   out: 44527
+   err: 
+samtools view http://cdna.eva.mpg.de/neandertal/Chagyrskaya/BAM/chr21.rh.bam  -> 0
+   out: D00829_0044_ACADL6ANXX_PEdi_Ay_VS_2:3:2201:1650:32589	16	21	29999921	37	70M2D20M	*	0	0	TATACCTAGTGTTATTCATGTACCTTATATGTATAAAGATTTGTGTATATAGTGAGGCAGGAGAATAGGATGGAGGCAGGGAACCTAAGG	BBBBBGEDFGGGGF]]]]]]]]]]]]]]]]]]]]]\]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]GGGGGGGFGB@BBB	XI:Z:TGATAAC	YI:Z:BA@B?GE	XJ:Z:CATCCGG	YJ:Z:BCBCBFG	FF:i:2	Z0:i:0	XT:A:U	NM:i:3	X0:i:1	X1:i:0	XM:i:1	XO:i:1	XG:i:2	MD:Z:49C20^TC20	RG:Z:L5833
+   D00829_0044_ACADL6ANXX_PEdi_Ay_VS_2:5:1203:16360:85831	16	21	29999933	37	134M	*	0	0	TATTCATGTACCTTATATGTATAAAGATTTATGTATATAGTGAGGCAGGAGAATAGGATCTGGAGGCAGGGAACCTAAGGCCAATTCACACTGACTTCCTAGAACTAAATCAAAAGGAAAACCCCAAGTTACCA	CCCCCGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG]]]]]]]]]]]]]]]]]]GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEGGGGGGGFA>B@:	XI:Z:GGTACGC	YI:Z:CCCCBGG	XJ:Z:AACTCCG	YJ:Z:BBBCCGG	FF:i:2	Z0:i:0	XT:A:U	NM:i:2	X0:i:1	X1:i:0	XM:i:2	XO:i:0	XG:i:0	MD:Z:30G6C96	RG:Z:L5830
+   SN7001204_0527_AHJLJYBCXX_R_PEdi_L5727_37_5:1:1116:13383:85769	16	21	29999936	37	121M	*	0	0	TCATGTACCTTATATGTATAAAGATTTGTGTATATAGTGAGGCAGGAGAATAGGATCTGGAAGCAGGGAACCTAAGGCCAATTCACACTGACTTCCTAGAACTAAATCAAAAGGAAAACCC	@DDA@FGHHFE?<1D1<CEC1FH1C111DG11<1<<FHF?@D10D]]]]]]]]][]]]X]XU]\]]Z]]]]F]Z]]H?F<<@D1<<1<<1<1?HG?EEFHHGCHHGHGCFC<1C<0?D@DD	XI:Z:TTAATAG	YI:Z:000<0<<	XJ:Z:GTCCGGC	YJ:Z:0<<0<C?	FF:i:2	Z0:i:1	XT:A:U	NM:i:2	X0:i:1	X1:i:0	XM:i:2	XO:i:0	XG:i:0	MD:Z:34C26G59	RG:Z:L5728
+   SN7001204_0391_AH3VT2BCXX_R_PEdi_L5329_3:1:2201:11862:8156c	0	21	29999941	37	128M	*	0	0	TACCTTATATGTATAAAGATTTG
+   err: 
+samtools 1.24
+bcftools 1.24
+
+#### bioconda
+  psmc             ['0.6.5']
+  angsd            ['0.933', '0.935', '0.937', '0.939', '0.940']
+  bwa-mem2         ['2.0', '2.1', '2.2', '2.2.1', '2.3']
+  minimap2         ['2.6', '2.6.1', '2.7', '2.8', '2.9']
+  msmc2            ['2.1.4']
+  smcpp            ['1.15.4']
+  pyrho            ['0.2.1']
+  admixtools       ['5.1', '6.0', '7.0.1', '7.0.2', '8.0.2']
+  yleaf            ['3.2.1']
+  haplogrep3       ['3.2.2']
+  mapdamage2       ['2.1.1', '2.2.0', '2.2.1', '2.2.2', '2.2.3']
+  pmdtools         ['0.60']
+  htsbox           ['r315', 'r327', 'r340', 'r346', 'r350']
+  sequencetools    ['1.5.2', '1.5.3', '1.5.3.2', '1.5.4.0', '1.6.0.0']
+  eigensoft        ['6.0.1', '7.2.1', '8.0.0', '9.0.0']
+  plink2           ['2.00a3.3', '2.00a3.7', '2.00a5', '2.00a5.10', '2.00a5.12']
+  atlas            ['2.0.0', '2.0.1', '2.0.2', '2.0.3', '2.0.4']
+  snpad            NOT FOUND
+  contammix        ['1.0.10', '1.0.11']
+  schmutzi         NOT FOUND
+  hapcon           NOT FOUND
