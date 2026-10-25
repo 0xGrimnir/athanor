@@ -2,6 +2,23 @@
 
 All notable changes to Athanor are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.10.1] - 2026-10-25
+
+An independent review of Deep Time's code found defects that a thirty-fold benchmark could not see. All of them are fixed, with the tests that would have caught them.
+
+### Fixed
+- **The R_x interval, which decides genetic sex.** It was built from the disagreement between the autosomes alone. The X's own count sits in every one of those ratios, so its counting noise — the whole uncertainty at low coverage — contributed nothing, and a nominal 95% interval missed the truth about three times in four. It now carries the counting noise on both sides as well, and covers at 95% in simulation. The call is now which copy number the interval is nearer, one X or two, rather than a pair of fixed thresholds with a gap between them, because a capture enriches the X a little differently from the autosomes and a real 1240K female sat in that gap.
+- **Heterozygosity at low and middling coverage.** A quality floor is also a depth floor, and a stricter one for homozygotes than for heterozygotes, so sites with eight or nine reads were dropped from the denominator while heterozygous sites at the same depth stayed in the numerator: a tenfold genome read up to 44% too high. The depth floor is now raised to where a homozygote can be called as confidently as a heterozygote, and the app says what that floor is.
+- **Deamination measured against the reference** read only the first chromosome once it reached its read limit, and then named them all in the text shown to the user. Each chromosome now gets its own share, and the result records what was actually read. The background is taken from bases far from *both* ends of their molecule, since a base twenty-five from one end of a short fragment is near the other.
+- **Genotypes now use each read's own base quality**, with a floor on how wrong a base can be for reasons the sequencer cannot see — deamination above all, which it scores as a perfect read. Taking the qualities at face value turned two damaged reads in thirty into a heterozygote.
+- Hard-clipped bases are counted in the molecule's length, so the rest sit in the right distance bins. Reads with no base qualities are no longer silently given Q30. The overlapping mates of one molecule count once. The per-site depth cap samples fairly instead of keeping whatever arrived first. Whole-chromosome read counts are filtered the way the published thresholds assume, rather than taken from the index with its duplicates and multi-mapping reads.
+- The reference FASTA is checked against the alignment's chromosome lengths, so the wrong assembly is refused rather than reported as a sample with no damage.
+
+### Changed
+- Every damage rate carries a Wilson interval and a minimum number of observations behind it; every heterozygosity carries a Poisson interval and the count of sites it rests on.
+- The sex card no longer quotes an interval it has just called inconclusive, and says when the call came from whole chromosomes instead. Diploid mode reports the sites it covered rather than zero. The alignment card states reference bias. The ancestry cards say when the calls were made without guarding against deamination, and on how many positions at what depth. The authenticity card no longer says contamination is measured separately, because nothing here measures it.
+- **The benchmarks now gate what can fail.** An all-sites call set is almost all homozygous reference, so agreement with it proved little; the archaic check now gates agreement at the sites the study calls as carrying a non-reference allele (99.57% of 7,748, with heterozygous sites at 100% of 909), the share of its calls made here at all (94.6%), and transversion heterozygosity with at least 200 events (6.05 against 6.03 per 100,000, 298 events against 297). The region is eight megabases rather than two.
+
 ## [0.10.0] - 2026-10-25
 
 ### Added

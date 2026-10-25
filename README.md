@@ -117,16 +117,18 @@ Ancient genomes as other people published them: the same individuals, the same p
 | Check | Result |
 |---|---|
 | Pseudo-haploid calls vs the AADR's genotypes, at sites both call | 98.30%, 99.41%, 99.79% and 99.85% agreement (32,595–78,157 sites per individual) |
-| Genetic sex vs the published Molecular Sex | 4 of 4, three male (R_x 0.34–0.43) and one female (R_x 0.85), from depth at the panel's X positions against its autosomal ones |
-| Terminal deamination vs the published first-base damage rate | 0.088 vs 0.092, 0.111 vs 0.093, 0.105 vs 0.091 (non-CpG, measured against the reference on chromosomes 19–22) |
+| Genetic sex vs the published Molecular Sex | 4 of 4, three male (R_x 0.34–0.43) and one female (R_x 0.85), from depth at the panel's X positions against its autosomal ones. A capture enriches the X a little differently from the autosomes, so the call is which copy number the interval is nearer, not a fixed threshold |
+| Terminal deamination vs the published first-base damage rate | 0.089 vs 0.092, 0.111 vs 0.093, 0.105 vs 0.091 (non-CpG excess over the background, measured against the reference on chromosomes 19–22; the published rate is the raw first-base rate over the whole panel, CpG included, which here reads 0.116, 0.138 and 0.126) |
 
-**A high-coverage Neanderthal** (Vindija 33.19; Prüfer et al., Science 358, 655, 2017), two megabases of chromosome 21 read remotely from the published alignment and compared with that study's own call set, inside its own filter mask:
+**A high-coverage Neanderthal** (Vindija 33.19; Prüfer et al., Science 358, 655, 2017), eight megabases of chromosome 21 read remotely from the published alignment and compared with that study's own call set, inside its own filter mask:
 
 | Check | Result |
 |---|---|
-| Diploid genotypes vs the study's call set | 99.859% of 1,302,831 sites |
-| Heterozygous sites at transversions, which deamination cannot make | 6.22 per 100,000 vs their 6.14 |
-| Heterozygous sites at transitions, which it can | 1.60 per 1,000 vs their 1.90 per 10,000: a flat-error genotype caller reads deamination as heterozygosity on a library that keeps its damage. The app reports the transversion rate beside the total and says why they differ, rather than quoting one number |
+| Diploid genotypes vs the study's call set | 99.831% of 4,922,632 sites |
+| At the sites the study calls as carrying a non-reference allele | 99.57% of 7,748 (heterozygous 100% of 909, homozygous alternative 99.52% of 6,839). An all-sites call set is otherwise almost all homozygous reference, where agreeing proves little |
+| Share of the study's confident calls made here at all | 94.6% (this caller needs ten reads at a site before it counts, so it calls fewer) |
+| Heterozygous sites at transversions, which deamination cannot make | 6.05 per 100,000 (298 sites) vs their 6.03 (297) |
+| Heterozygous sites at transitions, which it can | 1.88 per 1,000 vs their 1.85 per 10,000: a caller without a damage model reads deamination as heterozygosity on a library that keeps its damage. The app reports the transversion rate beside the total and says why they differ, rather than quoting one number |
 
 ## Validation (Personal Genome)
 
