@@ -7,9 +7,10 @@ echo "== versions"
 bwa 2>&1 | grep -i version; samtools --version | head -1; minimap2 --version
 for a in AdapterRemoval adapterremoval adapterremoval3; do command -v $a >/dev/null && { echo "$a:"; $a --version 2>&1 | head -2; }; done
 mapDamage --version 2>&1 | head -1
-echo "== gargammel --help"; gargammel --help 2>&1 | head -150
-echo "== fragSim"; fragSim 2>&1 | head -60
-echo "== deamSim"; deamSim 2>&1 | head -60
+G=/opt/athanor/gargammel
+echo "== gargammel (built from source)"; cat $G/COMMIT; head -8 $G/RELEASE_NOTES.md; file $G/src/deamSim $G/art_src_MountRainier/art_illumina
+echo "== gargammel --help"; perl $G/gargammel.pl --help 2>&1 | head -150
+echo "== deamSim"; $G/src/deamSim 2>&1 | head -60
 echo "== AdapterRemoval --help"; (AdapterRemoval --help || adapterremoval3 --help) 2>&1 | head -80
 echo "== mapDamage --help"; mapDamage --help 2>&1 | head -120
 echo "== licenses (conda package metadata)"

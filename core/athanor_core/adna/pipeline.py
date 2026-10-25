@@ -19,6 +19,7 @@ import math
 import gzip
 import json
 import os
+import re
 import shutil
 import subprocess
 import time
@@ -33,6 +34,7 @@ from .truth import indel_sites, truth_by_reference_position
 
 BIO = Path(os.environ.get("ATHANOR_BIO", "/opt/athanor/bio"))
 REFS = Path(os.environ.get("ATHANOR_REFS", "/opt/athanor/refs"))
+GARGAMMEL = Path(os.environ.get("ATHANOR_GARGAMMEL", "/opt/athanor/gargammel"))
 
 
 # Expected seconds per stage on a reference machine (CI, 10x mammoth demo);
@@ -204,7 +206,17 @@ def tool_versions() -> dict:
             return "unavailable"
     return {"bwa": first(["bwa"], "Version"), "samtools": first(["samtools", "--version"]),
             "adapterremoval": first(["adapterremoval3", "--version"]), "mapDamage": first(["mapDamage", "--version"]),
-            "minimap2": first(["minimap2", "--version"]), "gargammel": "gargammel (bioconda; see pack lock)"}
+            "minimap2": first(["minimap2", "--version"]), "gargammel": _gargammel_version()}
+
+
+def _gargammel_version() -> str:
+    try:
+        commit = (GARGAMMEL / "COMMIT").read_text().strip()[:7]
+        notes = (GARGAMMEL / "RELEASE_NOTES.md").read_text().splitlines()
+        ver = next((l.strip() for l in notes if re.fullmatch(r"\d+\.\d+\.\d+", l.strip())), "?")
+        return f"gargammel {ver} (built from source, commit {commit})"
+    except OSError:
+        return "unavailable"
 
 
 def reference_catalog() -> dict:
@@ -330,7 +342,7 @@ def _diagnose(err_pos, calls, truth, ref, cons, indels) -> dict:
 def simulate(step, work: Path, endogenous: str = "NC_007596", coverage: float = 10.0,
              damage: tuple = (0.03, 0.4, 0.01, 0.3), contamination: float = 0.0, length_loc: float = 3.7,
              length_scale: float = 0.35, min_length: int = 25, read_length: int = 75,
-             contaminant: str = "NC_012920") -> dict:
+             contaminant: str = "NC_012920", seed: int | None = None) -> dict:
     """gargammel paired-end reads from ``endogenous`` with a fraction
     ``contamination`` of present-day ``contaminant`` molecules (no damage),
     then AdapterRemoval trimming and merging. Returns the read files."""
@@ -341,7 +353,8 @@ def simulate(step, work: Path, endogenous: str = "NC_007596", coverage: float = 
     shutil.copy(REFS / f"{contaminant}.fa", work / "input/cont/cont.fa")
     shutil.copy(REFS / f"{contaminant}.fa", work / "input/bact/bact.fa")   # placeholder; bacterial fraction is 0
     step.run("simulate (gargammel)", [
-        BIO / "bin/gargammel", "-c", coverage, "--comp", f"0,{contamination},{1 - contamination}",
+        BIO / "bin/perl", GARGAMMEL / "gargammel.pl", *(["--seed", seed] if seed is not None else []),
+        "-c", coverage, "--comp", f"0,{contamination},{1 - contamination}",
         "-damagee", ",".join(map(str, damage)), "--loc", length_loc, "--scale", length_scale,
         "--minsize", min_length, "--maxsize", 200, "-rl", read_length, "-ss", "HS25",
         "-o", work / "sim/sim", work / "input"], work)
@@ -362,7 +375,8 @@ def simulate(step, work: Path, endogenous: str = "NC_007596", coverage: float = 
 def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("NC_007596", "NC_000934", "NC_005129"),
         coverage: float = 10.0, damage: tuple = (0.03, 0.4, 0.01, 0.3), contamination: float = 0.0,
         length_loc: float = 3.7, length_scale: float = 0.35, min_length: int = 25, read_length: int = 75,
-        mapdamage_stats: bool = True, min_mapq: int = 25, iterations: int = 3, on_step=None) -> dict:
+        mapdamage_stats: bool = True, min_mapq: int = 25, iterations: int = 3, on_step=None,
+        seed: int | None = None) -> dict:
     """Simulate ancient reads from ``endogenous`` and reconstruct it against each reference.
 
     damage = Briggs et al. (2007) parameters (nick frequency, overhang geometric
@@ -383,7 +397,7 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
     cat = {g["accession"]: g for g in reference_catalog()["genomes"]}
     truth_id, truth_seq = read_fasta(REFS / f"{endogenous}.fa")
     sim = simulate(step, work, endogenous, coverage, damage, contamination, length_loc, length_scale,
-                   min_length, read_length)
+                   min_length, read_length, seed=seed)
     merged = sim["merged"]
 
     results = []
@@ -393,7 +407,7 @@ def run(work: str | Path, endogenous: str = "NC_007596", references: tuple = ("N
     return {"simulation": {"endogenous": cat[endogenous], "coverage": coverage,
                            "damage_briggs_v_l_d_s": list(damage), "contamination": contamination,
                            "fragment_length_lognormal": [length_loc, length_scale], "min_length": min_length,
-                           "read_length": read_length, "platform": "Illumina HiSeq 2500 profile (ART)",
+                           "read_length": read_length, "platform": "Illumina HiSeq 2500 profile (ART)", "seed": seed,
                            "iterations": iterations},
             "tools": tool_versions(), "steps": log, "references": results,
             "reference_catalog": reference_catalog()}

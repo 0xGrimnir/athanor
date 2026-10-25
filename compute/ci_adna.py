@@ -16,7 +16,7 @@ def on_step(d):
         print(f"progress {100 * d['fraction']:.1f}% eta {d['eta_seconds']}s step {d['step']}/{d['steps']} {d['stage']}", flush=True)
 
 
-res = run("/tmp/adna", coverage=10.0, iterations=3, on_step=on_step)
+res = run("/tmp/adna", coverage=10.0, iterations=3, on_step=on_step, seed=11)   # reproducible: gargammel --seed
 out = sys.argv[1] if len(sys.argv) > 1 else "/tmp/adna.json"
 json.dump(res, open(out, "w"))
 sim = res["simulation"]
@@ -75,7 +75,10 @@ for r in res["references"]:
         gate("self-reference accuracy >= 99.9%", r["accuracy"] >= 0.999, f"{r['accuracy']:.5f}")
         gate("mapDamage recovers deltaD within 30%", abs(b["DeltaD"]["Mean"] - dd) <= 0.3 * dd, f"{b['DeltaD']['Mean']:.4f} vs {dd}")
         gate("mapDamage recovers lambda within 20%", abs(b["Lambda"]["Mean"] - lam) <= 0.2 * lam, f"{b['Lambda']['Mean']:.4f} vs {lam}")
-        print(f"[INFO] mapDamage deltaS {b['DeltaS']['Mean']:.4f} vs gargammel s={ds}: parameterisations differ; reported, not gated")
+        # gargammel 1.1.5 implements the Briggs model as published, which mapDamage2 fits (1.1.4 drew an
+        # overhang at every end, and deltaS came out about twice the setting)
+        gate("mapDamage recovers deltaS within 35% (gargammel 1.1.5's Briggs model)", abs(b["DeltaS"]["Mean"] - ds) <= 0.35 * ds,
+             f"{b['DeltaS']['Mean']:.4f} vs {ds}")
         continue
     h = r["iterations"]
     gate(f"{acc}: iterative mapping does not lose accuracy", h[-1]["accuracy"] >= h[0]["accuracy"],

@@ -1,9 +1,9 @@
-# Ancient-DNA tools (bioconda). Versions are recorded in bio-lock.txt.
+# Ancient-DNA tools (bioconda). Versions are recorded in bio-lock.txt. gargammel is built from source
+# (see the Dockerfile).
 channels:
   - conda-forge
   - bioconda
 dependencies:
-  - gargammel
   - bwa
   - samtools
   - adapterremoval

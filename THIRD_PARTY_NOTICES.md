@@ -43,8 +43,8 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Component | Use | License | Status |
 |---|---|---|---|
 | biowasm / Aioli | Runs genomics tools as WebAssembly | MIT | Verified |
-| gargammel 1.1.4 (with fragSim, deamSim, adptSim) | Ancient-DNA read simulation (Linux engines pack) | GPL-3.0-only | Verified (conda metadata) |
-| ART 2016.06.05 | Illumina read simulation, used by gargammel | GPL-3.0-only | Verified (conda metadata) |
+| gargammel 1.1.5 (with fragSim, deamSim, adptSim), commit 4fc10b7 | Ancient-DNA read simulation (Linux engines pack). Built unmodified from https://github.com/grenaud/gargammel at that commit (statically linked); its LICENSE and release notes ship in /opt/athanor/gargammel | GPL-3.0-only | Verified |
+| ART 2016.06.05, with gargammel's patch (patches/art_illumina_gargammel.patch in the gargammel source above) | Illumina read simulation, used by gargammel | GPL-3.0-only | Verified |
 | AdapterRemoval 3.0.2 | Adapter trimming and read merging | GPL-3.0-or-later | Verified (conda metadata) |
 | BWA 0.7.19 | Ancient-DNA read mapping (aln) | GPL-3.0-or-later | Verified (conda metadata) |
 | samtools 1.24, htslib 1.24 | BAM processing | MIT | Verified (conda metadata) |
@@ -104,7 +104,7 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Ensembl GRCh37 REST (overlap) | Protein-coding gene density per chromosome for the nucleus check (in CI) | EMBL-EBI Terms of Use | To verify |
 | Deep DNAshape processed data (Zenodo 10403307) | CI report only: agreement of the predictions with the authors' published data (not shipped) | CC BY 4.0 | Verified |
 | Psi4 S22 database (Jurečka et al. 2006 geometries; Marshall et al. 2011 CCSD(T)/CBS energies) | CI benchmark of the interaction energies (not shipped) | LGPL-3.0 (Psi4); published data | Verified |
-| gargammel 1.1.4 deamSim | CI check of the ancient-damage formulas (also in the Linux engines pack) | GPL-3.0-only | Verified (conda metadata) |
+| gargammel 1.1.4 (bioconda) and 1.1.5 (source) deamSim | CI check of the ancient-damage formulas | GPL-3.0-only | Verified |
 | PharmCAT 3.4.0 | Independent cross-check of the pharmacogenomic calls in CI (not shipped) | MPL-2.0 | Verified |
 
 ## Compute pack note
