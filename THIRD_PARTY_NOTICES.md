@@ -106,6 +106,11 @@ Please cite the underlying engines, not just Athanor, when results contribute to
 | Psi4 S22 database (Jurečka et al. 2006 geometries; Marshall et al. 2011 CCSD(T)/CBS energies) | CI benchmark of the interaction energies (not shipped) | LGPL-3.0 (Psi4); published data | Verified |
 | gargammel 1.1.4 (bioconda) and 1.1.5 (source) deamSim | CI check of the ancient-damage formulas | GPL-3.0-only | Verified |
 | PharmCAT 3.4.0 | Independent cross-check of the pharmacogenomic calls in CI (not shipped) | MPL-2.0 | Verified |
+| ENA (European Nucleotide Archive) BAMs of PRJEB11450 (Mathieson et al., Nature 528, 499, 2015) | Deep Time CI check: a few 1240K-capture individuals are read and their calls compared with the published ones; downloaded at test time, never redistributed | ENA data are freely available; cited | Verified source |
+| Allen Ancient DNA Resource v66.p1 (1240K genotypes and annotations) | Deep Time CI check: the published genotypes, molecular sex and first-base damage rates of those individuals, read one row at a time by range request; never redistributed | CC BY 4.0 | Verified |
+| MPI EVA archaic-genome alignments, call sets and filter beds (Prüfer et al., Science 358, 655, 2017) | Deep Time CI check: a region of a high-coverage Neanderthal is read remotely and compared with the study's own calls; never redistributed | Freely available for research; cited | Verified source |
+| Ensembl GRCh37 chromosome FASTA | Deep Time CI check: the reference the deamination profiles are measured against (in CI; not shipped) | EMBL-EBI Terms of Use | To verify |
+| pysam | Reading BAM files and reference FASTA in the Linux engines pack | MIT | Verified |
 
 ## Compute pack note
 

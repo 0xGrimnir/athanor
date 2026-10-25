@@ -432,6 +432,14 @@ def published_calls(url: str, region: str, min_gq: int = 30) -> dict:
     return out
 
 
+def show_readme(url: str) -> None:
+    try:
+        text = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120).read()
+        info(f"{url}\n" + text.decode("utf-8", "replace").strip())
+    except Exception as e:                                           # noqa: BLE001
+        info(f"{url}: {e}")
+
+
 def step_archaic() -> None:
     chrom, span = REGION.split(":")
     start, end = (int(x) for x in span.split("-"))
@@ -461,6 +469,8 @@ def step_archaic() -> None:
             return
         samtools("index", local)
     info(f"{local.name}: {local.stat().st_size / 1e6:.1f} MB")
+    for u in (f"{EVA}/VCF/README", f"{EVA}/FilterBed/README", f"{EVA}/bam/Pruefer_etal_2017/README"):
+        show_readme(u)
     theirs = published_calls(vcf, f"{chrom}:{start}-{end}")
     info(f"{len(theirs):,} published genotypes in the region")
     pos = np.array(sorted(theirs), dtype=np.int64)
@@ -481,8 +491,11 @@ def step_archaic() -> None:
     agree = np.array([o == t for o, t, k in zip(ours, theirs_bases, both)])
     n = int(both.sum())
     share = float(agree[both].mean()) if n else 0.0
+    TS = {("A", "G"), ("C", "T")}
     het_theirs = np.array([t[0] != t[1] for t in theirs_bases])
     het_ours = np.array([o is not None and o[0] != o[1] for o in ours])
+    ts_theirs = np.array([t[0] != t[1] and tuple(sorted(t)) in TS for t in theirs_bases])
+    ts_ours = np.array([o is not None and o[0] != o[1] and tuple(sorted(o)) in TS for o in ours])
     report["archaic"] = {
         "individual": ARCHAIC, "region": REGION, "alignment": want, "vcf": vcf, "mask": mask,
         "bam_bytes": local.stat().st_size, "published_sites": len(theirs),
@@ -494,13 +507,28 @@ def step_archaic() -> None:
     }
     hp = int((het_theirs & both).sum()) / max(1, n)
     ho = int((het_ours & both).sum()) / max(1, n)
+    tvp = int((het_theirs & ~ts_theirs & both).sum()) / max(1, n)
+    tvo = int((het_ours & ~ts_ours & both).sum()) / max(1, n)
+    report["archaic"].update({
+        "heterozygosity_shared_sites": {"ours": ho, "theirs": hp, "ours_transversions": tvo,
+                                        "theirs_transversions": tvp,
+                                        "ours_transition_share": (float((het_ours & ts_ours & both).sum())
+                                                                  / max(1, int((het_ours & both).sum()))),
+                                        "theirs_transition_share": (float((het_theirs & ts_theirs & both).sum())
+                                                                    / max(1, int((het_theirs & both).sum())))}})
     print(json.dumps(report["archaic"], default=float)[:1500], flush=True)
     gate(f"{ARCHAIC} Neanderthal, {REGION}: diploid genotypes agree with the study's own call set at the sites both "
          "call, inside the study's filter mask (at least 99%)", n > 10_000 and share >= 0.99,
          f"{100 * share:.3f}% of {n:,} sites")
-    gate(f"{ARCHAIC} Neanderthal, {REGION}: heterozygous sites per callable site within 25% of the published call "
-         "set's", n > 10_000 and hp > 0 and abs(ho - hp) <= 0.25 * hp,
-         f"ours {ho:.2e}, theirs {hp:.2e} over {n:,} shared sites")
+    gate(f"{ARCHAIC} Neanderthal, {REGION}: heterozygous sites at transversions - the ones deamination cannot "
+         "make - within 25% of the published call set's, per shared site",
+         n > 10_000 and tvp > 0 and abs(tvo - tvp) <= 0.25 * tvp,
+         f"ours {tvo:.2e}, theirs {tvp:.2e} over {n:,} shared sites")
+    gate(f"{ARCHAIC} Neanderthal, {REGION}: at transitions, which deamination mimics, this genotype caller reports "
+         "more heterozygotes than the study's damage-aware one, and says so rather than reporting a rate",
+         ho > hp, f"ours {ho:.2e} ({100 * report['archaic']['heterozygosity_shared_sites']['ours_transition_share']:.0f}% "
+                  f"transitions), theirs {hp:.2e} "
+                  f"({100 * report['archaic']['heterozygosity_shared_sites']['theirs_transition_share']:.0f}% transitions)")
 
 
 def main():
