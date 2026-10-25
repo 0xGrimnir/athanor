@@ -358,11 +358,10 @@ def _deeptime_methods() -> dict:
 def _deeptime(method):
     def run(p):
         try:
-            fn = _deeptime_methods()[method]
-        except ImportError as e:
-            raise RuntimeError("Deep Time needs the Linux engines pack (pysam); install or start it from the "
-                               f"Linux engines button ({e})") from e
-        return fn(p)
+            return _deeptime_methods()[method](p)
+        except ImportError as e:            # pysam lives in the Linux engines pack, not in the Windows core
+            raise RuntimeError("Deep Time runs in the Linux engines pack; install or start it from the Linux "
+                               f"engines button ({e})") from e
     return run
 
 

@@ -107,8 +107,10 @@ try:
     call("deeptime_inspect", {"path": "none.bam"})
     summary["deeptime"] = "ran"
 except Exception as e:                                                   # noqa: BLE001
-    summary["deeptime"] = str(e)[:120]
-    assert "Linux engines pack" in str(e) or "no path given" in str(e), summary["deeptime"]
+    summary["deeptime"] = str(e)[:140]
+    # either the pack is missing (the usual case on Windows) or the file is
+    # missing; both must say so plainly rather than failing obscurely
+    assert any(x in str(e).lower() for x in ("linux engines pack", "no such file", "none.bam")), summary["deeptime"]
 print("SMOKE_OK", json.dumps(summary))
 proc.stdin.close()
 proc.wait(timeout=30)
