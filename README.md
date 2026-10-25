@@ -22,7 +22,7 @@ An *athanor* was the alchemist's furnace, built for slow, controlled transformat
 | Module | What it does | Engines | State |
 |---|---|---|---|
 | **Molecule** | Build or import molecules; optimize geometry; partial charges, dipoles, harmonic frequencies, IR spectra, animated normal modes | Tiered: MMFF94 (RDKit) → GFN2-xTB (xtb) → DFT/HF (Psi4); optional DFT on NVIDIA GPUs (GPU4PySCF) | Working (0.1–0.2) |
-| **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel (Linux engines pack) | Working (0.3–0.4) |
+| **Ancient DNA Lab** | Reconstruct mitogenomes from your own ancient reads (FASTQ or BAM, processed locally): circular mapping, duplicate removal, iterative indel-aware consensus with per-base posteriors, authentication by terminal damage and fragment length, human contamination by competitive mapping. Simulated mode: damaged reads from a real mitogenome, every base scored against the known truth | AdapterRemoval, BWA aln, samtools, mapDamage2, minimap2, gargammel 1.1.5 (Linux engines pack) | Working (0.3–0.4) |
 | **Personal Genome** | Load an AncestryDNA, 23andMe, MyHeritage, FamilyTreeDNA or Living DNA raw file (or a VCF) locally and get evidence-graded reports: ancient ancestry (hunter-gatherer, farmer, steppe), Neanderthal and Denisovan, haplogroups and the ancient people who shared them, continental and regional ancestry, chromosome painting, Indigenous American ancestry, runs of homozygosity, X-chromosome ancestry, appearance, food and drink, fitness, and medicines (CPIC pharmacogenomics for 19 genes); relatives and opt-in health to come | AADR (ancient and present-day genomes), PhyloTree, YFull; trait variants checked against Ensembl, 1000 Genomes and the GWAS Catalog; CPIC, checked against PharmCAT | Working (0.5–0.7) |
 | **DNA Structure** | Any sequence as a 3D helix, atom by atom, in B, A or Z form, from parameters measured on crystal structures, with the backbone closed by OpenMM. Molecular dynamics (AMBER OL15, on the GPU when available). Base-pair, step and groove parameters for any duplex. Shape in solution predicted from sequence (Deep DNAshape). Pairing and stacking energies (GFN2-xTB, DFT). Melting. Ancient damage on a molecule. A zoom from helix to nucleosome, protein–DNA complexes, chromatin fibre and a whole nucleus. Personal Genome variants shown in the helix and the nucleus | 3DNA's methods (checked against 3DNA 2.4.9); OpenMM; Deep DNAshape; xtb, Psi4; PDB, Dip-C | Working (0.8–0.9) |
 | **Deep Time** | Ancient nuclear genomes, traits from ancient genomes, ancient proteins, DNA decay, radiocarbon calibration | minimap2, bwa-mem2, samtools; IntCal20 | Planned |
@@ -64,7 +64,7 @@ Every check runs in CI on each change (`tools/dnadata/`, `.github/workflows/dna*
 | In a built helix | G–C pairs bind more strongly than A–T (−30.8 vs −14.2 kcal/mol, GFN2-xTB; DFT −32.1 and −14.8) |
 | Melting temperature vs Owczarzy et al. 2004 (92 duplexes × 5 Na⁺ concentrations) | Mean error 1.66 °C; identical to Biopython's Tm_NN |
 | Deep DNAshape port vs the original TensorFlow model | Same predictions to within 1e-6 for all 18 features, at 2, 4 and 7 bp of flank. Its minor-groove width correlates with 3DNA's on the B-DNA crystals at r = 0.63 (298 steps); it predicts free DNA in solution, measured differently |
-| Ancient damage vs gargammel's deamSim | C→T at the 5′ end and G→A at the 3′ end, each of the first 25 positions, within 3 standard errors: the Briggs (2007) model against gargammel 1.1.5's corrected `-damage` (built from source), and gargammel 1.1.4's model (which the Ancient DNA Lab runs) against 1.1.4 and 1.1.5's `-damagelegacy` |
+| Ancient damage vs gargammel's deamSim | C→T at the 5′ end and G→A at the 3′ end, each of the first 25 positions, within 3 standard errors: the Briggs (2007) model against gargammel 1.1.5's corrected `-damage` (built from source), and gargammel 1.1.4's model against 1.1.4 and 1.1.5's `-damagelegacy` |
 
 **Scales.**
 
@@ -83,10 +83,10 @@ Woolly mammoth mtDNA (NC_007596.2) simulated at 10× with Briggs damage (ν 0.03
 
 | Check | Result |
 |---|---|
-| Damage recovery (mapDamage2) | δd 0.0089–0.0109 vs 0.01; λ 0.377–0.389 vs 0.4 (δs differs by parameterisation; reported, not used) |
-| Reference bias (African elephant) | mapped reads 2,795 → 3,763; divergence estimate 3.99% → 4.63% (true 4.76%) |
-| Consensus vs truth | 99.951% correct against either elephant reference |
-| Posterior calibration | expected calibration error 0.0004; residual overconfidence at single-read sites is reported |
+| Damage recovery (mapDamage2) | δd 0.0112–0.0136 vs 0.01; λ 0.428–0.452 vs 0.4; δs 0.324–0.344 vs 0.3 |
+| Reference bias (African elephant) | mapped reads 2,804 → 3,658; divergence estimate 3.92% → 4.64% (true 4.76%) |
+| Consensus vs truth | 99.952–99.970% correct against either elephant reference, 100% against the sample's own |
+| Posterior calibration | expected calibration error 0.0002–0.0005; residual overconfidence at single-read sites is reported |
 
 These run as gated checks in CI on every pack build (`compute/ci_adna.py`).
 

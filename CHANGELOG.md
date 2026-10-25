@@ -2,6 +2,12 @@
 
 All notable changes to Athanor are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- **Ancient DNA Lab: the simulator's damage model is now the one in the literature.** The Linux engines pack builds gargammel 1.1.5 from source (commit 4fc10b7) instead of installing 1.1.4 from bioconda. Version 1.1.4's deamSim gave every 5′ end a single-stranded overhang, where Briggs et al. (2007) give one to half of the ends, so it put about twice the deamination at the first base. All three damage parameters are now recovered from the simulated reads: δd 0.0112–0.0136 against 0.01, λ 0.428–0.452 against 0.4, and δs 0.324–0.344 against 0.3, where before δs came out near 0.55. δs is now a gated check rather than a reported mismatch, and ART's indels, which 1.1.4 dropped, are applied to the reads.
+- Simulations in CI are seeded, so a pack build's demo run repeats exactly.
+
 ## [0.9.0] - 2026-10-24
 
 ### Added
