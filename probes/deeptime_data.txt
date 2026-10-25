@@ -1,0 +1,72 @@
+#### AADR files
+geno  200 size=7117276654 ranges=bytes type=application/octet-stream 
+ind   200 size=1017460 ranges=bytes type=application/octet-stream 
+snp   200 size=77679819 ranges=bytes type=application/octet-stream 
+anno  200 size=13443726 ranges=bytes type=application/octet-stream 
+
+#### range request on the .geno (first 64 bytes, then an interior slice)
+status 206 bytes 64 header b'TGENO   23089 1233013 5b63c3d2 5ccb0c38'
+interior status 206 bytes 320 first bytes 20a0082388aa8e2e0ac0aa8aeaaaaa2a
+
+#### small 1240K BAMs on ENA (PRJEB11450)
+246 runs; the ten smallest:
+  I0434         0.4 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136557/I0434.MT.bam  3b1204eeb58913c7d5ddd07b7dc4aa76
+  I0360         0.4 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136564/I0360.MT.bam  623facf184684a033ef4b41834beb665
+  I0727         0.5 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136496/I0727.MT.bam  fc81e8d1cbfc8d711b066cb430d33dc1
+  I1542         0.5 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136526/I1542.MT.bam  2ea61524f5d1c9a2eda9a1c5527c26f5
+  I0421         0.6 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136571/I0421.MT.bam  2ed80b5e82f5b892a840bec6c1842da4
+  I0551         0.7 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136529/I0551.MT.bam  bafa84893fc7522d6851ad7647e7c5b4
+  I0726         0.7 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136495/I0726.MT.bam  9619999c8da2817c45db97db8912b3d0
+  I1544         0.8 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136527/I1544.MT.bam  c097576790fc49207dcd961731c952e3
+  I0246         0.9 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136552/I0246.MT.bam  cbbf88365b2fe388c8ab1ccb3de5c760
+  I1302         1.0 MB  ftp.sra.ebi.ac.uk/vol1/run/ERR113/ERR1136544/I1302.MT.bam  6244beea878f1385eddb11149b65a0bd
+
+#### downloading the smallest and reading it
+downloaded /tmp/dtprobe/I0434.bam 411667 bytes
+samtools view -> 0 | @HD	VN:1.3	SO:coordinate ; @SQ	SN:1	LN:249250621 ; @SQ	SN:2	LN:243199373 ; @SQ	SN:3	LN:198022430 ; @SQ	SN:4	LN:191154276 ; @SQ	SN:5	LN:180915260 
+samtools index -> 0 |  
+samtools idxstats -> 0 | 1	249250621	1340	0 ; 2	243199373	94	0 ; 3	198022430	67	0 ; 4	191154276	29	0 
+samtools flagstat -> 0 | 10759 + 0 in total (QC-passed reads + QC-failed reads) ; 10759 + 0 primary ; 0 + 0 secondary ; 0 + 0 supplementary ; 0 + 0 duplicates ; 0 + 0 primary duplicates 
+reads: 10759
+
+#### AADR annotation columns for these individuals
+columns: [(0, 'Genetic ID (suffices: ".DG" is a high coverage shotgun genom'), (1, 'Persistent Genetic ID'), (23, 'Mean coverage on 1.15M autosomal targets for full bam (if no'), (24, 'Mean coverage on non-targeted autosomal SNPs for full bam - '), (26, 'SNPs hit on autosomal targets (Computed using easystats on 1'), (30, 'Molecular Sex'), (34, 'Y haplogroup in terminal mutation notation automatically cal'), (38, 'mtDNA haplogroup if >2x or published'), (40, 'Damage rate in first nucleotide on sequences overlapping 124'), (42, 'ANGSD MOM 95% CI truncated at 0 (only if male and >=200 SNPs'), (44, '"Library type (minus=no.damage.correction, half=damage.retai'), (47, 'ASSESSMENT'), (48, '"ASSESSMENT WARNINGS: X contamination interval is listed if ')]
+  I0246.AG | 1155 | 0.18415941 | 0.00640311 | 180980 | M | R1 | C1 | .. | .. | "ds.half,ds.half,ds.half" | Pass | ..
+  I0360.AG | 1162 | 0.11091402 | 0.00796194 | 115268 | M | R-M198 | U5a1 | .. | .. | "ds.half,ds.half,ds.half" | Pass | "mtcontam=[0.933,0.971], hap
+  I0421.AG | 1171 | 0.20202774 | 0.00989806 | 197527 | F | n/a (female) | H3g | .. | n/a (female) | "ds.half,ds.half,ds.half" | Pass | ..
+  I0727.AG | 1210 | 0.19651429 | 0.012278 | 188497 | M | G-P15 | K1a2 | .. | "[0,0.005]" | "ds.half,ds.half,ds.half" | Pass | ..
+  I0434.AG | 4021 | 0.05981807 | 0.00251696 | 63632 | M | F | U4 | 0.107 | .. | ds.half | Pass | ..
+  I0551.AG | 4041 | 0.10564999 | 0.01654741 | 105673 | M | G-PF3147 | U3a1 | 0.088 | .. | ds.half | Pass | ..
+  I1302.AG | 4233 | 0.0708163 | 0.00101572 | 73031 | M | G-PF3359 | J2b1a3 | 0.093 | n/a (<200 SNPs) | ds.half | Pass | ..
+  I1542.AG | 4301 | 0.0734166 | 0.00183485 | 78195 | M | R-V1636 | K1b1a | 0.157 | .. | ds.half | Pass | ..
+  I1544.AG | 4302 | 0.11407835 | 0.00185074 | 120123 | M | R-YP1368 | J1c3j | 0.168 | .. | ds.half | Pass | ..
+  I0726.TW | 45045 | 0.78048024 | 0.06038125 | 689279 | F | n/a (female) | H | 0.106 | n/a (female) | "ds.half,ds.half,ds.half,ds. | Pass | ..
+  I0726.AG.TW | 45046 | 0.78048024 | 0.06038125 | 764796 | F | n/a (female) | H | 0.106 | n/a (female) | "ds.half,ds.half,ds.half,ds. | Pass | ..
+rows shown: 11 of 23089 annotation rows
+
+#### archaic genomes: remote region reads
+http://cdna.eva.mpg.de/neandertal/Vindija/bam/Pruefer_etal_2017/Altai_realigned/ -> ['chr1-reali.bam', 'chr2-reali.bam', 'chr3-reali.bam', 'chr4-reali.bam', 'chr5-reali.bam', 'chr6-reali.bam', 'chr7-reali.bam', 'chr8-reali.bam'] ...
+http://cdna.eva.mpg.de/neandertal/Vindija/bam/Pruefer_etal_2017/Vindija33.19/ -> ['Vi33.19.chr1.indel_realn.bam', 'Vi33.19.chr1.indel_realn.bam.bai', 'Vi33.19.chr2.indel_realn.bam', 'Vi33.19.chr2.indel_realn.bam.bai', 'Vi33.19.chr3.indel_realn.bam', 'Vi33.19.chr3.indel_realn.bam.bai', 'Vi33.19.chr4.indel_realn.bam', 'Vi33.19.chr4.indel_realn.bam.bai'] ...
+Altai -> 0 1271 records
+    21	30000109	.	C	.	193	.	.	GT:DP:A:C:G:T:PP:GQ	0/0:53:0,0:21,32:0,0:0,0:2403,0,1969,1922,200,2118,2088,200,195,1939:195
+    21	30000110	.	T	.	191	.	.	GT:DP:A:C:G:T:PP:GQ	0/0:53:0,0:0,0:0,0:23,30:2154,1575,1726,0,1749,1881,201,1641,193,201:193
+    21	30000111	.	C	.	172	.	.	GT:DP:A:C:G:T:PP:GQ	0/0:51:1,0:17,32:0,0:1,0:2278,0,1839,1773,172,1969,1913,189,181,1787:172
+    21	30000112	.	C	.	175	.	.	GT:DP:A:C:G:T:PP:GQ	0/0:47:0,0:17,30:0,0:0,0:2174,0,1749,1713,182,1892,1871,181,177,1728:177
+Traceback (most recent call last):
+  File "/home/runner/work/athanor/athanor/tools/probes/deeptime_data.py", line 135, in <module>
+    r = subprocess.run(["bcftools", "view", "-H", "-r", "21:30000000-30002000", url], capture_output=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/micromamba/envs/probe/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/micromamba/envs/probe/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/micromamba/envs/probe/lib/python3.12/subprocess.py", line 2157, in _communicate
+    stderr = self._translate_newlines(stderr,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/micromamba/envs/probe/lib/python3.12/subprocess.py", line 1086, in _translate_newlines
+    data = data.decode(encoding, errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x83 in position 247: invalid start byte
+exit 1
