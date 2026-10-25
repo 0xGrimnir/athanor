@@ -1,0 +1,21 @@
+[INFO] fetched aadr.snp 77.7 MB in 1 s
+[INFO] fetched aadr.ind 1.0 MB in 0 s
+[INFO] fetched aadr.anno 13.4 MB in 0 s
+[INFO] AADR: 1,233,013 sites, 23,089 individuals, 23,089 annotation rows
+[INFO] 163 BAMs in PRJEB11450; smallest 5 MB
+[INFO] fetched I1530.bam 5.0 MB in 5 s
+Traceback (most recent call last):
+  File "/home/runner/work/athanor/athanor/tools/dtdata/deeptime_bench.py", line 449, in <module>
+    main()
+  File "/home/runner/work/athanor/athanor/tools/dtdata/deeptime_bench.py", line 439, in main
+    step_1240k(aadr)
+  File "/home/runner/work/athanor/athanor/tools/dtdata/deeptime_bench.py", line 287, in step_1240k
+    "coverage": aadr.field(gid, r"^mean coverage$"),
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/athanor/athanor/tools/dtdata/deeptime_bench.py", line 144, in field
+    i = self.column(pattern)
+        ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/athanor/athanor/tools/dtdata/deeptime_bench.py", line 138, in column
+    return next(i for i, h in enumerate(self.hdr) if re.search(name_pattern, h, re.I))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
