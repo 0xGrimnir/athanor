@@ -1932,14 +1932,14 @@ const DT_DETAIL = {
     drawDtDamage($("dtDamagePlot"), d);
   },
   deeptime_sex(el, c) {
-    const s = c.result;
+    const s = c.result, w = s.whole_chromosome_counts || {};
     el.innerHTML = kvTable([
-      ["Reads on the X", (s.reads_X || 0).toLocaleString()],
-      ["Reads on the Y", (s.reads_Y || 0).toLocaleString()],
-      ["Reads on the autosomes", (s.reads_autosomal || 0).toLocaleString()],
-      ["R<sub>y</sub> = Y / (X + Y)", s.r_y == null ? "—" : `${s.r_y.toFixed(4)} <small>(95% ${s.r_y_ci.map((x) => x.toFixed(4)).join("–")}; below 0.016 XX, above 0.077 XY)</small>`],
-      ["R<sub>x</sub> (X against the autosomes)", s.r_x == null ? "—" : `${s.r_x.toFixed(3)} <small>(95% ${s.r_x_ci.map((x) => x.toFixed(3)).join("–")}; about 1 with two X chromosomes, 0.5 with one)</small>`],
-    ]);
+      ["Observations at the panel's X positions", `${(s.reads_at_X_sites || 0).toLocaleString()} over ${(s.X_sites || 0).toLocaleString()} positions`],
+      ["Observations at its autosomal positions", `${(s.reads_at_autosomal_sites || 0).toLocaleString()} over ${(s.autosomal_sites || 0).toLocaleString()} positions`],
+      ["R<sub>x</sub> (X against the autosomes, at those positions)", s.r_x == null ? "—" : `${s.r_x.toFixed(3)} <small>(95% ${s.r_x_ci.map((x) => x.toFixed(3)).join("–")}; below 0.6 XY, above 0.8 XX)</small>`],
+      ["Reads on whole chromosomes (X / Y)", `${(w.reads_X || 0).toLocaleString()} / ${(w.reads_Y || 0).toLocaleString()}`],
+      ["R<sub>y</sub> = Y / (X + Y), whole chromosomes", w.r_y == null ? "—" : `${w.r_y.toFixed(4)} <small>(95% ${(w.r_y_ci || []).map((x) => x.toFixed(4)).join("–")}; shotgun thresholds: below 0.016 XX, above 0.077 XY)</small>`],
+    ]) + (s.fell_back ? `<p class="note">Called from the whole-chromosome counts: the panel's X positions had too little coverage.</p>` : "");
   },
 };
 

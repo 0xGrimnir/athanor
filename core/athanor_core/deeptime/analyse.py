@@ -19,7 +19,7 @@ from ..personal.rawfile import RawGenotypes
 from ..personal.refdata import RefData
 from . import calls as C
 from . import damage as D
-from .bam import Genome, length_summary
+from .bam import Genome, length_summary, sex_from_panel
 from .sites import pileup
 
 SOURCES = {
@@ -74,6 +74,7 @@ def genotype_panel(g: Genome, ref: RefData, mode: str = "pseudo_haploid", seed: 
     depth_sum = depth_n = 0
     acc = None
     stats = {"sites": int(len(p["pos"])), "sites_covered": 0, "sites_called": 0, "chromosomes": [], "method": ""}
+    depth_by_chrom, sites_by_chrom = {}, {}
     chroms = [c for c in range(1, 24) if (p["chrom"] == c).any()]
     for k, c in enumerate(chroms):
         idx = np.nonzero(p["chrom"] == c)[0]
@@ -99,12 +100,15 @@ def genotype_panel(g: Genome, ref: RefData, mode: str = "pseudo_haploid", seed: 
         if r.get("mean_depth_at_covered"):
             depth_sum += r["mean_depth_at_covered"] * covered
             depth_n += covered
+        observations = int(len(pu.filtered(min_qual=min_qual, trim=trim).site))
+        depth_by_chrom[name] = observations
+        sites_by_chrom[name] = int(len(idx))
         stats["chromosomes"].append({"chromosome": name, "sites": int(len(idx)), "covered": covered,
-                                     "called": int((r["dosage"] >= 0).sum())})
+                                     "called": int((r["dosage"] >= 0).sum()), "observations": observations})
         if c <= 22:
             acc = D.accumulate_panel(pu, p["ref"][idx], p["alt"][idx], acc, min_qual=min_qual)
     stats["mean_depth_at_covered_sites"] = (depth_sum / depth_n) if depth_n else 0.0
-    return {"dosage": dos, "stats": stats,
+    return {"dosage": dos, "stats": stats, "depth_by_chrom": depth_by_chrom, "sites_by_chrom": sites_by_chrom,
             "damage": D.finish_panel(acc) if acc else {"terminal_deamination": None, "method": D.PANEL_METHOD}}
 
 
@@ -147,6 +151,13 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
         step("reading the panel's positions", 0.1)
         gt = genotype_panel(g, ref, mode=mode, seed=seed, min_qual=min_qual, trim=trim,
                             transversions_only=transversions_only, min_depth=min_depth, on_step=on_step)
+        panel_sex = sex_from_panel(gt["depth_by_chrom"], gt["sites_by_chrom"])
+        sex = {**panel_sex, "whole_chromosome_counts": sex} if panel_sex.get("call") else \
+              {**panel_sex, "whole_chromosome_counts": sex,
+               "call": sex.get("call"), "fell_back": sex.get("call") is not None,
+               "method": panel_sex.get("method", "") + (
+                   " With too little coverage at the panel's X positions, the call falls back to the read counts "
+                   "over whole chromosomes (R_y), which hold for shotgun sequencing." if sex.get("call") else "")}
         if reference_fasta:
             step("deamination against the reference", 0.58)
             try:
@@ -212,9 +223,10 @@ def analyse(path: str, ref: RefData | None = None, mode: str = "pseudo_haploid",
                          gt["damage"]["method"], [SOURCES["briggs2007"], SOURCES["skoglund2014"]], ref,
                          ok=dmg is not None),
              pdeep._card("deeptime_sex", "Genetic sex", "The sample", "A",
-                         (f"{sex['call']} (R_y = {sex['r_y']:.3f}, interval {sex['r_y_ci'][0]:.3f}–"
-                          f"{sex['r_y_ci'][1]:.3f})" if sex.get("call") else
-                          f"not called: {sex.get('reason')}"),
+                         ((f"{sex['call']} (R_x = {sex['r_x']:.2f}, interval {sex['r_x_ci'][0]:.2f}–"
+                           f"{sex['r_x_ci'][1]:.2f}, at the panel's positions)" if sex.get("r_x") is not None
+                           else f"{sex['call']} (from read counts over whole chromosomes)") if sex.get("call")
+                          else f"not called: {sex.get('reason')}"),
                          sex, ["Genetic sex here means which sex chromosomes the reads come from.",
                                "Very low coverage, or contamination by DNA of the other sex, widens the interval "
                                "until neither range fits."],

@@ -7,7 +7,8 @@ pysam = pytest.importorskip("pysam")
 
 from athanor_core.deeptime import calls as C                      # noqa: E402
 from athanor_core.deeptime import damage as D                     # noqa: E402
-from athanor_core.deeptime.bam import GRCH37, Genome, length_summary, plain, wilson   # noqa: E402
+from athanor_core.deeptime.bam import (GRCH37, Genome, length_summary, plain,    # noqa: E402
+                                       sex_from_panel, wilson)
 from athanor_core.deeptime.sites import pileup    # noqa: E402
 
 BASES = "ACGT"
@@ -218,6 +219,27 @@ def test_heterozygosity_recovers_the_simulated_rate(ancient):
     # damage turns homozygous C/G sites into apparent C/T and G/A heterozygotes
     assert r["transitions"] > 1.3 * int((het & transition).sum())
     assert r["heterozygous_sites"] > int(het.sum())
+
+
+def test_sex_at_the_panel_positions_reads_capture_and_shotgun_alike():
+    """R_x at a fixed set of positions: one X copy gives half the depth of an
+    autosome, two give the same. The panel is the capture's own target, so the
+    same thresholds hold whether the reads were captured or shotgun."""
+    sites = {str(c): 1000 for c in range(1, 23)} | {"X": 1000}
+    male = {str(c): 2000 for c in range(1, 23)} | {"X": 1000}
+    female = {str(c): 2000 for c in range(1, 23)} | {"X": 2000}
+    assert sex_from_panel(male, sites)["call"] == "XY"
+    assert sex_from_panel(female, sites)["call"] == "XX"
+    assert abs(sex_from_panel(male, sites)["r_x"] - 0.5) < 0.01
+    assert abs(sex_from_panel(female, sites)["r_x"] - 1.0) < 0.01
+    # a capture experiment with ten times the reads on every target reads the same
+    captured = {k: 10 * v for k, v in male.items()}
+    assert sex_from_panel(captured, sites)["call"] == "XY"
+    # in between, nothing is called
+    between = {str(c): 2000 for c in range(1, 23)} | {"X": 1400}
+    r = sex_from_panel(between, sites)
+    assert r["call"] is None and "does not sit wholly" in r["reason"]
+    assert sex_from_panel({"1": 2000}, {"1": 1000, "X": 1000})["call"] is None
 
 
 def test_sex_from_the_sex_chromosome_read_counts(ancient):

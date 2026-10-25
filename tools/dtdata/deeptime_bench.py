@@ -36,7 +36,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "core"))
 from athanor_core.deeptime import calls as C           # noqa: E402
-from athanor_core.deeptime.bam import Genome           # noqa: E402
+from athanor_core.deeptime.bam import Genome, sex_from_panel   # noqa: E402
 from athanor_core.deeptime import damage as D
 from athanor_core.deeptime.sites import pileup   # noqa: E402
 
@@ -210,6 +210,7 @@ def genotype_bam(path: Path, aadr: AADRRemote, mode: str = "pseudo_haploid", tri
     dos = np.full(aadr.nsnp, -1, dtype=np.int8)
     acc = None
     covered = 0
+    depth_by_chrom, sites_by_chrom = {}, {}
     with Genome(str(path), min_mapq=min_mapq) as g:
         build = g.build
         sex = g.sex()
@@ -229,6 +230,8 @@ def genotype_bam(path: Path, aadr: AADRRemote, mode: str = "pseudo_haploid", tri
                 r = C.pseudo_haploid(pu, aadr.a1[idx], aadr.a2[idx], seed=100 + c, min_qual=min_qual, trim=trim)
             dos[idx] = r["dosage"]
             covered += int(r.get("sites_covered", 0))
+            depth_by_chrom[name] = int(len(pu.filtered(min_qual=min_qual, trim=trim).site))
+            sites_by_chrom[name] = int(len(idx))
             if c <= 22:
                 acc = D.accumulate_panel(pu, aadr.a1[idx], aadr.a2[idx], acc, min_qual=min_qual)
         panel_damage = D.finish_panel(acc) if acc else {}
@@ -240,7 +243,8 @@ def genotype_bam(path: Path, aadr: AADRRemote, mode: str = "pseudo_haploid", tri
             except Exception as e:                                       # noqa: BLE001
                 info(f"damage against the reference failed: {e}")
     return {"dosage": dos, "sites_covered": covered, "sites_called": int((dos >= 0).sum()),
-            "build": build, "sex": sex, "damage": panel_damage, "damage_reference": reference_damage}
+            "build": build, "sex": sex, "sex_panel": sex_from_panel(depth_by_chrom, sites_by_chrom),
+            "damage": panel_damage, "damage_reference": reference_damage}
 
 
 def _dsummary(d: dict | None) -> dict | None:
@@ -281,29 +285,33 @@ def compare_dosage(mine: np.ndarray, theirs: np.ndarray) -> dict:
             "theirs_only": int(((mine < 0) & (theirs >= 0)).sum())}
 
 
-CHR21_FASTA = ("https://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/"
-               "Homo_sapiens.GRCh37.dna.chromosome.21.fa.gz")
+ENSEMBL_FASTA = ("https://ftp.ensembl.org/pub/grch37/current/fasta/homo_sapiens/dna/"
+                 "Homo_sapiens.GRCh37.dna.chromosome.{c}.fa.gz")
+DAMAGE_CHROMS = ["19", "20", "21", "22"]
 
 
-def chr21_reference() -> str | None:
-    """GRCh37 chromosome 21, so deamination can be measured against the
-    reference the reads were mapped to rather than at panel positions."""
-    gz = WORK / "chr21.fa.gz"
-    fa = WORK / "chr21.fa"
+def small_reference(chroms: list[str]) -> str | None:
+    """The smallest GRCh37 chromosomes, so deamination can be measured against
+    the reference the reads were mapped to rather than at panel positions."""
+    fa = WORK / "ref.fa"
     try:
         if not fa.exists():
-            fetch(CHR21_FASTA, gz)
-            with gzip.open(gz, "rb") as fh, open(fa, "wb") as out:
-                while True:
-                    b = fh.read(1 << 22)
-                    if not b:
-                        break
-                    out.write(b)
-        if not (WORK / "chr21.fa.fai").exists():
+            with open(fa, "wb") as out:
+                for c in chroms:
+                    gz = WORK / f"chr{c}.fa.gz"
+                    fetch(ENSEMBL_FASTA.format(c=c), gz)
+                    with gzip.open(gz, "rb") as fh:
+                        while True:
+                            b = fh.read(1 << 22)
+                            if not b:
+                                break
+                            out.write(b)
+                    gz.unlink(missing_ok=True)
+        if not (WORK / "ref.fa.fai").exists():
             samtools("faidx", fa)
         return str(fa)
     except Exception as e:                                           # noqa: BLE001
-        info(f"chromosome 21 reference unavailable ({e}); damage will come from panel positions only")
+        info(f"the reference chromosomes are unavailable ({e}); damage will come from panel positions only")
         return None
 
 
@@ -324,13 +332,13 @@ def step_1240k(aadr: AADRRemote) -> None:
             break
     chosen = chosen[:max(N_IND, len(seen_sex))]
     info(f"individuals: {', '.join(f'{g} ({x})' for _, g, x in chosen)}")
-    reference = chr21_reference()
+    reference = small_reference(DAMAGE_CHROMS)
     done, rows = 0, []
     for r, gid, _sex in chosen:
         bam = fetch(r["url"], WORK / f"{r['alias']}.bam", r["md5"] or None)
         if not (bam.with_suffix(".bam.bai")).exists():
             samtools("index", bam)
-        got = genotype_bam(bam, aadr, reference=reference, damage_chroms=["21"] if reference else None)
+        got = genotype_bam(bam, aadr, reference=reference, damage_chroms=DAMAGE_CHROMS if reference else None)
         theirs = aadr.dosage(gid)
         cmp = compare_dosage(got["dosage"], theirs)
         row = {"individual": gid, "run": r["run"], "bytes": r["bytes"], "build": got["build"],
@@ -341,7 +349,10 @@ def step_1240k(aadr: AADRRemote) -> None:
                              "y_haplogroup": aadr.field(gid, r"^y haplogroup in terminal"),
                              "mt_haplogroup": aadr.field(gid, r"^mtdna haplogroup")},
                "ours": {"sites_called": got["sites_called"], "sites_covered": got["sites_covered"],
-                        "sex": got["sex"]["call"], "r_y": got["sex"].get("r_y"),
+                        "sex": got["sex_panel"]["call"] or got["sex"]["call"],
+                        "r_x_at_panel_sites": got["sex_panel"].get("r_x"),
+                        "sex_from_panel": got["sex_panel"]["call"], "sex_from_read_counts": got["sex"]["call"],
+                        "r_y_whole_chromosomes": got["sex"].get("r_y"),
                         "damage_at_panel_sites": _dsummary(got["damage"]),
                         "damage_against_reference": _dsummary(got["damage_reference"])},
                "genotypes": cmp}
@@ -362,10 +373,12 @@ def step_1240k(aadr: AADRRemote) -> None:
          worst >= 0.97,
          "; ".join(f"{r['individual']} {100 * (r['genotypes'].get('agree_excluding_published_heterozygotes') or 0):.2f}% "
                    f"of {r['genotypes']['shared']:,}" for r in rows))
-    sexes = [(r["individual"], r["ours"]["sex"], (r["published"]["sex"] or "?")[:1]) for r in rows]
-    ok = all(mine == {"F": "XX", "M": "XY"}.get(theirs, "?") for _, mine, theirs in sexes)
-    gate("Genetic sex matches the sex published for each individual", ok,
-         "; ".join(f"{i}: {mine} vs {t}" for i, mine, t in sexes))
+    sexes = [(r["individual"], r["ours"]["sex"], (r["published"]["sex"] or "?")[:1],
+              r["ours"].get("r_x_at_panel_sites")) for r in rows]
+    ok = all(mine == {"F": "XX", "M": "XY"}.get(theirs, "?") for _, mine, theirs, _ in sexes)
+    gate("Genetic sex, from the depth at the panel's X positions against its autosomal ones, matches the sex "
+         "published for each individual", ok,
+         "; ".join(f"{i}: {mine} (R_x {0 if x is None else x:.2f}) vs {t}" for i, mine, t, x in sexes))
     dmg = []
     for r in rows:
         src = r["ours"]["damage_against_reference"] or r["ours"]["damage_at_panel_sites"] or {}

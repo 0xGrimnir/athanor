@@ -118,7 +118,12 @@ class Genome:
 
     def sex(self) -> dict:
         """Genetic sex from the numbers of reads on X and Y (R_y) and from the
-        X-to-autosome coverage ratio (R_x)."""
+        X-to-autosome coverage ratio (R_x), both from the index.
+
+        These counts are whole chromosomes, so they answer only for shotgun
+        sequencing. Capture data has as many reads on a chromosome as the
+        experiment put targets there, and both ratios shift; ``sex_from_panel``
+        uses the panel's own positions instead and holds either way."""
         c = self.counts()
         nx, ny = c.get("X", 0), c.get("Y", 0)
         auto = {k: c.get(k, 0) for k in AUTOSOMES}
@@ -144,7 +149,10 @@ class Genome:
                                            f"{RY_FEMALE} (XX) and {RY_MALE} (XY)",
                 "method": f"R_y = n_Y/(n_X+n_Y) (Skoglund et al. 2013): below {RY_FEMALE} XX, above {RY_MALE} XY; "
                           "R_x is the X-to-autosome coverage ratio (Mittnik et al. 2016), about 1 with two X "
-                          "chromosomes and 0.5 with one. Reads counted from the index at mapping quality 0 and above."}
+                          "chromosomes and 0.5 with one. Reads counted from the index at mapping quality 0 and "
+                          "above, over whole chromosomes, so the thresholds hold for shotgun sequencing only.",
+                "basis": "whole-chromosome read counts"}
+
 
     def lengths_and_damage_pass(self, chroms: list[str] | None = None, max_reads: int = 2_000_000,
                                 max_length: int = 200) -> dict:
@@ -184,6 +192,43 @@ class Genome:
                 "template_length_histogram": tlen.tolist() if tlen.sum() else None,
                 "mapq_histogram": mapqs.tolist(), "max_length_binned": max_length,
                 "chromosomes": chroms, "truncated": n >= max_reads}
+
+
+# Mittnik et al. 2016: the 95% interval of R_x decides, and nothing is called when it spans both
+RX_MALE, RX_FEMALE = 0.6, 0.8
+
+
+def sex_from_panel(depth_by_chrom: dict, sites_by_chrom: dict) -> dict:
+    """Genetic sex from the depth at the reference panel's own positions.
+
+    The panel is a fixed set of positions, so the comparison is between the
+    same targets on the X and on each autosome whether the reads come from
+    shotgun sequencing or from a capture experiment aimed at those very
+    positions. R_x is the X's depth per site against each autosome's, averaged
+    over the autosomes (Mittnik et al., Sci. Rep. 6, 31326, 2016): about 1 with
+    two X chromosomes, about 0.5 with one."""
+    autos = [c for c in AUTOSOMES if sites_by_chrom.get(c) and depth_by_chrom.get(c)]
+    x_sites, x_depth = sites_by_chrom.get("X", 0), depth_by_chrom.get("X", 0)
+    res = {"reads_at_X_sites": int(x_depth), "X_sites": int(x_sites),
+           "reads_at_autosomal_sites": int(sum(depth_by_chrom.get(c, 0) for c in autos)),
+           "autosomal_sites": int(sum(sites_by_chrom.get(c, 0) for c in autos)),
+           "basis": "depth at the reference panel's positions"}
+    if not autos or x_sites < 100 or x_depth < 50:
+        return {**res, "r_x": None, "call": None,
+                "reason": f"too little coverage at the panel's X positions ({int(x_depth)} observations)"}
+    per_x = x_depth / x_sites
+    ratios = [per_x / (depth_by_chrom[c] / sites_by_chrom[c]) for c in autos if depth_by_chrom[c] > 0]
+    rx = float(np.mean(ratios))
+    se = float(np.std(ratios, ddof=1) / math.sqrt(len(ratios))) if len(ratios) > 1 else 0.0
+    lo, hi = rx - 1.96 * se, rx + 1.96 * se
+    call = "XX" if lo > RX_FEMALE else "XY" if hi < RX_MALE else None
+    return {**res, "r_x": rx, "r_x_ci": [lo, hi], "autosomes_used": len(ratios), "call": call,
+            "reason": None if call else f"R_x = {rx:.2f}, interval {lo:.2f}-{hi:.2f}, which does not sit wholly "
+                                        f"below {RX_MALE} (XY) or above {RX_FEMALE} (XX)",
+            "method": "R_x, the depth per panel position on the X against the same on each autosome, averaged over "
+                      f"the autosomes with a 95% interval (Mittnik et al. 2016): wholly below {RX_MALE} is XY, "
+                      f"wholly above {RX_FEMALE} is XX. Measured at the panel's positions, so capture data and "
+                      "shotgun data are read the same way."}
 
 
 def length_summary(hist: list[int] | np.ndarray, max_length: int = 200) -> dict:
