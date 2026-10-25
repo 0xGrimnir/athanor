@@ -1,0 +1,312 @@
+{
+ "aadr": {
+  "sites": 1233013,
+  "individuals": 23089
+ },
+ "individuals": [
+  {
+   "individual": "I1530.AG",
+   "run": "ERR1136472",
+   "bytes": 5033649,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "32930",
+    "coverage_1240k": "0.0299086",
+    "damage": "0.092",
+    "y_haplogroup": "R1",
+    "mt_haplogroup": "H3ao"
+   },
+   "ours": {
+    "sites_called": 33476,
+    "sites_covered": 33502,
+    "sex": "XY",
+    "r_y": 0.422680412371134,
+    "damage": {
+     "ct5": {
+      "terminal": 0.14285714285714285,
+      "background": 0.0,
+      "excess": 0.14285714285714285,
+      "observations_at_first_base": 7,
+      "profile": [
+       0.1429,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.0625,
+      "background": 0.005291005291005291,
+      "excess": 0.05720899470899471,
+      "observations_at_first_base": 16,
+      "profile": [
+       0.0625,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "terminal_deamination": 0.10003306878306878
+   },
+   "genotypes": {
+    "shared": 32595,
+    "agree": 0.9984660223960731,
+    "agree_excluding_published_heterozygotes": 0.9984660223960731,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 33476,
+    "theirs_called": 34050,
+    "mine_only": 881,
+    "theirs_only": 1455
+   }
+  },
+  {
+   "individual": "I1302.AG",
+   "run": "ERR1136457",
+   "bytes": 13994231,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "73031",
+    "coverage_1240k": "0.0708163",
+    "damage": "0.093",
+    "y_haplogroup": "G-PF3359",
+    "mt_haplogroup": "J2b1a3"
+   },
+   "ours": {
+    "sites_called": 74898,
+    "sites_covered": 74993,
+    "sex": "XY",
+    "r_y": 0.2764900662251656,
+    "damage": {
+     "ct5": {
+      "terminal": 0.23636327272727273,
+      "background": 0.004347782608695653,
+      "excess": 0.23201549011857708,
+      "observations_at_first_base": 55,
+      "profile": [
+       0.2364,
+       0.0645,
+       0.0,
+       0.025,
+       0.0294,
+       0.0,
+       0.0,
+       0.0,
+       0.0238,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.3200006,
+      "background": 0.0015723270440251573,
+      "excess": 0.31842827295597487,
+      "observations_at_first_base": 50,
+      "profile": [
+       0.32,
+       0.0588,
+       0.0357,
+       0.0513,
+       0.0,
+       0.0323,
+       0.0312,
+       0.0,
+       0.02,
+       0.0233
+      ]
+     }
+    },
+    "terminal_deamination": 0.275221881537276
+   },
+   "genotypes": {
+    "shared": 73366,
+    "agree": 0.994125344164872,
+    "agree_excluding_published_heterozygotes": 0.994125344164872,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 74898,
+    "theirs_called": 75291,
+    "mine_only": 1532,
+    "theirs_only": 1925
+   }
+  },
+  {
+   "individual": "I0724.AG",
+   "run": "ERR1136422",
+   "bytes": 15151240,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "240320",
+    "coverage_1240k": "0.2595271",
+    "damage": null,
+    "y_haplogroup": "I-L596",
+    "mt_haplogroup": "K1a4"
+   },
+   "ours": {
+    "sites_called": 58551,
+    "sites_covered": 58650,
+    "sex": "XY",
+    "r_y": 0.3155714765476324,
+    "damage": {
+     "ct5": {
+      "terminal": 0.2727272727272727,
+      "background": 0.004514672686230248,
+      "excess": 0.26821260004104247,
+      "observations_at_first_base": 22,
+      "profile": [
+       0.2727,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0294,
+       0.0294,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.17391304347826086,
+      "background": 0.0,
+      "excess": 0.17391304347826086,
+      "observations_at_first_base": 23,
+      "profile": [
+       0.1739,
+       0.0909,
+       0.0323,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "terminal_deamination": 0.22106282175965167
+   },
+   "genotypes": {
+    "shared": 57776,
+    "agree": 0.9829687067294378,
+    "agree_excluding_published_heterozygotes": 0.9829687067294378,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 58551,
+    "theirs_called": 248405,
+    "mine_only": 775,
+    "theirs_only": 190629
+   }
+  },
+  {
+   "individual": "I1542.AG",
+   "run": "ERR1136480",
+   "bytes": 15339356,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "78195",
+    "coverage_1240k": "0.0734166",
+    "damage": "0.157",
+    "y_haplogroup": "R-V1636",
+    "mt_haplogroup": "K1b1a"
+   },
+   "ours": {
+    "sites_called": 79608,
+    "sites_covered": 79680,
+    "sex": "XY",
+    "r_y": 0.4416979029480296,
+    "damage": {
+     "ct5": {
+      "terminal": 0.2916666666666667,
+      "background": 0.004424734513274337,
+      "excess": 0.28724193215339233,
+      "observations_at_first_base": 24,
+      "profile": [
+       0.2917,
+       0.0588,
+       0.1,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0323
+      ]
+     },
+     "ga3": {
+      "terminal": 0.16129032258064516,
+      "background": 0.00202020202020202,
+      "excess": 0.15927012056044312,
+      "observations_at_first_base": 31,
+      "profile": [
+       0.1613,
+       0.0,
+       0.0,
+       0.0455,
+       0.0,
+       0.0,
+       0.0,
+       0.0541,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "terminal_deamination": 0.22325602635691771
+   },
+   "genotypes": {
+    "shared": 78157,
+    "agree": 0.9956369870900879,
+    "agree_excluding_published_heterozygotes": 0.9956369870900879,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 79608,
+    "theirs_called": 81400,
+    "mine_only": 1451,
+    "theirs_only": 3243
+   }
+  }
+ ],
+ "results": [
+  {
+   "name": "Pseudo-haploid calls from the reads agree with the AADR's published genotypes for the same individuals (sites called by both, excluding the published heterozygotes a single allele cannot match): at least 97%",
+   "pass": true,
+   "detail": "I1530.AG 99.85% of 32,595; I1302.AG 99.41% of 73,366; I0724.AG 98.30% of 57,776; I1542.AG 99.56% of 78,157"
+  },
+  {
+   "name": "Genetic sex matches the sex published for each individual",
+   "pass": true,
+   "detail": "I1530.AG: XY vs M; I1302.AG: XY vs M; I0724.AG: XY vs M; I1542.AG: XY vs M"
+  },
+  {
+   "name": "Terminal deamination matches the damage rate published for each individual (within 40%, or 0.02)",
+   "pass": false,
+   "detail": "I1530.AG: 0.100 vs 0.092; I1302.AG: 0.275 vs 0.093; I1542.AG: 0.223 vs 0.157"
+  },
+  {
+   "name": "Terminal deamination is measurable on every individual",
+   "pass": true,
+   "detail": "I1530.AG: 0.100; I1302.AG: 0.275; I0724.AG: 0.221; I1542.AG: 0.223"
+  },
+  {
+   "name": "Altai: the published alignment can be read remotely",
+   "pass": false,
+   "detail": "[E::idx_find_and_load] Could not retrieve index file for 'http://cdna.eva.mpg.de/neandertal/Vindija/bam/Pruefer_etal_2017/Altai_realigned/chr21-reali.bam'\nsamtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.\n"
+  }
+ ],
+ "seconds": 77
+}
