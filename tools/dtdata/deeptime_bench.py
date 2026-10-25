@@ -24,6 +24,7 @@ import csv
 import gzip
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -58,7 +59,8 @@ def opt(name, default):
 
 
 N_IND = int(opt("--individuals", "4"))
-REGION = opt("--region", "21:30000000-32000000")
+REGION = opt("--region", "21:30000000-38000000")
+MAX_DEPTH = int(opt("--max-depth", "200"))
 ARCHAIC = opt("--archaic", "Vindija")
 results, report = [], {}
 
@@ -126,6 +128,15 @@ class AADRRemote:
         head = self._range(0, 48).split(b"\x00")[0].decode().split()
         assert head[0] == "TGENO" and int(head[2]) == self.nsnp, head
         self.nind = int(head[1])
+        # the header record is padded to the data record length in some
+        # packedancestrymap files, which would shift every row; check the size
+        req = urllib.request.Request(self.geno_url, method="HEAD", headers=UA)
+        with urllib.request.urlopen(req, timeout=300) as r:
+            size = int(r.headers.get("Content-Length", 0))
+        expected = 48 + self.nind * self.rlen
+        if size and size != expected:
+            raise RuntimeError(f"the genotype file is {size:,} bytes, not the {expected:,} a 48-byte header and "
+                               f"{self.nind:,} rows of {self.rlen:,} would give; the row offsets would be wrong")
         info(f"AADR: {self.nsnp:,} sites, {self.nind:,} individuals, {len(self.anno):,} annotation rows")
 
     def _range(self, start: int, length: int) -> bytes:
@@ -368,11 +379,15 @@ def step_1240k(aadr: AADRRemote) -> None:
         gate("1240K individuals: genotypes agree with the AADR's published calls", False, "no individuals ran")
         return
     worst = min(r["genotypes"].get("agree_excluding_published_heterozygotes") or 0 for r in rows)
-    gate("Pseudo-haploid calls from the reads agree with the AADR's published genotypes for the same individuals "
-         "(sites called by both, excluding the published heterozygotes a single allele cannot match): at least 97%",
-         worst >= 0.97,
+    thin = [r["individual"] for r in rows if r["genotypes"].get("shared", 0) < 10_000]
+    gate("Pseudo-haploid calls from the reads agree with the AADR's published genotypes for the same individuals, "
+         "on at least 10,000 sites each (sites called by both, excluding the published heterozygotes a single "
+         "allele cannot match): at least 97%. The AADR's genotypes come from these same reads, so this checks "
+         "that the implementation agrees with the published one, not that either is right about the person",
+         worst >= 0.97 and not thin,
          "; ".join(f"{r['individual']} {100 * (r['genotypes'].get('agree_excluding_published_heterozygotes') or 0):.2f}% "
-                   f"of {r['genotypes']['shared']:,}" for r in rows))
+                   f"of {r['genotypes']['shared']:,}" for r in rows)
+         + (f"; too few shared sites: {', '.join(thin)}" if thin else ""))
     sexes = [(r["individual"], r["ours"]["sex"], (r["published"]["sex"] or "?")[:1],
               r["ours"].get("r_x_at_panel_sites")) for r in rows]
     ok = all(mine == {"F": "XX", "M": "XY"}.get(theirs, "?") for _, mine, theirs, _ in sexes)
@@ -391,16 +406,33 @@ def step_1240k(aadr: AADRRemote) -> None:
     have = [(i, m, t) for i, m, t, _ in dmg if m is not None and t is not None]
     ok = bool(have) and all(abs(m - t) <= max(0.02, 0.4 * t) for _, m, t in have)
     gate("Terminal deamination outside CpG sites, measured against the reference, matches the first-base damage "
-         "rate published for each individual (within 40%, or 0.02)", ok,
+         "rate published for each individual (within 40%, or 0.02). The two are not the same measurement: the "
+         "published rate is the raw C->T at the first base of reads over the 1240K targets, CpG sites included, "
+         "while this one is the excess over the background outside CpG", ok,
          "; ".join(f"{i}: {m:.3f} vs {t:.3f}" for i, m, t in have) or "no published damage rates to compare")
+    raw = []
+    for r in rows:
+        src = r["ours"]["damage_against_reference"] or {}
+        x = (src.get("ct5") or {}).get("terminal")
+        try:
+            t = float(r["published"]["damage"])
+        except (TypeError, ValueError):
+            t = None
+        if x is not None and t is not None:
+            raw.append((r["individual"], x, t))
+    gate("The same comparison like for like: the raw C->T at the first base, CpG sites included, against the "
+         "published rate (within 40%, or 0.02)",
+         bool(raw) and all(abs(x - t) <= max(0.02, 0.4 * t) for _, x, t in raw),
+         "; ".join(f"{i}: {x:.3f} vs {t:.3f}" for i, x, t in raw) or "no published damage rates to compare")
     measurable = [(i, m) for i, m, _, _ in dmg if m is not None]
     gate("Terminal deamination is measurable on every individual", len(measurable) == len(rows),
          "; ".join(f"{i}: {m:.3f}" for i, m in measurable))
 
 
 def published_calls(url: str, region: str, min_gq: int = 30) -> dict:
-    """Genotypes from a published VCF: position -> (filter, bases). Only calls
-    the study itself reports confidently (its own genotype quality)."""
+    """Genotypes from a published VCF: position -> (filter, bases, reference
+    base). Only calls the study itself reports confidently (its own genotype
+    quality)."""
     out = {}
     cmd = ["bcftools", "query", "-r", region, "-f", "%POS\t%REF\t%ALT\t%FILTER\t[%GT\t%GQ]\n", url]
     rc, text, err = run(cmd)
@@ -428,7 +460,7 @@ def published_calls(url: str, region: str, min_gq: int = 30) -> dict:
             bases = tuple(sorted(alleles[int(x)] for x in g))
         except (ValueError, IndexError):
             continue
-        out[pos] = (filt, bases)
+        out[pos] = (filt, bases, ref)
     return out
 
 
@@ -479,9 +511,10 @@ def step_archaic() -> None:
     info(f"mask: {callable_mask.mean():.1%} of the region")
     with Genome(str(local), min_mapq=25) as g:
         pu = pileup(g, chrom, pos, max_depth=200)
-        counts = pu.filtered(min_qual=25, trim=0).counts()
-        dip = C.diploid(counts, min_depth=8, min_quality=30)
-        region = C.region_counts(g, chrom, start - 1, end, min_qual=25)
+        dip = C.diploid(pileup=pu.filtered(min_qual=25, trim=0), n_sites=len(pos), min_depth=8, min_quality=30,
+                        max_depth=MAX_DEPTH)
+        region = C.heterozygosity_over_region(g, chrom, start - 1, end, callable_mask=callable_mask,
+                                              min_qual=25, min_depth=8, max_depth=MAX_DEPTH)
     in_mask = callable_mask[pos - start]
     pass_only = np.array([theirs[int(p)][0] in ("PASS", ".", "") for p in pos])
     theirs_bases = [theirs[int(p)][1] for p in pos]
@@ -503,7 +536,7 @@ def step_archaic() -> None:
         "genotypes_agree": share,
         "sites_we_call_but_they_filter": int((np.array([o is not None for o in ours]) & ~pass_only).sum()),
         "heterozygous_ours": int((het_ours & both).sum()), "heterozygous_theirs": int((het_theirs & both).sum()),
-        "heterozygosity_region": C.heterozygosity(region, callable_mask=callable_mask, min_depth=8),
+        "depth_floor": dip["depth_floor"], "heterozygosity_region": region,
     }
     hp = int((het_theirs & both).sum()) / max(1, n)
     ho = int((het_ours & both).sum()) / max(1, n)
@@ -516,14 +549,50 @@ def step_archaic() -> None:
                                                                   / max(1, int((het_ours & both).sum()))),
                                         "theirs_transition_share": (float((het_theirs & ts_theirs & both).sum())
                                                                     / max(1, int((het_theirs & both).sum())))}})
-    print(json.dumps(report["archaic"], default=float)[:1500], flush=True)
+    # An all-sites VCF is nearly all homozygous reference, so agreeing on every
+    # site says little: the sites where the study calls something other than two
+    # reference alleles are the ones that test a caller.
+    ref_base = {int(p): theirs[int(p)][2] for p in pos}
+    variant = np.array([t[0] != ref_base[int(p)] or t[1] != ref_base[int(p)] for p, t in zip(pos, theirs_bases)])
+    het_true = het_theirs & variant
+    homalt = variant & ~het_theirs
+    def share_of(sel):
+        k = sel & both
+        return (float(agree[k].mean()) if k.any() else None), int(k.sum())
+    v_share, v_n = share_of(variant)
+    h_share, h_n = share_of(het_true)
+    a_share, a_n = share_of(homalt)
+    r_share, r_n = share_of(~variant)
+    called_in_mask = float((np.array([o is not None for o in ours]) & in_mask & pass_only).sum()
+                           / max(1, int((in_mask & pass_only).sum())))
+    report["archaic"].update({"published_variant_sites": int((variant & in_mask & pass_only).sum()),
+                              "agreement_by_class": {"variant": v_share, "variant_sites": v_n,
+                                                     "heterozygous": h_share, "heterozygous_sites": h_n,
+                                                     "homozygous_alternative": a_share, "homozygous_alt_sites": a_n,
+                                                     "homozygous_reference": r_share, "homozygous_ref_sites": r_n},
+                              "call_rate_in_mask": called_in_mask})
+    print(json.dumps(report["archaic"], default=float)[:2000], flush=True)
     gate(f"{ARCHAIC} Neanderthal, {REGION}: diploid genotypes agree with the study's own call set at the sites both "
          "call, inside the study's filter mask (at least 99%)", n > 10_000 and share >= 0.99,
          f"{100 * share:.3f}% of {n:,} sites")
+    gate(f"{ARCHAIC} Neanderthal, {REGION}: at the sites the study calls as carrying a non-reference allele - the "
+         "ones that test a caller, since an all-sites VCF is otherwise almost all homozygous reference - at least "
+         "95% agreement", (v_n or 0) > 2_000 and (v_share or 0) >= 0.95,
+         f"{100 * (v_share or 0):.2f}% of {v_n:,} variant sites "
+         f"(heterozygous {100 * (h_share or 0):.2f}% of {h_n:,}, homozygous alternative "
+         f"{100 * (a_share or 0):.2f}% of {a_n:,}, homozygous reference {100 * (r_share or 0):.3f}% of {r_n:,})")
+    gate(f"{ARCHAIC} Neanderthal, {REGION}: at least 90% of the study's confident calls inside its mask are called "
+         "here too", called_in_mask >= 0.90, f"{100 * called_in_mask:.1f}%")
+    k_ours, k_theirs = int((het_ours & ~ts_ours & both).sum()), int((het_theirs & ~ts_theirs & both).sum())
+    ci = lambda k: (max(0, k - 1.96 * math.sqrt(max(k, 1))) / max(1, n), (k + 1.96 * math.sqrt(max(k, 1))) / max(1, n))
+    lo_o, hi_o = ci(k_ours)
+    lo_t, hi_t = ci(k_theirs)
     gate(f"{ARCHAIC} Neanderthal, {REGION}: heterozygous sites at transversions - the ones deamination cannot "
-         "make - within 25% of the published call set's, per shared site",
-         n > 10_000 and tvp > 0 and abs(tvo - tvp) <= 0.25 * tvp,
-         f"ours {tvo:.2e}, theirs {tvp:.2e} over {n:,} shared sites")
+         "make - within 25% of the published call set's, per shared site, with enough events for the comparison "
+         "to mean anything",
+         n > 10_000 and k_theirs >= 200 and tvp > 0 and abs(tvo - tvp) <= 0.25 * tvp,
+         f"ours {tvo:.2e} ({k_ours} events, 95% {lo_o:.2e}-{hi_o:.2e}), theirs {tvp:.2e} ({k_theirs} events, "
+         f"95% {lo_t:.2e}-{hi_t:.2e}) over {n:,} shared sites")
     gate(f"{ARCHAIC} Neanderthal, {REGION}: at transitions, which deamination mimics, this genotype caller reports "
          "more heterozygotes than the study's damage-aware one, and says so rather than reporting a rate",
          ho > hp, f"ours {ho:.2e} ({100 * report['archaic']['heterozygosity_shared_sites']['ours_transition_share']:.0f}% "
