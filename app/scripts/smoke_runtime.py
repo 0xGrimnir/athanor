@@ -48,7 +48,7 @@ print("server:", proc.stdout.readline().strip())
 ids = iter(range(1, 1000))
 
 
-def call(method, params=None):
+def call(method, params=None, expect_error=False):
     proc.stdin.write(json.dumps({"jsonrpc": "2.0", "id": next(ids), "method": method, "params": params or {}}) + "\n")
     proc.stdin.flush()
     while True:  # skip notifications (progress) until the response with our id
@@ -56,6 +56,8 @@ def call(method, params=None):
         if "id" in resp:
             break
     if "error" in resp:
+        if expect_error:
+            return resp["error"]
         raise SystemExit(f"{method} failed: {resp['error']}")
     return resp["result"]
 
@@ -103,14 +105,12 @@ for name in ("dna_nucleosome", "dna_fibre", "dna_nucleus"):
 summary["dna_complexes"] = len(call("dna_scales")["complexes"])
 # Deep Time runs in the Linux engines pack (it needs pysam); the Windows runtime
 # must list the methods and say so clearly rather than failing obscurely.
-try:
-    call("deeptime_inspect", {"path": "none.bam"})
-    summary["deeptime"] = "ran"
-except Exception as e:                                                   # noqa: BLE001
-    summary["deeptime"] = str(e)[:140]
-    # either the pack is missing (the usual case on Windows) or the file is
-    # missing; both must say so plainly rather than failing obscurely
-    assert any(x in str(e).lower() for x in ("linux engines pack", "no such file", "none.bam")), summary["deeptime"]
+err = call("deeptime_inspect", {"path": "none.bam"}, expect_error=True)
+msg = (err.get("message", "") if isinstance(err, dict) else str(err))
+summary["deeptime"] = msg[:140]
+# either the pack is missing (the usual case on Windows) or the file is; both
+# must say so plainly rather than failing obscurely
+assert any(x in msg.lower() for x in ("linux engines pack", "no such file", "none.bam")), summary["deeptime"]
 print("SMOKE_OK", json.dumps(summary))
 proc.stdin.close()
 proc.wait(timeout=30)
