@@ -1,0 +1,516 @@
+{
+ "aadr": {
+  "sites": 1233013,
+  "individuals": 23089
+ },
+ "individuals": [
+  {
+   "individual": "I1530.AG",
+   "run": "ERR1136472",
+   "bytes": 5033649,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "32930",
+    "coverage_1240k": "0.0299086",
+    "damage": "0.092",
+    "y_haplogroup": "R1",
+    "mt_haplogroup": "H3ao"
+   },
+   "ours": {
+    "sites_called": 33476,
+    "sites_covered": 33502,
+    "sex": "XY",
+    "r_y": 0.422680412371134,
+    "damage_at_panel_sites": {
+     "terminal_deamination": 0.11688,
+     "terminal_deamination_including_cpg": 0.10003,
+     "reads_used": null,
+     "ct5": {
+      "terminal": 0.14286,
+      "background": 0.0,
+      "excess": 0.14286,
+      "observations_at_first_base": 7,
+      "not_cpg_excess": 0.14286,
+      "not_cpg_observations": 7,
+      "cpg_excess": null,
+      "cpg_observations": 0,
+      "profile": [
+       0.14286,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.0625,
+      "background": 0.00529,
+      "excess": 0.05721,
+      "observations_at_first_base": 16,
+      "not_cpg_excess": 0.09091,
+      "not_cpg_observations": 11,
+      "cpg_excess": -0.04167,
+      "cpg_observations": 5,
+      "profile": [
+       0.0625,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "damage_against_reference": {
+     "terminal_deamination": 0.05815,
+     "terminal_deamination_including_cpg": 0.06671,
+     "reads_used": 692,
+     "ct5": {
+      "terminal": 0.08397,
+      "background": 0.00735,
+      "excess": 0.07662,
+      "observations_at_first_base": 131,
+      "not_cpg_excess": 0.069,
+      "not_cpg_observations": 124,
+      "cpg_excess": 0.22571,
+      "cpg_observations": 7,
+      "profile": [
+       0.08397,
+       0.01869,
+       0.0,
+       0.01266,
+       0.0,
+       0.00709,
+       0.01587,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.06015,
+      "background": 0.00336,
+      "excess": 0.05679,
+      "observations_at_first_base": 133,
+      "not_cpg_excess": 0.04729,
+      "not_cpg_observations": 125,
+      "cpg_excess": 0.19937,
+      "cpg_observations": 8,
+      "profile": [
+       0.06015,
+       0.0,
+       0.0,
+       0.0129,
+       0.0,
+       0.01064,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   },
+   "genotypes": {
+    "shared": 32595,
+    "agree": 0.9984660223960731,
+    "agree_excluding_published_heterozygotes": 0.9984660223960731,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 33476,
+    "theirs_called": 34050,
+    "mine_only": 881,
+    "theirs_only": 1455
+   }
+  },
+  {
+   "individual": "I1302.AG",
+   "run": "ERR1136457",
+   "bytes": 13994231,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "73031",
+    "coverage_1240k": "0.0708163",
+    "damage": "0.093",
+    "y_haplogroup": "G-PF3359",
+    "mt_haplogroup": "J2b1a3"
+   },
+   "ours": {
+    "sites_called": 74898,
+    "sites_covered": 74993,
+    "sex": "XY",
+    "r_y": 0.2764900662251656,
+    "damage_at_panel_sites": {
+     "terminal_deamination": 0.19493,
+     "terminal_deamination_including_cpg": 0.27522,
+     "reads_used": null,
+     "ct5": {
+      "terminal": 0.23636,
+      "background": 0.00435,
+      "excess": 0.23202,
+      "observations_at_first_base": 55,
+      "not_cpg_excess": 0.15909,
+      "not_cpg_observations": 44,
+      "cpg_excess": 0.51633,
+      "cpg_observations": 11,
+      "profile": [
+       0.23636,
+       0.06452,
+       0.0,
+       0.025,
+       0.02941,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.32,
+      "background": 0.00157,
+      "excess": 0.31843,
+      "observations_at_first_base": 50,
+      "not_cpg_excess": 0.23077,
+      "not_cpg_observations": 39,
+      "cpg_excess": 0.62636,
+      "cpg_observations": 11,
+      "profile": [
+       0.32,
+       0.05882,
+       0.03571,
+       0.05128,
+       0.0,
+       0.03226,
+       0.03125,
+       0.0
+      ]
+     }
+    },
+    "damage_against_reference": {
+     "terminal_deamination": 0.11429,
+     "terminal_deamination_including_cpg": 0.13636,
+     "reads_used": 2016,
+     "ct5": {
+      "terminal": 0.13924,
+      "background": 0.0038,
+      "excess": 0.13544,
+      "observations_at_first_base": 474,
+      "not_cpg_excess": 0.11261,
+      "not_cpg_observations": 428,
+      "cpg_excess": 0.34641,
+      "cpg_observations": 46,
+      "profile": [
+       0.13924,
+       0.01813,
+       0.00781,
+       0.00881,
+       0.00214,
+       0.00883,
+       0.00679,
+       0.00629
+      ]
+     },
+     "ga3": {
+      "terminal": 0.14076,
+      "background": 0.00347,
+      "excess": 0.13728,
+      "observations_at_first_base": 476,
+      "not_cpg_excess": 0.11597,
+      "not_cpg_observations": 435,
+      "cpg_excess": 0.36455,
+      "cpg_observations": 41,
+      "profile": [
+       0.14076,
+       0.01676,
+       0.01674,
+       0.00619,
+       0.00652,
+       0.0,
+       0.0,
+       0.00414
+      ]
+     }
+    }
+   },
+   "genotypes": {
+    "shared": 73366,
+    "agree": 0.994125344164872,
+    "agree_excluding_published_heterozygotes": 0.994125344164872,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 74898,
+    "theirs_called": 75291,
+    "mine_only": 1532,
+    "theirs_only": 1925
+   }
+  },
+  {
+   "individual": "I0724.AG",
+   "run": "ERR1136422",
+   "bytes": 15151240,
+   "build": "GRCh37",
+   "published": {
+    "sex": "M",
+    "snps_hit_1240k": "240320",
+    "coverage_1240k": "0.2595271",
+    "damage": null,
+    "y_haplogroup": "I-L596",
+    "mt_haplogroup": "K1a4"
+   },
+   "ours": {
+    "sites_called": 58551,
+    "sites_covered": 58650,
+    "sex": "XY",
+    "r_y": 0.3155714765476324,
+    "damage_at_panel_sites": {
+     "terminal_deamination": 0.12698,
+     "terminal_deamination_including_cpg": 0.22106,
+     "reads_used": null,
+     "ct5": {
+      "terminal": 0.27273,
+      "background": 0.00451,
+      "excess": 0.26821,
+      "observations_at_first_base": 22,
+      "not_cpg_excess": 0.11111,
+      "not_cpg_observations": 18,
+      "cpg_excess": 0.96296,
+      "cpg_observations": 4,
+      "profile": [
+       0.27273,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.02941,
+       0.02941,
+       0.0
+      ]
+     },
+     "ga3": {
+      "terminal": 0.17391,
+      "background": 0.0,
+      "excess": 0.17391,
+      "observations_at_first_base": 23,
+      "not_cpg_excess": 0.14286,
+      "not_cpg_observations": 21,
+      "cpg_excess": 0.5,
+      "cpg_observations": 2,
+      "profile": [
+       0.17391,
+       0.09091,
+       0.03226,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "damage_against_reference": {
+     "terminal_deamination": 0.13696,
+     "terminal_deamination_including_cpg": 0.15874,
+     "reads_used": 1986,
+     "ct5": {
+      "terminal": 0.18545,
+      "background": 0.00315,
+      "excess": 0.18229,
+      "observations_at_first_base": 426,
+      "not_cpg_excess": 0.15319,
+      "not_cpg_observations": 399,
+      "cpg_excess": 0.61522,
+      "cpg_observations": 27,
+      "profile": [
+       0.18545,
+       0.00549,
+       0.00937,
+       0.00971,
+       0.0,
+       0.00452,
+       0.00239,
+       0.00445
+      ]
+     },
+     "ga3": {
+      "terminal": 0.13921,
+      "background": 0.00402,
+      "excess": 0.1352,
+      "observations_at_first_base": 431,
+      "not_cpg_excess": 0.12073,
+      "not_cpg_observations": 405,
+      "cpg_excess": 0.36384,
+      "cpg_observations": 26,
+      "profile": [
+       0.13921,
+       0.03403,
+       0.01456,
+       0.00227,
+       0.00443,
+       0.00234,
+       0.00465,
+       0.0
+      ]
+     }
+    }
+   },
+   "genotypes": {
+    "shared": 57776,
+    "agree": 0.9829687067294378,
+    "agree_excluding_published_heterozygotes": 0.9829687067294378,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 58551,
+    "theirs_called": 248405,
+    "mine_only": 775,
+    "theirs_only": 190629
+   }
+  },
+  {
+   "individual": "I0725.AG",
+   "run": "ERR1136423",
+   "bytes": 15481350,
+   "build": "GRCh37",
+   "published": {
+    "sex": "F",
+    "snps_hit_1240k": "45416",
+    "coverage_1240k": "0.0431256",
+    "damage": "0.091",
+    "y_haplogroup": "n/a (female)",
+    "mt_haplogroup": "N1a1a"
+   },
+   "ours": {
+    "sites_called": 47815,
+    "sites_covered": 47884,
+    "sex": null,
+    "r_y": 0.07730418370556778,
+    "damage_at_panel_sites": {
+     "terminal_deamination": 0.12381,
+     "terminal_deamination_including_cpg": 0.18666,
+     "reads_used": null,
+     "ct5": {
+      "terminal": 0.04,
+      "background": 0.0,
+      "excess": 0.04,
+      "observations_at_first_base": 25,
+      "not_cpg_excess": 0.04762,
+      "not_cpg_observations": 21,
+      "cpg_excess": 0.0,
+      "cpg_observations": 4,
+      "profile": [
+       0.04,
+       0.05,
+       0.04,
+       0.0,
+       0.0,
+       0.03226,
+       0.0,
+       0.03448
+      ]
+     },
+     "ga3": {
+      "terminal": 0.33333,
+      "background": 0.0,
+      "excess": 0.33333,
+      "observations_at_first_base": 30,
+      "not_cpg_excess": 0.2,
+      "not_cpg_observations": 25,
+      "cpg_excess": 1.0,
+      "cpg_observations": 5,
+      "profile": [
+       0.33333,
+       0.0,
+       0.07407,
+       0.0,
+       0.04167,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "damage_against_reference": {
+     "terminal_deamination": 0.09226,
+     "terminal_deamination_including_cpg": 0.11442,
+     "reads_used": 1841,
+     "ct5": {
+      "terminal": 0.10178,
+      "background": 0.00226,
+      "excess": 0.09952,
+      "observations_at_first_base": 393,
+      "not_cpg_excess": 0.08655,
+      "not_cpg_observations": 376,
+      "cpg_excess": 0.3947,
+      "cpg_observations": 17,
+      "profile": [
+       0.10178,
+       0.01208,
+       0.0112,
+       0.01096,
+       0.01266,
+       0.00509,
+       0.01504,
+       0.00505
+      ]
+     },
+     "ga3": {
+      "terminal": 0.13333,
+      "background": 0.00402,
+      "excess": 0.12931,
+      "observations_at_first_base": 405,
+      "not_cpg_excess": 0.09796,
+      "not_cpg_observations": 376,
+      "cpg_excess": 0.53436,
+      "cpg_observations": 29,
+      "profile": [
+       0.13333,
+       0.02279,
+       0.00517,
+       0.0,
+       0.0073,
+       0.00531,
+       0.00487,
+       0.00473
+      ]
+     }
+    }
+   },
+   "genotypes": {
+    "shared": 46777,
+    "agree": 0.9978621972336832,
+    "agree_excluding_published_heterozygotes": 0.9978621972336832,
+    "published_heterozygous_share": 0.0,
+    "mine_called": 47815,
+    "theirs_called": 47142,
+    "mine_only": 1038,
+    "theirs_only": 365
+   }
+  }
+ ],
+ "results": [
+  {
+   "name": "Pseudo-haploid calls from the reads agree with the AADR's published genotypes for the same individuals (sites called by both, excluding the published heterozygotes a single allele cannot match): at least 97%",
+   "pass": true,
+   "detail": "I1530.AG 99.85% of 32,595; I1302.AG 99.41% of 73,366; I0724.AG 98.30% of 57,776; I0725.AG 99.79% of 46,777"
+  },
+  {
+   "name": "Genetic sex matches the sex published for each individual",
+   "pass": false,
+   "detail": "I1530.AG: XY vs M; I1302.AG: XY vs M; I0724.AG: XY vs M; I0725.AG: None vs F"
+  },
+  {
+   "name": "Terminal deamination outside CpG sites, measured against the reference, matches the first-base damage rate published for each individual (within 40%, or 0.02)",
+   "pass": true,
+   "detail": "I1530.AG: 0.058 vs 0.092; I1302.AG: 0.114 vs 0.093; I0725.AG: 0.092 vs 0.091"
+  },
+  {
+   "name": "Terminal deamination is measurable on every individual",
+   "pass": true,
+   "detail": "I1530.AG: 0.058; I1302.AG: 0.114; I0724.AG: 0.137; I0725.AG: 0.092"
+  },
+  {
+   "name": "Altai: an indexed chromosome-21 alignment is published",
+   "pass": false,
+   "detail": "alignments ['chr1-reali.bam', 'chr2-reali.bam', 'chr3-reali.bam', 'chr4-reali.bam'], indexes []"
+  }
+ ],
+ "seconds": 89
+}
