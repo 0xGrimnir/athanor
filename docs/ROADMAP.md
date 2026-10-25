@@ -8,10 +8,10 @@ Every module ships only after its benchmark suite reproduces published reference
 
 ## Order of work
 
-1. **Done:** Personal Genome steps 1–3 (deep and modern ancestry, traits, medicines; 0.5.0–0.7.0); DNA Structure (0.8.0–0.9.0)
-2. **Next:** Deep Time
-3. **Then:** Deep Time, starting with ancient nuclear genomes and then traits from ancient genomes, interleaved with Personal Genome steps 4–5
-4. **Later:** Populations, RNA and proteins, Radiocarbon dating, and the research problems
+1. **Done:** Personal Genome steps 1–3 (deep and modern ancestry, traits, medicines; 0.5.0–0.7.0); DNA Structure (0.8.0–0.9.0); Deep Time step 1, ancient nuclear genomes (0.10.0)
+2. **Next:** Deep Time step 2, traits from ancient genomes
+3. **Then:** the rest of Deep Time (ancient proteins, DNA decay, radiocarbon calibration), interleaved with Personal Genome steps 4–5
+4. **Later:** Populations, RNA and proteins, and the research problems
 
 ---
 
@@ -138,7 +138,7 @@ Possible later additions, not planned: explicit-solvent dynamics, nucleosome pos
 
 Ancient biology beyond the mitochondrial genome, building on the Ancient DNA Lab.
 
-1. **Ancient nuclear genomes:** native whole-genome mapping (minimap2, bwa-mem2, samtools in the Linux engines pack); genetic sex, heterozygosity, population-size history, divergence and interbreeding between species. *Benchmark:* reproduce the published values for a published ancient genome.
+1. **Ancient nuclear genomes (done, 0.10.0):** an ancient genome as it is deposited, a BAM aligned to GRCh37. Which reference build it is on, read counts from the index, molecule lengths, deamination at both molecule ends, genetic sex (R_y and R_x with intervals), pseudo-haploid or diploid genotypes at the reference panel's sites with the two ways round damage (trimming molecule ends, transversions only), and from those genotypes the deep-ancestry reports the Personal Genome tier already makes. Heterozygosity over a region, counted without a reference sequence, with a study's own callable-regions mask. *Benchmark:* pseudo-haploid calls, genetic sex and first-base damage against the AADR's published values for 1240K-capture individuals from ENA; diploid calls and heterozygosity in a region of a high-coverage Neanderthal against that study's own call set inside its filter mask. Mapping reads that are not yet aligned, population-size history (PSMC) and divergence between species come later.
 2. **Traits from ancient genomes:** evidence-graded trait reports for ancient individuals (e.g. pigmentation in ancient humans; coat colour and cold-adaptation variants in mammoths), reusing the Personal Genome report cards. *Benchmark:* reproduce published trait calls for published individuals.
 3. **Ancient proteins:** placing species in the tree of life from proteins preserved in tooth enamel, well beyond the age limit of DNA. Scope (starting from published peptide sequences or from mass-spectrometry data) to be settled. *Benchmark:* reproduce a published phylogenetic placement.
 4. **DNA decay:** expected DNA fragment lengths and survival from a sample's age and burial temperature (Allentoft et al., Proc. R. Soc. B 279, 4724, 2012), used as an authentication check against what a sample actually yields. *Benchmark:* published fragment-length data for dated samples.

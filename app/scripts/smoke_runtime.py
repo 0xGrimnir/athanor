@@ -101,6 +101,14 @@ for name in ("dna_nucleosome", "dna_fibre", "dna_nucleus"):
     r = call(name, {"sequence": "CGCGAATTCGCG"} if name == "dna_nucleosome" else {})
     summary[name] = True
 summary["dna_complexes"] = len(call("dna_scales")["complexes"])
+# Deep Time runs in the Linux engines pack (it needs pysam); the Windows runtime
+# must list the methods and say so clearly rather than failing obscurely.
+try:
+    call("deeptime_inspect", {"path": "none.bam"})
+    summary["deeptime"] = "ran"
+except Exception as e:                                                   # noqa: BLE001
+    summary["deeptime"] = str(e)[:120]
+    assert "Linux engines pack" in str(e) or "no path given" in str(e), summary["deeptime"]
 print("SMOKE_OK", json.dumps(summary))
 proc.stdin.close()
 proc.wait(timeout=30)
