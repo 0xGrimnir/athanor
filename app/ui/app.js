@@ -1913,17 +1913,27 @@ const DT_DETAIL = {
   },
   deeptime_authenticity(el, c) {
     const d = c.result.damage || {}, L = c.result.lengths || {};
-    const rows = [["ct5", "C→T from the molecule's 5′ end"], ["ga3", "G→A from its 3′ end"]];
-    const ctx = (x, k) => (x[k] && x[k].terminal_excess != null
-      ? `${pct(x[k].terminal_excess, 1)} <small>(${(x[k].observations[0] || 0).toLocaleString()} obs.)</small>` : "—");
-    el.innerHTML = kvTable(rows.flatMap(([k, lab]) => {
-      const x = d[k]; if (!x) return [];
-      return [[lab, x.terminal == null ? "—" : `${pct(x.terminal, 1)} at the first base <small>(background ${pct(x.background, 2)}, excess ${pct(x.terminal_excess, 1)}; ${(x.observations[0] || 0).toLocaleString()} observations)</small>`],
-              [`&nbsp;&nbsp;outside CpG / at CpG`, `${ctx(x, "not_cpg")} / ${ctx(x, "cpg")}`]];
-    }).concat([
-      ["Molecule length", L.median == null ? "—" : `median ${L.median} bp <small>(5% shorter than ${L.shortest_5pc}, 5% longer than ${L.longest_5pc})</small>`],
-      ["Strands", c.result.reverse_fraction == null ? "—" : `${pct(c.result.reverse_fraction, 1)} of reads on the reverse strand`],
-    ])) + `<div class="plotwrap"><canvas id="dtDamagePlot" height="220"></canvas></div>
+    const ci = (x) => (x && x.length ? `<small>95% ${x.map((v) => pct(v, 1)).join("–")}</small>` : "");
+    const ctx = (x, k) => (x && x[k] && x[k].terminal_excess != null
+      ? `${pct(x[k].terminal_excess, 1)} <small>(${(x[k].observations[0] || 0).toLocaleString()})</small>` : "—");
+    const rows = [["ct5", "C→T, 5′ end"], ["ga3", "G→A, 3′ end"]].filter(([k]) => d[k]);
+    el.innerHTML = `<table><thead><tr><th>Deamination</th><th>At the first base</th><th>Background</th>
+        <th>Excess</th><th>Outside CpG</th><th>At CpG</th></tr></thead><tbody>
+      ${rows.map(([k, lab]) => {
+        const x = d[k];
+        return `<tr><td>${lab}</td>
+          <td class="n">${pct(x.terminal, 1)} ${ci(x.terminal_ci)}</td>
+          <td class="n">${pct(x.background, 2)} <small>(${(x.background_observations || 0).toLocaleString()})</small></td>
+          <td class="n">${pct(x.terminal_excess, 1)} ${ci(x.terminal_excess_ci)}</td>
+          <td class="n">${ctx(x, "not_cpg")}</td><td class="n">${ctx(x, "cpg")}</td></tr>`;
+      }).join("")}</tbody></table>
+      <p class="note">Counts of observations in brackets. The background is the rate at bases far from both ends of their molecule.</p>
+      ${kvTable([
+        ["Molecule length", L.median == null ? "—" : `median ${L.median} bp <small>(5% shorter than ${L.shortest_5pc}, 5% longer than ${L.longest_5pc})</small>`],
+        ["Strands", c.result.reverse_fraction == null ? "—" : `${pct(c.result.reverse_fraction, 1)} of reads on the reverse strand`],
+      ])}
+      <div class="plotwrap"><canvas id="dtDamagePlot" height="220"></canvas></div>
+      ${d.enough_observations === false ? `<p class="warnbox">Fewer than ${d.minimum_observations} observations sit behind the first-base rate, so read the interval rather than the number.</p>` : ""}
       <p class="note">${d.source === "reference" ? `Measured against the reference sequence${d.chromosomes ? ` on chromosome${d.chromosomes.length > 1 ? "s" : ""} ${escapeHtml(d.chromosomes.slice(0, 6).join(", "))}${d.chromosomes.length > 6 ? "…" : ""}` : ""}, over ${(d.reads_used || 0).toLocaleString()} reads.` : "Measured at the reference panel's positions; the non-CpG figure is the one to compare with a published rate."}
       ${d.reference_error ? `<span class="warn">The reference could not be used: ${escapeHtml(d.reference_error)}</span>` : ""}</p>
       <p class="note">${d.terminal_deamination == null ? "Not enough covered sites to measure deamination."
@@ -1936,10 +1946,11 @@ const DT_DETAIL = {
     el.innerHTML = kvTable([
       ["Observations at the panel's X positions", `${(s.reads_at_X_sites || 0).toLocaleString()} over ${(s.X_sites || 0).toLocaleString()} positions`],
       ["Observations at its autosomal positions", `${(s.reads_at_autosomal_sites || 0).toLocaleString()} over ${(s.autosomal_sites || 0).toLocaleString()} positions`],
-      ["R<sub>x</sub> (X against the autosomes, at those positions)", s.r_x == null ? "—" : `${s.r_x.toFixed(3)} <small>(95% ${s.r_x_ci.map((x) => x.toFixed(3)).join("–")}; below 0.6 XY, above 0.8 XX)</small>`],
+      ["R<sub>x</sub> (X against the autosomes, at those positions)", s.r_x == null ? "—" : `${s.r_x.toFixed(3)} <small>(95% ${s.r_x_ci.map((x) => x.toFixed(3)).join("–")}; one X copy gives about 0.5, two about 1, and the midpoint 0.75 decides)</small>`],
       ["Reads on whole chromosomes (X / Y)", `${(w.reads_X || 0).toLocaleString()} / ${(w.reads_Y || 0).toLocaleString()}`],
       ["R<sub>y</sub> = Y / (X + Y), whole chromosomes", w.r_y == null ? "—" : `${w.r_y.toFixed(4)} <small>(95% ${(w.r_y_ci || []).map((x) => x.toFixed(4)).join("–")}; shotgun thresholds: below 0.016 XX, above 0.077 XY)</small>`],
-    ]) + (s.fell_back ? `<p class="note">Called from the whole-chromosome counts: ${escapeHtml(s.panel_reason || "the panel's X positions did not settle it")}.</p>` : "");
+    ]) + (s.ratio_note ? `<p class="note">${escapeHtml(s.ratio_note)}: a capture enriches the X a little differently from the autosomes, which moves the ratio without changing how many copies there are.</p>` : "")
+      + (s.fell_back ? `<p class="note">Called from the whole-chromosome counts: ${escapeHtml(s.panel_reason || "the panel's X positions did not settle it")}.</p>` : "");
   },
 };
 
@@ -1987,18 +1998,19 @@ async function dtHet() {
       path: DT.path, chrom, start, end, min_mapq: +$("dtMapq").value, min_qual: +$("dtBq").value,
       min_depth: +$("dtDepth").value, ...(DT.mask ? { mask_path: DT.mask } : {}),
     });
-    job.done(`${(r.heterozygosity * 1e4).toFixed(2)} per 10,000 bases`);
+    job.done(r.heterozygosity == null ? "no callable sites" : `${(r.heterozygosity * 1e4).toFixed(2)} per 10,000 bases`);
     $("dtEmpty").hidden = true; $("dtHetOut").hidden = false;
     $("dtHetOut").innerHTML = `<div class="sec"><div class="label">Heterozygosity</div>${kvTable([
       ["Region", `${escapeHtml(r.region.chromosome)}:${r.region.start.toLocaleString()}–${r.region.end.toLocaleString()} <small>(${(r.region.bases / 1e6).toFixed(2)} Mb, ${escapeHtml(r.build)})</small>`],
       ["Mean depth", `${r.depth_mean.toFixed(1)}×`],
-      ["Callable sites", `${r.callable_sites.toLocaleString()}${r.mask ? ` <small>(inside ${escapeHtml(r.mask.path)}, which covers ${r.mask.callable_bases.toLocaleString()} bases)</small>` : ""}`],
+      ["Callable sites", `${r.callable_sites.toLocaleString()} <small>(positions with at least ${r.depth_floor} reads, the depth at which a homozygote can be called as confidently as a heterozygote${r.mask ? `, inside ${escapeHtml(r.mask.path)}, which covers ${r.mask.callable_bases.toLocaleString()} bases` : ""})</small>`],
       ["Heterozygous sites", `${r.heterozygous_sites.toLocaleString()} <small>(${r.transitions.toLocaleString()} transitions, ${r.transversions.toLocaleString()} transversions)</small>`],
-      ["Heterozygosity, all sites", r.heterozygosity == null ? "—" : `${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases <small>(${r.heterozygosity.toExponential(2)})</small>`],
-      ["Heterozygosity at transversions", r.transversion_heterozygosity == null ? "—" : `${(1e4 * r.transversion_heterozygosity).toFixed(2)} per 10,000 bases <small>(${r.transversion_heterozygosity.toExponential(2)}; deamination cannot make these)</small>`],
+      ["Heterozygosity, all sites", r.heterozygosity == null ? "—" : `${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases <small>(95% ${(r.heterozygosity_ci || []).map((x) => (1e4 * x).toFixed(2)).join("–")}; ${r.heterozygous_sites.toLocaleString()} sites)</small>`],
+      ["Heterozygosity at transversions", r.transversion_heterozygosity == null ? "—" : `${(1e4 * r.transversion_heterozygosity).toFixed(2)} per 10,000 bases <small>(95% ${(r.transversion_heterozygosity_ci || []).map((x) => (1e4 * x).toFixed(2)).join("–")}; ${r.transversions.toLocaleString()} sites, and deamination cannot make these)</small>`],
     ])}<p class="${r.transitions_inflated_by_damage ? "warnbox" : "note"}">${escapeHtml(r.note || "")}</p>
       <p class="note">${(r.limits || []).map(escapeHtml).join(" ")}</p></div>`;
-    log(`Deep Time: heterozygosity ${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases over ${r.callable_sites.toLocaleString()} callable sites`);
+    log(r.heterozygosity == null ? "Deep Time: no sites deep enough to count"
+      : `Deep Time: heterozygosity ${(1e4 * r.heterozygosity).toFixed(2)} per 10,000 bases over ${r.callable_sites.toLocaleString()} callable sites`);
   } catch (e) { job.fail(String(e)); log(`Deep Time: ${e.message || e}`, true); }
   finally { dtEnd(); }
 }
